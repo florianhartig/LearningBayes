@@ -1,9 +1,3 @@
----
-layout: page
-title: Bayesian statistics 
-category: hubs
----
-
 # Introduction
 
 

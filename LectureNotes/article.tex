@@ -1,0 +1,165 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[svgnames]{xcolor}
+\usepackage{hyperref}
+\definecolor{darkblue}{rgb}{0,0,.6}
+\hypersetup{colorlinks=true, breaklinks=true, linkcolor=darkblue, menucolor=darkblue, urlcolor=darkblue, citecolor=darkblue}
+\usepackage[framemethod=default]{mdframed}
+
+\usepackage[]{natbib}
+
+
+\mdfsetup{%
+backgroundcolor=lightgray}
+
+
+\author{Florian Hartig}
+\title{A primer to Bayesian Inference}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This short text aims at giving a quick and nontechnical introduction to Bayesian statistics. I am avoiding 
+
+
+\end{abstract}
+
+
+\section{Bayesian inference}
+
+
+\begin{mdframed}[frametitle={Ask yourself}]
+\begin{itemize}
+  \item What is "statistical inference"
+  \item What is a (parametric) statistical model
+  \item How do you get from a model to a likelihod
+  \item What is Bayesian inference
+  \item Is there a difference between Bayesian models and "conventional" statistical models?
+\end{itemize}
+\end{mdframed}
+
+\subsection{What is statistical inference?}
+
+\begin{itemize}
+\item Statistical inference is the process of drawing conclusions from data that have been subject to stochastic (random) processes. 
+\item There are many methods and philosphies to do inference. Methods include p-values, regression, and calculation of posterior distributions. The two main philosohpies are Bayesian and Frequentist thinking. 
+\item A central tool for making inference is the definition of a (parametric) statistical model.
+\end{itemize}
+
+
+\subsection{What is a (parametric) statistical model?}
+
+A (parametric) statistical model is a set of assumptions that describe the relationship between a number of variables. These assumptions typically include deterministic relationships, sources of variation, and parameters for both. For examples, the model underlying the function lm() in R is 
+
+\begin{equation}
+y ~ a \cdot x + b + norm(0,\sigma)
+\end{equation}
+
+This means the variable y is related to x in a linear relationship, but there is an additional source of random variation $norm(0,\sigma)$. Note that specifying this model implies the following: 
+
+\begin{enumerate}
+\item If we are given a set of x-values, and parameters $\theta = {a,b,sigma}$, we could create random samples that follow this model (e.g. using rnorm() in r)
+\item If we are given a set of x,y combinations, we could calculate the probability of obtaining this combinations if we would sample as in 1 for any parameter combination $\theta$. This probability is written as $p(D|\theta)$, read as probability of the data conditional on the parameters.
+\end{enumerate}
+
+You see that we can view this probability as a function of the parameters $\theta$. For each parameter combination, we get a probability for the data. \textbf{This function is called the likelihood!} The likelihod is just defined like that - it is neither Bayesian nor frequentist, but it is used by both! And it can be calcualted for ANY statistical model.
+
+\subsection{What is Bayesian inference?}
+
+Bayesian inference is a particular way of doing inference based on a statistical model and its likelihood. The idea of Bayes is to calculate a posterior distribution basd on the likelihood and the 
+
+
+
+\subsection{Is there a difference between Bayesian models and "conventional" statistical models?}
+
+No! Statistical models describe relationships between variables that include some parameters and area subject to random variation. Bayesians and freqentists differ only in the way the draw conclusions from statistical models (inference). \textbf{There are no Bayesian models, only Bayesian inference!}
+
+
+\section{Differences between Bayes and Frequentism, p-values vs. posterior, etc.}
+
+\begin{mdframed}[frametitle={Ask yourself}]
+\begin{itemize}
+  \item Why are frequentists called frequentists?
+  \item Frequentist "measured of inference" - what is the definition of a p-value, MLE estimate and a frequentist confidence interval. 
+  \item Can you be both a Bayesian and a frequentist?
+\end{itemize}
+\end{mdframed}
+
+
+
+
+\section{What's the practical difference, and why using Bayes}
+
+\begin{mdframed}[frametitle={Ask yourself}]
+\begin{itemize}
+  \item Why do you want to use Bayesian inference, what are the advantages?
+  \item Can you be both a Bayesian and a frequentist?
+\end{itemize}
+\end{mdframed}
+
+In general, I would like to say that, while many proponents stress the philosohpical differences between Bayesian and Frequentist statistics, 
+
+\subsection{Philosohpical differences}
+
+The main difference between Bayesian and Frequentist inference is that Bayes provides a probability of what you are comparing (models, parameters, options) given the data. 
+
+
+I call this philosophical, but that doesn't mean that this as a theoretical
+
+\subsection{Computational differences}
+
+Computational differences (MCMCs), and how this becomes important for a hierarchical model (including discussion of what is a hierarchical model)
+
+\section{Priors}
+
+\begin{mdframed}[frametitle={Ask yourself}]
+\begin{itemize}
+  \item What is the difference between an informative and a uninformative / vague prior
+  \item 
+\end{itemize}
+\end{mdframed}
+
+
+
+\subsection{Can you be both a Bayesian and a frequentist?}
+
+You should! This is not a question of religious belief, where Bayes says you should have no other inferential tools but me. 
+
+The most important thing is to understand that p-values and posterior estimates are NOT DOING THE SAME THING! Not even close. They are doing two different things. Just know that they are doing, and then use them if the thing you want to do coincides with their capabilities. Read \citep{Kass-Statisticalinferencebig-2011}
+
+
+\section{Software to do Bayesian inference}
+
+\begin{mdframed}[frametitle={Ask yourself}]
+\begin{itemize}
+  \item Which software packages do you know?
+\end{itemize}
+\end{mdframed}
+
+Basically, there are the general-purpose frameworks OpenBugs,JAGS and STAN that are based on the bugs language, there are a number of general-purpose MCMC samplers 
+
+
+
+\section{Simulation-based inference}
+
+I have argued that the recent Bayesian inference is attractive because MCMCs allow calculating more complicated statistical models, and provide more flexibility than conventional, "frequentist" methods. However, there is also a limit to what MCMCs such as JAGS, BUGSs, etc. can handle. The reason is that all this samplers still need at least a partial value for the likelihood function. 
+
+If you want to go to even more complex models, there is the advan
+
+
+
+Suggested readings: \citep{Hartig-Statisticalinferencestochastic-2011}
+
+
+\bibliographystyle{chicago}
+
+\bibliography{/Users/Florian/Home/Bibliography/Databases/flo.bib}
+
+
+
+
+\end{document}

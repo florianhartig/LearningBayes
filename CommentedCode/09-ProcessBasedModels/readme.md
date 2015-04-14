@@ -1,11 +1,3 @@
----
-layout: page
-title: Fitting process-based models
-category: hubs
-author: Florian Hartig
-synopsis: A tutorial on how to fit complex or process-based (vegetation) models to data
----
-
 Fitting complex or process-based models
 ===
 
