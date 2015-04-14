@@ -1,0 +1,14 @@
+
+*.aux
+
+*.log
+
+*.out
+
+*.gz
+
+CommentedCode/01-Principles/InferenceMethods.html
+
+CommentedCode/02-Samplers/Rejection/ExampleRejectionSampler.html
+
+*.html
