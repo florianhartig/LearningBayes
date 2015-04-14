@@ -11,6 +11,7 @@ Assume we had 10 trials, 7 success, unknown coin, want to do inference to learn 
 
 ```{r}
 rm(list=ls(all=TRUE))
+set.seed(123)
 trials = 10
 success = 7
 ```
