@@ -6,6 +6,12 @@ output:
     keep_md: yes
 ---
 
+
+```{r, echo = F}
+set.seed(123)
+```
+
+
 ### Overview
 
 Rejection sampling is the most basic Monte Carlo sampler around. In terms of computing time it is typically less efficient than MCMCs and SMCs, but it does have some advantages that make it interesting. For example, it is trivially parallelizable. Also, rejection sampling sometimes comes in handy when you want to merge an existing sample (e.g. from an MCMC) with another distribution. 
