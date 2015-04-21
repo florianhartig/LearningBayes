@@ -28,6 +28,7 @@ Textbooks
 
 * Kéry, M. (2010) Introduction to WinBUGS for Ecologists. Academic Press.
 * Kruschke, J. F. (2010) Doing Bayesian Data Analysis: A Tutorial with R and BUGS. Academic Press.
+* Korner-Nievergelt, F.; Roth, T.; von Felten, S.; Almasi, B. & Korner-Nievergelt, P. (2015) Bayesian Data Analysis in Ecology Using Linear Models with R, BUGS, and Stan.
 
 #### Comprehensive
 
