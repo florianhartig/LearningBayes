@@ -1,5 +1,30 @@
-# Introduction
+# Textbooks
 
+
+#### Basic for Ecologists
+
+* Kéry, M. (2010) Introduction to WinBUGS for Ecologists. Academic Press.
+* Kruschke, J. F. (2010) Doing Bayesian Data Analysis: A Tutorial with R and BUGS. Academic Press.
+* Korner-Nievergelt, F.; Roth, T.; von Felten, S.; Almasi, B. & Korner-Nievergelt, P. (2015) Bayesian Data Analysis in Ecology Using Linear Models with R, BUGS, and Stan.
+
+#### Comprehensive
+
+* Lunn D. et al. (2012) The BUGS Book: A Practical Introduction to Bayesian Analysis. Chapman and Hall/CRC.
+* Gelman, A.; Carlin, J. B.; Stern, H. S. & Rubin, D. B. (2003) Bayesian Data Analysis. Chapman & Hall, London.
+
+#### Hierarchical
+
+* Kéry, M. and Schaub, M. (2011) Bayesian population analysis using WinBUGS. Academic Press.
+* Banerjee, S. et al. (2009) Hierarchical Modeling and Anallysis for Spatial Data. Chapman and Hall/CRC.
+* Clark, J. S. and Gelfand, A. E. (2006) Hierarchical Modelling for the Environmental Sciences. Oxford University Press.
+
+#### Clasics 
+
+
+
+# Important articles
+
+## Reviews / opinion papers on Bayesian methods in ecology 
 
 * Hobbs, N. T. & Hilborn, R. (2006) Alternatives to statistical hypothesis testing in ecology: A guide to self teaching Ecol. Appl., 16, 5-19
 * Ellison, A. M. (2004) Bayesian inference in ecology Ecol. Lett., 7, 509-520
@@ -18,34 +43,7 @@
 * Kass, R. (2011) Statistical inference: The big picture Stat. Sci., 26, 1-9
 * Jaynes, E. (1976) Confidence intervals vs. Bayesian intervals Foundations of probability theory, statistical inference, and statistical theories of science, 2, 175-257.
 
-
-### Introductory textbooks
-
-A necessarily subjective and incomplete list of textbooks and papers that are interesting in the context of learning Bayesian statistics, compiled with input from Joe Chipperfield and Jörn Pagel for our summer schools on Bayesian statistics.
-Textbooks
-
-#### Basic
-
-* Kéry, M. (2010) Introduction to WinBUGS for Ecologists. Academic Press.
-* Kruschke, J. F. (2010) Doing Bayesian Data Analysis: A Tutorial with R and BUGS. Academic Press.
-* Korner-Nievergelt, F.; Roth, T.; von Felten, S.; Almasi, B. & Korner-Nievergelt, P. (2015) Bayesian Data Analysis in Ecology Using Linear Models with R, BUGS, and Stan.
-
-#### Comprehensive
-
-* Lunn D. et al. (2012) The BUGS Book: A Practical Introduction to Bayesian Analysis. Chapman and Hall/CRC.
-* Gelman, A.; Carlin, J. B.; Stern, H. S. & Rubin, D. B. (2003) Bayesian Data Analysis. Chapman & Hall, London.
-
-#### Hierarchical
-
-* Kéry, M. and Schaub, M. (2011) Bayesian population analysis using WinBUGS. Academic Press.
-* Banerjee, S. et al. (2009) Hierarchical Modeling and Anallysis for Spatial Data. Chapman and Hall/CRC.
-* Clark, J. S. and Gelfand, A. E. (2006) Hierarchical Modelling for the Environmental Sciences. Oxford University Press.
-
-# Working with Bayesian Methods
-
 ## MCMC sampling
-
-
 
 * Andrieu, C.; de Freitas, N.; Doucet, A. & Jordan, M. I. (2003) An introduction to MCMC for machine learning Mach. Learning, 50, 5-43
 * Andrieu, C. & Thoms, J. (2008) A tutorial on adaptive MCMC Stat. Comput., 18, 343-373.
@@ -53,7 +51,6 @@ Textbooks
 ### Summaries of the posterior 
 
 http://www.sumsar.net/blog/2014/10/probable-points-and-credible-intervals-part-one/
-
 
 
 # Hierarchical Models
@@ -101,9 +98,7 @@ http://hedibert.org/bayes-factor-computing-marginal-likelihoods-savage-dickey-ra
 
 
 
-# Fitting (stochastic) process-based models
-
-See our extra hub on this topic
+## Fitting (stochastic) process-based models
 
 * Van Oijen, M.; Rougier, J. & Smith, R. (2005) Bayesian calibration of process-based forest models: bridging the gap between models and data Tree Physiol., 25, 915-927
 * Beaumont, M. A. (2010) Approximate Bayesian computation in evolution and ecology Annu. Rev. Ecol. Evol. Syst., 41, 379-406
