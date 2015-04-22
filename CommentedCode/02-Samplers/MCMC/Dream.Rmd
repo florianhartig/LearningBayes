@@ -6,7 +6,9 @@ output:
 An example of the DREAM algorithm
 ===
 
-
+```{r, echo = F}
+set.seed(123)
+```
 
 ## Background 
 

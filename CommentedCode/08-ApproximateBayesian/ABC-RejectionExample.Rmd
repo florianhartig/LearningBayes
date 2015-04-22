@@ -3,12 +3,16 @@ output:
   html_document:
     keep_md: yes
 ---
-ABC Rejection and MCMC Algorithm - an example
+A movement model fit with ABC-Rejection and ABC-MCMC
 ===
+
+```{r, echo = F}
+set.seed(123)
+```
 
 The ABC rejection was originally proposed by Tavare, 1997. The ABC-MCMC was suggested by Marjoram, P.; Molitor, J.; Plagnol, V. & Tavare, S. (2003) Markov chain Monte Carlo without likelihoods. Proc. Natl. Acad. Sci. USA, 100, 15324-15328.
 
-Code implemented by [Florian Hartig](http://florianhartig.wordpress.com/), following the pseudocode from [Hartig et al. (2011)](http://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2011.01640.x/suppinfo), supporting information. Reuse of this script is permitted under [CC-4.0 attribution share-alike](http://creativecommons.org/licenses/by-sa/4.0/) 
+Code implemented by [Florian Hartig](http://florianhartig.wordpress.com/), following the pseudocode from [Hartig, F.; Calabrese, J. M.; Reineking, B.; Wiegand, T. & Huth, A. (2011) Statistical inference for stochastic simulation models - theory and application. Ecol. Lett., 14, 816-827.](http://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2011.01640.x/suppinfo), supporting information. Reuse of this script is permitted under [CC-4.0 attribution share-alike](http://creativecommons.org/licenses/by-sa/4.0/) 
 
 # The model 
 

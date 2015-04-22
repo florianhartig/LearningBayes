@@ -38,3 +38,8 @@ https://github.com/johnmyleswhite/JAGSExamples
 https://sites.google.com/site/doingbayesiandataanalysis/
 
 
+## Blog posts 
+
+Bayesian Bootstrap http://www.sumsar.net/blog/2015/04/the-non-parametric-bootstrap-as-a-bayesian-model/
+
+
