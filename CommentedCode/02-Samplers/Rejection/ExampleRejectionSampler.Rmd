@@ -64,9 +64,4 @@ curve(dbeta(x, 3,6),0,1, add =T, col = "red")
 
 
 
-### References for further reading 
-
-* [Wikipedia](http://en.wikipedia.org/wiki/Rejection_sampling)
-* Bolker, B. M. (2008) Ecological models and data in R. Princeton University Press.
-
 

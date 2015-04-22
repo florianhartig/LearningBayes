@@ -1,6 +1,10 @@
 # Rejection Sampling
 FlorianHartig  
 
+
+
+
+
 ### Overview
 
 Rejection sampling is the most basic Monte Carlo sampler around. In terms of computing time it is typically less efficient than MCMCs and SMCs, but it does have some advantages that make it interesting. For example, it is trivially parallelizable. Also, rejection sampling sometimes comes in handy when you want to merge an existing sample (e.g. from an MCMC) with another distribution. 
@@ -21,7 +25,7 @@ Assume we want to draw from a beta distribution with shape parameters 6,3, which
 curve(dbeta(x, 3,6),0,1)
 ```
 
-![](ExampleRejectionSampler_files/figure-html/unnamed-chunk-1-1.png) 
+![](ExampleRejectionSampler_files/figure-html/unnamed-chunk-2-1.png) 
 
 
 To do this, we first create a data.frame with 100000 random values between 0 and 1, and calculate their beta density values 
@@ -50,7 +54,7 @@ hist(sampled$proposal[sampled$accepted], freq = F, col = "grey", breaks = 100)
 curve(dbeta(x, 3,6),0,1, add =T, col = "red")
 ```
 
-![](ExampleRejectionSampler_files/figure-html/unnamed-chunk-4-1.png) 
+![](ExampleRejectionSampler_files/figure-html/unnamed-chunk-5-1.png) 
 
 
 ### When would you use this sampler type
@@ -60,10 +64,5 @@ curve(dbeta(x, 3,6),0,1, add =T, col = "red")
 * If you have an existing posterior sample, and you want to apply another function on 
 
 
-
-### References for further reading 
-
-* [Wikipedia](http://en.wikipedia.org/wiki/Rejection_sampling)
-* Bolker, B. M. (2008) Ecological models and data in R. Princeton University Press.
 
 
