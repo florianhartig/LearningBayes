@@ -3,6 +3,7 @@ title: "Preparing a process-based model for parameter estimation in R"
 author: "FlorianHartig"
 date: "25 Apr 2015"
 output:
+  pdf_document: default
   html_document:
     keep_md: yes
 ---
@@ -29,7 +30,7 @@ Usually, you will have to do nothing. Just make sure you can call your model lik
 runMyModel(par)
 ```
 
-#### b) If you have a compiled model, parameters set via command line 
+#### b) If you have a compiled model, parameters set via command line
 
 If your model can receive parameters via the command line, try something like that 
 
@@ -49,7 +50,7 @@ runMyModel(par){
 #### c) If you have a compiled dll, parameters are set via dll interface 
 
 
-Use / google the dyn.load function https://stat.ethz.ch/R-manual/R-devel/library/base/html/dynload.html
+Use the [dyn.load function](https://stat.ethz.ch/R-manual/R-devel/library/base/html/dynload.html) to link to your model
 
 ```{r, eval = F}
 
@@ -89,7 +90,7 @@ writeParameters(par){
 How you do the write parameter function depends on the file format you use for the parameters. In general, you probably want to create a template parameter file that you use as a base and from which you change parameters 
 
 1. If your parameter file is in an *.xml format*, check out the xml functions in R
-2. If your parameter file is in a *general text format*, the best option may be to create a template parameter file, place a unique string at the locations of the parameters that you want to replace, and then use string replace functions in R, e.g. https://stat.ethz.ch/R-manual/R-devel/library/base/html/grep.html to replace this string. 
+2. If your parameter file is in a *general text format*, the best option may be to create a template parameter file, place a unique string at the locations of the parameters that you want to replace, and then use string replace functions in R, e.g. [grep](https://stat.ethz.ch/R-manual/R-devel/library/base/html/grep.html) to replace this string. 
 
 
 ## Step 2: Reading in data 
@@ -140,8 +141,18 @@ output <- getData(type = DesiredType)
 
 plot(output)
 
-
 ```
+
+## Further readings 
+
+As introductions to what can be done AFTER the model is wrapped in R
+
+* Tutorial by Marcel van Oijen on fitting forest models with Bayes [here](http://nora.nerc.ac.uk/6087/1/BC%26BMC_Guidance_2008-12-18_Final.pdf)
+
+* Hartig et al. (2012): Connecting dynamic vegetation models to data - an inverse perspective. <i>J. Biogeogr.</i>, 39, 2240-2252. [journal](http://dx.doi.org/10.1111/j.1365-2699.2012.02745.x), [pdf](http://ecologypapers.blog.com/files/2012/10/Hartig-Connectingdynamicvegetation-2012.pdf)
+
+* Van Oijen, M.; Rougier, J. &amp; Smith, R. (2005) Bayesian calibration of process-based forest models: bridging the gap between models and data Tree Physiol., 25, 915-927
+
 
 
 
