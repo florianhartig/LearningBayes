@@ -1,28 +1,12 @@
 Fitting complex or process-based models
 ===
 
-A common problem in ecological modelling is that a simulation model (vegetation model, forest simulator, individual-based model, movement model) has been designed, and how one would like to know
-
-* How well does the model fit to data?
-* Which are the parameters that deliver the best fit?
-* How sensitive is the model when parameters are changed?
-* What is the uncertainty in parameters and predictions?
-
-There are a number of methods and different steps to achieve this. Some of the questions are
-
-* How do I define "fit", i.e. how do we measure the difference between models and data?
-* How can I vary model parameters systematically to find
- * Sensitivity (how much outputs or fit change with the parameters)
- * Parameters with the best fit
-* How do I quantify uncertainty on
- * Model structure (connected to validation)
- * Model parameters
- * Model predictions
+In principle, there is nothing different when comparing 
  
 
 ## How to do this 
 
-### Preparing your model to work on these questions
+### Preparing compiled models to 
 
 See [LinkingAModelToR.md](https://github.com/florianhartig/LearningBayes/blob/master/CommentedCode/09-BayesAndProcessBasedModels/LinkingAModelToR.md)
 
@@ -44,6 +28,7 @@ For an overview of this discussion, see
 In general, all the approaches using optimization, MCMC and sensitivity analysis in this collection of tuturials are valid for forest models as well, and it's worth looking at them. In particular, also ABC approaches may be interesting to look at. Some references particular to forest models are:
 
 * Tutorial by Marcel van Oijen on fitting forest models with Bayes  <a href="http://nora.nerc.ac.uk/6087/1/BC%26BMC_Guidance_2008-12-18_Final.pdf">here</a>.
+* Hartig et al. (2012): Connecting dynamic vegetation models to data - an inverse perspective. <i>J. Biogeogr.</i>, 39, 2240-2252. <a href="http://dx.doi.org/10.1111/j.1365-2699.2012.02745.x">[journal]</a> <a href="http://ecologypapers.blog.com/files/2012/10/Hartig-Connectingdynamicvegetation-2012.pdf">[pdf]</a>
 * Van Oijen, M.; Rougier, J. &amp; Smith, R. (2005) Bayesian calibration of process-based forest models: bridging the gap between models and data Tree Physiol., 25, 915-927
 * Hartig, F.; Dislich, C.; Wiegand, T. & Huth, A. (2014) Technical Note: Approximate Bayesian parameterization of a process-based tropical forest model. Biogeosciences, 11, 1261-1272.
 * Talk in Zürich by Florian Hartig <a href="http://florianhartig.files.wordpress.com/2013/12/inversemodelling.pdf">pdf</a>
