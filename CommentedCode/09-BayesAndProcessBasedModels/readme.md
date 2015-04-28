@@ -1,8 +1,6 @@
 Fitting complex or process-based models
 ===
 
-# Overview
-
 A common problem in ecological modelling is that a simulation model (vegetation model, forest simulator, individual-based model, movement model) has been designed, and how one would like to know
 
 * How well does the model fit to data?
@@ -22,13 +20,13 @@ There are a number of methods and different steps to achieve this. Some of the q
  * Model predictions
  
 
-# How to do this 
+## How to do this 
 
-## Preparing your model to work on these questions
+### Preparing your model to work on these questions
 
 See [LinkingAModelToR.md](https://github.com/florianhartig/LearningBayes/blob/master/CommentedCode/09-BayesAndProcessBasedModels/LinkingAModelToR.md)
 
-## Defining fit
+### Defining fit
 
 How should we measure how well the model fits to the data? There are different options 
 
@@ -39,7 +37,7 @@ How should we measure how well the model fits to the data? There are different o
 For an overview of this discussion, see Hartig et al. (2012): Connecting dynamic vegetation models to data - an inverse perspective. <i>J. Biogeogr.</i>, 39, 2240-2252. <a href="http://dx.doi.org/10.1111/j.1365-2699.2012.02745.x">[journal]</a> <a href="http://ecologypapers.blog.com/files/2012/10/Hartig-Connectingdynamicvegetation-2012.pdf">[pdf]</a>
 
 
-## Getting best fit and uncertainties 
+### Getting best fit and uncertainties 
 
 In general, all the approaches using optimization, MCMC and sensitivity analysis in this collection of tuturials are valid for forest models as well, and it's worth looking at them. In particular, also ABC approaches may be interesting to look at. Some references particular to forest models are:
 
