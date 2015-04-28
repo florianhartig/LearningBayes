@@ -34,7 +34,9 @@ How should we measure how well the model fits to the data? There are different o
 * Likelihood
 * Posterior = Likelihood + Prior
 
-For an overview of this discussion, see Hartig et al. (2012): Connecting dynamic vegetation models to data - an inverse perspective. <i>J. Biogeogr.</i>, 39, 2240-2252. <a href="http://dx.doi.org/10.1111/j.1365-2699.2012.02745.x">[journal]</a> <a href="http://ecologypapers.blog.com/files/2012/10/Hartig-Connectingdynamicvegetation-2012.pdf">[pdf]</a>
+For an overview of this discussion, see 
+
+* Hartig et al. (2012): Connecting dynamic vegetation models to data - an inverse perspective. <i>J. Biogeogr.</i>, 39, 2240-2252. <a href="http://dx.doi.org/10.1111/j.1365-2699.2012.02745.x">[journal]</a> <a href="http://ecologypapers.blog.com/files/2012/10/Hartig-Connectingdynamicvegetation-2012.pdf">[pdf]</a>
 
 
 ### Getting best fit and uncertainties 
