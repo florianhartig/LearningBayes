@@ -1,9 +1,11 @@
-ABC Rejection and MCMC Algorithm - an example
+A movement model fit with ABC-Rejection and ABC-MCMC
 ===
+
+
 
 The ABC rejection was originally proposed by Tavare, 1997. The ABC-MCMC was suggested by Marjoram, P.; Molitor, J.; Plagnol, V. & Tavare, S. (2003) Markov chain Monte Carlo without likelihoods. Proc. Natl. Acad. Sci. USA, 100, 15324-15328.
 
-Code implemented by [Florian Hartig](http://florianhartig.wordpress.com/), following the pseudocode from [Hartig et al. (2011)](http://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2011.01640.x/suppinfo), supporting information. Reuse of this script is permitted under [CC-4.0 attribution share-alike](http://creativecommons.org/licenses/by-sa/4.0/) 
+Code implemented by [Florian Hartig](http://florianhartig.wordpress.com/), following the pseudocode from [Hartig, F.; Calabrese, J. M.; Reineking, B.; Wiegand, T. & Huth, A. (2011) Statistical inference for stochastic simulation models - theory and application. Ecol. Lett., 14, 816-827.](http://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2011.01640.x/suppinfo), supporting information. Reuse of this script is permitted under [CC-4.0 attribution share-alike](http://creativecommons.org/licenses/by-sa/4.0/) 
 
 # The model 
 
@@ -42,7 +44,7 @@ data <- model()
 plot(data, type = "l")
 ```
 
-![](ABC-RejectionExample_files/figure-html/unnamed-chunk-2-1.png) 
+![](ABC-MovementModel-RecAndMCMC_files/figure-html/unnamed-chunk-3-1.png) 
 
 ## Observation model
 
@@ -62,7 +64,7 @@ plot(data, type = "l")
 points(obsdata$xobs, obsdata$yobs, col = "red", pch = 4)
 ```
 
-![](ABC-RejectionExample_files/figure-html/unnamed-chunk-3-1.png) 
+![](ABC-MovementModel-RecAndMCMC_files/figure-html/unnamed-chunk-4-1.png) 
 
 
 # Fitting the model
@@ -88,7 +90,7 @@ dataSummary
 ```
 
 ```
-## [1] 2.854883 1.370718
+## [1] 2.803799 1.433168
 ```
 
 
@@ -125,7 +127,7 @@ abline(v = 2)
 abline(h = 1) 
 ```
 
-![](ABC-RejectionExample_files/figure-html/unnamed-chunk-6-1.png) 
+![](ABC-MovementModel-RecAndMCMC_files/figure-html/unnamed-chunk-7-1.png) 
 
 
 ## ABC-MCMC Algorithm
@@ -165,5 +167,5 @@ abline(v = 2)
 abline(h = 1) 
 ```
 
-![](ABC-RejectionExample_files/figure-html/unnamed-chunk-8-1.png) 
+![](ABC-MovementModel-RecAndMCMC_files/figure-html/unnamed-chunk-9-1.png) 
 
