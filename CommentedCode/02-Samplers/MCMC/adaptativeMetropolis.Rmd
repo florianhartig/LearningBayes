@@ -79,7 +79,7 @@ prior <- function(param){
 
 ## The MCMC
 
-Now comes the mcmc to sample from the posterior. We are using a Metropolis-Hastings MCMC. I you are uncertain how this works, first read http://theoreticalecology.wordpress.com/.
+Now comes the mcmc to sample from the posterior. We are using a Metropolis-Hastings MCMC. 
 
 In this previous version, the proposal function was simlply creating independent normal draws $proposalfunction <- function(param){return(rnorm(3,mean = param, sd= c(0.1,0.5,0.3))) }$ .
 
@@ -94,7 +94,7 @@ proposalfunction <- function(param){
   }
 
 ```
-Here is the mcmc. I adapted the code slightly to allow for running the MCMC for a while, stopping, and continuing with the MCMC, which will be useful for the adaptation
+Here is the mcmc. I adapted the code slightly to allow for running the MCMC for a while, stopping, and continuing with the MCMC, which will be useful for the adaptation.
 
 
 ```{r Metropolis_algorithm}
@@ -116,7 +116,7 @@ run_metropolis_MCMC <- function(iterations){
 }
 ```
 
-But first of all, we will just run the MCMC like before and check the convergence as explained in http://theoreticalecology.wordpress.com/2011/12/09/mcmc-chain-analysis-and-convergence-diagnostics-with-coda-in-r/
+But first of all, we will just run the MCMC like before and check the convergence. 
 
 
 ```{r convergence}
