@@ -13,22 +13,33 @@ Based on an example provided by Jörn Pagel.
 set.seed(123)
 rm(list=ls(all=TRUE))
 library(rjags)
+library(effects)
 ```
 
 
 ## Creation of test data
 
-```{r}
+```{r, fig.width=7, fig.height=7}
 a <- 5
 b <- 10
 sigma <- 10
 
 x <- -15:15
 y <- a * x + b + rnorm(31,0,sd = sigma)
+plot(x,y)
+```
+
+## Non-Bayesian analysis of this model
+
+```{r, fig.width=7, fig.height=7}
+fit <- lm(y ~ x)
+summary(fit)
+plot(allEffects(fit, partial.residuals = T))
 ```
 
 
-## Definition of the model in Jags
+
+## Bayesian analysis of this model (in Jags)
 
 ```{r}
   # 1) Model definition exactly how we created our data 
@@ -57,10 +68,9 @@ y <- a * x + b + rnorm(31,0,sd = sigma)
 
 Running the model
 
-
-```{r}
+```{r, fig.width=7, fig.height=7}
   # Compile the model and run the MCMC for an adaptation (burn-in) phase
-  jagsModel <- jags.model(file= modelCode, data=Data, init = inits.fn, n.chains = 3, n.adapt= 10)
+  jagsModel <- jags.model(file= modelCode, data=Data, init = inits.fn, n.chains = 3, n.adapt= 1000)
 
   # Specify parameters for which posterior samples are saved
   para.names <- c("a","b","sigma")
@@ -81,4 +91,15 @@ gelman.diag(Samples)
 ```{r}
 summary(Samples)
 ```
+
+predictions (not very elegant)
+
+```{r, fig.width=7, fig.height=7}
+plot(x,y)
+sampleMatrix <- as.matrix(Samples)
+selection <- sample(dim(sampleMatrix)[1], 1000)
+for (i in selection) abline(sampleMatrix[i,1], sampleMatrix[i,1], col = "#11111105")
+
+```
+
 

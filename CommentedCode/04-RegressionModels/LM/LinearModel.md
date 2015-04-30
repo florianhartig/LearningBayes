@@ -17,10 +17,49 @@ sigma <- 10
 
 x <- -15:15
 y <- a * x + b + rnorm(31,0,sd = sigma)
+plot(x,y)
 ```
 
+![](LinearModel_files/figure-html/unnamed-chunk-2-1.png) 
 
-## Definition of the model in Jags
+## Non-Bayesian analysis of this model
+
+
+```r
+fit <- lm(y ~ x)
+summary(fit)
+```
+
+```
+## 
+## Call:
+## lm(formula = y ~ x)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -14.0694  -5.6706  -0.3227   5.1910  21.6529 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  13.5510     1.5429   8.783 1.15e-09 ***
+## x             5.0835     0.1725  29.469  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 8.591 on 29 degrees of freedom
+## Multiple R-squared:  0.9677,	Adjusted R-squared:  0.9666 
+## F-statistic: 868.4 on 1 and 29 DF,  p-value: < 2.2e-16
+```
+
+```r
+plot(allEffects(fit, partial.residuals = T))
+```
+
+![](LinearModel_files/figure-html/unnamed-chunk-3-1.png) 
+
+
+
+## Bayesian analysis of this model (in Jags)
 
 
 ```r
@@ -50,10 +89,9 @@ y <- a * x + b + rnorm(31,0,sd = sigma)
 Running the model
 
 
-
 ```r
   # Compile the model and run the MCMC for an adaptation (burn-in) phase
-  jagsModel <- jags.model(file= modelCode, data=Data, init = inits.fn, n.chains = 3, n.adapt= 10)
+  jagsModel <- jags.model(file= modelCode, data=Data, init = inits.fn, n.chains = 3, n.adapt= 1000)
 ```
 
 ```
@@ -65,29 +103,18 @@ Running the model
 ## Initializing model
 ```
 
-```
-## Warning in jags.model(file = modelCode, data = Data, init = inits.fn,
-## n.chains = 3, : Adaptation incomplete
-```
-
 ```r
   # Specify parameters for which posterior samples are saved
   para.names <- c("a","b","sigma")
 
   # Continue the MCMC runs with sampling
   Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
-```
-
-```
-## NOTE: Stopping adaptation
-```
-
-```r
+  
   # Plot the mcmc chain and the posterior sample for p
   plot(Samples)
 ```
 
-![](LinearModel_files/figure-html/unnamed-chunk-4-1.png) 
+![](LinearModel_files/figure-html/unnamed-chunk-5-1.png) 
 
 convergence check
 
@@ -116,7 +143,7 @@ summary(Samples)
 
 ```
 ## 
-## Iterations = 11:5010
+## Iterations = 1001:6000
 ## Thinning interval = 1 
 ## Number of chains = 3 
 ## Sample size per chain = 5000 
@@ -125,15 +152,28 @@ summary(Samples)
 ##    plus standard error of the mean:
 ## 
 ##         Mean     SD Naive SE Time-series SE
-## a      5.114 0.2569 0.002098       0.002086
-## b      6.854 2.3114 0.018872       0.018872
-## sigma 12.508 2.7859 0.022747       0.114334
+## a      5.083 0.1806 0.001475        0.00145
+## b     13.522 1.6362 0.013359        0.01326
+## sigma  8.974 1.2650 0.010328        0.01503
 ## 
 ## 2. Quantiles for each variable:
 ## 
-##        2.5%    25%    50%    75%  97.5%
-## a     4.617  4.946  5.113  5.281  5.624
-## b     2.359  5.357  6.861  8.343 11.392
-## sigma 9.533 11.164 12.191 13.415 16.441
+##         2.5%    25%    50%    75%  97.5%
+## a      4.733  4.964  5.081  5.202  5.438
+## b     10.310 12.436 13.521 14.609 16.751
+## sigma  6.908  8.081  8.843  9.707 11.804
 ```
+
+predictions (not very elegant)
+
+
+```r
+plot(x,y)
+sampleMatrix <- as.matrix(Samples)
+selection <- sample(dim(sampleMatrix)[1], 1000)
+for (i in selection) abline(sampleMatrix[i,1], sampleMatrix[i,1], col = "#11111105")
+```
+
+![](LinearModel_files/figure-html/unnamed-chunk-8-1.png) 
+
 
