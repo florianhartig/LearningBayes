@@ -1,0 +1,84 @@
+---
+title: "Linear regression with Jags"
+author: "Florian Hartig"
+date: "30 Jul 2014"
+output:
+  html_document:
+    keep_md: yes
+---
+
+Based on an example provided by Jörn Pagel. 
+
+```{r, echo=F, warning=F, message=F}
+set.seed(123)
+rm(list=ls(all=TRUE))
+library(rjags)
+```
+
+
+## Creation of test data
+
+```{r}
+a <- 5
+b <- 10
+sigma <- 10
+
+x <- -15:15
+y <- a * x + b + rnorm(31,0,sd = sigma)
+```
+
+
+## Definition of the model in Jags
+
+```{r}
+  # 1) Model definition exactly how we created our data 
+  modelCode = textConnection("
+    model{
+      # Likelihood
+      for(i in 1:i.max){
+      y[i] ~ dnorm(mu[i],tau)
+      mu[i] <- a*x[i] + b
+      }
+      # Prior distributions
+      a ~ dnorm(0,0.001)
+      b ~ dnorm(0,0.001)
+      tau <- 1/(sigma*sigma)
+      sigma ~ dunif(0,100)
+    }
+  ")
+  
+  # 2) Set up a list that contains all the necessary data (here, including parameters of the prior distribution)
+  Data = list(y = y, x = x, i.max = length(y))
+
+  # 3) Specify a function to generate inital values for the parameters
+  inits.fn <- function() list(a = rnorm(1), b = rnorm(1), sigma = runif(1,1,100))
+
+```
+
+Running the model
+
+
+```{r}
+  # Compile the model and run the MCMC for an adaptation (burn-in) phase
+  jagsModel <- jags.model(file= modelCode, data=Data, init = inits.fn, n.chains = 3, n.adapt= 10)
+
+  # Specify parameters for which posterior samples are saved
+  para.names <- c("a","b","sigma")
+
+  # Continue the MCMC runs with sampling
+  Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+  
+  # Plot the mcmc chain and the posterior sample for p
+  plot(Samples)
+```
+
+convergence check
+
+```{r}
+gelman.diag(Samples)
+```
+
+```{r}
+summary(Samples)
+```
+
