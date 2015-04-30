@@ -48,7 +48,7 @@ model <- function(par){
 ```
 
 <br />
-Now we call to EasyABC with the ABC-MCMC algorithm with some automatic adjustment options 
+Now we call to EasyABC with the ABC-MCMC algorithm (Marjoram et al., 2003) with some automatic adjustment options 
 
 
 ```{r ABC}
@@ -67,3 +67,5 @@ hist(ABC_Marjoram_original$param[5000:10000,2], main = "Posterior for standard d
 ## References for further reading
 
 Hartig, F., Calabrese, J. M., Reineking, B., Wiegand, T. and Huth, A. (2011), Statistical inference for stochastic simulation models – theory and application. Ecology Letters, 14: 816–827. 
+
+Marjoram, P.; Molitor, J.; Plagnol, V. & Tavaré, S. (2003) Markov chain Monte Carlo without likelihoods
