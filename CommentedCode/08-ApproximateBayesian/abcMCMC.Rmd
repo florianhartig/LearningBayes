@@ -1,0 +1,92 @@
+---
+output:
+  html_document:
+    fig_caption: yes
+    keep_md: yes
+---
+A simple Approximate Bayesian Computation MCMC (ABC-MCMC) in R
+====
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=12, fig.height=8)
+
+```
+
+```{r, echo = F}
+set.seed(123)
+```
+
+Approximate Bayesian Computing and similar techniques, which are based on calculating approximate likelihood values based on samples from a stochastic simulation model, have attracted a lot of attention in the last years, owing to their promise to provide a general statistical technique for stochastic processes of any complexity, without the limitations that apply to “traditional” statistical models due to the problem of maintaining “tractable” likelihood functions. 
+
+If you want to have more background on this algorithm, read the excellent paper by Marjoram et al. (2003) who proposed this algorithm for the first time. 
+
+
+Let's create the training data, assuming the data are 10 samples of a normal distribution with mean 5.3 and sd 2.7.
+
+```{r data}
+library(coda)
+ 
+data =  rnorm(10, mean =5.3, sd = 2.7)
+``` 
+<br /> 
+We want to use ABC to infer the parameters that were used. We sample from the same model and use mean and variance as summary statstitics. We return true for ABC acceptance when
+the difference to the data is smaller than a certain threshold.
+
+
+```{r ABC}
+meandata <- mean(data)
+standarddeviationdata <- sd(data)
+ 
+ABC_acceptance <- function(par){
+   
+  # prior to avoid negative standard deviation
+  if (par[2] <= 0) return(F) 
+   
+  # stochastic model generates a sample for given par
+  samples <- rnorm(10, mean =par[1], sd = par[2])
+ 
+  # comparison with the observed summary statistics
+  diffmean <- abs(mean(samples) - meandata)
+  diffsd <- abs(sd(samples) - standarddeviationdata)
+  if((diffmean < 0.1) & (diffsd < 0.2)) return(T) else return(F)
+}
+ 
+```
+
+<br />
+Now we plug this in in a standard metropolis hastings MCMC, with the metropolis acceptance exchanged for the ABC acceptance.
+ 
+```{r MCMC_ABC}
+run_MCMC_ABC <- function(startvalue, iterations){
+ 
+    chain = array(dim = c(iterations+1,2))
+    chain[1,] = startvalue
+ 
+    for (i in 1:iterations){
+         
+        # proposalfunction
+        proposal = rnorm(2,mean = chain[i,], sd= c(0.7,0.7))
+         
+        if(ABC_acceptance(proposal)){
+            chain[i+1,] = proposal
+        }else{
+            chain[i+1,] = chain[i,]
+        }
+    }
+    return(mcmc(chain))
+}
+ 
+posterior <- run_MCMC_ABC(c(4,2.3),300000)
+
+```
+<br />
+The result should look something like that:
+```{r plot_posterior}
+plot(posterior)
+```
+<br />
+<br />
+
+## References for further reading
+
+Marjoram, P.; Molitor, J.; Plagnol, V. & Tavaré, S. (2003) Markov chain Monte Carlo without likelihoods
