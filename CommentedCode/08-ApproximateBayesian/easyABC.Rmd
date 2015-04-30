@@ -24,17 +24,19 @@ ABC has a huge potential as a solution for many typical ecological problems, but
 The EasyABC package, available from CRAN (developed by Franck Jabot, Thierry Faure, Nicolas Dumoulin and maintained by Nicolas Dumoulin.), implements a number of algorithms for the three main sampling strategies used in ABC, namely Rejection Sampling, Sequential Monte Carlo (SMC) and Markov Chain Monte Carlo (MCMC). All those are also discussed in our review. The use of the package is relatively straightforward. 
 
 
-```{r main}
+Let's create some training data, assuming that there are 10 samples of a normal distribution with mean 5.3 and sd 2.7
+```{r first}
+# Load library
 library(EasyABC)
- 
-# assuming the data are 10 samples of a normal distribution
-# with mean 5.3 and sd 2.7
+
+#create data
 data =  rnorm(10, mean =5.3, sd = 2.7)
+```
+<br />
+We want to use ABC to infer the parameters that were used. We sample from the same model and use mean and variance as summary statstitics for the model and the data.
  
-# we want to use ABC to infer the parameters that were used.
-# we sample from the same model and use mean and variance
-# as summary statstitics for the model and the data.
- 
+```{r second}
+
 # observed summary statistics
 summarydata = c(mean(data), sd(data))
  
@@ -43,14 +45,16 @@ model <- function(par){
   samples <- rnorm(10, mean =par[1], sd = par[2])
   return(c(mean(samples), sd(samples)))
 }
- 
-# call to EasyABC with the ABC-MCMC algorithm Marjoram, P.; Molitor, J.; Plagnol, V. & 
-# Tavare, S. (2003) Markov chain Monte Carlo without likelihoods. Proc. Natl. Acad. Sci. USA, 100, 15324-15328.
-# with some automatic adjustment options 
+```
+
+<br />
+Now we call to EasyABC with the ABC-MCMC algorithm with some automatic adjustment options 
+
+
+```{r ABC}
 ABC_Marjoram_original<-ABC_mcmc(method="Marjoram", model=model, 
   prior=list(c("unif",0,10),c("unif",1,5)), 
   summary_stat_target=summarydata, n_rec = 10000)
- 
  
 str(ABC_Marjoram_original)
 par(mfrow=c(2,1))
