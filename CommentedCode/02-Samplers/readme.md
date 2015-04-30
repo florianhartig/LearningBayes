@@ -6,7 +6,7 @@ The topics that are covered here are
 
 * [Optimization](https://github.com/florianhartig/LearningBayes/tree/master/CommentedCode/02-Samplers/Optimization)
 * Sampling algorithms
-  * [Rejection Sampling]()
+  * [Rejection Sampling](https://github.com/florianhartig/LearningBayes/tree/master/CommentedCode/02-Samplers/Rejection)
   * Markov-Chain Monte Carlo
   * Sequential Monte Carlo
 * Sensitivity analysis
