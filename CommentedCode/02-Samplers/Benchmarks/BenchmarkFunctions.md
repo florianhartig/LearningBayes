@@ -1,0 +1,57 @@
+# Benchmark functions for MCMC, optimization and Sensitivity Analysis
+FlorianHartig  
+28 Apr 2015  
+
+This is an overview of functions that are useful for benchmarking MCMC, optimization and SA.
+
+
+# The soobench package
+
+The soobench (Single Objective Optimization Benchmark Functions) package provides a Collection of different single objective test functions useful for benchmarks and algorithm development.
+
+
+```r
+library(soobench)
+```
+
+
+See http://cran.r-project.org/web/packages/soobench/index.html
+
+# Tests in the FME package
+
+The FME package has a vignette with tests of the FME mcmc implementations. See
+
+
+```r
+library(FME)
+#vignette("FMEmcmc")
+```
+
+An example of this vignette (from Laine ,2008) is a banana-shaped function is created by distorting a two-dimensional Gaussian distribution,
+with mean = 0 and a covariance matrix τ with unity variances and covariance of 0.9:
+
+
+```r
+Banana <- function (x1, x2) {
+  return(x2 - (x1^2+1))
+}
+
+# We need a function that estimates the probability of a multinormally distributed vector
+
+pmultinorm <- function(vec, mean, Cov) {
+  diff <- vec - mean
+  ex <- -0.5*t(diff) %*% solve(Cov) %*% diff
+  rdet <- sqrt(det(Cov))
+  power <- -length(diff)*0.5
+  return((2.*pi)^power / rdet * exp(ex))
+}
+
+# The target function returns -2 *log (probability) of the value
+
+BananaSS <- function (p){
+  P <- c(p[1], Banana(p[1], p[2]))
+  Cov <- matrix(nr = 2, data = c(1, 0.9, 0.9, 1))
+  -2*sum(log(pmultinorm(P, mean = 0, Cov = Cov)))
+}
+```
+
