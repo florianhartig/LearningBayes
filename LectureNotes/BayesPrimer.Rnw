@@ -20,6 +20,7 @@ backgroundcolor=lightgray}
 \author{Florian Hartig}
 \title{A primer to Bayesian Inference}
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 \maketitle
 
 \begin{abstract}
