@@ -13,8 +13,9 @@ knitr::opts_chunk$set(fig.width=12, fig.height=8)
 ```
 
 
-```{r, echo = F}
+```{r, echo = F, message=F, warning=F}
 set.seed(123)
+library(coda)
 ```
 
 
