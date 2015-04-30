@@ -142,7 +142,7 @@ gelman.plot(combinedchains)
 <br />
 
 #### Adaptation steps 
-We use the samples obtained already to adjust the proposal for exaplanations why the scaling factor of 2.38^2/d is optional (see references)
+We use the samples obtained already to adjust the proposal for explanations why the scaling factor of 2.38^2/d is optional (see references)
 
 
 
