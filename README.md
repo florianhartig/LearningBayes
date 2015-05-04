@@ -1,6 +1,6 @@
 ## Overview
 
-Teaching material for a [course on Bayesian Statistics]().
+Teaching material for a [course on Bayesian Statistics](http://florianhartig.github.io/LearningBayes/).
 
 ## Lecture notes 
 
