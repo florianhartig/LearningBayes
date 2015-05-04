@@ -10,4 +10,4 @@ I'm workin on providing proper lecture notes for this course. For the moment, I'
 
 ## Code
 
-See folder with code examples 
+See folder with code examples [here](https://github.com/florianhartig/LearningBayes/tree/master/CommentedCode)
