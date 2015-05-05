@@ -6,7 +6,6 @@ output:
 Statistical concepts, at the example of the coin flip model
 ===
 
-
 Assume we had 10 trials, 7 success, unknown coin, want to do inference to learn about the coin
 
 ```{r}
@@ -16,7 +15,15 @@ trials = 10
 success = 7
 ```
 
-# GETTING THE MLE ESTIMATE
+In the rest of this script, I will look at this data with the three most common inferential methods 
+
+1. Maximum likelihood estimation
+2. Null-hypothesis significance testing
+3. Bayesian inference 
+
+Each of these methods is consistent and calculates a sensible thing. But each of these three things are different. I'll highlight differences at the end of each application. 
+
+# THE MLE ESTIMATE
 
 The idea of maximum likelihood estimation (MLE) is to look for the set of parameters that would, under the given model assumption, lead to the highest probability to obtain the observed data. In our case we have only one parameter, the probability of success per flip. Let's plot this for different values and look for the maximum.  
 
@@ -33,8 +40,9 @@ MLEEstimate <- parametervalues[which.max(likelihood)]
 abline(v=MLEEstimate, col = "red")
 ```
 
-
 ## Confidence intervals
+
+OK, the MLE is the best value, but what is often m
 
 MLE confidence intervals are constructed by comparing likelihood values of single parameters against each other. We have the MLE estimate as null hypothesis and ask ourselves how likely it is that the true parameter is a different one. By cutting at 0.05 probability, we construct the frequentist CI interval. The test statistics that can be used to do this are discussed, e.g., in https://onlinecourses.science.psu.edu/stat504/node/39. The result for a 1-parameter model is that the CI is at a log likelihood difference of 1.96
 
@@ -52,6 +60,11 @@ abline(v=rightCI, col = "green")
 
 
 ```
+
+## Outcome of a MLE 
+
+* Best estimate (MLE)
+* 95% CI --> if we would do the experiment over and over again, 95% of the CIs would contain the true value. NOTE: this is != saying: for a given dataset, the true value is in the CI with 95% probability!
 
 
 # GETTING THE P-VALUE FOR FAIR COIN
@@ -80,43 +93,31 @@ binom.test(7,trials,0.5, alternative="greater") # testing for greater
 binom.test(7,trials,0.5, alternative="less") # testing for less
 ```
 
-## Multiple testing
+## Side-note: multiple testing
 
-Imagine we do 20 times a test, but we have no effect.
+Imagine there is no effect, but we keep on repeating the test 100 times. How often do you think will we find a significant effect?
 
 ```{r}
-data= rbinom(20,10,0.5)
+data= rbinom(100,10,0.5)
 pValue <- pbinom(data,trials,prob = 0.5, lower.tail = F)
-pValue
-max(pValue < 0.05) == 1
+sum(pValue < 0.05)
+```
 
+Yes, 5 is what you expect. To be exact, in the case of disrecte random distributions, the value doesn't have to be exactly 5%, but that is a side topic, and here it works. 
+
+The message here is: if you do repeated tests, and you want to maintain a fixed overall type I error rate, you need to adjust the p-values, e.g. by 
+
+```{r}
 pValueAdjusted <- p.adjust(pValue, method = "hochberg")
 pValueAdjusted
 max(pValueAdjusted < 0.05) == 1
 ```
 
-## Long-term frequencies of errors 
+## Outcome of a NHST 
 
-imagine we have a fair coin, and do 1000 experiments with 10 draws, looking at the p-value, note that we get to the right 5% assumptotically, but not for small data. The fact that it is not exactly 5% is an artifact that appears for discrete distributions (<8 gets acceted, >= 8 rejected, the perfect cut would be intbetween but as we have only discrete options that's not possible to choose)
-
-
-```{r}
-par(mfrow=c(2,1))
-trials = 10
-outcome <- rbinom(1000, trials, 0.5)
-hist(pbinom(outcome,trials,0.5), breaks = 100, main = "10 trials, 11 p-values" )
-sum(pbinom(outcome,trials,0.5) < 0.05)
-
-
-trials = 10000
-outcome <- rbinom(1000, trials, 0.5)
-hist(pbinom(outcome,trials,0.5), breaks = 100, main = "10000 trials, p-values flat"  )
-sum(pbinom(outcome,trials,0.5) < 0.05)
-```
-
-remember: in general, if you choose an alpha level of 5%, and you have absolutely random data, you should get 5% false positives (type I error) assymptotically, and the distribution of p-values in repeated experiments will be flat. 
-
-Also note: we are free to choose the null-hypothesis as we want. What would you do if you null hypothesis is that a coint should have an 0.8 proability of head?
+* p-value --> probability to see the observed or more extreme data given the null hypothesis
+* rejection H0 if p < alpha. If p > alpha, the test ist inconclusive
+* if you do multiple tests, you may want to adjust the p-values
 
 # The BAYESIAN ESTIMATE
 
@@ -171,8 +172,28 @@ leftCI <- parametervalues[which.min(abs(cumPost - 0.975))]
 abline(v=leftCI, col = "darkgreen", lty = 2, lwd = 2)
 ```
 
+## Long-term frequencies of errors and multiple testing
+
+imagine we have a fair coin, and do 1000 experiments with 10 draws, looking at the p-value, note that we get to the right 5% assumptotically, but not for small data. The fact that it is not exactly 5% is an artifact that appears for discrete distributions (<8 gets acceted, >= 8 rejected, the perfect cut would be intbetween but as we have only discrete options that's not possible to choose)
 
 
+```{r}
+par(mfrow=c(2,1))
+trials = 10
+outcome <- rbinom(1000, trials, 0.5)
+hist(pbinom(outcome,trials,0.5), breaks = 100, main = "10 trials, 11 p-values" )
+sum(pbinom(outcome,trials,0.5) < 0.05)
+
+
+trials = 10000
+outcome <- rbinom(1000, trials, 0.5)
+hist(pbinom(outcome,trials,0.5), breaks = 100, main = "10000 trials, p-values flat"  )
+sum(pbinom(outcome,trials,0.5) < 0.05)
+```
+
+remember: in general, if you choose an alpha level of 5%, and you have absolutely random data, you should get 5% false positives (type I error) assymptotically, and the distribution of p-values in repeated experiments will be flat. 
+
+Also note: we are free to choose the null-hypothesis as we want. What would you do if you null hypothesis is that a coint should have an 0.8 proability of head?
 
 
 

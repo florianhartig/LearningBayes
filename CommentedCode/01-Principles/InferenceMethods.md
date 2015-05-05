@@ -1,7 +1,6 @@
 Statistical concepts, at the example of the coin flip model
 ===
 
-
 Assume we had 10 trials, 7 success, unknown coin, want to do inference to learn about the coin
 
 
@@ -12,7 +11,15 @@ trials = 10
 success = 7
 ```
 
-# GETTING THE MLE ESTIMATE
+In the rest of this script, I will look at this data with the three most common inferential methods 
+
+1. Maximum likelihood estimation
+2. Null-hypothesis significance testing
+3. Bayesian inference 
+
+Each of these methods is consistent and calculates a sensible thing. But each of these three things are different. I'll highlight differences at the end of each application. 
+
+# THE MLE ESTIMATE
 
 The idea of maximum likelihood estimation (MLE) is to look for the set of parameters that would, under the given model assumption, lead to the highest probability to obtain the observed data. In our case we have only one parameter, the probability of success per flip. Let's plot this for different values and look for the maximum.  
 
@@ -32,8 +39,9 @@ abline(v=MLEEstimate, col = "red")
 
 ![](InferenceMethods_files/figure-html/unnamed-chunk-2-1.png) 
 
-
 ## Confidence intervals
+
+OK, the MLE is the best value, but what is often m
 
 MLE confidence intervals are constructed by comparing likelihood values of single parameters against each other. We have the MLE estimate as null hypothesis and ask ourselves how likely it is that the true parameter is a different one. By cutting at 0.05 probability, we construct the frequentist CI interval. The test statistics that can be used to do this are discussed, e.g., in https://onlinecourses.science.psu.edu/stat504/node/39. The result for a 1-parameter model is that the CI is at a log likelihood difference of 1.96
 
@@ -52,6 +60,11 @@ abline(v=rightCI, col = "green")
 ```
 
 ![](InferenceMethods_files/figure-html/unnamed-chunk-3-1.png) 
+
+## Outcome of a MLE 
+
+* Best estimate (MLE)
+* 95% CI --> if we would do the experiment over and over again, 95% of the CIs would contain the true value. NOTE: this is != saying: for a given dataset, the true value is in the CI with 95% probability!
 
 
 # GETTING THE P-VALUE FOR FAIR COIN
@@ -156,6 +169,12 @@ binom.test(7,trials,0.5, alternative="less") # testing for less
 ##                    0.7
 ```
 
+## Outcome of a MLE 
+
+* p-value --> probability to see the observed or more extreme data given the null hypothesis
+* rejection H0 if p < alpha. If p > alpha, the test ist inconclusive
+
+
 ## Multiple testing
 
 Imagine we do 20 times a test, but we have no effect.
@@ -201,7 +220,8 @@ max(pValueAdjusted < 0.05) == 1
 ## [1] FALSE
 ```
 
-## Long-term frequencies of errors 
+
+## Long-term frequencies of errors and multiple testing
 
 imagine we have a fair coin, and do 1000 experiments with 10 draws, looking at the p-value, note that we get to the right 5% assumptotically, but not for small data. The fact that it is not exactly 5% is an artifact that appears for discrete distributions (<8 gets acceted, >= 8 rejected, the perfect cut would be intbetween but as we have only discrete options that's not possible to choose)
 
