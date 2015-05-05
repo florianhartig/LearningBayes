@@ -1,27 +1,16 @@
----
-output:
-  html_document:
-    fig_caption: yes
-    keep_md: yes
----
 A simple Metropolis-Hastings MCMC in R  
 ====
 
-```{r global_options, include=FALSE}
 
 
-```
 
 
-```{r, echo = F, message=F, warning=F}
-set.seed(123)
-library(coda)
-```
 
 
 As a first step, we create some test data that will be used to fit our model. Let’s assume a linear relationship between the predictor and the response variable, so we take a linear model and add some noise.
 
-```{r test_data, fig.width=5, fig.height=5}
+
+```r
 # This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 trueA <- 5
 trueB <- 0
@@ -37,6 +26,8 @@ y <-  trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)
 plot(x,y, main="Test Data")
 ```
 
+![](Metropolis_files/figure-html/test_data-1.png) 
+
 
 ## Defining the statistical model 
 
@@ -51,7 +42,8 @@ For estimating parameters in a Bayesian analysis, we need to derive the likeliho
 As an illustration, the last lines of the code plot the Likelihood for a range of parameter values of the slope parameter a. The result should look something like the below plot.
 
 
-```{r likelihood_fucntion, fig.width=5, fig.height=5}
+
+```r
 # Likelihood function
 likelihood <- function(param){
     a = param[1]
@@ -69,6 +61,8 @@ slopevalues <- function(x){return(likelihood(c(x, trueB, trueSd)))}
 slopelikelihoods <- lapply(seq(3, 7, by=.05), slopevalues )
 plot (seq(3, 7, by=.05), slopelikelihoods , type="l", xlab = "values of slope parameter a", ylab = "Log likelihood")
 ```
+
+![](Metropolis_files/figure-html/likelihood_fucntion-1.png) 
 <br />
 
 
@@ -82,7 +76,8 @@ You might have noticed that I return the logarithm of the probabilities in the l
 As a second step, as always in Bayesian statistics, we have to specify a prior distribution for each parameter. To make it easy, I used uniform distributions and normal distributions for all three parameters. [Some additional information for the “professionals”, skip this when you don’t understand what I’m talking about: while this choice can be considered pretty “uninformative” for the slope and intercept parameters, it is not really uninformative for the standard deviations. An uninformative prior for the latter would usually be scale with 1/sigma (if you want to understand the reason, see here). This stuff is important when you seriously dive into Bayesian statistics, but I didn’t want to make the code more confusing here.] 
 
 
-```{r prior_function}
+
+```r
 # Prior distribution
 prior <- function(param){
     a = param[1]
@@ -101,7 +96,8 @@ prior <- function(param){
 The product of prior and likelihood is the actual quantity the MCMC will be working on. This function is called the posterior (or to be exact, it’s called the posterior after it’s normalized, which the MCMC will do for us, but let’s not be picky for the moment). Again, here we work with the sum because we work with logarithms.
 
 
-```{r posterior_function}
+
+```r
 # Posterior function
 posterior <- function(param){
    return (likelihood(param) + prior(param))
@@ -124,7 +120,8 @@ This is achieved by:
 It’s fun to think about why that works, but for the moment I can assure you it does – when we run this algorithm, distribution of the parameters it visits converges to the target distribution p. 
 So, let’s get this in R:
 
-```{r metropolis_algorithm}
+
+```r
  ################ Metropolis algorithm ################
  proposalfunction <- function(param){
     return(rnorm(3,mean = param, sd= c(0.1,0.5,0.3)))
@@ -165,16 +162,67 @@ The first steps of the algorithm may be biased by the initial value, and are the
 Finally, we can plot the results. I transform the chain to an mcmc object, using the coda package, to be able to make a nice plot
 
 
-```{r, fig.width = 7, fig.height = 7}
+
+```r
 plot(mcmc(chain))
+```
+
+![](Metropolis_files/figure-html/unnamed-chunk-2-1.png) 
+
+```r
 summary(mcmc(chain)) 
+```
+
+```
+## 
+## Iterations = 1:10001
+## Thinning interval = 1 
+## Number of chains = 1 
+## Sample size per chain = 10001 
+## 
+## 1. Empirical mean and standard deviation for each variable,
+##    plus standard error of the mean:
+## 
+##         Mean     SD Naive SE Time-series SE
+## [1,]  4.7879 0.2147 0.002147        0.01124
+## [2,] -0.2153 1.7111 0.017111        0.13782
+## [3,] 10.1547 1.2790 0.012789        0.12620
+## 
+## 2. Quantiles for each variable:
+## 
+##        2.5%    25%     50%    75%  97.5%
+## var1  4.354  4.648  4.7897  4.939  5.191
+## var2 -3.614 -1.356 -0.2214  0.944  3.087
+## var3  8.038  9.226 10.0436 10.958 13.022
 ```
 
 
 Comparison with the normal lm:
 
-```{r}
+
+```r
 summary(lm(y~x))
+```
+
+```
+## 
+## Call:
+## lm(formula = y ~ x)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -18.9593  -6.6725  -0.6956   6.4944  18.1874 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  -0.3183     1.7391  -0.183    0.856    
+## x             4.8057     0.1944  24.715   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 9.683 on 29 degrees of freedom
+## Multiple R-squared:  0.9547,	Adjusted R-squared:  0.9531 
+## F-statistic: 610.9 on 1 and 29 DF,  p-value: < 2.2e-16
 ```
 
 You see that we retrieve more or less the original parameters that were used to create our data, and you also see that we get a certain area around the highest posterior values that also have some support by the data, which is the Bayesian equivalent of confidence intervals. 
