@@ -1,29 +1,18 @@
----
-output:
-  html_document:
-    fig_caption: yes
-    keep_md: yes
----
 MCMC chain analysis and convergence diagnostics with coda in R
 ====
 
-```{r global_options, include=FALSE}
-knitr::opts_chunk$set(fig.width=8, fig.height=8)
-
-```
 
 
-```{r, echo = F, message=F, warning=F}
-set.seed(123)
-library(coda)
-```
+
+
 
 
 
 ## Create test data and define the model
 As a first step, we create some test data n which a dependent variable y depends linearly on an independent variable x (predictor). 
 
-```{r model}
+
+```r
 # Load coda library
 library(coda)
 
@@ -42,7 +31,11 @@ y <-  trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)
  
 # Plot data
 plot(x,y, main="Test Data")
+```
 
+![](Convergence_files/figure-html/model-1.png) 
+
+```r
 # Likelihood function
 likelihood <- function(param){
   a = param[1]
@@ -87,7 +80,6 @@ run_metropolis_MCMC <- function(startvalue, iterations){
   }
   return(mcmc(chain))
 }
-
 ```
 
 <br />
@@ -95,7 +87,8 @@ run_metropolis_MCMC <- function(startvalue, iterations){
 
 So, let’s run the MCMC:
 
-```{r running_MCMC}
+
+```r
 startvalue = c(4,2,8)
 chain = run_metropolis_MCMC(startvalue, 10000)
 ```
@@ -115,12 +108,40 @@ Objects of class “mcmc” hold and array with the mcmc samples, and a number o
 The advantage of having a coda object is that a lot of things that we typically want to do with the chain are already implemented, so for example we can simply summary() and plot() the outputs which gives some useful information on the console and a plot that should look roughly like this:
 
 
-```{r coda_summary }
+
+```r
 # Run summary and plot results
 summary(chain)
-plot(chain)
+```
 
 ```
+## 
+## Iterations = 1:10001
+## Thinning interval = 1 
+## Number of chains = 1 
+## Sample size per chain = 10001 
+## 
+## 1. Empirical mean and standard deviation for each variable,
+##    plus standard error of the mean:
+## 
+##         Mean     SD Naive SE Time-series SE
+## [1,]  4.7969 0.2182 0.002182        0.01162
+## [2,] -0.2613 1.7177 0.017176        0.13905
+## [3,] 10.1687 1.3333 0.013333        0.13717
+## 
+## 2. Quantiles for each variable:
+## 
+##        2.5%    25%     50%     75%  97.5%
+## var1  4.359  4.650  4.7948  4.9466  5.220
+## var2 -3.617 -1.406 -0.2904  0.9071  3.018
+## var3  7.974  9.205 10.0277 10.9557 13.194
+```
+
+```r
+plot(chain)
+```
+
+![](Convergence_files/figure-html/coda_summary-1.png) 
 
 <br />
 
@@ -134,9 +155,17 @@ Marginal densities are an average over the values a parameter takes with all oth
 
 We could use pairs(data.frame(chain)), but I will create a bit nicer plot function
 
-```{r marginal_densities2}
+
+```r
 library(IDPmisc)
- 
+```
+
+```
+## Loading required package: grid
+## Loading required package: lattice
+```
+
+```r
 panel.hist <- function(x, ...)
 {
   usr <- par("usr"); on.exit(par(usr))
@@ -167,19 +196,25 @@ betterPairs <- function(YourData){
 #betterPairs(data.frame(A = x, B = 0.6 * x + 0.3 * rnorm(10000), C = rnorm(10000)))
 ```
 
-```{r}
+
+```r
 betterPairs(data.frame(chain))
 ```
+
+![](Convergence_files/figure-html/unnamed-chunk-2-1.png) 
 
 In our case, there is be no large correlations because I set up the example in that way, but we can easily achieve a correlation between slope and intercept by “uncentering” our data, that is, having x-values that are not centered around 0. To see this, replace in the first large code fragment the creation of the test data by this line which creates non-centered x-values, and run everything again 
 
 
-```{r marginal_densities3}
+
+```r
 x <- (-(sampleSize-1)/2):((sampleSize-1)/2) + 20
 startvalue = c(4,2,8)
 chain = run_metropolis_MCMC(startvalue, 10000)
 betterPairs(data.frame(chain))
 ```
+
+![](Convergence_files/figure-html/marginal_densities3-1.png) 
 
 You can see the strong correlation between the first and the second parameter (slope and intercept), and you can also see that your marginal uncertainty for each parameter (on the diagonal, or in your plot() function) has increased. However, it is really important to understand that this does not mean that the fit is fundamentally more uncertain – the Bayesian analysis doesn’t care if you shift the x-values by 20 to the right. Unlike some other statistical techniques, the method has no problems with such correlations. However, it is problematic now to summarize the results of such an analysis e.g. in terms of marginal values, because this is hiding the correlations. For example, it doesn’t make sense any more to say that the slope has a value of x +/- sd because this misses that point that for any given parameter of the intercept, the uncertainty of the slope is much smaller. For that reason, one should always check the correlations, and if possible, one should try to avoid correlations between parameters because this makes the analysis easier.
 
@@ -190,13 +225,37 @@ Note that we only checked for pairwise correlations here, there may still be hig
 Now, to the convergence: an MCMC creates a sample from the posterior distribution, and we usually want to know whether this sample is sufficiently close to the posterior to be used for analysis. There are several standard ways to check this, but I recommend the Gelman-Rubin diagnostic (check the coda help for other options that are implemented). Basically, Gelman-Rubin measures whether there is a significant difference between the variance within several chains and the variance between several chains by a value that is called “scale reduction factors”. To do this, we obviously need a second chain, and then simply run the commands:
 
 
-```{r Convergence_diagnostics}
+
+```r
 chain2 = run_metropolis_MCMC(startvalue, 10000)
 combinedchains = mcmc.list(chain, chain2) 
 plot(combinedchains)
+```
+
+![](Convergence_files/figure-html/Convergence_diagnostics-1.png) 
+
+```r
 gelman.diag(combinedchains)
+```
+
+```
+## Potential scale reduction factors:
+## 
+##      Point est. Upper C.I.
+## [1,]       1.02       1.03
+## [2,]       1.09       1.26
+## [3,]       1.01       1.04
+## 
+## Multivariate psrf
+## 
+## 1.04
+```
+
+```r
 gelman.plot(combinedchains)
 ```
+
+![](Convergence_files/figure-html/Convergence_diagnostics-2.png) 
 
 The gelman.diag gives you the scale reduction factors for each parameter. A factor of 1 means that between variance and within chain variance are equal, larger values mean that there is still a notable difference between chains. Often, it is said that everything below 1.1 or so is OK, but note that this is more a rule of thumb. The gelman,plot shows you the development of the scale-reduction over time (chain steps), which is useful to see whether a low chain reduction is also stable (sometimes, the factors go down and then up again, as you will see). Also, note that for any real analysis, you have to make sure to discard any bias that arises from the starting point of your chain (burn-in), typical values here are a few 1000-10000 steps. The gelman plot is also a nice tool to see roughly where this point is, that is, from which point on the chains seem roughly converged.
 
@@ -206,34 +265,6 @@ So, what to do if there is no convergence yet? Of course, you can always run the
 
 * Your proposal function is narrow compared to the distribution we sample from – high acceptance rate, but we don’t get anywhere, bad mixing
 * Your proposal function is too wide compared to the distribution we sample from – low acceptance rate, most of the time we stay where we are
-
-Let's create both situations so that you get the picture. Too narrow:
-
-```{r}
-proposalfunction <- function(param){
-  return(rnorm(3,mean = param, sd= c(0.001,0.5,0.3)))
-}
-chain1 = run_metropolis_MCMC(startvalue, 10000)
-chain2 = run_metropolis_MCMC(startvalue, 10000)
-combinedchains = mcmc.list(chain, chain2) 
-plot(combinedchains)
-gelman.plot(combinedchains)
-```
-
-Too wide
-
-```{r}
-proposalfunction <- function(param){
-  return(rnorm(3,mean = param, sd= c(100000,100000,0.3)))
-}
-chain1 = run_metropolis_MCMC(startvalue, 10000)
-chain2 = run_metropolis_MCMC(startvalue, 10000)
-combinedchains = mcmc.list(chain, chain2) 
-plot(combinedchains)
-gelman.plot(combinedchains)
-```
-
-
 
 
 
