@@ -89,12 +89,9 @@ So, let’s run the MCMC:
 
 
 ```r
-startvalue = c(4,2,8)
+startvalue = c(5,0,10)
 chain = run_metropolis_MCMC(startvalue, 10000)
 ```
-
-
-<br />
 
 #### Some simple summaries of the chain facilitated by coda
 
@@ -124,17 +121,17 @@ summary(chain)
 ## 1. Empirical mean and standard deviation for each variable,
 ##    plus standard error of the mean:
 ## 
-##         Mean     SD Naive SE Time-series SE
-## [1,]  4.7969 0.2182 0.002182        0.01162
-## [2,] -0.2613 1.7177 0.017176        0.13905
-## [3,] 10.1687 1.3333 0.013333        0.13717
+##        Mean     SD Naive SE Time-series SE
+## [1,]  4.794 0.2105 0.002105        0.01081
+## [2,] -0.255 1.7174 0.017173        0.13866
+## [3,] 10.139 1.2989 0.012988        0.13229
 ## 
 ## 2. Quantiles for each variable:
 ## 
 ##        2.5%    25%     50%     75%  97.5%
-## var1  4.359  4.650  4.7948  4.9466  5.220
-## var2 -3.617 -1.406 -0.2904  0.9071  3.018
-## var3  7.974  9.205 10.0277 10.9557 13.194
+## var1  4.375  4.653  4.7920  4.9385  5.197
+## var2 -3.640 -1.404 -0.2406  0.8853  3.021
+## var3  7.965  9.188 10.0258 10.9587 12.956
 ```
 
 ```r
@@ -209,7 +206,7 @@ In our case, there is be no large correlations because I set up the example in t
 
 ```r
 x <- (-(sampleSize-1)/2):((sampleSize-1)/2) + 20
-startvalue = c(4,2,8)
+y <-  trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)
 chain = run_metropolis_MCMC(startvalue, 10000)
 betterPairs(data.frame(chain))
 ```
@@ -242,13 +239,13 @@ gelman.diag(combinedchains)
 ## Potential scale reduction factors:
 ## 
 ##      Point est. Upper C.I.
-## [1,]       1.02       1.03
-## [2,]       1.09       1.26
-## [3,]       1.01       1.04
+## [1,]       1.06       1.23
+## [2,]       1.08       1.32
+## [3,]       1.01       1.02
 ## 
 ## Multivariate psrf
 ## 
-## 1.04
+## 1.06
 ```
 
 ```r
@@ -266,6 +263,49 @@ So, what to do if there is no convergence yet? Of course, you can always run the
 * Your proposal function is narrow compared to the distribution we sample from – high acceptance rate, but we don’t get anywhere, bad mixing
 * Your proposal function is too wide compared to the distribution we sample from – low acceptance rate, most of the time we stay where we are
 
+Let's create both situations so that you get the picture. I'm turning back to the old data. Too narrow:
+
+
+```r
+x <- (-(sampleSize-1)/2):((sampleSize-1)/2) + 20
+y <-  trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)
+
+proposalfunction <- function(param){
+  return(rnorm(3,mean = param, sd= c(0.001,0.5,0.3)))
+}
+
+startvalue = c(4,0,10)
+
+chain1 = run_metropolis_MCMC(startvalue, 10000)
+chain2 = run_metropolis_MCMC(startvalue, 10000)
+combinedchains = mcmc.list(chain1, chain2) 
+plot(combinedchains)
+```
+
+![](Convergence_files/figure-html/unnamed-chunk-3-1.png) 
+
+```r
+#gelman.plot(combinedchains)
+```
+
+Too wide
+
+
+```r
+proposalfunction <- function(param){
+  return(rnorm(3,mean = param, sd= c(1000,0.5,0.3)))
+}
+chain1 = run_metropolis_MCMC(startvalue, 10000)
+chain2 = run_metropolis_MCMC(startvalue, 10000)
+combinedchains = mcmc.list(chain1, chain2) 
+plot(combinedchains)
+```
+
+![](Convergence_files/figure-html/unnamed-chunk-4-1.png) 
+
+```r
+#gelman.plot(combinedchains)
+```
 
 
 As displayed in the figure, these problems can be seen in the trace plots. Theoretical considerations show that an acceptance rate of 20-30% is optimal for typical target distributions, but this is in practice not so helpful because you can still have very bad mixing although being at this level by having the proposal of one parameter too narrow and the proposal of another parameter too wide. Better to look at the trace-plots of the individual parameters. Again, correlations are a problem, so if you have strong correlations in parameter space, you can get bad mixing. Using multivariate proposals that are adjusted to the correlation structure can help, but in general it is better to avoid correlations if possible. The good news at last: most of the more “professional” MCMC sampling software such as Jags or WinBugs will do these things automatically for you.
