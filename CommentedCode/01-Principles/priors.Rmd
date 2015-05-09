@@ -7,6 +7,15 @@ output:
     keep_md: yes
 ---
 
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=5, fig.height=5)
+```
+
+
+```{r, echo=F}
+set.seed(123)
+```
+
 Priors are key to 
 
 

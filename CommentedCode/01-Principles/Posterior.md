@@ -15,10 +15,6 @@ FlorianHartig
 ## Loading required package: lattice
 ```
 
-
-
-
-
 In standard statistics, we are used to interpret search for the point that maximizes p(D|phi), and interpret this as the most likely value. 
 
 
@@ -147,7 +143,7 @@ scatterhist = function(x, y, xlab="", ylab="", smooth = T){
   yhist = hist(y, plot=FALSE, breaks = 50)
   top = max(c(xhist$counts, yhist$counts))
   par(mar=c(3,3,1,1))
-  if (smooth == T) smoothScatter(x,y, colramp = colorRampPalette(c("white", "darkorange", "darkred", "black")))
+  if (smooth == T) smoothScatter(x,y, colramp = colorRampPalette(c("white", "darkorange", "darkred", "darkslateblue")))
   else plot(x,y)
   par(mar=c(0,3,1,1))
   barplot(xhist$counts, axes=FALSE, ylim=c(0, top), space=0)
@@ -165,14 +161,7 @@ scatterhist(sample[,1], sample[,2])
 
 ![](Posterior_files/figure-html/unnamed-chunk-9-1.png) 
 
-
-This is something that is confusing for many in the beginning. 
-
-
-
-
-
-
+Hence, it's important to note that the marginal distributions are not suited to calculate the MAP, CIs, HPDs or any other summary statistics if the posterior distribution is not symmetric in multivariate space. This is a real point of confusion for many people, so keep it in mind!
 
 
 ---

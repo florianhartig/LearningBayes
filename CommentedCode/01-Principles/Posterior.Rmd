@@ -18,10 +18,6 @@ library(coda)
 library(IDPmisc)
 ```
 
-
-
-
-
 In standard statistics, we are used to interpret search for the point that maximizes p(D|phi), and interpret this as the most likely value. 
 
 
@@ -122,8 +118,7 @@ banana=function(A,B,C1,C2,N,keep=10,init=10)
 
     return(bimat)
 }
-A=0.5; B=0; C1=C2=3
-sample=banana(A=A,B=B,C1=C1,C2=C2,50000)
+sample=banana(A=0.5,B=0,C1=3,C2=3,50000)
 ```
 
 
@@ -137,7 +132,7 @@ scatterhist = function(x, y, xlab="", ylab="", smooth = T){
   yhist = hist(y, plot=FALSE, breaks = 50)
   top = max(c(xhist$counts, yhist$counts))
   par(mar=c(3,3,1,1))
-  if (smooth == T) smoothScatter(x,y, colramp = colorRampPalette(c("white", "darkorange", "darkred", "black")))
+  if (smooth == T) smoothScatter(x,y, colramp = colorRampPalette(c("white", "darkorange", "darkred", "darkslateblue")))
   else plot(x,y)
   par(mar=c(0,3,1,1))
   barplot(xhist$counts, axes=FALSE, ylim=c(0, top), space=0)
@@ -154,15 +149,9 @@ scatterhist(sample[,1], sample[,2])
 
 ```
 
+Hence, it's important to note that the marginal distributions are not suited to calculate the MAP, CIs, HPDs or any other summary statistics if the posterior distribution is not symmetric in multivariate space. This is a real point of confusion for many people, so keep it in mind!
 
-This is something that is confusing for many in the beginning. 
-
-
-
-
-
-
-
+More options to plot HPD in 2-d here http://www.sumsar.net/blog/2014/11/how-to-summarize-a-2d-posterior-using-a-highest-density-ellipse/
 
 ---
 **Copyright, reuse and updates**: By Florian Hartig. Updates will be posted at https://github.com/florianhartig/LearningBayes. Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License

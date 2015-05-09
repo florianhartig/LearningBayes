@@ -82,3 +82,5 @@ scatterhist = function(x, y, xlab="", ylab="", smooth = T){
 # A=0.5; B=0; C1=C2=3
 # sample=banana(A=A,B=B,C1=C1,C2=C2,1000)
 # scatterhist(sample[,1], sample[,2])
+
+# More options here http://www.sumsar.net/blog/2014/11/how-to-summarize-a-2d-posterior-using-a-highest-density-ellipse/

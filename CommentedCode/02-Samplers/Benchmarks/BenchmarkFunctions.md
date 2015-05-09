@@ -55,3 +55,8 @@ BananaSS <- function (p){
 }
 ```
 
+# Other Benchmarks
+
+* mlbench: Machine Learning Benchmark Problems  http://cran.r-project.org/web/packages/mlbench/
+
+

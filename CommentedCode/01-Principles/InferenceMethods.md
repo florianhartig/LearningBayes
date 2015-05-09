@@ -1,17 +1,29 @@
 Statistical concepts, at the example of the coin flip model
 ===
 
-Assume we had 10 trials, 7 success, unknown coin, want to do inference to learn about the coin
+
+
+
+
+Assume I'm trying to guess if a coin comes up heads or tails. I have had 10 trials, and 7x success.
 
 
 ```r
-rm(list=ls(all=TRUE))
-set.seed(123)
 trials = 10
 success = 7
 ```
 
-In the rest of this script, I will look at this data with the three most common inferential methods 
+What we want to know now is what my properties are regarding correctly guessing the outcome of the coin flip experiment. 
+
+### The model
+
+We will try to examine this data with a simple model that makes the following assumption: every time I throw the coin, I will have a probability of p to guess correctly. 
+
+For a single trial, this model is called the bernoulli-model; for multiple trials, it's calle the binomial model. It's easy to calculate the probabilities by hand, but you can also get it in r via the dbinom function. 
+
+### Overview
+
+In the rest of this script, I will look at this data with the binomial model, applying the three most common inferential methods 
 
 1. Maximum likelihood estimation
 2. Null-hypothesis significance testing
@@ -37,7 +49,7 @@ MLEEstimate <- parametervalues[which.max(likelihood)]
 abline(v=MLEEstimate, col = "red")
 ```
 
-![](InferenceMethods_files/figure-html/unnamed-chunk-2-1.png) 
+![](InferenceMethods_files/figure-html/unnamed-chunk-3-1.png) 
 
 ## Confidence intervals
 
@@ -59,7 +71,10 @@ rightCI <- parametervalues[which.min(abs(log(likelihood[which.max(likelihood):le
 abline(v=rightCI, col = "green")
 ```
 
-![](InferenceMethods_files/figure-html/unnamed-chunk-3-1.png) 
+![](InferenceMethods_files/figure-html/unnamed-chunk-4-1.png) 
+
+Note: there are also other methods to look at uncertainty with likelihoods, e.g. the profile likelihood, see discussion [here](http://stats.stackexchange.com/questions/77528/what-is-the-relationship-between-profile-likelihood-and-confidence-intervals)
+
 
 ## Outcome of a MLE 
 
@@ -76,7 +91,7 @@ want to get p-value for a smaller or equal result (1-tailed) given a fair coin p
 barplot(dbinom(0:10, 10, 0.5), col = c(rep("grey", success ), rep("red", 11-success)))
 ```
 
-![](InferenceMethods_files/figure-html/unnamed-chunk-4-1.png) 
+![](InferenceMethods_files/figure-html/unnamed-chunk-5-1.png) 
 
 ```r
 line(pbinom(0:10,trials,prob = 0.5, lower.tail = F))
@@ -248,7 +263,7 @@ lines(parametervalues, prior, col = "red" )
 legend("topright", c("likelihood", "prior", "posterior"), col = c("black", "red", "green"), lwd = 1 )
 ```
 
-![](InferenceMethods_files/figure-html/unnamed-chunk-9-1.png) 
+![](InferenceMethods_files/figure-html/unnamed-chunk-10-1.png) 
 
 you see that likelihood and posterior have the same shape. However, this is only because I chose a flat prior. There is still a difference, however, namely that the posterior is normalized, i.e. will integrate to one. It has to be, because we want to interpret it as a pdf, while the likelihood is not a pdf. Let's look at the same example for an informative prior
 
@@ -264,7 +279,7 @@ lines(parametervalues, prior, col = "red" )
 legend("topright", c("likelihood", "prior", "posterior"), col = c("black", "red", "green"), lwd = 1 )
 ```
 
-![](InferenceMethods_files/figure-html/unnamed-chunk-10-1.png) 
+![](InferenceMethods_files/figure-html/unnamed-chunk-11-1.png) 
 
 you can see that the likelihood moves the posterior away from the prior, but not by much. try the same think with more data, but the same ratio, i.e. change to 30 trials, 9 success
 
@@ -288,7 +303,9 @@ leftCI <- parametervalues[which.min(abs(cumPost - 0.975))]
 abline(v=leftCI, col = "darkgreen", lty = 2, lwd = 2)
 ```
 
-![](InferenceMethods_files/figure-html/unnamed-chunk-11-1.png) 
+![](InferenceMethods_files/figure-html/unnamed-chunk-12-1.png) 
+
+# Additional comments
 
 ## Long-term frequencies of errors and multiple testing
 
@@ -314,7 +331,7 @@ outcome <- rbinom(1000, trials, 0.5)
 hist(pbinom(outcome,trials,0.5), breaks = 100, main = "10000 trials, p-values flat"  )
 ```
 
-![](InferenceMethods_files/figure-html/unnamed-chunk-12-1.png) 
+![](InferenceMethods_files/figure-html/unnamed-chunk-13-1.png) 
 
 ```r
 sum(pbinom(outcome,trials,0.5) < 0.05)
