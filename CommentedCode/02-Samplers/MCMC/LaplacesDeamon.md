@@ -114,7 +114,7 @@ Fit <- LaplacesDemon(Model, Data=MyData, Initial.Values,
 
 ```
 ## 
-## Laplace's Demon was called on Thu Apr 30 12:28:30 2015
+## Laplace's Demon was called on Sat May  9 18:00:08 2015
 ## 
 ## Performing initial checks...
 ## Algorithm: Automated Factor Slice Sampler 
@@ -598,6 +598,11 @@ print(Fit)
 
 #End
 ```
+
+
+
+---
+**Copyright, reuse and updates**: By Florian Hartig. Updates will be posted at https://github.com/florianhartig/LearningBayes. Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 
 
 

@@ -37,18 +37,18 @@ summary(fit)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -14.0694  -5.6706  -0.3227   5.1910  21.6529 
+## -17.5911  -6.6283   0.0952   4.0020  21.9617 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  13.5510     1.5429   8.783 1.15e-09 ***
-## x             5.0835     0.1725  29.469  < 2e-16 ***
+## (Intercept)   8.3426     1.6646   5.012 2.45e-05 ***
+## x             4.9925     0.1861  26.826  < 2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 8.591 on 29 degrees of freedom
-## Multiple R-squared:  0.9677,	Adjusted R-squared:  0.9666 
-## F-statistic: 868.4 on 1 and 29 DF,  p-value: < 2.2e-16
+## Residual standard error: 9.268 on 29 degrees of freedom
+## Multiple R-squared:  0.9613,	Adjusted R-squared:  0.9599 
+## F-statistic: 719.6 on 1 and 29 DF,  p-value: < 2.2e-16
 ```
 
 ```r
@@ -151,17 +151,17 @@ summary(Samples)
 ## 1. Empirical mean and standard deviation for each variable,
 ##    plus standard error of the mean:
 ## 
-##         Mean     SD Naive SE Time-series SE
-## a      5.083 0.1806 0.001475        0.00145
-## b     13.522 1.6362 0.013359        0.01326
-## sigma  8.974 1.2650 0.010328        0.01503
+##        Mean     SD Naive SE Time-series SE
+## a     4.994 0.1953 0.001595       0.001561
+## b     8.296 1.7501 0.014289       0.014408
+## sigma 9.699 1.3669 0.011161       0.016218
 ## 
 ## 2. Quantiles for each variable:
 ## 
-##         2.5%    25%    50%    75%  97.5%
-## a      4.733  4.964  5.081  5.202  5.438
-## b     10.310 12.436 13.521 14.609 16.751
-## sigma  6.908  8.081  8.843  9.707 11.804
+##        2.5%   25%   50%    75%  97.5%
+## a     4.606 4.864 4.995  5.122  5.372
+## b     4.870 7.150 8.287  9.457 11.726
+## sigma 7.481 8.726 9.551 10.489 12.838
 ```
 
 predictions (not very elegant)
@@ -177,3 +177,5 @@ for (i in selection) abline(sampleMatrix[i,1], sampleMatrix[i,1], col = "#111111
 ![](LinearModel_files/figure-html/unnamed-chunk-8-1.png) 
 
 
+---
+**Copyright, reuse and updates**: By Florian Hartig. Updates will be posted at https://github.com/florianhartig/LearningBayes. Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License

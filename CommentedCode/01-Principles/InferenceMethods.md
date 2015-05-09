@@ -169,37 +169,25 @@ binom.test(7,trials,0.5, alternative="less") # testing for less
 ##                    0.7
 ```
 
-## Outcome of a MLE 
+## Side-note: multiple testing
 
-* p-value --> probability to see the observed or more extreme data given the null hypothesis
-* rejection H0 if p < alpha. If p > alpha, the test ist inconclusive
-
-
-## Multiple testing
-
-Imagine we do 20 times a test, but we have no effect.
+Imagine there is no effect, but we keep on repeating the test 100 times. How often do you think will we find a significant effect?
 
 
 ```r
-data= rbinom(20,10,0.5)
+data= rbinom(100,10,0.5)
 pValue <- pbinom(data,trials,prob = 0.5, lower.tail = F)
-pValue
+sum(pValue < 0.05)
 ```
 
 ```
-##  [1] 0.62304687 0.17187500 0.37695313 0.05468750 0.05468750 0.94531250
-##  [7] 0.37695313 0.05468750 0.37695313 0.37695313 0.01074219 0.37695313
-## [13] 0.17187500 0.37695313 0.82812500 0.05468750 0.62304687 0.94531250
-## [19] 0.62304687 0.01074219
+## [1] 5
 ```
 
-```r
-max(pValue < 0.05) == 1
-```
+Yes, 5 is what you expect. To be exact, in the case of disrecte random distributions, the value doesn't have to be exactly 5%, but that is a side topic, and here it works. 
 
-```
-## [1] TRUE
-```
+The message here is: if you do repeated tests, and you want to maintain a fixed overall type I error rate, you need to adjust the p-values, e.g. by 
+
 
 ```r
 pValueAdjusted <- p.adjust(pValue, method = "hochberg")
@@ -207,9 +195,23 @@ pValueAdjusted
 ```
 
 ```
-##  [1] 0.9453125 0.9453125 0.9453125 0.8203125 0.8203125 0.9453125 0.9453125
-##  [8] 0.8203125 0.9453125 0.9453125 0.2041016 0.9453125 0.9453125 0.9453125
-## [15] 0.9453125 0.8203125 0.9453125 0.9453125 0.9453125 0.2041016
+##   [1] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##   [7] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [13] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [19] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.09765625
+##  [25] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [31] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [37] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [43] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [49] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [55] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [61] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [67] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [73] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [79] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [85] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [91] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
+##  [97] 0.99902344 0.99902344 0.99902344 0.99902344
 ```
 
 ```r
@@ -220,44 +222,11 @@ max(pValueAdjusted < 0.05) == 1
 ## [1] FALSE
 ```
 
+## Outcome of a NHST 
 
-## Long-term frequencies of errors and multiple testing
-
-imagine we have a fair coin, and do 1000 experiments with 10 draws, looking at the p-value, note that we get to the right 5% assumptotically, but not for small data. The fact that it is not exactly 5% is an artifact that appears for discrete distributions (<8 gets acceted, >= 8 rejected, the perfect cut would be intbetween but as we have only discrete options that's not possible to choose)
-
-
-
-```r
-par(mfrow=c(2,1))
-trials = 10
-outcome <- rbinom(1000, trials, 0.5)
-hist(pbinom(outcome,trials,0.5), breaks = 100, main = "10 trials, 11 p-values" )
-sum(pbinom(outcome,trials,0.5) < 0.05)
-```
-
-```
-## [1] 13
-```
-
-```r
-trials = 10000
-outcome <- rbinom(1000, trials, 0.5)
-hist(pbinom(outcome,trials,0.5), breaks = 100, main = "10000 trials, p-values flat"  )
-```
-
-![](InferenceMethods_files/figure-html/unnamed-chunk-8-1.png) 
-
-```r
-sum(pbinom(outcome,trials,0.5) < 0.05)
-```
-
-```
-## [1] 46
-```
-
-remember: in general, if you choose an alpha level of 5%, and you have absolutely random data, you should get 5% false positives (type I error) assymptotically, and the distribution of p-values in repeated experiments will be flat. 
-
-Also note: we are free to choose the null-hypothesis as we want. What would you do if you null hypothesis is that a coint should have an 0.8 proability of head?
+* p-value --> probability to see the observed or more extreme data given the null hypothesis
+* rejection H0 if p < alpha. If p > alpha, the test ist inconclusive
+* if you do multiple tests, you may want to adjust the p-values
 
 # The BAYESIAN ESTIMATE
 
@@ -321,9 +290,45 @@ abline(v=leftCI, col = "darkgreen", lty = 2, lwd = 2)
 
 ![](InferenceMethods_files/figure-html/unnamed-chunk-11-1.png) 
 
+## Long-term frequencies of errors and multiple testing
+
+imagine we have a fair coin, and do 1000 experiments with 10 draws, looking at the p-value, note that we get to the right 5% assumptotically, but not for small data. The fact that it is not exactly 5% is an artifact that appears for discrete distributions (<8 gets acceted, >= 8 rejected, the perfect cut would be intbetween but as we have only discrete options that's not possible to choose)
 
 
 
+```r
+par(mfrow=c(2,1))
+trials = 10
+outcome <- rbinom(1000, trials, 0.5)
+hist(pbinom(outcome,trials,0.5), breaks = 100, main = "10 trials, 11 p-values" )
+sum(pbinom(outcome,trials,0.5) < 0.05)
+```
+
+```
+## [1] 12
+```
+
+```r
+trials = 10000
+outcome <- rbinom(1000, trials, 0.5)
+hist(pbinom(outcome,trials,0.5), breaks = 100, main = "10000 trials, p-values flat"  )
+```
+
+![](InferenceMethods_files/figure-html/unnamed-chunk-12-1.png) 
+
+```r
+sum(pbinom(outcome,trials,0.5) < 0.05)
+```
+
+```
+## [1] 46
+```
+
+remember: in general, if you choose an alpha level of 5%, and you have absolutely random data, you should get 5% false positives (type I error) assymptotically, and the distribution of p-values in repeated experiments will be flat. 
+
+Also note: we are free to choose the null-hypothesis as we want. What would you do if you null hypothesis is that a coint should have an 0.8 proability of head?
 
 
+---
+**Copyright, reuse and updates**: By Florian Hartig. Updates will be posted at https://github.com/florianhartig/LearningBayes. Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 

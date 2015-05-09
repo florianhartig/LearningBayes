@@ -1,13 +1,8 @@
----
-title: "Priors in Bayesian analysis"
-author: "FlorianHartig"
-date: "9 May 2015"
-output:
-  html_document:
-    keep_md: yes
----
+# Priors in Bayesian analysis
+FlorianHartig  
+9 May 2015  
 
-Priors are key to 
+# General comments
 
 
 # Priors on scale parameters
