@@ -1,3 +1,5 @@
+## Summary
+
 Bayesian inference uses the same models than normal statistics. It simply is a different way to evaluate models. Instead of a significance tests, or a maximum likelihood estimate, Bayesian inference calculates a posterior distribution. The posterior is defined as 
 
 P(phi|D) = c * p(D|phi) * p(phi) 
