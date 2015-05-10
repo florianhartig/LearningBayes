@@ -16,22 +16,74 @@ knitr::opts_chunk$set(fig.width=5, fig.height=5)
 set.seed(123)
 ```
 
-The choice of prior (prior eliciation) is key to Bayesian analysis, and it is arguably the most contentious step in the whole procedure. 
+## Overview priors
 
-The neccessity to specify priors was the main reason why Fisher and others developed MLE and NHST. 
+The choice of prior (prior eliciation) is key to Bayesian analysis, and it is arguably the most contentious step in the whole procedure, as it supposedly contains "subjective" judgements. I disagree with this notion. The choice of a prior is not neccessarily subjective. It simply means that, unlike in a frequentist analysis, we should generally collect everything that is known about a parameter in advance, which may be done in an objective way. Also, we can try to avoid the inclusion of prior knowledge by choosing so-called uninformative (aka vague, reference) priors. So, a first thing to note about priors is that we have 
 
-If we speak about priors, we have to first make some disticitons 
+* Informative priors that express prior knowledge about an inferential question
+* Uninformative priors that express no prior knowledge about an inferential question
 
-* Uninformative priors are priors that are meant to express no prior information on a particular parameter
-* Informative priors are the opposite 
+More about the choice of uninformative priors below. But first some other statements:
 
-## Scaling and scale-invariance of priors 
+* In the limit if infinitely many data, the likelihood gets infintely sharp, and therefore the prior choice irrelevant (as long as the prior is not 0 anywhere there is likelihood)
+* Priors are therefore most important if you have a small dataset 
+* Priors are changed by rescaling parameters (see below)
+* Uninformative priors are not always flat (see below). For common problems, people have developed recommendations for which priors should be used in an uninformative setting 
 
 
+## Scaling and scale-invariance of prior choices 
 
+Scaling is key to understand why uninformative priors can't always be flat. Imagine the following situation: we have a dataset on average tree diameters, and we want to infer the average with a Bayesian method. We shouldn't really look at the data before we specify our prior, so let's just specify the prior, and assume we choose a flat prior between 1 and 10 because we don't want to bias our data in any way
+
+```{r}
+values = 1:5
+priorWeight = rep(1/5, 5)
+barplot(priorWeight, names.arg = values, xlab = "size [cm]", ylab = "priorProbability", col = "darkseagreen")
+```
+
+Now, let's assume that we decide do change the analysis slightly, and measure average size in the basal area, which scales to diameter as x^2. We have already specified our prior knowledge about diameter, so for each cm of diameter we have specified the same weight. 
+
+If we rescale the x-axis to basal area, the length of each bar on the x-axis changes - large values are getting broader, short values are getting more narrow. If the probability weight is to stay the same, we get the following picture:
+
+```{r}
+barplot(priorWeight/values^2, width = values^2, names.arg = values^2, xlab = "size [cm^2]", ylab = "priorProbability", col = "darkseagreen")
+```
+
+The message here is that if we are free to rescale predictors as we want (which is generally true), the prior cannot be flat for all possible parameter transformations. 
+
+A key for any rule about finding uninformative priors is therefore that the rule must be invariant under parameter transformation. 
+
+A second message is that in Bayesian statistics, you have to be a bit careful about parameter transformations, because we don't just look at one value, but at a whole distribution, and the shape of this distribution will change of we reparameterize. 
 
 
 ## Default choices for uniformative priors 
+
+So, what is the right choice for uninformative priors? The somewhat disturbing answer is that there is no generally accepted solution for this problem. One famous proposal that contains many of the desirable properties is [Jeffrey's prior](http://en.wikipedia.org/wiki/Jeffreys_prior) which is defined as 
+
+p(phi) ~ sqrt ( det ( F(phi)))
+
+where F(phi) is the [Fisher information matrix](http://en.wikipedia.org/wiki/Fisher_information), which basically tells you how strongly the likelihood changes if parameters change. It is easy to see that the prior choice will then be
+
+* invariant under rescaling parameters
+* proportional to how strongly parameters affect the likelihood
+
+To me, this seems to cover the main agreements about prior choice. Unfortunately, Jeffrey's prior seems to have some problems for multivariate and hierarchical models, so it's not a general panacea.
+
+## Conjugacy
+
+Another issue that is often important is [conjugacy](http://en.wikipedia.org/wiki/Conjugate_prior). In Bayesian statistics, if the posterior distributions p(θ|x) are in the same family as the prior probability distribution p(θ), the prior and posterior are then called conjugate distributions, and the prior is called a conjugate prior for the likelihood function. 
+
+Conjugacy has two main advantages:
+
+* The shape of the posterior is known, which allows approximating it parameterically
+* Many sampling methods work more efficiently
+
+One therefore usually tries to specify conjugate priors if possible. 
+
+
+## Typical uninformative choices 
+
+
 
 1. For **scale parameters** (something that affects the output linearly, like slope or intercept in a regression), use flat or quasi flat priors such as
   * A bounded uniform distribution
@@ -51,6 +103,8 @@ If we speak about priors, we have to first make some disticitons
   * inverse-gamma
   * half-t family (suggested by Gelman, 2006)
   
+
+4. Other than that, in doubt, people tend to choose conjugate prior distributions
 
 
 ## Readings
