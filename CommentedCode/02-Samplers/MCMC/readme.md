@@ -6,12 +6,6 @@ Scripts to demonstrate how an MCMC works
 * [The DREAM algorithm](https://github.com/florianhartig/LearningBayes/blob/master/CommentedCode/02-Samplers/MCMC/Dream.md)
 
 
-## References for further reading 
-
-http://arxiv.org/abs/1504.01896
-
-
-
 
 ## Software for MCMC sampling
 
@@ -24,6 +18,9 @@ http://arxiv.org/abs/1504.01896
   * [adaptMCMC](http://cran.r-project.org/web/packages/adaptMCMC/)  (adaptive MH)
 
 
+## References for further reading 
+
+http://arxiv.org/abs/1504.01896
 
 
 
