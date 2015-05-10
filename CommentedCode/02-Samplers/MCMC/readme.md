@@ -7,7 +7,7 @@ Scripts to demonstrate how an MCMC works
 
 
 
-## Software for MCMC sampling
+### Software for MCMC sampling
 
 * For sampling statistical models, most people use Bugs, Jags or Stan that include not only a sampler, but also a language to specify the likelihood and priors. See explanations [here](https://github.com/florianhartig/LearningBayes/tree/master/CommentedCode/03-Software)
 
@@ -18,7 +18,7 @@ Scripts to demonstrate how an MCMC works
   * [adaptMCMC](http://cran.r-project.org/web/packages/adaptMCMC/)  (adaptive MH)
 
 
-## References for further reading 
+### References for further reading 
 
 http://arxiv.org/abs/1504.01896
 
