@@ -1,0 +1,23 @@
+---
+title: "Sequential Monte Carlo"
+author: "FlorianHartig"
+date: "10 May 2015"
+output:
+  html_document:
+    keep_md: yes
+---
+
+
+
+### Software
+
+* Biips is a general software for Bayesian inference with interacting particle systems, a.k.a. sequential Monte Carlo (SMC) methods. It aims at popularizing the use of these methods to non-statistician researchers and students, thanks to its automated “black box” inference engine. [website](https://alea.bordeaux.inria.fr/biips/doku.php) 
+
+* LibBi is used for state-space modelling and Bayesian inference on high-performance computer hardware, including multi-core CPUs, many-core GPUs (graphics processing units) and distributed-memory clusters. http://libbi.org/
+
+### Interesting explanations
+
+* [Link collection](http://www.stats.ox.ac.uk/~doucet/smc_resources.html) by Arnaud Doucet
+* [Lecture material](http://www.maths.lancs.ac.uk/~fearnhea/GTP/) by P. Fearnhead
+* https://darrenjw.wordpress.com/2011/05/15/mcmc-monte-carlo-likelihood-estimation-and-the-bootstrap-particle-filter/
+
