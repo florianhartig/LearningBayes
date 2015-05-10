@@ -33,7 +33,7 @@ priorWeight = rep(1/5, 5)
 barplot(priorWeight, names.arg = values, xlab = "size [cm]", ylab = "priorProbability", col = "darkseagreen")
 ```
 
-![](Priors_files/figure-html/unnamed-chunk-2-1.png) 
+![](priors_files/figure-html/unnamed-chunk-2-1.png) 
 
 Now, let's assume that we decide do change the analysis slightly, and measure average size in the basal area, which scales to diameter as x^2. We have already specified our prior knowledge about diameter, so for each cm of diameter we have specified the same weight. 
 
@@ -44,7 +44,7 @@ If we rescale the x-axis to basal area, the length of each bar on the x-axis cha
 barplot(priorWeight/values^2, width = values^2, names.arg = values^2, xlab = "size [cm^2]", ylab = "priorProbability", col = "darkseagreen")
 ```
 
-![](Priors_files/figure-html/unnamed-chunk-3-1.png) 
+![](priors_files/figure-html/unnamed-chunk-3-1.png) 
 
 The message here is that if we are free to rescale predictors as we want (which is generally true), the prior cannot be flat for all possible parameter transformations. 
 

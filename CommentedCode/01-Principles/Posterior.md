@@ -77,31 +77,41 @@ text(1.8,0.3, "Median", col = "blue")
 
 ![](Posterior_files/figure-html/unnamed-chunk-5-1.png) 
 
-### Bayesian credibility intervals
+### Bayesian credibile intervals
 
-Typically, one also wants uncertainties. There basic option to do this is the Bayesian credibility interval, which is the analogue to the frequentist confidence interval. The 95 % Bayesian Credibility interval is the centra 95% of the posterior distribution
+Typically, one also wants uncertainties. There basic option to do this is the Bayesian credible interval, which is the analogue to the frequentist confidence interval. The 95 % Bayesian Credibility interval is the centra 95% of the posterior distribution
 
 
 
 ```r
 plot(parameter,posterior, type = "l")
-polygon(parameter, posterior, border=NA, col="darksalmon")
 
-lowerCI <- parameter[min(which(cumsum(posterior) > 0.025 * 50))]
-upperCI <- parameter[min(which(cumsum(posterior) > 0.975 * 50))]
 
-abline(v=c(lowerCI, upperCI))
-text(0.7,0.4, "Credibility Interval")
+lowerCI <- min(which(cumsum(posterior) > 0.025 * 50))
+upperCI <- min(which(cumsum(posterior) > 0.975 * 50))
+
+par = parameter[c(lowerCI, lowerCI:upperCI, upperCI)]
+post = c(0, posterior[lowerCI:upperCI], 0)
+
+polygon(par, post, border=NA, col="darksalmon")
+
+text(0.75,0.07, "95 % Credibile\n Interval")
 ```
 
 ![](Posterior_files/figure-html/unnamed-chunk-6-1.png) 
 
-There is an alternative to the credibility interval that is particularly useful if the posterior has weird correlation structres. It is called the Highest Posterior Density (HPD). The HPD is the x% highest posterior density interval is the shortest interval in parameter space that contains x% of the posterior probability. It would be a bit cumbersome to calculate this in this example, but if you have an MCMC sample, you get the HPD with the package code via
+There are two alternatives to the credibility interval that is particularly useful if the posterior has weird correlation structres.
+
+1. The **Highest Posterior Density** (HPD). The HPD is the x% highest posterior density interval is the shortest interval in parameter space that contains x% of the posterior probability. It would be a bit cumbersome to calculate this in this example, but if you have an MCMC sample, you get the HPD with the package coda via
 
 
 ```r
 HPDinterval(obj, prob = 0.95, ...)
 ```
+
+2. The Lowest Posterior Loss (LPL) interval, which considers also the prior. 
+
+More on both alternatives [here](http://www.bayesian-inference.com/credible)
 
 
 ### Multivariate issues
@@ -127,8 +137,7 @@ banana=function(A,B,C1,C2,N,keep=10,init=10)
 
     return(bimat)
 }
-A=0.5; B=0; C1=C2=3
-sample=banana(A=A,B=B,C1=C1,C2=C2,50000)
+sample=banana(A=0.5,B=0,C1=3,C2=3,50000)
 ```
 
 
@@ -163,6 +172,7 @@ scatterhist(sample[,1], sample[,2])
 
 Hence, it's important to note that the marginal distributions are not suited to calculate the MAP, CIs, HPDs or any other summary statistics if the posterior distribution is not symmetric in multivariate space. This is a real point of confusion for many people, so keep it in mind!
 
+More options to plot HPD in 2-d here http://www.sumsar.net/blog/2014/11/how-to-summarize-a-2d-posterior-using-a-highest-density-ellipse/
 
 ---
 **Copyright, reuse and updates**: By Florian Hartig. Updates will be posted at https://github.com/florianhartig/LearningBayes. Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License

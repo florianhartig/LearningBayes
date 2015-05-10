@@ -3,19 +3,20 @@ Florian Hartig
 30 Jul 2014  
 
 
-## Background
+### Introduction
 
 In Hartig, F.; Calabrese, J. M.; Reineking, B.; Wiegand, T. & Huth, A. (2011) Statistical inference for stochastic simulation models - theory and application. Ecol. Lett., 14, 816-827, we classify two main competing methods for models via simulation-based likelihood approximation
 
 1. Likelihood-approximations based on local, non-parametric approximations of the variance of the simulation outputs, particularly Approximate Bayesian Computation (ABC, Beaumont, M. A. (2010) Approximate Bayesian computation in evolution and ecology. Annu. Rev. Ecol. Evol. Syst., 41, 379-406.)
 
-2. Likelihood-approximations based on parametric, typically global approximation of the simulation output such as Synthetic Likelihood (Wood, S. N. (2010) Statistical inference for noisy nonlinear ecological dynamic systems. Nature, 466, 1102-1104.)
+2. Likelihood-approximations based on parametric, typically global approximation of the simulation output such as Synthetic Likelihood, see Wood, S. N. (2010) Statistical inference for noisy nonlinear ecological dynamic systems. Nature, 466, 1102-1104. An example for fitting a stochastic forest gap model do data via this method is Hartig, F.; Dislich, C.; Wiegand, T. & Huth, A. (2014) Technical Note: Approximate Bayesian parameterization of a process-based tropical forest model. Biogeosciences, 11, 1261-1272.
 
 
-## Example Data / Model
+
+### Example Data / Model
 
 
-### The model
+#### The model
 
 Assume we have a stochastic model that we want to fit. It takes one parameter, and has an output of 10 values which happen to be around the mean of the parameter that we put in 
 
@@ -27,7 +28,7 @@ stochasticModel <- function(par){
 }
 ```
 
-### Test data
+#### Test data
 
 Lets's create some data with known parameters
 
@@ -36,7 +37,7 @@ Lets's create some data with known parameters
 data <- stochasticModel(c(3,-2))
 ```
 
-### Summary statistics 
+#### Summary statistics 
 
 We want to use ABC / synthetic likelihood to infer the parameters that were used. Both ABC and synthetic likelihoods require summary statistics, we use mean and sd of the data. 
 
@@ -47,7 +48,7 @@ meandata <- mean(data)
 standarddeviationdata <- sd(data)
 ```
 
-## ABC-MCMC solution
+### ABC-MCMC solution
 
 Following Marjoram, P.; Molitor, J.; Plagnol, V. & Tavare, S. (2003) Markov chain Monte Carlo without likelihoods. Proc. Natl. Acad. Sci. USA, 100, 15324-15328, we plug the ABC acceptance into a standard metropolis hastings MCMC.
  
@@ -58,7 +59,7 @@ library(coda)
 ```
 
 ```
-## Loading required package: lattice
+## Warning: package 'coda' was built under R version 3.1.3
 ```
 
 ```r
@@ -93,7 +94,7 @@ plot(posterior)
 
 ![](ABCAndSynthetic_files/figure-html/unnamed-chunk-4-1.png) 
 
-## Synthetic likelihood
+### Synthetic likelihood
 
 Following Wood, S. N. (2010) Statistical inference for noisy nonlinear ecological dynamic systems. Nature, 466, 1102-1104 and Hartig, F.; Dislich, C.; Wiegand, T. & Huth, A. (2014) Technical Note: Approximate Bayesian parameterization of a process-based tropical forest model. Biogeosciences, 11, 1261-1272, the synthetic likelihood approach is based on sampling a few times from the model, and approximating the likelihood by fitting a Gaussian distribution to the simulation outputs:
 

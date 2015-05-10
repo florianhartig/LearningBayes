@@ -72,28 +72,38 @@ abline(v=medianPosterior, col = "blue")
 text(1.8,0.3, "Median", col = "blue")
 ```
 
-### Bayesian credibility intervals
+### Bayesian credibile intervals
 
-Typically, one also wants uncertainties. There basic option to do this is the Bayesian credibility interval, which is the analogue to the frequentist confidence interval. The 95 % Bayesian Credibility interval is the centra 95% of the posterior distribution
+Typically, one also wants uncertainties. There basic option to do this is the Bayesian credible interval, which is the analogue to the frequentist confidence interval. The 95 % Bayesian Credibility interval is the centra 95% of the posterior distribution
 
 
 ```{r}
 plot(parameter,posterior, type = "l")
-polygon(parameter, posterior, border=NA, col="darksalmon")
 
-lowerCI <- parameter[min(which(cumsum(posterior) > 0.025 * 50))]
-upperCI <- parameter[min(which(cumsum(posterior) > 0.975 * 50))]
 
-abline(v=c(lowerCI, upperCI))
-text(0.7,0.4, "Credibility Interval")
+lowerCI <- min(which(cumsum(posterior) > 0.025 * 50))
+upperCI <- min(which(cumsum(posterior) > 0.975 * 50))
+
+par = parameter[c(lowerCI, lowerCI:upperCI, upperCI)]
+post = c(0, posterior[lowerCI:upperCI], 0)
+
+polygon(par, post, border=NA, col="darksalmon")
+
+text(0.75,0.07, "95 % Credibile\n Interval")
 
 ```
 
-There is an alternative to the credibility interval that is particularly useful if the posterior has weird correlation structres. It is called the Highest Posterior Density (HPD). The HPD is the x% highest posterior density interval is the shortest interval in parameter space that contains x% of the posterior probability. It would be a bit cumbersome to calculate this in this example, but if you have an MCMC sample, you get the HPD with the package code via
+There are two alternatives to the credibility interval that is particularly useful if the posterior has weird correlation structres.
+
+1. The **Highest Posterior Density** (HPD). The HPD is the x% highest posterior density interval is the shortest interval in parameter space that contains x% of the posterior probability. It would be a bit cumbersome to calculate this in this example, but if you have an MCMC sample, you get the HPD with the package coda via
 
 ```{r, eval=FALSE}
 HPDinterval(obj, prob = 0.95, ...)
 ```
+
+2. The Lowest Posterior Loss (LPL) interval, which considers also the prior. 
+
+More on both alternatives [here](http://www.bayesian-inference.com/credible)
 
 
 ### Multivariate issues

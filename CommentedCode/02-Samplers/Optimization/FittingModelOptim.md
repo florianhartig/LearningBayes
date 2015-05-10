@@ -8,7 +8,7 @@ Florian Hartig
 
 
 
-# The model 
+## The model 
 
 Assume we want to fit a growth model to data. I am choosing here a logistic model for simplicty, but any other option would be fine as well. 
 
@@ -24,29 +24,28 @@ model <- function (N0 = 3, r=0.2, K=50, timesteps = 20){
 }
 ```
 
-# The data 
+## The data 
 
 For convenience, I create our data simply from the model and add some noise 
 
 
 ```r
 truth <- model(r = 0.25, K = 70, timesteps=100) 
-data <- truth[1:21] + rnorm(21) * rexp(21)
+data <- truth[1:21] + 2 * rnorm(21) * rexp(21)
 plot(data, ylab = "Time", xlab ="Size")
 ```
 
 ![](FittingModelOptim_files/figure-html/unnamed-chunk-3-1.png) 
 
-For the noise, I have deliberately chosen not a normal distribution, but something that has more heavy tails
-
+For the noise, I have deliberately chosen not a normal distribution, but something that has more heavy tails to get a few "outliers".
 
 ```r
-hist(rnorm(1000, sd = 0.5) * rexp(1000), breaks = 50)
+hist(rnorm(1000) * rexp(1000), breaks = 50)
 ```
 
 ![](FittingModelOptim_files/figure-html/unnamed-chunk-4-1.png) 
 
-# Objective function
+## Objective function
 
 In this case, we know of course the true parameters, but in any realistic situation we wouldn't. Hence, we need to be able to compare different parameterizations to the data. 
 
@@ -67,68 +66,29 @@ objective <- function(x){
 
 
 
-# Optimization 
+## Optimization 
 
-Trying to optimize by hand, and then by optimization
+To get a feeling for the problem, why not try optimization by hand before going to the optimizers? Take the code below and change the parameters!
 
 
 ```r
 plot(data, xlim = c(0,20), ylim = c(0,20))
 
-objective(c(5,0.4,40))
+objective(c(5,0.2,40))
 ```
 
 ```
-## [1] 169.3504
-```
-
-```r
-lines(model(5,0.4,40), col = 1)
-
-objective(c(5,0.4,50))
-```
-
-```
-## [1] 231.8646
+## [1] 837.6219
 ```
 
 ```r
-lines(model(5,0.4,50), col = 2)
-
-objective(c(4,0.4,50))
-```
-
-```
-## [1] 174.7265
-```
-
-```r
-lines(model(4,0.4,50), col = 3)
-
-objective(c(4,0.4,55))
-```
-
-```
-## [1] 268.4593
-```
-
-```r
-lines(model(4,0.4,55), col = 4)
-
-objective(c(4,0.4,60))
-```
-
-```
-## [1] 410.6851
-```
-
-```r
-lines(model(4,0.4,60), col = 5)
-
-legend("bottomright", c("5,0.4,40", "5,0.4,50", "4,0.4,50", "4,0.4,55", "4,0.4,60"), lwd = c(1,1,1,1,1), col = 1:5 )
+lines(model(5,0.2,40), col = 1)
 ```
 
 ![](FittingModelOptim_files/figure-html/unnamed-chunk-6-1.png) 
+
+OK, here comes the systematic optimization algorithm 
+
 
 
 ```r
@@ -139,14 +99,14 @@ optimfit
 
 ```
 ## $par
-## [1]  3.1477579  0.2324354 79.9218235
+## [1]  3.2518435  0.2209815 89.2718552
 ## 
 ## $value
-## [1] 49.08554
+## [1] 196.4886
 ## 
 ## $counts
 ## function gradient 
-##      218       NA 
+##      366       NA 
 ## 
 ## $convergence
 ## [1] 0
@@ -175,21 +135,23 @@ Look at the help in optim and change the optimization algorithm. Do the results 
 plot(data, xlim = c(0,20), ylim = c(0,20))
 
 optimfit <- optim(c(1,1.3,40), objective, method = "Nelder-Mead")
-lines(model(optimfit$par[1], optimfit$par[2], optimfit$par[3], 40), col = "red", lwd = 2)
+lines(model(optimfit$par[1], optimfit$par[2], optimfit$par[3], 40), col = "red", lwd = 2, lty = 2)
 
 optimfit <- optim(c(1,1.3,40), objective, method = "SANN")
-lines(model(optimfit$par[1], optimfit$par[2], optimfit$par[3], 40), col = "red", lwd = 2)
+lines(model(optimfit$par[1], optimfit$par[2], optimfit$par[3], 40), col = "red", lwd = 2, lty = 3)
 
 optimfit <- optim(c(1,1.3,40), objective, method = "BFGS")
-lines(model(optimfit$par[1], optimfit$par[2], optimfit$par[3], 40), col = "red", lwd = 2)
+lines(model(optimfit$par[1], optimfit$par[2], optimfit$par[3], 40), col = "red", lwd = 2, lty = 4)
 
 lines(truth[1:21], col = "green")
+
+legend("topleft", c("Nelder-Mead", "SANN", "BFGS", "truth"), lty = c(2:4, 1), lwd = 2, col = c("red", "red","red", "green"))
 ```
 
 ![](FittingModelOptim_files/figure-html/unnamed-chunk-8-1.png) 
 
 
-# Uncertainty around the optimum 
+### Uncertainty around the optimum 
 
 We can get a basic estimate of the uncertainty around the optimum by looking at the hessian, which is calculated by the optim function 
 
@@ -200,10 +162,10 @@ optimfit$hessian
 ```
 
 ```
-##             [,1]       [,2]        [,3]
-## [1,]   54.612414  1611.1488   2.6406695
-## [2,] 1611.148764 96234.7360 203.5707491
-## [3,]    2.640669   203.5707   0.4651391
+##             [,1]        [,2]        [,3]
+## [1,]   60.750466   1973.5819   2.6622494
+## [2,] 1973.581923 120983.6894 206.4619345
+## [3,]    2.662249    206.4619   0.3806677
 ```
 Larger values indicate stronger uncertainty / correlation. If we want to plot the goodness-of-fit across parameters, we have two three options 
 
@@ -237,10 +199,10 @@ vcov(fit)
 ```
 
 ```
-##             N0             r          K
-## N0  0.09437883 -0.0060190502  2.0946409
-## r  -0.00601905  0.0005238617 -0.1947522
-## K   2.09464090 -0.1947521568 75.3584892
+##              N0             r          K
+## N0  0.091068320 -0.0053574592  2.2660916
+## r  -0.005357459  0.0004262682 -0.1934973
+## K   2.266091561 -0.1934972654 91.6170293
 ```
 
 ```r
@@ -249,9 +211,9 @@ cov2cor(vcov(fit))
 
 ```
 ##            N0          r          K
-## N0  1.0000000 -0.8560169  0.7854277
-## r  -0.8560169  1.0000000 -0.9801846
-## K   0.7854277 -0.9801846  1.0000000
+## N0  1.0000000 -0.8598719  0.7845230
+## r  -0.8598719  1.0000000 -0.9791411
+## K   0.7845230 -0.9791411  1.0000000
 ```
 
 Note that the percentages don't have a meaning only if the objective function is the lieklihood. 
@@ -260,7 +222,7 @@ For option 3, see MCMC sampling below. I leave out option 2.
 
 
 
-# More powerful optimization algorithms in R
+### More powerful optimization algorithms in R
 
 * optimx: A Replacement and Extension of the optim() Function http://cran.r-project.org/web/packages/optimx/index.html
 
@@ -269,10 +231,9 @@ For option 3, see MCMC sampling below. I leave out option 2.
 * CRAN Task view optimization with a lot more packages http://cran.r-project.org/web/views/Optimization.html 
 
 
-# Global view on the shape of the objective function via MCMC
+## Global view on the shape of the objective function via MCMC
 
 A disadvantage of optimization is that we don't get a global view of the objective function that we optimize, 
-
 
 
 ```r
@@ -306,8 +267,6 @@ run_metropolis_MCMC <- function(startvalue, iterations){
 }
 ```
 
-
-
 Let's run the algorithm 
 
 
@@ -324,6 +283,8 @@ plot(chain)
 ```
 
 ![](FittingModelOptim_files/figure-html/unnamed-chunk-13-1.png) 
+
+### Correlations between parameters 
 
 
 To see correlations between parameters, we have to do a bit more. I'm loading a function from me to have a better plotting option. You need the 
@@ -350,7 +311,7 @@ betterPairs(chain[-(1:burnIn),])
 ![](FittingModelOptim_files/figure-html/unnamed-chunk-15-1.png) 
 
 
-# Forwarding of the parametric uncertainty to our predictions 
+### Forwarding of the parametric uncertainty to our predictions 
 
 
 
@@ -359,15 +320,22 @@ plot(data, xlim = c(0,40), ylim = c(0,20))
 
 for (i in 1:1000){
   
-  pars = chain[10000+50*i,]
+  pars = chain[10000+90*i,]
   
-  lines(model(pars[1], pars[2], pars[3], 40), col="#44444404", lwd = 10)
+  lines(model(pars[1], pars[2], pars[3], 40), col="#73A9D803", lwd = 4)
   
 }
 
-lines(model(optimfit$par[1], optimfit$par[2], optimfit$par[3], 40), col = "red", lwd = 1)
-points(data, col = "red")
-lines(truth, col = "green")
+lines(model(optimfit$par[1], optimfit$par[2], optimfit$par[3], 40), col = "red", lwd = 3)
+points(data)
+lines(truth, col = "green", lwd = 3)
+
+
+legend("topleft", c("optimization", "posterior predictive", "truth"), lwd = 2, col = c("red", "#73A9D8", "green"))
 ```
 
 ![](FittingModelOptim_files/figure-html/unnamed-chunk-16-1.png) 
+
+
+---
+**Copyright, reuse and updates**: By Florian Hartig. Updates will be posted at https://github.com/florianhartig/LearningBayes. Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
