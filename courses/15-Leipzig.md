@@ -4,14 +4,12 @@
 ## Course plan
 
 * Day 1 - morning 
-
   * Intro Bayes 
   * Prior 
   * Posterior interpretation 
   * MCMC sampling 
 
 * Day 1 - Afternoon
-
   * Intro Jags 
   * Linear regression Jags
 
