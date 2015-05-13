@@ -6,6 +6,12 @@ output: html_document
 ---
 
 
+### General
+
+* http://en.wikipedia.org/wiki/CMA-ES
 
 
-http://en.wikipedia.org/wiki/CMA-ES
+### Pareto
+
+* TunePareto: Multi-objective parameter tuning for classifiers http://cran.r-project.org/web/packages/TunePareto/index.html
+* mco: Multiple Criteria Optimization Algorithms and Related Functions cran.r-project.org/web/packages/mco

@@ -32,7 +32,8 @@ For convenience, I create our data simply from the model and add some noise
 ```r
 truth <- model(r = 0.25, K = 70, timesteps=100) 
 data <- truth[1:21] + 2 * rnorm(21) * rexp(21)
-plot(data, ylab = "Time", xlab ="Size")
+plot(data, xlab = "Time", ylab ="Size")
+lines(truth, col = "green")
 ```
 
 ![](FittingModelOptim_files/figure-html/unnamed-chunk-3-1.png) 
@@ -118,7 +119,7 @@ optimfit
 ```r
 # plotting the results
 
-plot(data, xlim = c(0,20), ylim = c(0,20))
+plot(data, xlim = c(0,20), ylim = c(0,20), xlab = "Time", ylab ="Size")
 
 lines(model(optimfit$par[1], optimfit$par[2], optimfit$par[3], 40), col = "red", lwd = 2)
 
@@ -132,7 +133,7 @@ Look at the help in optim and change the optimization algorithm. Do the results 
 
 
 ```r
-plot(data, xlim = c(0,20), ylim = c(0,20))
+plot(data, xlim = c(0,20), ylim = c(0,20), xlab = "Time", ylab ="Size")
 
 optimfit <- optim(c(1,1.3,40), objective, method = "Nelder-Mead")
 lines(model(optimfit$par[1], optimfit$par[2], optimfit$par[3], 40), col = "red", lwd = 2, lty = 2)
@@ -316,7 +317,7 @@ betterPairs(chain[-(1:burnIn),])
 
 
 ```r
-plot(data, xlim = c(0,40), ylim = c(0,20))
+plot(data, xlim = c(0,40), ylim = c(0,20), xlab = "Time", ylab ="Size")
 
 for (i in 1:1000){
   
@@ -335,6 +336,15 @@ legend("topleft", c("optimization", "posterior predictive", "truth"), lwd = 2, c
 ```
 
 ![](FittingModelOptim_files/figure-html/unnamed-chunk-16-1.png) 
+
+
+### Exercises
+
+Run the code until the different optimization algorithms
+
+1. Make sure you understand what we are doing 
+2. Change the objective function and compare
+3. Change the optimization algorithm and compare
 
 
 ---
