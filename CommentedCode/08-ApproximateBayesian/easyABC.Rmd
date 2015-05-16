@@ -57,8 +57,7 @@ par(mfrow=c(2,1))
 hist(ABC_Marjoram_original$param[5000:10000,1], main = "Posterior for mean")
 hist(ABC_Marjoram_original$param[5000:10000,2], main = "Posterior for standard deviation")
 ```
-<br />
-<br />
+
 
 ## References for further reading
 

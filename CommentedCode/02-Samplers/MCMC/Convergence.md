@@ -248,13 +248,28 @@ gelman.diag(combinedchains)
 ## 1.06
 ```
 
+The gelman.diag gives you the scale reduction factors for each parameter. A factor of 1 means that between variance and within chain variance are equal, larger values mean that there is still a notable difference between chains. Often, it is said that everything below 1.1 or 1.05 or so is OK, but note that this is more a rule of thumb, and also depends what you want to estimate of the chain. Look at this plot, which shows the development of the 0.025,0.5,0.975 quantiles over time for each parameter. 
+
+
+```r
+cumuplot(chain)
+```
+
+![](Convergence_files/figure-html/unnamed-chunk-3-1.png) 
+
+The point to note here is that the median typically stabalizes a lot quicker than the 0.025 quantiles, or other extreme value statistics such as the max, which one should expect when sampling from a distribution. The recommendations for the gelman diagnostics are derived for estimations of central summary statistics of the chain, such as median and mean. If you want to estimate other properties, you may want to be more critical. 
+
+Another issue about the gelman-diag is that the diagnostics itself is quite variable. Therefore it is highly recommended to look at the following plot
+
+
 ```r
 gelman.plot(combinedchains)
 ```
 
-![](Convergence_files/figure-html/Convergence_diagnostics-2.png) 
+![](Convergence_files/figure-html/unnamed-chunk-4-1.png) 
 
-The gelman.diag gives you the scale reduction factors for each parameter. A factor of 1 means that between variance and within chain variance are equal, larger values mean that there is still a notable difference between chains. Often, it is said that everything below 1.1 or so is OK, but note that this is more a rule of thumb. The gelman,plot shows you the development of the scale-reduction over time (chain steps), which is useful to see whether a low chain reduction is also stable (sometimes, the factors go down and then up again, as you will see). Also, note that for any real analysis, you have to make sure to discard any bias that arises from the starting point of your chain (burn-in), typical values here are a few 1000-10000 steps. The gelman plot is also a nice tool to see roughly where this point is, that is, from which point on the chains seem roughly converged.
+The gelman,plot shows you the development of the scale-reduction over time (chain steps), which is useful to see whether a low chain reduction is also stable (sometimes, the factors go down and then up again, as you will see). Also, note that for any real analysis, you have to make sure to discard any bias that arises from the starting point of your chain (burn-in), typical values here are a few 1000-10000 steps. The gelman plot is also a nice tool to see roughly where this point is, that is, from which point on the chains seem roughly converged.
+
 
 ## Improving convergence / mixing
 
@@ -282,7 +297,7 @@ combinedchains = mcmc.list(chain1, chain2)
 plot(combinedchains)
 ```
 
-![](Convergence_files/figure-html/unnamed-chunk-3-1.png) 
+![](Convergence_files/figure-html/unnamed-chunk-5-1.png) 
 
 ```r
 #gelman.plot(combinedchains)
@@ -301,7 +316,7 @@ combinedchains = mcmc.list(chain1, chain2)
 plot(combinedchains)
 ```
 
-![](Convergence_files/figure-html/unnamed-chunk-4-1.png) 
+![](Convergence_files/figure-html/unnamed-chunk-6-1.png) 
 
 ```r
 #gelman.plot(combinedchains)

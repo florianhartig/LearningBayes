@@ -19,7 +19,7 @@ Assume I'm trying to guess if a coin comes up heads or tails. I have had 10 tria
 
 ```{r}
 trials = 10
-success = 7
+success = 6
 ```
 
 What we want to know now is what my properties are regarding correctly guessing the outcome of the coin flip experiment. 
@@ -69,7 +69,7 @@ legend("topleft", legend = c("Likelihood", "maximum", "CI"), col = c("black", "r
 MLEEstimate <- parametervalues[which.max(likelihood)]
 abline(v=MLEEstimate, col = "red")
 
-confidence.level <- log(max(likelihood)) -1.96
+confidence.level <- log(max(likelihood)) -1.92
 leftCI <- parametervalues[which.min(abs(log(likelihood[1:which.max(likelihood)]) - confidence.level))]
 abline(v=leftCI, col = "green")
 rightCI <- parametervalues[which.min(abs(log(likelihood[which.max(likelihood):length(likelihood)]) - confidence.level)) + which.max(likelihood) -1]
