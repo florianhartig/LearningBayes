@@ -7,19 +7,20 @@ output:
     keep_md: yes
 ---
 
-Based on an example provided by Jörn Pagel. 
 
 ```{r, echo=F, warning=F, message=F}
 set.seed(123)
 rm(list=ls(all=TRUE))
 library(rjags)
+library(runjags)
 library(effects)
+library(R2jags)
 ```
 
 
 ## Creation of test data
 
-```{r, fig.width=7, fig.height=7}
+```{r, fig.width=5, fig.height=5}
 a <- 5
 b <- 10
 sigma <- 10
@@ -31,7 +32,7 @@ plot(x,y)
 
 ## Non-Bayesian analysis of this model
 
-```{r, fig.width=7, fig.height=7}
+```{r, fig.width=5, fig.height=5}
 fit <- lm(y ~ x)
 summary(fit)
 plot(allEffects(fit, partial.residuals = T))
@@ -43,7 +44,7 @@ plot(allEffects(fit, partial.residuals = T))
 
 ```{r}
   # 1) Model definition exactly how we created our data 
-  modelCode = textConnection("
+  modelCode = "
     model{
       # Likelihood
       for(i in 1:i.max){
@@ -56,7 +57,7 @@ plot(allEffects(fit, partial.residuals = T))
       tau <- 1/(sigma*sigma)
       sigma ~ dunif(0,100)
     }
-  ")
+  "
   
   # 2) Set up a list that contains all the necessary data (here, including parameters of the prior distribution)
   Data = list(y = y, x = x, i.max = length(y))
@@ -66,11 +67,12 @@ plot(allEffects(fit, partial.residuals = T))
 
 ```
 
-Running the model
+
+Running the model with rjags
 
 ```{r, fig.width=7, fig.height=7}
   # Compile the model and run the MCMC for an adaptation (burn-in) phase
-  jagsModel <- jags.model(file= modelCode, data=Data, init = inits.fn, n.chains = 3, n.adapt= 1000)
+  jagsModel <- jags.model(file= textConnection(modelCode), data=Data, init = inits.fn, n.chains = 3, n.adapt= 1000)
 
   # Specify parameters for which posterior samples are saved
   para.names <- c("a","b","sigma")
@@ -94,12 +96,38 @@ summary(Samples)
 
 predictions (not very elegant)
 
-```{r, fig.width=7, fig.height=7}
+```{r, fig.width=5, fig.height=5}
 plot(x,y)
 sampleMatrix <- as.matrix(Samples)
 selection <- sample(dim(sampleMatrix)[1], 1000)
 for (i in selection) abline(sampleMatrix[i,1], sampleMatrix[i,1], col = "#11111105")
 
+```
+
+# Running the model with runjags
+
+```{r}
+runJagsResults <- run.jags(model=modelCode, monitor=c("a","b","sigma"), data=Data, n.chains=2, method="rjags", inits=inits.fn)
+plot(runJagsResults)
+```
+
+
+# Running the model with R2jags
+
+```{r,  fig.width=14, fig.height=14}
+R2JagsResults <- jags(data=Data, inits=inits.fn, parameters.to.save=c("a","b","sigma"), n.chains=2, n.iter=5000, model.file=textConnection(modelCode))
+
+plot(R2JagsResults)
+print(R2JagsResults)
+
+```
+
+Change to coda standard format
+
+```{r, fig.width=14, fig.height=14}
+R2JagsCoda <- as.mcmc(R2JagsResults)
+plot(R2JagsCoda)
+summary(R2JagsCoda)
 ```
 
 
