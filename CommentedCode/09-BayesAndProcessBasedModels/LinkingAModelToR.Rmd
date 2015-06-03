@@ -143,6 +143,11 @@ plot(output)
 
 ```
 
+## Trouble shooting 
+
+* If you have problems with the system command, try system2
+
+
 ## Further readings 
 
 As introductions to what can be done AFTER the model is wrapped in R
