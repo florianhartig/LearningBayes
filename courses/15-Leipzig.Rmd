@@ -1,6 +1,11 @@
-# Information for participants Bayes course Leipzig '15
-Florian Hartig  
-3 Jun 2015  
+---
+title: "Information for participants Bayes course Leipzig '15"
+author: "Florian Hartig"
+date: "3 Jun 2015"
+output:
+  html_document:
+    keep_md: yes
+---
 
 ### Lecturers
 
@@ -46,8 +51,7 @@ The course runs from 9.00 to 17.00, with a one-hour lunch break around 12.30
 
 * Check that everything runs fine by running [the following code](https://raw.githubusercontent.com/florianhartig/LearningBayes/master/CommentedCode/03-Software/Jags/testR2jags.R)
 
-
-```r
+```{r, eval=F}
 # Test of the R2jags system
 # Modified from the help file of the jags function
 
@@ -126,5 +130,7 @@ plot(jagsfit)
 # or to use some plots in coda
 # use as.mcmmc to convert rjags object into mcmc.list
 plot(as.mcmc(jagsfit))
+
+
 ```
 
