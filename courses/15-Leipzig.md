@@ -1,4 +1,4 @@
-# Information for participants Bayes course Leipzig '15
+# Information for participants of the course "Introduction to Bayesian Statistics" Leipzig '15
 Florian Hartig  
 3 Jun 2015  
 
