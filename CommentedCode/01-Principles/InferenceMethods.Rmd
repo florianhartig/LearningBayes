@@ -40,7 +40,7 @@ In the rest of this script, I will look at this data with the binomial model, ap
 
 Each of these methods is consistent and calculates a sensible thing. But each of these three things are different. I'll highlight differences at the end of each application. 
 
-# THE MLE ESTIMATE
+## THE MLE ESTIMATE
 
 The idea of maximum likelihood estimation (MLE) is to look for the set of parameters that would, under the given model assumption, lead to the highest probability to obtain the observed data. In our case we have only one parameter, the probability of success per flip. Let's plot this for different values and look for the maximum.  
 
@@ -57,11 +57,15 @@ MLEEstimate <- parametervalues[which.max(likelihood)]
 abline(v=MLEEstimate, col = "red")
 ```
 
-## Confidence intervals
+### Confidence intervals
 
 OK, the MLE is the best value, but what is often m
 
-MLE confidence intervals are constructed by comparing likelihood values of single parameters against each other. We have the MLE estimate as null hypothesis and ask ourselves how likely it is that the true parameter is a different one. By cutting at 0.05 probability, we construct the frequentist CI interval. The test statistics that can be used to do this are discussed, e.g., in https://onlinecourses.science.psu.edu/stat504/node/39. The result for a 1-parameter model is that the CI is at a log likelihood difference of 1.96
+MLE confidence intervals are constructed by asking yourself:
+
+If I would do the experiment many times, how would the estimate scatter, and how wide would I have to take the interval so that the true value is contained in the interval x% (typically 95%) under repreatedly performing the experiment?
+
+The test statistics that can be used to do this are discussed, e.g., in https://onlinecourses.science.psu.edu/stat504/node/39. The result for a 1-parameter model is that the CI is at a log likelihood difference of 1.92
 
 ```{r}
 plot(parametervalues, likelihood, type = "l")
@@ -80,13 +84,13 @@ abline(v=rightCI, col = "green")
 Note: there are also other methods to look at uncertainty with likelihoods, e.g. the profile likelihood, see discussion [here](http://stats.stackexchange.com/questions/77528/what-is-the-relationship-between-profile-likelihood-and-confidence-intervals)
 
 
-## Outcome of a MLE 
+### Outcome of a MLE 
 
 * Best estimate (MLE)
 * 95% CI --> if we would do the experiment over and over again, 95% of the CIs would contain the true value. NOTE: this is != saying: for a given dataset, the true value is in the CI with 95% probability!
 
 
-# GETTING THE P-VALUE FOR FAIR COIN
+## GETTING THE P-VALUE FOR FAIR COIN
 
 want to get p-value for a smaller or equal result (1-tailed) given a fair coin p(k<=kobs|H0:p=0.5). Basically, we want the sum over the red bars
 
@@ -112,7 +116,7 @@ binom.test(7,trials,0.5, alternative="greater") # testing for greater
 binom.test(7,trials,0.5, alternative="less") # testing for less
 ```
 
-## Side-note: multiple testing
+### Side-note: multiple testing
 
 Imagine there is no effect, but we keep on repeating the test 100 times. How often do you think will we find a significant effect?
 
@@ -132,13 +136,13 @@ pValueAdjusted
 max(pValueAdjusted < 0.05) == 1
 ```
 
-## Outcome of a NHST 
+### Outcome of a NHST 
 
 * p-value --> probability to see the observed or more extreme data given the null hypothesis
 * rejection H0 if p < alpha. If p > alpha, the test ist inconclusive
 * if you do multiple tests, you may want to adjust the p-values
 
-# The BAYESIAN ESTIMATE
+## The BAYESIAN ESTIMATE
 
 Remember for Bayes p(M|D) = p(D|M) * p(M) / P(D), and we can show that p(D) is just the integral over p(D|M) * p(M)
 
@@ -173,7 +177,7 @@ legend("topright", c("likelihood", "prior", "posterior"), col = c("black", "red"
 you can see that the likelihood moves the posterior away from the prior, but not by much. try the same think with more data, but the same ratio, i.e. change to 30 trials, 9 success
 
 
-# Bayesian CI
+### Bayesian CI
 
 calculated via central 95% probability
 
@@ -191,9 +195,9 @@ leftCI <- parametervalues[which.min(abs(cumPost - 0.975))]
 abline(v=leftCI, col = "darkgreen", lty = 2, lwd = 2)
 ```
 
-# Additional comments
+## Additional comments
 
-## Long-term frequencies of errors and multiple testing
+### Long-term frequencies of errors and multiple testing
 
 imagine we have a fair coin, and do 1000 experiments with 10 draws, looking at the p-value, note that we get to the right 5% assumptotically, but not for small data. The fact that it is not exactly 5% is an artifact that appears for discrete distributions (<8 gets acceted, >= 8 rejected, the perfect cut would be intbetween but as we have only discrete options that's not possible to choose)
 
