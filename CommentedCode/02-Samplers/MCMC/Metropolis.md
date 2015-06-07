@@ -11,7 +11,6 @@ As a first step, we create some test data that will be used to fit our model. Le
 
 
 ```r
-# This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 trueA <- 5
 trueB <- 0
 trueSd <- 10
@@ -123,21 +122,17 @@ This is achieved by:
 *Jumping to this new point with a probability p(new)/p(old), where p is the target function, and p>1 means jumping as well 
 
 It’s fun to think about why that works, but for the moment I can assure you it does – when we run this algorithm, distribution of the parameters it visits converges to the target distribution p. 
+
 So, let’s get this in R:
 
 
 ```r
- ################ Metropolis algorithm ################
- proposalfunction <- function(param){
-    return(rnorm(3,mean = param, sd= c(0.1,0.5,0.3)))
-}
- 
 run_metropolis_MCMC <- function(startvalue, iterations){
     chain = array(dim = c(iterations+1,3))
     chain[1,] = startvalue
     for (i in 1:iterations){
-        proposal = proposalfunction(chain[i,])
-         
+        proposal = rnorm(3,mean = chain[i,], sd= c(0.1,0.5,0.3))
+          
         probab = exp(posterior(proposal) - posterior(chain[i,]))
         if (runif(1) < probab){
             chain[i+1,] = proposal
