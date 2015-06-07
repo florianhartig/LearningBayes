@@ -1,0 +1,150 @@
+---
+title: "Model Averaging"
+author: "FlorianHartig"
+date: "15 May 2015"
+output: html_document
+---
+
+Based on an example provided by Jörn Pagel. 
+
+```{r, echo=F, warning=F, message=F}
+set.seed(123)
+rm(list=ls(all=TRUE))
+library(rjags)
+library(effects)
+```
+
+
+## Creation of test data
+
+```{r, fig.width=7, fig.height=7}
+a <- 5
+b <- 10
+c <- 0.1
+sigma <- 10
+
+x <- -15:15
+y <- a * x + b + x^2 * c + rnorm(31,0,sd = sigma)
+plot(x,y)
+```
+
+
+
+## Bayesian analysis of this model (in Jags)
+
+```{r}
+  # 1) Model definition exactly how we created our data 
+  model1 = textConnection("
+    model{
+      # Likelihood
+      for(i in 1:i.max){
+      y[i] ~ dnorm(mu[i],tau)
+      mu[i] <- a*x[i] + b
+      }
+      # Prior distributions
+      a ~ dnorm(0,0.001)
+      b ~ dnorm(0,0.001)
+      tau <- 1/(sigma*sigma)
+      sigma ~ dunif(0,100)
+    }
+  ")
+
+  model2 = textConnection("
+    model{
+      # Likelihood
+      for(i in 1:i.max){
+      y[i] ~ dnorm(mu[i],tau)
+      mu[i] <- a1*x[i] + a2*x[i]*x[i] + b
+      }
+      # Prior distributions
+      a ~ dnorm(0,0.001)
+      b ~ dnorm(0,0.001)
+      tau <- 1/(sigma*sigma)
+      sigma ~ dunif(0,100)
+    }
+  ")
+  
+  # 2) Set up a list that contains all the necessary data (here, including parameters of the prior distribution)
+  Data = list(y = y, x = x, i.max = length(y))
+
+  # 3) Specify a function to generate inital values for the parameters
+  inits.fn <- function() list(a1 = rnorm(1), a2 = rnorm(1), b = rnorm(1), sigma = runif(1,1,100))
+
+```
+
+Running the model
+
+```{r, fig.width=7, fig.height=7}
+  # Compile the model and run the MCMC for an adaptation (burn-in) phase
+  jagsModel <- jags.model(file= model1, data=Data, init = inits.fn, n.chains = 3, n.adapt= 1000)
+
+  # Specify parameters for which posterior samples are saved
+  para.names <- c('pD', 'deviance', "a1","a1","b","sigma")
+
+  # Continue the MCMC runs with sampling
+  Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+  
+  # Plot the mcmc chain and the posterior sample for p
+  plot(Samples)
+```
+
+
+
+
+
+
+
+
+http://pluto.coe.fsu.edu/mcmc-hierMM/
+
+mcmixWAIC <- function (Y,pi,mu,sigma) {
+  ppd <- mcmixPost(Y,pi,mu,sigma)  # R x J matrix
+  lppd <- sum(log(apply(ppd,2,mean)))
+  pWAIC1 <- 2*sum(log(apply(ppd,2,mean))-apply(log(ppd),2,mean))
+  pWAIC2 <- sum(apply(log(ppd),2,var))
+  WAIC1 <- -2*(lppd-pWAIC1)
+  WAIC2 <- -2*(lppd-pWAIC2)
+  c(lppd=lppd, pWAIC1=pWAIC1, WAIC1=WAIC1, pWAIC2=pWAIC2, WAIC2=WAIC2)
+}
+
+mcmixDIC <- function (Y,pi,mu,sigma) {
+  ppd <- mcmixPost(Y,pi,mu,sigma)  # R x J matrix
+  sppd <- apply(log(ppd),1,sum) ## Sum across observations.
+  pi.bayes <- matrix(apply(pi,2,mean),1)
+  mu.bayes <- matrix(apply(mu,2,mean),1)
+  sigma.bayes <- matrix(sqrt(apply(sigma^2,2,mean)),1) # Take average of
+                                        # variance, not sd
+  lppd.bayes <- sum(log(mcmixPost(Y,pi.bayes,mu.bayes,sigma.bayes)))
+  pDIC <- 2*(lppd.bayes - mean(sppd))
+  pDICalt <- 2*var(sppd)
+  DIC <- -2*(lppd.bayes-pDIC)
+  DICalt <- -2*(lppd.bayes-pDICalt)
+  c(lppd=mean(sppd), lppd.bayes=lppd.bayes, pDIC=pDIC, DIC=DIC,
+    pDICalt=pDICalt, DICalt=DICalt)
+}
+
+
+
+## Further readings and applications 
+
+
+http://conradstack.blogspot.de/2012/10/reversible-jump-markov-chain-monte.html
+http://stats.stackexchange.com/questions/4328/reversible-jump-mcmc-code-matlab-or-r
+
+https://www.ceremade.dauphine.fr/~xian/BCS/
+
+http://winbugs-development.mrc-bsu.cam.ac.uk/rjmcmc.html
+
+
+### RJ-MCMC implementations 
+
+http://www.inside-r.org/packages/cran/auteur/docs/rjmcmc.bm
+http://www.inside-r.org/packages/cran/geiger/docs/rjmcmc.bm
+
+
+
+
+
+
+---
+**Copyright, reuse and updates**: By Florian Hartig. Updates will be posted at https://github.com/florianhartig/LearningBayes. Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
