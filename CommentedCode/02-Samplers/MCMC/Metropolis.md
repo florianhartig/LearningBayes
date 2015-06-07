@@ -107,7 +107,6 @@ posterior <- function(param){
    return (likelihood(param) + prior(param))
 }
 ```
-<br />
 
 ## The MCMC
 
@@ -142,12 +141,6 @@ run_metropolis_MCMC <- function(startvalue, iterations){
     }
     return(chain)
 }
- 
-startvalue = c(4,0,10)
-chain = run_metropolis_MCMC(startvalue, 10000)
- 
-burnIn = 5000
-acceptance = 1-mean(duplicated(chain[-(1:burnIn),]))
 ```
 
 
@@ -157,16 +150,22 @@ $$(probab = exp(posterior(proposal) – posterior(chain[i,])))$$
 
 To understand why we do this: note that $p1/p2 = exp[log(p1)-log(p2)]$
 
-The first steps of the algorithm may be biased by the initial value, and are therefore usually discarded for the further analysis (burn-in time). An interesting output to look at is the acceptance rate: how often was a proposal rejected by the metropolis-hastings acceptance criterion? The acceptance rate can be influenced by the proposal function: generally, the closer the proposals are, the larger the acceptance rate. Very high acceptance rates, however, are usually not beneficial: this means that the algorithms is “staying” at the same point, which results in a suboptimal probing of the parameter space (mixing). It can be shown that acceptance rates between 20% and 30% are optimal for typical applications (more on that here).
-
-Finally, we can plot the results. I transform the chain to an mcmc object, and then we can do
+OK, let's run the algorithm
 
 
 ```r
-result <- mcmc(chain, start = burnIn)
+startvalue = c(4,0,10)
+chain = run_metropolis_MCMC(startvalue, 10000)
 ```
 
-What’s the sense of the mcmc function here? The mcmc function is part of the coda R package that provides a number of standard functions for plotting and analysis of the posterior samples. For those functions to work, you need to have your output as an object of class “mcmc”, or “mcmc.list”, which we will discuss later. Coda is the standard package for this type of analysis, and most Bayesian packages in R use this class to return MCMC outputs, so you will likely come across this syntax whatever Bayesian code you are running.
+The first steps of the algorithm may be biased by the initial value, and are therefore usually discarded for the further analysis (burn-in time). To discard the first 5000 steps, and transform the chain to an mcmc object, run this
+
+
+```r
+result <- mcmc(chain[5000:ncol(chain),], start = 5000)
+```
+
+The mcmc function is part of the coda R package that provides a number of standard functions for plotting and analysis of the posterior samples. For those functions to work, you need to have your output as an object of class “mcmc”, or “mcmc.list”, which we will discuss later. Coda is the standard package for this type of analysis, and most Bayesian packages in R use this class to return MCMC outputs, so you will likely come across this syntax whatever Bayesian code you are running.
 
 Objects of class “mcmc” hold and array with the mcmc samples, and a number of additional information. You can look at the structure with str(chain), and you can transform a “mcmc” object back to a normal data-frame by data.frame(chain).
 
@@ -177,7 +176,7 @@ The advantage of having a coda object is that a lot of things that we typically 
 plot(result)
 ```
 
-![](Metropolis_files/figure-html/unnamed-chunk-3-1.png) 
+![](Metropolis_files/figure-html/unnamed-chunk-4-1.png) 
 
 ```r
 summary(result) 
@@ -185,28 +184,30 @@ summary(result)
 
 ```
 ## 
-## Iterations = 5000:15000
+## Iterations = 5000:9997
 ## Thinning interval = 1 
 ## Number of chains = 1 
-## Sample size per chain = 10001 
+## Sample size per chain = 4998 
 ## 
 ## 1. Empirical mean and standard deviation for each variable,
 ##    plus standard error of the mean:
 ## 
-##         Mean    SD Naive SE Time-series SE
-## [1,]  4.7893 0.212  0.00212        0.01094
-## [2,] -0.2731 1.824  0.01824        0.15322
-## [3,] 10.1594 1.304  0.01304        0.13246
+##         Mean     SD Naive SE Time-series SE
+## [1,]  4.7941 0.2208 0.003123        0.01684
+## [2,] -0.2489 1.8022 0.025492        0.21304
+## [3,] 10.1506 1.2411 0.017555        0.17281
 ## 
 ## 2. Quantiles for each variable:
 ## 
-##        2.5%    25%     50%     75%  97.5%
-## var1  4.369  4.651  4.7878  4.9348  5.196
-## var2 -3.916 -1.525 -0.3124  0.9753  3.256
-## var3  7.991  9.199 10.0191 10.9778 13.000
+##        2.5%    25%     50%     75% 97.5%
+## var1  4.372  4.650  4.7911  4.9401  5.23
+## var2 -3.617 -1.529 -0.4292  0.9765  3.41
+## var3  8.022  9.263 10.0035 10.9210 12.83
 ```
 
-I think the summary is self-explanatory (otherwise check out the help), but maybe a few words on the results of the plot() function: each row corresponds to one parameter, so there a are two plots for each parameter. The left plot is called a trace plot – it shows the values the parameter took during the runtime of the chain. The right plot is usually called a marginal density plot. Basically, it is the (smoothened) histogram of the values in the trace-plot, i.e. the distribution of the values of the parameter in the chain.
+An interesting statistics provided by summary is the acceptance rate: how often was a proposal rejected by the metropolis-hastings acceptance criterion? The acceptance rate can be influenced by the proposal function: generally, the closer the proposals are, the larger the acceptance rate. Very high acceptance rates, however, are usually not beneficial: this means that the algorithms is “staying” at the same point, which results in a suboptimal probing of the parameter space (mixing). It can be shown that acceptance rates between 20% and 30% are optimal for typical applications (more on that later).
+
+In the plot() function, each row corresponds to one parameter, so there a are two plots for each parameter. The left plot is called a trace plot – it shows the values the parameter took during the runtime of the chain. The right plot is usually called a marginal density plot. Basically, it is the (smoothened) histogram of the values in the trace-plot, i.e. the distribution of the values of the parameter in the chain.
 
 Comparison with the normal lm:
 
@@ -295,8 +296,8 @@ In our case, there is be no large correlations because I set up the example in t
 ```r
 x <- (-(sampleSize-1)/2):((sampleSize-1)/2) + 20
 y <-  trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)
-chain = mcmc(run_metropolis_MCMC(startvalue, 10000), start = 5000)
-betterPairs(data.frame(run_metropolis_MCMC(startvalue, 10000)))
+chain = mcmc(run_metropolis_MCMC(startvalue, 10000)[5000:ncol(chain),], start = 5000)
+betterPairs(data.frame(chain))
 ```
 
 ![](Metropolis_files/figure-html/marginal_densities3-1.png) 
@@ -312,7 +313,7 @@ Now, to the convergence: an MCMC creates a sample from the posterior distributio
 
 
 ```r
-chain2 = chain = mcmc(run_metropolis_MCMC(startvalue, 10000), start = 5000)
+chain2 = mcmc(run_metropolis_MCMC(startvalue, 10000)[5000:ncol(chain),], start = 5000)
 combinedchains = mcmc.list(chain, chain2) 
 plot(combinedchains)
 ```
@@ -327,13 +328,13 @@ gelman.diag(combinedchains)
 ## Potential scale reduction factors:
 ## 
 ##      Point est. Upper C.I.
-## [1,]        NaN        NaN
-## [2,]        NaN        NaN
-## [3,]        NaN        NaN
+## [1,]       1.13       1.48
+## [2,]       1.17       1.59
+## [3,]       1.00       1.02
 ## 
 ## Multivariate psrf
 ## 
-## 1
+## 1.12
 ```
 
 The gelman.diag gives you the scale reduction factors for each parameter. A factor of 1 means that between variance and within chain variance are equal, larger values mean that there is still a notable difference between chains. Often, it is said that everything below 1.1 or 1.05 or so is OK, but note that this is more a rule of thumb, and also depends what you want to estimate of the chain. Look at this plot, which shows the development of the 0.025,0.5,0.975 quantiles over time for each parameter. 
@@ -343,7 +344,7 @@ The gelman.diag gives you the scale reduction factors for each parameter. A fact
 cumuplot(chain)
 ```
 
-![](Metropolis_files/figure-html/unnamed-chunk-5-1.png) 
+![](Metropolis_files/figure-html/unnamed-chunk-6-1.png) 
 
 The point to note here is that the median typically stabalizes a lot quicker than the 0.025 quantiles, or other extreme value statistics such as the max, which one should expect when sampling from a distribution. The recommendations for the gelman diagnostics are derived for estimations of central summary statistics of the chain, such as median and mean. If you want to estimate other properties, you may want to be more critical. 
 
@@ -354,13 +355,7 @@ Another issue about the gelman-diag is that the diagnostics itself is quite vari
 gelman.plot(combinedchains)
 ```
 
-```
-## 
-## ******* Error: *******
-## Cannot compute Gelman & Rubin's diagnostic for any chain 
-## segments for variables 
-## This indicates convergence failure
-```
+![](Metropolis_files/figure-html/unnamed-chunk-7-1.png) 
 
 The gelman,plot shows you the development of the scale-reduction over time (chain steps), which is useful to see whether a low chain reduction is also stable (sometimes, the factors go down and then up again, as you will see). Also, note that for any real analysis, you have to make sure to discard any bias that arises from the starting point of your chain (burn-in), typical values here are a few 1000-10000 steps. The gelman plot is also a nice tool to see roughly where this point is, that is, from which point on the chains seem roughly converged.
 
@@ -385,13 +380,13 @@ proposalfunction <- function(param){
 
 startvalue = c(4,0,10)
 
-chain1 = mcmc(run_metropolis_MCMC(startvalue, 10000), start = 5000)
-chain2 = mcmc(run_metropolis_MCMC(startvalue, 10000), start = 5000)
+chain1 = mcmc(run_metropolis_MCMC(startvalue, 10000)[5000:ncol(chain),], start = 5000)
+chain2 = mcmc(run_metropolis_MCMC(startvalue, 10000)[5000:ncol(chain),], start = 5000)
 combinedchains = mcmc.list(chain1, chain2) 
 plot(combinedchains)
 ```
 
-![](Metropolis_files/figure-html/unnamed-chunk-7-1.png) 
+![](Metropolis_files/figure-html/unnamed-chunk-8-1.png) 
 
 ```r
 #gelman.plot(combinedchains)
@@ -404,13 +399,13 @@ Proposalfunction too wide
 proposalfunction <- function(param){
   return(rnorm(3,mean = param, sd= c(1000,0.5,0.3)))
 }
-chain1 = mcmc(run_metropolis_MCMC(startvalue, 10000), start = 5000)
-chain2 = mcmc(run_metropolis_MCMC(startvalue, 10000), start = 5000)
+chain1 = mcmc(run_metropolis_MCMC(startvalue, 10000)[5000:ncol(chain),], start = 5000)
+chain2 = mcmc(run_metropolis_MCMC(startvalue, 10000)[5000:ncol(chain),], start = 5000)
 combinedchains = mcmc.list(chain1, chain2) 
 plot(combinedchains)
 ```
 
-![](Metropolis_files/figure-html/unnamed-chunk-8-1.png) 
+![](Metropolis_files/figure-html/unnamed-chunk-9-1.png) 
 
 ```r
 #gelman.plot(combinedchains)

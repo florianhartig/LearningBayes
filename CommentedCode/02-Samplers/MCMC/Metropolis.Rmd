@@ -110,7 +110,6 @@ posterior <- function(param){
    return (likelihood(param) + prior(param))
 }
 ```
-<br />
 
 ## The MCMC
 
@@ -145,12 +144,7 @@ run_metropolis_MCMC <- function(startvalue, iterations){
     }
     return(chain)
 }
- 
-startvalue = c(4,0,10)
-chain = run_metropolis_MCMC(startvalue, 10000)
- 
-burnIn = 5000
-acceptance = 1-mean(duplicated(chain[-(1:burnIn),]))
+
 ```
 
 
@@ -160,15 +154,21 @@ $$(probab = exp(posterior(proposal) – posterior(chain[i,])))$$
 
 To understand why we do this: note that $p1/p2 = exp[log(p1)-log(p2)]$
 
-The first steps of the algorithm may be biased by the initial value, and are therefore usually discarded for the further analysis (burn-in time). An interesting output to look at is the acceptance rate: how often was a proposal rejected by the metropolis-hastings acceptance criterion? The acceptance rate can be influenced by the proposal function: generally, the closer the proposals are, the larger the acceptance rate. Very high acceptance rates, however, are usually not beneficial: this means that the algorithms is “staying” at the same point, which results in a suboptimal probing of the parameter space (mixing). It can be shown that acceptance rates between 20% and 30% are optimal for typical applications (more on that here).
+OK, let's run the algorithm
 
-Finally, we can plot the results. I transform the chain to an mcmc object, and then we can do
-
-```{r, fig.width = 7, fig.height = 7}
-result <- mcmc(chain, start = burnIn)
+```{r}
+startvalue = c(4,0,10)
+chain = run_metropolis_MCMC(startvalue, 10000)
 ```
 
-What’s the sense of the mcmc function here? The mcmc function is part of the coda R package that provides a number of standard functions for plotting and analysis of the posterior samples. For those functions to work, you need to have your output as an object of class “mcmc”, or “mcmc.list”, which we will discuss later. Coda is the standard package for this type of analysis, and most Bayesian packages in R use this class to return MCMC outputs, so you will likely come across this syntax whatever Bayesian code you are running.
+The first steps of the algorithm may be biased by the initial value, and are therefore usually discarded for the further analysis (burn-in time). To discard the first 5000 steps, and transform the chain to an mcmc object, run this
+
+```{r, fig.width = 7, fig.height = 7}
+
+result <- mcmc(chain[5000:ncol(chain),], start = 5000)
+```
+
+The mcmc function is part of the coda R package that provides a number of standard functions for plotting and analysis of the posterior samples. For those functions to work, you need to have your output as an object of class “mcmc”, or “mcmc.list”, which we will discuss later. Coda is the standard package for this type of analysis, and most Bayesian packages in R use this class to return MCMC outputs, so you will likely come across this syntax whatever Bayesian code you are running.
 
 Objects of class “mcmc” hold and array with the mcmc samples, and a number of additional information. You can look at the structure with str(chain), and you can transform a “mcmc” object back to a normal data-frame by data.frame(chain).
 
@@ -179,7 +179,9 @@ plot(result)
 summary(result) 
 ```
 
-I think the summary is self-explanatory (otherwise check out the help), but maybe a few words on the results of the plot() function: each row corresponds to one parameter, so there a are two plots for each parameter. The left plot is called a trace plot – it shows the values the parameter took during the runtime of the chain. The right plot is usually called a marginal density plot. Basically, it is the (smoothened) histogram of the values in the trace-plot, i.e. the distribution of the values of the parameter in the chain.
+An interesting statistics provided by summary is the acceptance rate: how often was a proposal rejected by the metropolis-hastings acceptance criterion? The acceptance rate can be influenced by the proposal function: generally, the closer the proposals are, the larger the acceptance rate. Very high acceptance rates, however, are usually not beneficial: this means that the algorithms is “staying” at the same point, which results in a suboptimal probing of the parameter space (mixing). It can be shown that acceptance rates between 20% and 30% are optimal for typical applications (more on that later).
+
+In the plot() function, each row corresponds to one parameter, so there a are two plots for each parameter. The left plot is called a trace plot – it shows the values the parameter took during the runtime of the chain. The right plot is usually called a marginal density plot. Basically, it is the (smoothened) histogram of the values in the trace-plot, i.e. the distribution of the values of the parameter in the chain.
 
 Comparison with the normal lm:
 
@@ -235,8 +237,8 @@ In our case, there is be no large correlations because I set up the example in t
 ```{r marginal_densities3}
 x <- (-(sampleSize-1)/2):((sampleSize-1)/2) + 20
 y <-  trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)
-chain = mcmc(run_metropolis_MCMC(startvalue, 10000), start = 5000)
-betterPairs(data.frame(run_metropolis_MCMC(startvalue, 10000)))
+chain = mcmc(run_metropolis_MCMC(startvalue, 10000)[5000:ncol(chain),], start = 5000)
+betterPairs(data.frame(chain))
 ```
 
 You can see the strong correlation between the first and the second parameter (slope and intercept), and you can also see that your marginal uncertainty for each parameter (on the diagonal, or in your plot() function) has increased. However, it is really important to understand that this does not mean that the fit is fundamentally more uncertain – the Bayesian analysis doesn’t care if you shift the x-values by 20 to the right. Unlike some other statistical techniques, the method has no problems with such correlations. However, it is problematic now to summarize the results of such an analysis e.g. in terms of marginal values, because this is hiding the correlations. For example, it doesn’t make sense any more to say that the slope has a value of x +/- sd because this misses that point that for any given parameter of the intercept, the uncertainty of the slope is much smaller. For that reason, one should always check the correlations, and if possible, one should try to avoid correlations between parameters because this makes the analysis easier.
@@ -249,7 +251,7 @@ Now, to the convergence: an MCMC creates a sample from the posterior distributio
 
 
 ```{r Convergence_diagnostics}
-chain2 = chain = mcmc(run_metropolis_MCMC(startvalue, 10000), start = 5000)
+chain2 = mcmc(run_metropolis_MCMC(startvalue, 10000)[5000:ncol(chain),], start = 5000)
 combinedchains = mcmc.list(chain, chain2) 
 plot(combinedchains)
 gelman.diag(combinedchains)
@@ -294,8 +296,8 @@ proposalfunction <- function(param){
 
 startvalue = c(4,0,10)
 
-chain1 = mcmc(run_metropolis_MCMC(startvalue, 10000), start = 5000)
-chain2 = mcmc(run_metropolis_MCMC(startvalue, 10000), start = 5000)
+chain1 = mcmc(run_metropolis_MCMC(startvalue, 10000)[5000:ncol(chain),], start = 5000)
+chain2 = mcmc(run_metropolis_MCMC(startvalue, 10000)[5000:ncol(chain),], start = 5000)
 combinedchains = mcmc.list(chain1, chain2) 
 plot(combinedchains)
 #gelman.plot(combinedchains)
@@ -307,8 +309,8 @@ Proposalfunction too wide
 proposalfunction <- function(param){
   return(rnorm(3,mean = param, sd= c(1000,0.5,0.3)))
 }
-chain1 = mcmc(run_metropolis_MCMC(startvalue, 10000), start = 5000)
-chain2 = mcmc(run_metropolis_MCMC(startvalue, 10000), start = 5000)
+chain1 = mcmc(run_metropolis_MCMC(startvalue, 10000)[5000:ncol(chain),], start = 5000)
+chain2 = mcmc(run_metropolis_MCMC(startvalue, 10000)[5000:ncol(chain),], start = 5000)
 combinedchains = mcmc.list(chain1, chain2) 
 plot(combinedchains)
 #gelman.plot(combinedchains)
