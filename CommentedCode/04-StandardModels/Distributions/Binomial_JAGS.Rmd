@@ -1,0 +1,217 @@
+---
+title: "Bayesian analysis of binomially distributed data"
+author: "Felix May"
+date: "Friday, June 19, 2015"
+output:
+  html_document:
+    keep_md: yes
+---
+
+```{r global_options, include=TRUE}
+knitr::opts_chunk$set(fig.width=5, fig.height=5)
+```
+
+***
+
+In this example we estimate the probability parameter (pi) of a binomial distribution. 
+We use simulated data that represents the results of a simple seed predation experiment.
+
+### 1. Simulate data
+
+We assume there were 30 seed trays and 10 seeds per tray. The true seed predation probability is set to 0.7 (= 70%).
+
+```{r}
+set.seed(12345) # just for reproducability of the results. 
+
+pi.true <- 0.7 # seed predation probability
+N <- 10        # number of seeds per seed tray
+
+dat1 <- rbinom(n=30,size=N,prob=pi.true) 
+```
+
+Now we visualize the results as histogram and add the "true" value as vertical line.
+
+```{r}
+hist(dat1,breaks=seq(-0.5,10.5,by=1))
+summary(dat1)
+abline(v=pi.true*N,col="blue")
+```
+
+### 2. Bayesian analysis using JAGS
+
+First we have to code the model in the BUGS language. The model has to include the likelihood and priors for all parameters.
+Here, we us a beta-distribution as prior for the seed predation probability (pi). The beta-distribution is highly flexible in shape and always restricted to the interval [0,1].  
+As we have proportion data, we use a binomial distribution in the likelihood.
+
+```{r}
+modelCode <- "
+   model{
+      # Likelihood
+      for(i in 1:n.max){
+         y[i] ~ dbin(pi,N.total)
+      }
+      # Prior distributions
+      pi ~ dbeta(1,1) # beta distribution
+   }
+"
+```
+
+If you do not know how the beta-distribution looks like, you should explore it:
+
+```{r}
+x <- seq(0,1,0.001)
+plot(x,dbeta(x,shape1=1,shape2=1),col=2,type="l",ylab="Prior density")
+```
+
+The beta-distribution with a=1 and b=1 equals the uniform distribution with min=0 and max=1. But as you will see later te beta-distribution is much more flexible.
+
+
+To compile the model and run the MCMC sampling in JAGS we need two important preparation steps. First we need to assign the variables from the R workspace to the variable names in the JAGS model. Carefully check the variable names in your data and in the model code! The assignment needs to be stored as a list.
+
+```{r}
+Data = list(y = dat1, N.total=N,n.max = length(dat1))
+```
+
+Second, we need to provide starting values (or a function that generated starting values) for the MCMC sampling. This also needs to be a list of lists -- one list for reach Markov chain.
+
+```{r}
+Inits = list(list("pi"=0.1),list("pi"=0.9),list("pi"=0.5))
+```
+
+We use the package R2jags for linking R and JAGS
+```{r,results="hide",message=F}
+library(R2jags)
+```
+
+Now we finally start the MCMC sampling in JAGS. In this call we need to hand over the data, the initial values, the parameters we want to sample, the model code, the number of chains, the number of iterations, the number of burnin samples (that is thrown away) and the thinning rate.
+
+```{r}
+jags.fit <- jags(data=Data, 
+                 inits=Inits, 
+                 parameters.to.save=c("pi"), 
+                 model.file=textConnection(modelCode),
+                 n.chains=3, 
+                 n.iter=6000,
+                 n.burnin=1000,
+                 n.thin=5)
+```
+
+We explore the model output using graphics and numeric output. In addition to the parameter "pi", we also get output on the "deviance". This is related to the log-likelihood, but we usually only use it in model comparisons. So it is of minor importance here.
+
+```{r,fig.width=7, fig.height=7}
+plot(jags.fit)
+print(jags.fit)
+```
+
+The coda-package offers many functions for analysing output of a Bayesian analysis. Therefore, we convert the JAGSoutput to an mcmc-object that is compatible with the coda function.
+
+```{r}
+library(coda)
+jags.mcmc <- as.mcmc(jags.fit)
+```
+
+Plotting this mcmc-object provides traceplots for all chains, which is useful to visually assess convergence, and the posterior distributions for each parameter.
+
+```{r,fig.width=7, fig.height=7}
+plot(jags.mcmc)  
+```
+
+We get numeric output with the following command.
+```{r}
+summary(jags.mcmc) 
+```
+
+The most important numeric convergence cirterion is the Gelman-Rubin R-hat value. It indicates convergence if the R-hat value is close to one, which is the case here.
+
+```{r}
+gelman.diag(jags.mcmc) 
+```
+
+Finally, we calculate the 95% interval of the "highest posterior density" (HPD). Please note that this can be different from the 9% Bayesian credible interval that you find between the 2.5% and 97.5% quantiles of the posterior distribution. Here we get one interval per chain.
+
+```{r}
+HPDinterval(jags.mcmc)
+```
+
+For further analysis it can be helpful to lump the samples from the three chains:
+
+```{r}
+jags.mcmc.lumped <- as.mcmc(rbind(jags.mcmc[[1]],jags.mcmc[[2]],jags.mcmc[[3]]))
+```
+
+We plot the posterior distribution of the lumped chains and add the highest-posterior density interval for all chains as well as the prior.
+
+```{r}
+hist(jags.mcmc.lumped[,"pi"],freq=F,ylab="Posterior density")
+abline(v=HPDinterval(jags.mcmc.lumped[,"pi"]),col="red")
+lines(x,dbeta(x,shape1=1,shape2=1),col=3,lty=2)
+```
+
+*********************************************
+
+### 3. Exercise: Changing the prior
+
+As an exercise we change the prior and assess how the posterior distribution changes. I use a beta distribution with a=1 and b=2 here. This means I assume there is low seed predation in my study area.
+
+```{r}
+plot(x,dbeta(x,shape1=1,shape2=20),col=2,type="l",ylab="Prior density")
+```
+
+With the new prior, we need to change the model code:
+
+```{r}
+modelCode2 = "
+   model{
+      # Likelihood
+      for(i in 1:n.max){
+         y[i] ~ dbin(pi,N.total)
+      }
+      # Prior distributions
+      pi ~ dbeta(1,20)
+   }
+"
+```
+
+And compile the model and run the sampling again:
+
+```{r}
+jags.fit2 <- jags(data=Data, 
+                 inits=Inits, 
+                 parameters.to.save=c("pi"), 
+                 model.file=textConnection(modelCode2),
+                 n.chains=3, 
+                 n.iter=6000,
+                 n.burnin=1000,
+                 n.thin=5)
+```
+
+
+Now we compare the output of the first and second models and we will find that the posterior distribution was shifted to lower values of the seed predation probability.
+
+```{r}
+jags.mcmc2 <- as.mcmc(jags.fit2)
+
+summary(jags.mcmc)
+summary(jags.mcmc2)
+
+```
+
+Finally, we plot the posteriors and priors for both analysis.
+
+```{r}
+jags.mcmc.lumped2 <- as.mcmc(rbind(jags.mcmc2[[1]],jags.mcmc2[[2]],jags.mcmc2[[3]]))
+plot(density(jags.mcmc.lumped[,"pi"]),xlab="Seed predation probability - pi",ylab="Posterior density",
+     xlim=c(0,1),col=3,main="")
+lines(x,dbeta(x,shape1=1,shape2=1),col=3,lty=2)
+
+lines(density(jags.mcmc.lumped2[,"pi"]),col="red")
+lines(x,dbeta(x,shape1=1,shape2=20),col="red",lty=2)
+```
+
+The informative prior change the posterior distribution, but not too much. This indicates that out (fake) data set is already pretty informative on the distribution of pi.
+
+
+---
+**Copyright, reuse and updates**: copyright belongs to author(s) (see author statement at the top of the file). Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+
+Sourcecode and potential future updates available at http://florianhartig.github.io/LearningBayes/ (follow the link under code, and then navigate through the topics to find the location of the file)

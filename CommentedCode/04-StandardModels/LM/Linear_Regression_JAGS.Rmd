@@ -1,0 +1,310 @@
+---
+title: "Bayesian analysis of simple linear regression with JAGS"
+author: "Felix May"
+date: "Monday, June 22, 2015"
+output:
+  html_document:
+    keep_md: yes
+---
+
+```{r global_options, include=F}
+knitr::opts_chunk$set(fig.width=5, fig.height=5)
+```
+
+***
+
+This example is a simplified version of chapter 11 in Kery (2010) Introduction to WinBUGs for Ecologists. see pages 141 -- 150. 
+
+We analyse the relationship between body mass and body length of snakes using a simple linear regression model.
+
+### 1. Simulate data
+
+
+```{r}
+set.seed(12345)
+
+n1 <- 30                         # sample size
+Length <- sort(runif(n1,45,70))  # explanatory variable
+
+a.true <- 30                     # intercept
+b.true <- 2.5                    # slope
+sigma.true <- 10                 # residual variance
+
+mean.true <- a.true+b.true*Length
+Mass <- rnorm(n1,mean=mean.true,sd=sigma.true)
+```
+
+We plot the simulated data and add the "true" mean snake length as line.
+
+```{r}
+plot(Mass~Length,xlab="Length  [cm]",ylab="Mass  [g]")
+lines(mean.true~Length,col="blue")
+```
+
+
+###2a. Bayesian analysis using JAGS
+
+First, we define the model including the likelihood and the priors. Please note that the normal distribution in JAGS is parameterized by mean and *precision*. The precision = 1/variance or precision = 1/sd^2. We use a uniform prior for the precision, which leads to a hyperbolically decreasing prior for the standard deviation (sigma). This means we assign higher prior probability to lower variance, which is a common approach for *scale* parameters, e.g. variances.
+
+```{r}
+modelCode <- "
+   model{
+      # Likelihood
+      for(i in 1:n.max){
+         y[i] ~ dnorm(mu[i],tau) # mean and precision (=1/variance)
+         mu[i] <- a + b*x[i]
+      }
+      # Prior distributions
+      a ~ dnorm(0,0.001)
+      b ~ dnorm(0,0.001)
+      tau ~ dunif(0,100)
+      sigma <- sqrt(1/tau)
+   }"
+```
+
+Second, we prepare the input data and the initial value for the MCMC sampling. This time we define a function that generates intial values for each Markov chain.
+
+```{r}
+Data <- list(y = Mass, x = Length, n.max = length(Mass))
+inits.fn <- function() list(a = rnorm(1), b = rnorm(1), tau=runif(1,min=0,max=1))
+```
+
+Third, we compile the model and let JAGS do the MCMC sampling. We set the DIC (deviance information criterion) to FALSE, because we do not need to do model comparison here.
+
+```{r,,message=F}
+library(R2jags)
+jags.fit <- jags(data=Data, 
+                 inits=inits.fn, 
+                 parameters.to.save=c("a","b","sigma"), 
+                 model.file=textConnection(modelCode),
+                 n.chains=3, 
+                 n.iter=12000,
+                 n.burnin=2000,
+                 n.thin=10,
+                 DIC=F)
+```
+
+Finally, we explore the graphical and numeric output of the MCMC sampling.
+
+```{r,fig.width=7, fig.height=7}
+plot(jags.fit)
+print(jags.fit)
+```
+
+Note that there is huge uncertainty in the estimate in the intercept a. To check what is going on, we convert the jags output to a coda mcmc object. Then we check the traceplot, the auto-correlation plot, the posterior summary, and the Gelman-Rubin convergence diagnostic.
+
+
+```{r}
+# convert to coda mcmc object
+jags.mcmc <- as.mcmc(jags.fit)
+
+plot(jags.mcmc)    # plot MCMC traces and posterior distributions
+acfplot(jags.mcmc) # check for autocorrelation in the Markov chains
+
+summary(jags.mcmc)
+gelman.diag(jags.mcmc) # convergence diagnostis
+```
+
+These analyses show that the chains nicely converged, but it also shows the high uncertainty a, indicated by the large variance in the posterior distribution.  
+
+We lump the chains and check the correlation among the samples for the parameters.
+
+```{r}
+jags.mcmc.lumped <- as.mcmc(rbind(jags.mcmc[[1]],
+                                  jags.mcmc[[2]],
+                                  jags.mcmc[[3]]))
+
+pairs(as.data.frame(jags.mcmc.lumped))
+cor(as.data.frame(jags.mcmc.lumped))
+
+```
+
+This clearly shows that there is extreme correlation between a and b and this is the reason for the high uncertainty in a. Especially for **linear** models these correlations between slopes and intercept can be removed by centering the numeric oredictor variable (Length). So we repeat the analysis with centered length.
+
+###2b. Analysis with centered explanatory variable
+
+```{r}
+cLength <- Length-mean(Length)
+plot(Mass~cLength)
+
+Data2 <- list(y = Mass, x = cLength, n.max = length(Mass))
+
+jags.fit2 <- jags(data=Data2, 
+                 inits=inits.fn, 
+                 parameters.to.save=c("a","b","sigma"), 
+                 model.file=textConnection(modelCode),
+                 n.chains=3, 
+                 n.iter=12000,
+                 n.burnin=2000,
+                 n.thin=10,
+                 DIC=F)
+```
+
+```{r}
+jags.mcmc2 <- as.mcmc(jags.fit2)
+plot(jags.mcmc2)
+summary(jags.mcmc2)
+gelman.diag(jags.mcmc2)
+HPDinterval(jags.mcmc2)
+```
+
+Voila, there is much less uncertainty in the posterior of a.
+
+```{r}
+jags.mcmc.lumped2 <- as.mcmc(rbind(jags.mcmc2[[1]],
+                                   jags.mcmc2[[2]],
+                                   jags.mcmc2[[3]]))
+
+pairs(as.data.frame(jags.mcmc.lumped2))
+cor(as.data.frame(jags.mcmc.lumped2))
+```
+
+And the correlation has been completely removed. Of course also the estimated value of a changed, because it does not represent the predicted mass of a snake with length zero anymore (which is anyway biologically nonsense), but it now represents the mass of a snake is average length.
+
+
+
+###3. Predictions and uncertainty
+
+As a last step we create a graph that shows the data with credible intervals for the regression line and the predictions for individual snakes.  
+
+We create predictions for the **mean snake mass** using all posterior samples. For these predictions we only consider the uncertainty in a and b, but ignore sigma. If there are too many posterior samples, we could also randomly select a sufficient number of samples from the chains.
+
+```{r}
+pred1 <- matrix(NA,nrow=nrow(jags.mcmc.lumped2),ncol=length(Mass))
+for (i in 1:nrow(pred1))
+   pred1[i,] <- jags.mcmc.lumped2[i,"a"] + cLength*jags.mcmc.lumped2[i,"b"]
+```
+As a credible interval we use the 2.5% and 97.5% quantiles of the predictions.
+
+```{r}
+lower1 <- apply(pred1,MARGIN=2,quantile,prob=0.025)
+upper1 <- apply(pred1,MARGIN=2,quantile,prob=0.975)
+```
+
+The final ingredient is the posterior mean prediction.
+```{r}
+meanPred <- mean(jags.mcmc.lumped2[,"a"]) + 
+            cLength*mean(jags.mcmc.lumped2[,"b"])
+```
+
+Now we have everything for plotting
+
+```{r}
+plot(Mass~cLength,pch=16,ylim=c(120,240))
+lines(cLength,lower1,col="red",lwd=2)
+lines(cLength,upper1,col="red",lwd=2)
+lines(meanPred~cLength,lwd=2,col="blue")
+```
+
+As mentioned the red lines indicate the credible interval for the **mean mass** or in other words the uncertainty for *the regression line*, but we also want the uncertainty for predictions of single snake masses. We can get it by incorporating the samples of the standard deviation sigma into the predictions.
+
+```{r}
+pred2 <- matrix(NA,nrow=nrow(jags.mcmc.lumped2),ncol=length(Mass))
+for (i in 1:nrow(pred2)){
+   pred2[i,] <- jags.mcmc.lumped2[i,"a"] + 
+                cLength*jags.mcmc.lumped2[i,"b"] +
+                rnorm(length(Mass),mean=0,sd=jags.mcmc.lumped2[i,"sigma"])
+}
+
+lower2 <- apply(pred2,MARGIN=2,quantile,prob=0.025)
+upper2 <- apply(pred2,MARGIN=2,quantile,prob=0.975)
+
+plot(Mass~cLength,pch=16,ylim=c(120,240))
+
+lines(meanPred~cLength,lwd=2,col="blue")
+
+lines(cLength,lower1,col="red",lwd=2)
+lines(cLength,upper1,col="red",lwd=2)
+
+lines(cLength,lower2,col="green",lwd=2,lty=1)
+lines(cLength,upper2,col="green",lwd=2,lty=1)
+```
+
+This is one option to form the predictions based on the samples of the parameters, but we can also use JAGS to calculate the predictions directly. For this purpose we need to add one line to the model code. It almost looks like the likelihood of the data, but now we **do not provide observed values for ypred**. In this case JAGS simulates this variable.
+
+```{r}
+modelCode2 <- "
+   model{
+      # Likelihood
+      for(i in 1:n.max){
+         y[i] ~ dnorm(mu[i],tau) 
+         ypred[i] ~ dnorm(mu[i],tau) # predictions for y
+         mu[i] <- a + b*x[i]
+      }
+      # Prior distributions
+      a ~ dnorm(0,0.001)
+      b ~ dnorm(0,0.001)
+      tau ~ dunif(0,100)
+      sigma <- sqrt(1/tau)
+}"
+```
+
+In the call to JAGS we now need to add *ypred* in the parameters.to.save argument.
+
+```{r}
+jags.fit3 <- jags(data=Data2, 
+                 inits=inits.fn, 
+                 parameters.to.save=c("a","b","sigma","ypred"), 
+                 model.file=textConnection(modelCode2),
+                 n.chains=3, 
+                 n.iter=12000,
+                 n.burnin=2000,
+                 n.thin=10,
+                 DIC=F)
+```
+
+In the plot you will see that there are now samples for each observation of y.
+
+```{r,fig.width=7, fig.height=10}
+plot(jags.fit3)
+```
+
+We should again check convergence and we find that everything has nicely converged.
+
+```{r}
+jags.mcmc3 <- as.mcmc(jags.fit3)
+gelman.diag(jags.mcmc3)
+```
+
+To get the credible intervals for the predictions we again lump the chains. The we check the structure and find that the predicted values are in columns 4-33.
+
+```{r}
+jags.mcmc.lumped3 <- as.mcmc(rbind(jags.mcmc3[[1]],
+                                   jags.mcmc3[[2]],
+                                   jags.mcmc3[[3]]))
+dim(jags.mcmc.lumped3)
+head(jags.mcmc.lumped3)
+```
+
+We save all the predictions in  new matrix. With the `head`command we find that unfortunately the columns are sorted as character variables (1,10,11, ... , 2,20,21, ...) instead of normal numeric sorting (1,2,3,...,10,11,...). 
+
+
+```{r}
+pred.mat <- jags.mcmc.lumped3[,4:33]
+head(pred.mat)
+```
+
+It is a little tricky, but we can get the correct column ordering in the following way. If this is difficult to understand check out what I did there step by step from the inner functions to the outer ones.
+
+```{r}
+index.order <- order(as.numeric(sort(as.character(1:30))))
+```
+
+We can use this index now to calculate the credible interval in the correct order and finally plot it with the data and the mean posterior prediction.
+
+```{r}
+lower3 <- apply(pred.mat[,index.order],MARGIN=2,quantile,prob=0.025)
+upper3 <- apply(pred.mat[,index.order],MARGIN=2,quantile,prob=0.975)
+
+plot(Mass~cLength,pch=16,ylim=c(120,240))
+
+lines(meanPred~cLength,lwd=2,col="blue")
+
+lines(cLength,lower3,col="green",lwd=2,lty=1)
+lines(cLength,upper3,col="green",lwd=2,lty=1)
+```
+
+**Copyright, reuse and updates**: copyright belongs to author(s) (see author statement at the top of the file). Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+
+Sourcecode and potential future updates available at http://florianhartig.github.io/LearningBayes/ (follow the link under code, and then navigate through the topics to find the location of the file)
+

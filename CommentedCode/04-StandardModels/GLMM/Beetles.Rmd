@@ -1,0 +1,320 @@
+---
+title: "Beetles"
+author: "Florian Hartig"
+date: "7 Jun 2015"
+output:
+  html_document:
+    keep_md: yes
+---
+
+```{r, echo = F}
+set.seed(2)
+library(R2jags)
+```
+
+
+
+## Dataset
+
+```{r, echo=F, cache = T}
+altitude = rep(seq(0,1,len = 50), each = 20)
+dataID = 1:1000
+spatialCoordinate = rep(seq(0,30, len = 50), each = 20)
+
+# random effects + zeroinflation
+plot = rep(1:50, each = 20)
+year = rep(1:20, times = 50)
+
+yearRandom = rnorm(20, 0, 1)
+plotRandom = rnorm(50, 0, 1)
+overdispersion = rnorm(1000, sd = 0.5)
+zeroinflation = rbinom(1000,1,0.6)
+
+beetles <- rpois(1000, exp( 0  + 12*altitude - 12*altitude^2 
+#  + overdispersion   + plotRandom[plot]
+ + yearRandom[year]) * zeroinflation )
+
+data = data.frame(dataID, beetles, altitude, plot, year, spatialCoordinate)
+```
+
+Measured beetle counts over 20 years on 50 different plots across an altitudinal gradient
+
+<font size="4">
+```{r, echo = F, fig.align = "center", fig.width = 7, fig.height = 7, cache = F}
+
+
+plot(year, altitude, cex = beetles/50, pch =2, main = "Beetle counts across altitudinal gradient, triangle is proportional to counts")
+#lines(plot, altitude * 1000)
+#points(unique(plot), unique(altitude * 1000) , pch = 3)
+#text(unique(plot), unique(altitude * 1000) - 50, unique(plot), cex = 0.7 )
+```
+</font>
+
+
+What is the altitudinal niche of the species?
+
+### Preparation
+
+
+```{r}
+library(R2jags)
+modelData=as.list(data)
+modelData = append(data, list(nobs=1000, nplots = 50, nyears = 20))
+
+```
+
+## Basic model
+
+
+```{r, eval = T, fig.align = "center", fig.width = 10, fig.height = 10, cache = T, warning=F}
+
+
+modelstring="
+  model {
+
+    # Likelihood
+    for (i in 1:nobs) {
+      beetles[i]~dpois(lambda[i]) 
+
+      lambda[i] <- exp(intercept + alt * altitude[i] + alt2 * altitude[i] * altitude[i] ) 
+    }
+
+
+    # Effect priors 
+    intercept ~ dnorm(0,0.0001)
+    alt ~ dnorm(0,0.0001)
+    alt2 ~ dnorm(0,0.0001)
+
+    # Predictions
+    for (i in 1:nobs) {
+      beetlesPred[i]~dpois(lambda[i])
+    }
+    Prediction <- sum(beetlesPred)
+
+
+  }
+"
+
+#Running this
+
+model=jags(model.file = textConnection(modelstring), data=modelData, n.iter=10000,  parameters.to.save = c("intercept", "alt", "alt2", "Prediction", "Ryear", "zeroMu", "sigmaYear"), DIC = F)
+
+plot(model, display.parallel = T)
+
+altitude <- seq(0,1,len = 50)
+
+```
+
+Plot the results
+
+```{r, eval = T, fig.align = "center", fig.width = 6, fig.height = 6, cache = T}
+
+plot(data$altitude + runif(1000,-0.02,0.02), log(data$beetles + 1 ))
+
+
+combinedChainValues <- as.data.frame(combine.mcmc(as.mcmc(model)))
+
+for(i in seq(5,nrow(combinedChainValues), 5)){
+  response <- exp(combinedChainValues$intercept[i] + combinedChainValues$alt[i] * altitude + combinedChainValues$alt2[i] * altitude^2)
+  lines(altitude, log(response + 1), col = "#22222202", lwd = 3)
+}
+
+lines(altitude, log(exp(12*altitude - 12*altitude^2) + 1), col = "red" )
+
+
+
+# Bayesian p-value
+hist(combinedChainValues$Prediction, breaks = 100, xlim = c(0, 30000))
+abline(v=sum(data$beetles), col = "red")
+
+# numerical value
+ecdf(combinedChainValues$Prediction)(sum(data$beetles))
+
+```
+
+
+## Adding a random effect for year
+
+
+```{r, eval = T, fig.align = "center", fig.width = 6, fig.height = 6, cache = T, warning=F}
+
+
+modelstring="
+  model {
+
+    # Likelihood
+    for (i in 1:nobs) {
+      beetles[i]~dpois(lambda[i]) 
+
+      lambda[i] <- exp(intercept + alt * altitude[i] + alt2 * altitude[i] * altitude[i] + Ryear[year[i]]  )
+    }
+
+
+    # Effect priors 
+    intercept ~ dnorm(0,0.0001)
+    alt ~ dnorm(0,0.0001)
+    alt2 ~ dnorm(0,0.0001)
+
+    # Random effects 
+
+    #for (i in 1:nplots) {
+    #  Rplot[i]~dnorm(0,sigmaPlot)
+    #}
+
+    for (i in 1:nyears) {
+      Ryear[i]~dnorm(0,sigmaYear)
+    }
+
+    for (i in 1:nobs) {
+      RID[i]~dnorm(0,sigmaID)
+    }
+
+    # Variance priors 
+    sigmaYear~dgamma(1,2)
+    #sigmaPlot~dgamma(0.001,0.001)
+    sigmaID~dgamma(0.001,0.001)
+
+    # Predictions
+    for (i in 1:nobs) {
+      beetlesPred[i]~dpois(lambda[i])
+    }
+    Prediction <- sum(beetlesPred)
+
+
+  }
+"
+
+#Running this
+
+model=jags(model.file = textConnection(modelstring), data=modelData, n.iter=10000,  parameters.to.save = c("intercept", "alt", "alt2", "Prediction", "Ryear", "zeroMu", "sigmaYear"), DIC = F)
+
+plot(model, display.parallel = T)
+
+altitude <- seq(0,1,len = 50)
+
+```
+
+Plot the results
+
+```{r, eval = T, fig.align = "center", fig.width = 6, fig.height = 6, cache = T}
+
+plot(data$altitude + runif(1000,-0.02,0.02), log(data$beetles + 1 ))
+
+
+combinedChainValues <- as.data.frame(combine.mcmc(as.mcmc(model)))
+
+for(i in seq(5,nrow(combinedChainValues), 5)){
+  response <- exp(combinedChainValues$intercept[i] + combinedChainValues$alt[i] * altitude + combinedChainValues$alt2[i] * altitude^2)
+  lines(altitude, log(response + 1), col = "#22222202", lwd = 3)
+}
+
+lines(altitude, log(exp(12*altitude - 12*altitude^2) + 1), col = "red" )
+
+
+
+# Bayesian p-value
+hist(combinedChainValues$Prediction, breaks = 100, xlim = c(0, 20000))
+abline(v=sum(data$beetles), col = "red")
+
+# numerical value
+ecdf(combinedChainValues$Prediction)(sum(data$beetles))
+
+```
+
+## Adding Zero-Inflation
+
+
+```{r, eval = T, fig.align = "center", fig.width = 6, fig.height = 6, cache = T, warning=F}
+
+
+modelstring="
+  model {
+
+    # Likelihood
+    for (i in 1:nobs) {
+      beetles[i]~dpois(lambda[i]) 
+
+      lambda[i] <- (exp(intercept + alt * altitude[i] + alt2 * altitude[i] * altitude[i] + Ryear[year[i]] + RID[i] ))* Zero[i] + 0.00000001
+    }
+    # to add another random effect + Rplot[plot[i]] 
+    # to add overdispersion + RID[i]
+
+    # Effect priors 
+    intercept ~ dnorm(0,0.0001)
+    alt ~ dnorm(0,0.0001)
+    alt2 ~ dnorm(0,0.0001)
+
+    # Random effects 
+
+    #for (i in 1:nplots) {
+    #  Rplot[i]~dnorm(0,sigmaPlot)
+    #}
+
+    for (i in 1:nyears) {
+      Ryear[i]~dnorm(0,sigmaYear)
+    }
+
+    for (i in 1:nobs) {
+      RID[i]~dnorm(0,sigmaID)
+    }
+
+    # Variance priors 
+    sigmaYear~dgamma(1,2)
+    #sigmaPlot~dgamma(0.001,0.001)
+    sigmaID~dgamma(0.001,0.001)
+
+    # Zeroinflation
+
+    for (i in 1:nobs) {
+      Zero[i]~dbern(zeroMu)
+    }
+    zeroMu ~ dunif(0,1)
+
+    # Predictions
+    for (i in 1:nobs) {
+      beetlesPred[i]~dpois(lambda[i])
+    }
+    Prediction <- sum(beetlesPred)
+
+
+  }
+"
+
+#Running this
+
+model=jags(model.file = textConnection(modelstring), data=modelData, n.iter=30000,  parameters.to.save = c("intercept", "alt", "alt2", "Prediction", "Ryear", "zeroMu", "sigmaYear"), DIC = F)
+
+plot(model, display.parallel = T)
+
+altitude <- seq(0,1,len = 50)
+
+```
+
+Plot the results
+
+```{r, eval = T, fig.align = "center", fig.width = 6, fig.height = 6, cache = T}
+
+plot(data$altitude + runif(1000,-0.02,0.02), log(data$beetles + 1 ))
+
+
+combinedChainValues <- as.data.frame(combine.mcmc(as.mcmc(model)))
+
+for(i in seq(5,nrow(combinedChainValues), 5)){
+  response <- exp(combinedChainValues$intercept[i] + combinedChainValues$alt[i] * altitude + combinedChainValues$alt2[i] * altitude^2)
+  lines(altitude, log(response + 1), col = "#22222202", lwd = 3)
+}
+
+lines(altitude, log(exp(12*altitude - 12*altitude^2) + 1), col = "red" )
+
+
+
+# Bayesian p-value
+hist(combinedChainValues$Prediction, breaks = 100, xlim = c(0, 20000))
+abline(v=sum(data$beetles), col = "red")
+
+# numerical value
+ecdf(combinedChainValues$Prediction)(sum(data$beetles))
+
+```
+
+

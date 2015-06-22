@@ -10,7 +10,7 @@ Assume I'm trying to guess if a coin comes up heads or tails. I have had 10 tria
 
 ```r
 trials = 10
-success = 6
+success = 7
 ```
 
 What we want to know now is what my properties are regarding correctly guessing the outcome of the coin flip experiment. 
@@ -120,7 +120,7 @@ pValue
 ```
 
 ```
-## [1] 0.3769531
+## [1] 0.171875
 ```
 
 ```r
@@ -135,14 +135,14 @@ but it is a bit tricky, because depeding on which side one wants to test, you ha
 
 
 ```r
-binom.test(7,trials,0.5) # two sided 
+binom.test(success,trials,0.5) # two sided 
 ```
 
 ```
 ## 
 ## 	Exact binomial test
 ## 
-## data:  7 and trials
+## data:  success and trials
 ## number of successes = 7, number of trials = 10, p-value = 0.3438
 ## alternative hypothesis: true probability of success is not equal to 0.5
 ## 95 percent confidence interval:
@@ -153,14 +153,14 @@ binom.test(7,trials,0.5) # two sided
 ```
 
 ```r
-binom.test(7,trials,0.5, alternative="greater") # testing for greater
+binom.test(success,trials,0.5, alternative="greater") # testing for greater
 ```
 
 ```
 ## 
 ## 	Exact binomial test
 ## 
-## data:  7 and trials
+## data:  success and trials
 ## number of successes = 7, number of trials = 10, p-value = 0.1719
 ## alternative hypothesis: true probability of success is greater than 0.5
 ## 95 percent confidence interval:
@@ -171,14 +171,14 @@ binom.test(7,trials,0.5, alternative="greater") # testing for greater
 ```
 
 ```r
-binom.test(7,trials,0.5, alternative="less") # testing for less
+binom.test(success,trials,0.5, alternative="less") # testing for less
 ```
 
 ```
 ## 
 ## 	Exact binomial test
 ## 
-## data:  7 and trials
+## data:  success and trials
 ## number of successes = 7, number of trials = 10, p-value = 0.9453
 ## alternative hypothesis: true probability of success is less than 0.5
 ## 95 percent confidence interval:
@@ -194,16 +194,18 @@ Imagine there is no effect, but we keep on repeating the test 100 times. How oft
 
 
 ```r
-data= rbinom(100,10,0.5)
+data= rbinom(100,trials,0.5)
 pValue <- pbinom(data,trials,prob = 0.5, lower.tail = F)
-sum(pValue < 0.05)
+mean(pValue < 0.05)
 ```
 
 ```
-## [1] 5
+## [1] 0.05
 ```
 
-Yes, 5 is what you expect. To be exact, in the case of disrecte random distributions, the value doesn't have to be exactly 5%, but that is a side topic, and here it works. 
+Yes, 5 is what you expect. Of course, if we do the experiment, the exact value will show some variance.
+
+To be exact, in the case of disrecte random distributions, the value doesn't have to be exactly 5%. If you are interested in the reasons, read the comments on this topic at the end of the document. 
 
 The message here is: if you do repeated tests, and you want to maintain a fixed overall type I error rate, you need to adjust the p-values, e.g. by 
 
@@ -313,36 +315,39 @@ abline(v=leftCI, col = "darkgreen", lty = 2, lwd = 2)
 
 ### Long-term frequencies of errors and multiple testing
 
-imagine we have a fair coin, and do 1000 experiments with 10 draws, looking at the p-value, note that we get to the right 5% assumptotically, but not for small data. The fact that it is not exactly 5% is an artifact that appears for discrete distributions (<8 gets acceted, >= 8 rejected, the perfect cut would be intbetween but as we have only discrete options that's not possible to choose)
+Imagine we have a fair coin, and do 1000 experiments with 10 draws, 
+
+
+looking at the p-value, note that we get to the right 5% assumptotically, but not for small data. The fact that it is not exactly 5% is an artifact that appears for discrete distributions (<8 gets acceted, >= 8 rejected, the perfect cut would be intbetween but as we have only discrete options that's not possible to choose)
 
 
 
 ```r
 par(mfrow=c(2,1))
 trials = 10
-outcome <- rbinom(1000, trials, 0.5)
+outcome <- rbinom(10000, trials, 0.5)
 hist(pbinom(outcome,trials,0.5), breaks = 100, main = "10 trials, 11 p-values" )
-sum(pbinom(outcome,trials,0.5) < 0.05)
+mean(pbinom(outcome,trials,0.5) < 0.05)
 ```
 
 ```
-## [1] 12
+## [1] 0.0108
 ```
 
 ```r
 trials = 10000
-outcome <- rbinom(1000, trials, 0.5)
+outcome <- rbinom(10000, trials, 0.5)
 hist(pbinom(outcome,trials,0.5), breaks = 100, main = "10000 trials, p-values flat"  )
 ```
 
 ![](InferenceMethods_files/figure-html/unnamed-chunk-13-1.png) 
 
 ```r
-sum(pbinom(outcome,trials,0.5) < 0.05)
+mean(pbinom(outcome,trials,0.5) < 0.05)
 ```
 
 ```
-## [1] 46
+## [1] 0.0484
 ```
 
 remember: in general, if you choose an alpha level of 5%, and you have absolutely random data, you should get 5% false positives (type I error) assymptotically, and the distribution of p-values in repeated experiments will be flat. 
