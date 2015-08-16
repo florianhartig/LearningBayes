@@ -159,5 +159,20 @@ As introductions to what can be done AFTER the model is wrapped in R
 * Van Oijen, M.; Rougier, J. &amp; Smith, R. (2005) Bayesian calibration of process-based forest models: bridging the gap between models and data Tree Physiol., 25, 915-927
 
 
+## Speed optimization 
+
+For running sensitivity analyses or calibrations, runtime is often an issue. 
+
+* Easy tricks that may improve runtime
+  * Are you compiling with maximum optimization (e.g. -o3 in cpp)
+  * If you have a spin-up phase, could you increase the time-step during this phase?
+  * Could you increase the time step generally
+  * Do you write unnecessary outputs that you could turn off (harddisk I/O is often slow)?
+
+* Difficult things that improve runtime
+  * Make the model directly callable (R package or dll) to avoid harddisk I/O
+  * Even for an executable, it may be possible to remain in standby and start a new run via an input (to avoid the reading of data during initialization)
+  * Code optimization: did you use a profiler? Read up on code optimization
+  * Check for unneccesary calculations in your code
 
 
