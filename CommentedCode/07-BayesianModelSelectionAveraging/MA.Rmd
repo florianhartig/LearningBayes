@@ -3,9 +3,7 @@ title: "Model Averaging"
 author: "FlorianHartig"
 date: "15 May 2015"
 output: html_document
----
-
-Based on an example provided by Jörn Pagel. 
+--- 
 
 ```{r, echo=F, warning=F, message=F}
 set.seed(123)
@@ -15,7 +13,7 @@ library(effects)
 ```
 
 
-## Creation of test data
+## Creation of test data?
 
 ```{r, fig.width=7, fig.height=7}
 a <- 5
