@@ -1,18 +1,15 @@
-# Information for participants of the course Introduction to Bayesian Statistics
-
-### Lecturers
-
-* Joe Chipperfield
-* Joern Pagel
-* [Florian Hartig](http://florianhartig.wordpress.com/)
-
-### Course plan
+# Information for participants Bergen 2015
 
 
+### Prior readings
+
+* You should be able to perform common tasks in R such as data selection, plotting , loading and installing packages, for loops, etc. If you feel you need a refresher ob working with R, google for material, or have a look at the links [here](http://biometry.github.io/APES/R/R10-gettingStarted.html)
+
+* If you want to read up a bit on Bayesian stats in advance of the course (not a prerequisite, but it may be helpful to have already heard the most important words), have a look at the recommended reading material [here](http://florianhartig.github.io/LearningBayes/), in particular the nice and free [Bayes intro by Michael Clark](http://www3.nd.edu/%7Emclark19/learn/IntroBayes.pdf)
 
 ### Preparations and installation of software
 
-* If you want to prepare for the course in advance (we do not expect that you will, but just in case), have a look at the recommended reading material [here](http://florianhartig.github.io/LearningBayes/), in particular the nice and free [Bayes intro by Michael Clark](http://www3.nd.edu/%7Emclark19/learn/IntroBayes.pdf)
+
 
 * Please make sure the following software is installed on your laptops
   * [R](http://www.r-project.org/)
@@ -24,6 +21,7 @@
 
 
 ```r
+library(R2jags)
 # Test of the R2jags system
 # Modified from the help file of the jags function
 
