@@ -10,7 +10,7 @@ Assume I'm trying to guess if a coin comes up heads or tails. I have had 10 tria
 
 ```r
 trials = 10
-success = 7
+success = 8
 ```
 
 What we want to know now is what my properties are regarding correctly guessing the outcome of the coin flip experiment. 
@@ -115,34 +115,21 @@ We can get this with the cummulative distribution function in R
 
 
 ```r
-pValue <- pbinom(success-1,trials,prob = 0.5, lower.tail = F)
-pValue
+pValue <- pbinom(success,trials,prob = 0.5, lower.tail = F)
 ```
 
-```
-## [1] 0.171875
-```
-
-```r
-pValue < 0.05
-```
-
-```
-## [1] FALSE
-```
-
-but it is a bit tricky, because depeding on which side one wants to test, you have to add a -1 (because of the definition of the cummulative). So, it's instructive to do it that way, but easier in practice to use the binom.test, which calculates the same values 
+but it is a bit tricky, because depeding on which side one wants to test, you have to add a -1 to the successes becaues of the discrete nature of teh data and the definition of the cummulative in R. You can try, but it's safer in practice to use the binom.test, which calculates the same values 
 
 
 ```r
-binom.test(success,trials,0.5) # two sided 
+binom.test(7,trials,0.5) # two sided 
 ```
 
 ```
 ## 
 ## 	Exact binomial test
 ## 
-## data:  success and trials
+## data:  7 and trials
 ## number of successes = 7, number of trials = 10, p-value = 0.3438
 ## alternative hypothesis: true probability of success is not equal to 0.5
 ## 95 percent confidence interval:
@@ -152,40 +139,12 @@ binom.test(success,trials,0.5) # two sided
 ##                    0.7
 ```
 
-```r
-binom.test(success,trials,0.5, alternative="greater") # testing for greater
-```
+Alternatively:
 
-```
-## 
-## 	Exact binomial test
-## 
-## data:  success and trials
-## number of successes = 7, number of trials = 10, p-value = 0.1719
-## alternative hypothesis: true probability of success is greater than 0.5
-## 95 percent confidence interval:
-##  0.3933758 1.0000000
-## sample estimates:
-## probability of success 
-##                    0.7
-```
 
 ```r
-binom.test(success,trials,0.5, alternative="less") # testing for less
-```
-
-```
-## 
-## 	Exact binomial test
-## 
-## data:  success and trials
-## number of successes = 7, number of trials = 10, p-value = 0.9453
-## alternative hypothesis: true probability of success is less than 0.5
-## 95 percent confidence interval:
-##  0.0000000 0.9127356
-## sample estimates:
-## probability of success 
-##                    0.7
+binom.test(7,trials,0.5, alternative="greater") # testing for greater
+binom.test(7,trials,0.5, alternative="less") # testing for less
 ```
 
 ### Side-note: multiple testing
@@ -194,54 +153,34 @@ Imagine there is no effect, but we keep on repeating the test 100 times. How oft
 
 
 ```r
-data= rbinom(100,trials,0.5)
+data= rbinom(100,10,0.5)
 pValue <- pbinom(data,trials,prob = 0.5, lower.tail = F)
-mean(pValue < 0.05)
+sum(pValue < 0.05)
 ```
 
 ```
-## [1] 0.05
+## [1] 5
 ```
 
-Yes, 5 is what you expect. Of course, if we do the experiment, the exact value will show some variance.
-
-To be exact, in the case of disrecte random distributions, the value doesn't have to be exactly 5%. If you are interested in the reasons, read the comments on this topic at the end of the document. 
+Yes, 5 is what you expect. To be exact, in the case of disrecte random distributions, the value doesn't have to be exactly 5%, but that is a side topic, and here it works. 
 
 The message here is: if you do repeated tests, and you want to maintain a fixed overall type I error rate, you need to adjust the p-values, e.g. by 
 
 
 ```r
 pValueAdjusted <- p.adjust(pValue, method = "hochberg")
-pValueAdjusted
+sum(pValueAdjusted < 0.05)
 ```
 
 ```
-##   [1] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##   [7] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [13] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [19] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.09765625
-##  [25] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [31] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [37] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [43] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [49] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [55] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [61] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [67] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [73] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [79] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [85] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [91] 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344 0.99902344
-##  [97] 0.99902344 0.99902344 0.99902344 0.99902344
+## [1] 0
 ```
 
-```r
-max(pValueAdjusted < 0.05) == 1
-```
+Remember: in general, if you choose an alpha level of 5%, and you have absolutely random data, you should get 5% false positives (type I error) assymptotically, and the distribution of p-values in repeated experiments will be flat. 
 
-```
-## [1] FALSE
-```
+Also note: we are free to choose the null-hypothesis as we want. What would you do if you null hypothesis is that a coint should have an 0.8 proability of head?
+
+
 
 ### Outcome of a NHST 
 
@@ -269,7 +208,7 @@ lines(parametervalues, prior, col = "red" )
 legend("topright", c("likelihood", "prior", "posterior"), col = c("black", "red", "green"), lwd = 1 )
 ```
 
-![](InferenceMethods_files/figure-html/unnamed-chunk-10-1.png) 
+![](InferenceMethods_files/figure-html/unnamed-chunk-11-1.png) 
 
 you see that likelihood and posterior have the same shape. However, this is only because I chose a flat prior. There is still a difference, however, namely that the posterior is normalized, i.e. will integrate to one. It has to be, because we want to interpret it as a pdf, while the likelihood is not a pdf. Let's look at the same example for an informative prior
 
@@ -285,7 +224,7 @@ lines(parametervalues, prior, col = "red" )
 legend("topright", c("likelihood", "prior", "posterior"), col = c("black", "red", "green"), lwd = 1 )
 ```
 
-![](InferenceMethods_files/figure-html/unnamed-chunk-11-1.png) 
+![](InferenceMethods_files/figure-html/unnamed-chunk-12-1.png) 
 
 you can see that the likelihood moves the posterior away from the prior, but not by much. try the same think with more data, but the same ratio, i.e. change to 30 trials, 9 success
 
@@ -309,50 +248,7 @@ leftCI <- parametervalues[which.min(abs(cumPost - 0.975))]
 abline(v=leftCI, col = "darkgreen", lty = 2, lwd = 2)
 ```
 
-![](InferenceMethods_files/figure-html/unnamed-chunk-12-1.png) 
-
-## Additional comments
-
-### Long-term frequencies of errors and multiple testing
-
-Imagine we have a fair coin, and do 1000 experiments with 10 draws, 
-
-
-looking at the p-value, note that we get to the right 5% assumptotically, but not for small data. The fact that it is not exactly 5% is an artifact that appears for discrete distributions (<8 gets acceted, >= 8 rejected, the perfect cut would be intbetween but as we have only discrete options that's not possible to choose)
-
-
-
-```r
-par(mfrow=c(2,1))
-trials = 10
-outcome <- rbinom(10000, trials, 0.5)
-hist(pbinom(outcome,trials,0.5), breaks = 100, main = "10 trials, 11 p-values" )
-mean(pbinom(outcome,trials,0.5) < 0.05)
-```
-
-```
-## [1] 0.0108
-```
-
-```r
-trials = 10000
-outcome <- rbinom(10000, trials, 0.5)
-hist(pbinom(outcome,trials,0.5), breaks = 100, main = "10000 trials, p-values flat"  )
-```
-
 ![](InferenceMethods_files/figure-html/unnamed-chunk-13-1.png) 
-
-```r
-mean(pbinom(outcome,trials,0.5) < 0.05)
-```
-
-```
-## [1] 0.0484
-```
-
-remember: in general, if you choose an alpha level of 5%, and you have absolutely random data, you should get 5% false positives (type I error) assymptotically, and the distribution of p-values in repeated experiments will be flat. 
-
-Also note: we are free to choose the null-hypothesis as we want. What would you do if you null hypothesis is that a coint should have an 0.8 proability of head?
 
 
 ---

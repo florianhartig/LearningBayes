@@ -1,7 +1,8 @@
 ---
 title: "Information for participants Bergen 2015"
-author: 
+author: "null"
 output:
+  pdf_document: default
   html_document:
     keep_md: yes
 ---

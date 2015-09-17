@@ -1,53 +1,38 @@
----
-title: "Beetles"
-author: "Florian Hartig"
-date: "7 Jun 2015"
-output:
-  html_document:
-    keep_md: yes
----
+# Beetles
+Florian Hartig  
+7 Jun 2015  
 
-```{r, echo = F}
-set.seed(2)
-library(R2jags)
+
+```
+## Loading required package: rjags
+## Loading required package: coda
+```
+
+```
+## Warning: package 'coda' was built under R version 3.1.3
+```
+
+```
+## Linked to JAGS 3.4.0
+## Loaded modules: basemod,bugs
+## 
+## Attaching package: 'R2jags'
+## 
+## The following object is masked from 'package:coda':
+## 
+##     traceplot
 ```
 
 
 
 ## Dataset
 
-```{r, echo=F, cache = T}
-altitude = rep(seq(0,1,len = 50), each = 20)
-dataID = 1:1000
-spatialCoordinate = rep(seq(0,30, len = 50), each = 20)
 
-# random effects + zeroinflation
-plot = rep(1:50, each = 20)
-year = rep(1:20, times = 50)
-
-yearRandom = rnorm(20, 0, 1)
-plotRandom = rnorm(50, 0, 1)
-overdispersion = rnorm(1000, sd = 0.5)
-zeroinflation = rbinom(1000,1,0.6)
-
-beetles <- rpois(1000, exp( 0  + 12*altitude - 12*altitude^2 
-#  + overdispersion   + plotRandom[plot]
- + yearRandom[year]) * zeroinflation )
-
-data = data.frame(dataID, beetles, altitude, plot, year, spatialCoordinate)
-```
 
 Measured beetle counts over 20 years on 50 different plots across an altitudinal gradient
 
 <font size="4">
-```{r, echo = F, fig.align = "center", fig.width = 7, fig.height = 7, cache = F}
-
-
-plot(year, altitude, cex = beetles/50, pch =2, main = "Beetle counts across altitudinal gradient, triangle is proportional to counts")
-#lines(plot, altitude * 1000)
-#points(unique(plot), unique(altitude * 1000) , pch = 3)
-#text(unique(plot), unique(altitude * 1000) - 50, unique(plot), cex = 0.7 )
-```
+<img src="Beetles_files/figure-html/unnamed-chunk-3-1.png" title="" alt="" style="display: block; margin: auto;" />
 </font>
 
 
@@ -56,21 +41,30 @@ What is the altitudinal niche of the species?
 ### Preparation
 
 
-```{r}
+
+```r
 library(R2jags)
 modelData=as.list(data)
 modelData = append(data, list(nobs=1000, nplots = 50, nyears = 20))
 
 head(data)
+```
 
+```
+##   dataID beetles altitude plot year spatialCoordinate
+## 1      1       1        0    1    1                 0
+## 2      2       1        0    1    2                 0
+## 3      3       8        0    1    3                 0
+## 4      4       0        0    1    4                 0
+## 5      5       0        0    1    5                 0
+## 6      6       0        0    1    6                 0
 ```
 
 ## Basic model
 
 
-```{r, eval = T, fig.align = "center", fig.width = 10, fig.height = 10, cache = T, warning=F}
 
-
+```r
 modelstring="
   model {
 
@@ -80,7 +74,6 @@ modelstring="
 
       lambda[i] <- exp(intercept + alt * altitude[i] + alt2 * altitude[i] * altitude[i] ) 
     }
-
 
     # Effect priors 
     intercept ~ dnorm(0,0.0001)
@@ -100,17 +93,36 @@ modelstring="
 #Running this
 
 model=jags(model.file = textConnection(modelstring), data=modelData, n.iter=10000,  parameters.to.save = c("intercept", "alt", "alt2", "Prediction", "Ryear", "zeroMu", "sigmaYear"), DIC = F)
+```
 
+```
+## module glm loaded
+## module dic loaded
+```
+
+```
+## Compiling model graph
+##    Resolving undeclared variables
+##    Allocating nodes
+##    Graph Size: 3208
+## 
+## Initializing model
+```
+
+```r
 plot(model, display.parallel = T)
+```
 
+<img src="Beetles_files/figure-html/unnamed-chunk-5-1.png" title="" alt="" style="display: block; margin: auto;" />
+
+```r
 altitude <- seq(0,1,len = 50)
-
 ```
 
 Plot the results
 
-```{r, eval = T, fig.align = "center", fig.width = 6, fig.height = 6, cache = T}
 
+```r
 plot(data$altitude + runif(1000,-0.02,0.02), log(data$beetles + 1 ))
 
 
@@ -122,25 +134,33 @@ for(i in seq(5,nrow(combinedChainValues), 5)){
 }
 
 lines(altitude, log(exp(12*altitude - 12*altitude^2) + 1), col = "red" )
+```
 
+<img src="Beetles_files/figure-html/unnamed-chunk-6-1.png" title="" alt="" style="display: block; margin: auto;" />
 
-
+```r
 # Bayesian p-value
 hist(combinedChainValues$Prediction, breaks = 100, xlim = c(0, 30000))
 abline(v=sum(data$beetles), col = "red")
+```
 
+<img src="Beetles_files/figure-html/unnamed-chunk-6-2.png" title="" alt="" style="display: block; margin: auto;" />
+
+```r
 # numerical value
 ecdf(combinedChainValues$Prediction)(sum(data$beetles))
+```
 
+```
+## [1] 0.001
 ```
 
 
 ## Adding a random effect for year
 
 
-```{r, eval = T, fig.align = "center", fig.width = 6, fig.height = 6, cache = T, warning=F}
 
-
+```r
 modelstring="
   model {
 
@@ -150,7 +170,6 @@ modelstring="
 
       lambda[i] <- exp(intercept + (alt + Ryear[year[i]]) * altitude[i] + alt2 * altitude[i] * altitude[i]   )
     }
-
 
     # Effect priors 
     intercept ~ dnorm(0,0.0001)
@@ -166,7 +185,6 @@ modelstring="
     # Variance priors 
     sigmaYear~dgamma(1,2)
 
-
     # Predictions
     for (i in 1:nobs) {
       beetlesPred[i]~dpois(lambda[i])
@@ -180,17 +198,36 @@ modelstring="
 #Running this
 
 model=jags(model.file = textConnection(modelstring), data=modelData, n.iter=10000,  parameters.to.save = c("intercept", "alt", "alt2", "Prediction", "Ryear", "zeroMu", "sigmaYear"), DIC = F)
+```
 
+```
+## module glm loaded
+## module dic loaded
+```
+
+```
+## Compiling model graph
+##    Resolving undeclared variables
+##    Allocating nodes
+##    Graph Size: 7102
+## 
+## Initializing model
+```
+
+```r
 plot(model, display.parallel = T)
+```
 
+<img src="Beetles_files/figure-html/unnamed-chunk-7-1.png" title="" alt="" style="display: block; margin: auto;" />
+
+```r
 altitude <- seq(0,1,len = 50)
-
 ```
 
 Plot the results
 
-```{r, eval = T, fig.align = "center", fig.width = 6, fig.height = 6, cache = T}
 
+```r
 plot(data$altitude + runif(1000,-0.02,0.02), log(data$beetles + 1 ))
 
 
@@ -202,24 +239,32 @@ for(i in seq(5,nrow(combinedChainValues), 5)){
 }
 
 lines(altitude, log(exp(12*altitude - 12*altitude^2) + 1), col = "red" )
+```
 
+<img src="Beetles_files/figure-html/unnamed-chunk-8-1.png" title="" alt="" style="display: block; margin: auto;" />
 
-
+```r
 # Bayesian p-value
 hist(combinedChainValues$Prediction, breaks = 100, xlim = c(0, 20000))
 abline(v=sum(data$beetles), col = "red")
+```
 
+<img src="Beetles_files/figure-html/unnamed-chunk-8-2.png" title="" alt="" style="display: block; margin: auto;" />
+
+```r
 # numerical value
 ecdf(combinedChainValues$Prediction)(sum(data$beetles))
+```
 
+```
+## [1] 0.001
 ```
 
 ## Adding Overdispersion via random effect on each data point
 
 
-```{r, eval = T, fig.align = "center", fig.width = 6, fig.height = 6, cache = T, warning=F}
 
-
+```r
 modelstring="
   model {
 
@@ -262,17 +307,31 @@ modelstring="
 #Running this
 
 model=jags(model.file = textConnection(modelstring), data=modelData, n.iter=30000,  parameters.to.save = c("intercept", "alt", "alt2", "Prediction", "Ryear", "zeroMu", "sigmaYear"), DIC = F)
+```
 
+```
+## Compiling model graph
+##    Resolving undeclared variables
+##    Allocating nodes
+##    Graph Size: 7134
+## 
+## Initializing model
+```
+
+```r
 plot(model, display.parallel = T)
+```
 
+<img src="Beetles_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" style="display: block; margin: auto;" />
+
+```r
 altitude <- seq(0,1,len = 50)
-
 ```
 
 Plot the results
 
-```{r, eval = T, fig.align = "center", fig.width = 6, fig.height = 6, cache = T}
 
+```r
 plot(data$altitude + runif(1000,-0.02,0.02), log(data$beetles + 1 ))
 
 
@@ -284,16 +343,25 @@ for(i in seq(5,nrow(combinedChainValues), 5)){
 }
 
 lines(altitude, log(exp(12*altitude - 12*altitude^2) + 1), col = "red" )
+```
 
+<img src="Beetles_files/figure-html/unnamed-chunk-10-1.png" title="" alt="" style="display: block; margin: auto;" />
 
-
+```r
 # Bayesian p-value
 hist(combinedChainValues$Prediction, breaks = 100, xlim = c(0, 20000))
 abline(v=sum(data$beetles), col = "red")
+```
 
+<img src="Beetles_files/figure-html/unnamed-chunk-10-2.png" title="" alt="" style="display: block; margin: auto;" />
+
+```r
 # numerical value
 ecdf(combinedChainValues$Prediction)(sum(data$beetles))
+```
 
+```
+## [1] 0.5173333
 ```
 
 
@@ -301,9 +369,8 @@ ecdf(combinedChainValues$Prediction)(sum(data$beetles))
 ## Adding Zero-Inflation
 
 
-```{r, eval = T, fig.align = "center", fig.width = 6, fig.height = 6, cache = T, warning=F}
 
-
+```r
 modelstring="
   model {
 
@@ -355,17 +422,31 @@ modelstring="
 #Running this
 
 model=jags(model.file = textConnection(modelstring), data=modelData, n.iter=30000,  parameters.to.save = c("intercept", "alt", "alt2", "Prediction", "Ryear", "zeroMu", "sigmaYear"), DIC = F)
+```
 
+```
+## Compiling model graph
+##    Resolving undeclared variables
+##    Allocating nodes
+##    Graph Size: 10136
+## 
+## Initializing model
+```
+
+```r
 plot(model, display.parallel = T)
+```
 
+<img src="Beetles_files/figure-html/unnamed-chunk-11-1.png" title="" alt="" style="display: block; margin: auto;" />
+
+```r
 altitude <- seq(0,1,len = 50)
-
 ```
 
 Plot the results
 
-```{r, eval = T, fig.align = "center", fig.width = 6, fig.height = 6, cache = T}
 
+```r
 plot(data$altitude + runif(1000,-0.02,0.02), log(data$beetles + 1 ))
 
 
@@ -377,16 +458,25 @@ for(i in seq(5,nrow(combinedChainValues), 5)){
 }
 
 lines(altitude, log(exp(12*altitude - 12*altitude^2) + 1), col = "red" )
+```
 
+<img src="Beetles_files/figure-html/unnamed-chunk-12-1.png" title="" alt="" style="display: block; margin: auto;" />
 
-
+```r
 # Bayesian p-value
 hist(combinedChainValues$Prediction, breaks = 100, xlim = c(0, 20000))
 abline(v=sum(data$beetles), col = "red")
+```
 
+<img src="Beetles_files/figure-html/unnamed-chunk-12-2.png" title="" alt="" style="display: block; margin: auto;" />
+
+```r
 # numerical value
 ecdf(combinedChainValues$Prediction)(sum(data$beetles))
+```
 
+```
+## [1] 0.5056667
 ```
 
 ---
