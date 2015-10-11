@@ -120,9 +120,7 @@ Things are always getting more difficult if you move to more dimensions, and Bay
 
 #### Marginal values hide correlations 
 
-This get a bit more complicated if we move to multivariate parameter spaces (the normal situation). 
-
-I problem that often occurs here is that there are correlations between parameters. In this case, the marginal posterior distributions that are reported in the summary() or plot functions of coda can be VERY misleading. 
+A problem that often occurs when we have more than one parameter are correlations between parameters. In this case, the marginal posterior distributions that are reported in the summary() or plot functions of coda can be VERY misleading. 
 
 Look at the situation below, where we have two parameters that are highly correlated. The marginal posteriors look basically flat, and looking only at them you may think there is no information in the likelihood. 
 
