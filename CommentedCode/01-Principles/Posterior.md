@@ -116,63 +116,75 @@ More on both alternatives [here](http://www.bayesian-inference.com/credible)
 
 ### Multivariate issues
 
-Things are always getting more difficult if you move to more dimensions, and Bayesian analysis is no exception 
+Things are always getting more difficult if you move to more dimensions, and Bayesian analysis is no exception. 
 
-Assume we have a posterior with 2 parameters, which are in a complcated, banana-shaped correlation. Assume we are able to sample from this poterior. Here is an example from Meng and Barnard, code from the bayesm package:
+#### Marginal values hide correlations 
+
+This get a bit more complicated if we move to multivariate parameter spaces (the normal situation). 
+
+I problem that often occurs here is that there are correlations between parameters. In this case, the marginal posterior distributions that are reported in the summary() or plot functions of coda can be VERY misleading. 
+
+Look at the situation below, where we have two parameters that are highly correlated. The marginal posteriors look basically flat, and looking only at them you may think there is no information in the likelihood. 
+
+However, if you look at the correlation, you see that the likelihood has excluded vast areas of the prior space (assuming we have had flat uncorrelated likelihoods in this case). 
+
 
 
 ```r
-banana=function(A,B,C1,C2,N,keep=10,init=10)
-{
-    R=init*keep+N*keep
-    x1=x2=0
-    bimat=matrix(double(2*N),ncol=2)
-    for (r in 1:R) {
-        x1=rnorm(1,mean=(B*x2+C1)/(A*(x2^2)+1),sd=sqrt(1/(A*(x2^2)+1)))
-        x2=rnorm(1,mean=(B*x2+C2)/(A*(x1^2)+1),sd=sqrt(1/(A*(x1^2)+1)))
-        if (r>init*keep && r%%keep==0) {
-            mkeep=r/keep; bimat[mkeep-init,]=c(x1,x2)
-        }
-    }
+library(psych)
+```
 
-    return(bimat)
-}
+```
+## Warning: package 'psych' was built under R version 3.1.3
+```
+
+```r
+par1= runif(1000,0,1)
+par2 =par1 + rnorm(1000,sd = 0.05)
+scatter.hist(par1,par2)
+```
+
+![](Posterior_files/figure-html/unnamed-chunk-8-1.png) 
+
+It is therefore vital to plot the correlation plots as well to be able to judge the extent to which parameters are uncertaint. 
+
+If you have more parameters, however, you may still miss things here, because there could be higher-order correlations between the parameters that look random in the two-dimensional plot. A good proxy to get an overall reduction of uncertainy across all parameters, including all these higher-order correlations, is to compare the prior predictive distribution with the posterior predictive distribution. 
+
+
+#### Nonlinear correlations
+
+A further issue that many people are not aware of is that the marginal mode (maximum) does not need to coincide with the global mode if correlations in parameter space are nonlinear. Assume we have a posterior with 2 parameters, which are in a complcated, banana-shaped correlation. Assume we are able to sample from this poterior. Here is an example from Meng and Barnard, code from the bayesm package (see Rmd source file for code of this function).
+
+
+
+If we plot the correlation, as well as the marginal distributions (i.e. the histograms for each parameter), you see that the mode of the marginal distributions (green, dashed) will not conincide with the multivariate mode (red, solid lines).
+
+
+```r
+set.seed(124)
 sample=banana(A=0.5,B=0,C1=3,C2=3,50000)
-```
-
-
-If we plot the correlation, as well as the marginal distributions (i.e. the histograms for each parameter), you see that the mode of the marginal distributions will not conincide with the multivariate mode.
-
-
-```r
-scatterhist = function(x, y, xlab="", ylab="", smooth = T){
-  zones=matrix(c(2,0,1,3), ncol=2, byrow=TRUE)
-  layout(zones, widths=c(4/5,1/5), heights=c(1/5,4/5))
-  xhist = hist(x, plot=FALSE, breaks = 50)
-  yhist = hist(y, plot=FALSE, breaks = 50)
-  top = max(c(xhist$counts, yhist$counts))
-  par(mar=c(3,3,1,1))
-  if (smooth == T) smoothScatter(x,y, colramp = colorRampPalette(c("white", "darkorange", "darkred", "darkslateblue")))
-  else plot(x,y)
-  par(mar=c(0,3,1,1))
-  barplot(xhist$counts, axes=FALSE, ylim=c(0, top), space=0)
-  par(mar=c(3,0,1,1))
-  barplot(yhist$counts, axes=FALSE, xlim=c(0, top), space=0, horiz=TRUE)
-  par(oma=c(3,3,0,0))
-  mtext(xlab, side=1, line=1, outer=TRUE, adj=0, 
-        at=.8 * (mean(x) - min(x))/(max(x)-min(x)))
-  mtext(ylab, side=2, line=1, outer=TRUE, adj=0, 
-        at=(.8 * (mean(y) - min(y))/(max(y) - min(y))))
-}
-
 scatterhist(sample[,1], sample[,2])
+
+#par(mfg = c(2,1))
+
+abline(h = 0.22, col = "green", lwd = 3, lty =2)
+abline(v = 0.295, col = "green", lwd = 3, lty =2)
 ```
 
-![](Posterior_files/figure-html/unnamed-chunk-9-1.png) 
+![](Posterior_files/figure-html/unnamed-chunk-10-1.png) 
 
 Hence, it's important to note that the marginal distributions are not suited to calculate the MAP, CIs, HPDs or any other summary statistics if the posterior distribution is not symmetric in multivariate space. This is a real point of confusion for many people, so keep it in mind!
 
 More options to plot HPD in 2-d here http://www.sumsar.net/blog/2014/11/how-to-summarize-a-2d-posterior-using-a-highest-density-ellipse/
+
+
+
+### FAQs
+
+* http://stats.stackexchange.com/questions/176436/what-would-be-the-reason-that-the-posterior-distribution-looks-like-the-prior-us
+
+
+
 
 ---
 **Copyright, reuse and updates**: By Florian Hartig. Updates will be posted at https://github.com/florianhartig/LearningBayes. Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
