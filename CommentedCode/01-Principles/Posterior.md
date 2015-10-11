@@ -157,21 +157,25 @@ A further issue that many people are not aware of is that the marginal mode (max
 
 
 
-If we plot the correlation, as well as the marginal distributions (i.e. the histograms for each parameter), you see that the mode of the marginal distributions (green, dashed) will not conincide with the multivariate mode (red, solid lines).
+If we plot the correlation, as well as the marginal distributions (i.e. the histograms for each parameter), you see that the mode of the marginal distributions will not conincide with the multivariate mode (red, solid lines).
 
 
 ```r
 set.seed(124)
 sample=banana(A=0.5,B=0,C1=3,C2=3,50000)
 scatterhist(sample[,1], sample[,2])
-
-#par(mfg = c(2,1))
-
-abline(h = 0.22, col = "green", lwd = 3, lty =2)
-abline(v = 0.295, col = "green", lwd = 3, lty =2)
 ```
 
 ![](Posterior_files/figure-html/unnamed-chunk-10-1.png) 
+
+```r
+#par(mfg = c(2,1))
+
+# skaliert nicht richtig!!!, vielleicht in die Histogramme einbauen?
+
+#abline(h = 0.22, col = "green", lwd = 3, lty =2)
+#abline(v = 0.295, col = "green", lwd = 3, lty =2)
+```
 
 Hence, it's important to note that the marginal distributions are not suited to calculate the MAP, CIs, HPDs or any other summary statistics if the posterior distribution is not symmetric in multivariate space. This is a real point of confusion for many people, so keep it in mind!
 

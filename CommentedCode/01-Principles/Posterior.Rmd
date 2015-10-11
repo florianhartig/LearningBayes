@@ -252,7 +252,7 @@ scatterhist = function (x, y = NULL, smooth = TRUE, ab = FALSE, correl = TRUE,
 
 ```
 
-If we plot the correlation, as well as the marginal distributions (i.e. the histograms for each parameter), you see that the mode of the marginal distributions (green, dashed) will not conincide with the multivariate mode (red, solid lines).
+If we plot the correlation, as well as the marginal distributions (i.e. the histograms for each parameter), you see that the mode of the marginal distributions will not conincide with the multivariate mode (red, solid lines).
 
 ```{r, fig.width=8, fig.height=8}
 set.seed(124)
@@ -261,8 +261,10 @@ scatterhist(sample[,1], sample[,2])
 
 #par(mfg = c(2,1))
 
-abline(h = 0.22, col = "green", lwd = 3, lty =2)
-abline(v = 0.295, col = "green", lwd = 3, lty =2)
+# skaliert nicht richtig!!!, vielleicht in die Histogramme einbauen?
+
+#abline(h = 0.22, col = "green", lwd = 3, lty =2)
+#abline(v = 0.295, col = "green", lwd = 3, lty =2)
 
 ```
 
