@@ -161,11 +161,15 @@ for (i in 1:n){
 
 
 ```r
-plot(fit[, 1:2], xlim = c(0,6), ylim = c(0,5), col = "#00000022", main = "Accepted parameters for \n different values of epsilon")
+plot(fit[, 1:2], xlim = c(0,6), ylim = c(0,5), col = "#00000022", main = "Accepted parameters")
 
 abline(v = 2)
 abline(h = 1) 
 ```
 
 ![](ABC-MovementModel-RecAndMCMC_files/figure-html/unnamed-chunk-9-1.png) 
+
+
+---
+**Copyright, reuse and updates**: By Florian Hartig. Updates will be posted at https://github.com/florianhartig/LearningBayes. Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 
