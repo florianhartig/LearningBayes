@@ -7,17 +7,15 @@ output:
     keep_md: yes
 ---
 
-## Installing the package
+Laplaces Demon is (or was, I'm not sure) a package that implements various MCMC algorithms in R, as well as a few other convenience functions. 
 
-Laplaces Demon is currently not on CRAN, unfortuanately. You can install the development version directly from GitHub
+The (was) refers to the fact that the package was pulled from CRAM, and it was shortly also removed from GitHub. I have a copy on my GH account, which you should be able to install via
 
 ```{r, eval=F}
 #install.packages("devtools")
 library(devtools)
-install_github("Statisticat/LaplacesDemon")
+install_github("florianhartig/LaplacesDemon")
 ```
-
-Alternatively, the latest stable release is availabe [here](https://github.com/Statisticat/LaplacesDemon)
 
 If everything worked, you should be able to load the package
 
@@ -45,6 +43,11 @@ The main thing of interest, however, are the samplers that are available. A desc
 ```{r, eval=F}
 vignette("LaplacesDemonTutorial")
 ```
+
+I am not sure if all of the algorithms / settings work well and are stable. See, e.g.
+
+* http://wiekvoet.blogspot.de/2014/10/tuning-laplacesdemon.html
+
 
 Here's the example from the package. 
 
