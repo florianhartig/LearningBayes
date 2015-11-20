@@ -143,6 +143,14 @@ The most important thing is to understand that p-values and posterior estimates 
 
 Basically, there are the general-purpose frameworks OpenBugs,JAGS and STAN that are based on the bugs language, there are a number of general-purpose MCMC samplers 
 
+\chapter{Bayesian Inference with several models}
+
+
+
+The marginal likelihood depends on the choice of the prior \citep{Sinharay-SensitivityBayesFactors-2002}
+
+
+
 
 
 \section{Simulation-based inference}
@@ -150,6 +158,9 @@ Basically, there are the general-purpose frameworks OpenBugs,JAGS and STAN that 
 I have argued that the recent Bayesian inference is attractive because MCMCs allow calculating more complicated statistical models, and provide more flexibility than conventional, "frequentist" methods. However, there is also a limit to what MCMCs such as JAGS, BUGSs, etc. can handle. The reason is that all this samplers still need at least a partial value for the likelihood function. 
 
 If you want to go to even more complex models, there is the advan
+
+
+
 
 
 
