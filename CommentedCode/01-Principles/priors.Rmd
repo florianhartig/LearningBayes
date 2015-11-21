@@ -132,6 +132,10 @@ Fong, Y.; Rue, H. & Wakefield, J. (2010) Bayesian inference for generalized line
 
 Ferguson, T. (1974) Prior distributions on spaces of probability measures. The Annals of Statistics, JSTOR, 2, 615-629.
 
+### Jeffrey's prior
+
+* Jeffreys priors for mixture estimation http://arxiv.org/abs/1511.03145
+
 
 ### Informative priors 
 
