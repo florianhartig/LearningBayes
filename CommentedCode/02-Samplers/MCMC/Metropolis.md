@@ -6,6 +6,13 @@ A simple Metropolis-Hastings MCMC in R
 
 
 
+*Summary*: the idea of this tutorial is to understand how MCMCs are used to sample the posterior distribution in a Bayesian analysis. We will
+
+* Set up the posterior function for a linear regression 
+* Use a simple hand-programmed MCMC to sample from the posterior
+* Discuss the basics of tuning, convergence checks and interpretation of the posterior sample.
+
+## Creating some test data
 
 As a first step, we create some test data that will be used to fit our model. Let’s assume a linear relationship between the predictor and the response variable, so we take a linear model and add some noise.
 
@@ -25,20 +32,17 @@ y <-  trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)
 plot(x,y, main="Test Data")
 ```
 
-![](Metropolis_files/figure-html/test_data-1.png) 
+![](Metropolis_files/figure-html/test_data-1.png)<!-- -->
 
-
-## Defining the statistical model 
-
-The next step is to specify the statistical model. We already know that the data was created with a linear relationship y = a*x + b between x and y and a normal error model N(0,sd) with standard deviation sd, so let’s use the same model for the fit and see if we can retrieve our original parameter values. 
 <br />
 
+## Defining the statistical model and the likelihood function 
 
-## Derive the likelihood function from the model
+The next step is to specify the statistical model. We already know that the data was created with a linear relationship y = a*x + b between x and y and a normal error model N(0,sd) with standard deviation sd, so let’s use the same model for the fit and see if we can retrieve our original parameter values. 
 
-For estimating parameters in a Bayesian analysis, we need to derive the likelihood function for the model that we want to fit. The likelihood is the probability (density) with which we would expect the observed data to occur conditional on the parameters of the model that we look at. So, given that our linear model y = b + ax + N(0,sd) takes the parameters (a, b, sd) as an input, we have to return the probability of obtaining the test data above under this model (this sounds more complicated as it is, as you see in the code, we simply calculate the difference between predictions y = b + ax and the observed y, and then we have to look up the probability densities (using dnorm) for such deviations to occur. 
+For estimating parameters in a Bayesian analysis, we need to derive the likelihood function for the model that we want to fit. The likelihood is the probability (density) with which we would expect the observed data to occur conditional on the parameters of the model that we look at. So, given that our linear model y = b + ax + N(0,sd) takes the parameters (a, b, sd) as an input, we have to return the probability of obtaining the test data above under this model 
 
-As an illustration, the last lines of the code plot the Likelihood for a range of parameter values of the slope parameter a. The result should look something like the below plot.
+This sounds more complicated as it is, as you see in the code below, we simply calculate the difference between predictions y = b + ax and the observed y, and then we have to look up the probability densities (using dnorm) for such deviations to occur. As an illustration, the last lines of the code plot the Likelihood for a range of parameter values of the slope parameter a. The result should look something like the below plot.
 
 
 
@@ -61,14 +65,13 @@ slopelikelihoods <- lapply(seq(3, 7, by=.05), slopevalues )
 plot (seq(3, 7, by=.05), slopelikelihoods , type="l", xlab = "values of slope parameter a", ylab = "Log likelihood")
 ```
 
-![](Metropolis_files/figure-html/likelihood_fucntion-1.png) 
+![](Metropolis_files/figure-html/likelihood_fucntion-1.png)<!-- -->
 <br />
 
 
-## Why we work with logarithms
+## Why we work with logarithms?
 
-You might have noticed that I return the logarithm of the probabilities in the likelihood function, which is also the reason why I sum the probabilities of all our datapoints (the logarithm of a product equals the sum of the logarithms). Why do we do this? You don’t have to, but it’s strongly advisable because likelihoods, where a lot of small probabilities are multiplied, can get ridiculously small pretty fast (something like 10^-34). At some stage, computer programs are getting into numerical rounding or underflow problems then. So, bottom-line: when you program something with likelihoods, always use logarithms!!!
-<br />
+You might have noticed that I return the logarithm of the probabilities in the likelihood function, which is also the reason why I sum the probabilities of all our datapoints (the logarithm of a product equals the sum of the logarithms). Why do we do this? You don’t have to, but it’s strongly advisable because likelihoods, where a lot of small probabilities are multiplied, can get ridiculously small pretty fast (something like $10^-34$). At some stage, computer programs are getting into numerical rounding or underflow problems then. So, bottom-line: when you program something with likelihoods, always use logarithms!!!
 
 ## Defining the prior
 
@@ -118,9 +121,9 @@ This is achieved by:
 
 * Choosing a new parameter value close to the old value based on some probability density that is called the proposal function
 
-*Jumping to this new point with a probability p(new)/p(old), where p is the target function, and p>1 means jumping as well 
+*Jumping to this new point with a probability p(new)/p(old), where p is the target function, and p>1 means jumping as well.
 
-It’s fun to think about why that works, but for the moment I can assure you it does – when we run this algorithm, distribution of the parameters it visits converges to the target distribution p. 
+It requires a bit of mathematics to prove that this works, but for the moment I can assure you it does – when we run this algorithm, distribution of the parameters it visits converges to the target distribution p. 
 
 So, let’s get this in R:
 
@@ -162,7 +165,8 @@ The first steps of the algorithm may be biased by the initial value, and are the
 
 
 ```r
-result <- mcmc(chain[5000:ncol(chain),], start = 5000)
+burnin = 5000
+result <- mcmc(chain[burnin:ncol(chain),], start = burnin)
 ```
 
 The mcmc function is part of the coda R package that provides a number of standard functions for plotting and analysis of the posterior samples. For those functions to work, you need to have your output as an object of class “mcmc”, or “mcmc.list”, which we will discuss later. Coda is the standard package for this type of analysis, and most Bayesian packages in R use this class to return MCMC outputs, so you will likely come across this syntax whatever Bayesian code you are running.
@@ -176,7 +180,7 @@ The advantage of having a coda object is that a lot of things that we typically 
 plot(result)
 ```
 
-![](Metropolis_files/figure-html/unnamed-chunk-4-1.png) 
+![](Metropolis_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
 ```r
 summary(result) 
@@ -239,6 +243,10 @@ summary(lm(y~x))
 
 You see that we retrieve more or less the original parameters that were used to create our data, and you also see that we get a certain area around the highest posterior values that also have some support by the data, which is the Bayesian equivalent of confidence intervals. 
 
+*More on interpreting posterior distributions*
+
+* [here](https://github.com/florianhartig/LearningBayes/blob/master/CommentedCode/01-Principles/Posterior.md)
+
 
 ## Marginal densities hide correlations
 
@@ -253,6 +261,9 @@ library(IDPmisc)
 
 ```
 ## Loading required package: grid
+```
+
+```
 ## Loading required package: lattice
 ```
 
@@ -286,7 +297,7 @@ betterPairs <- function(YourData){
 betterPairs(data.frame(result))
 ```
 
-![](Metropolis_files/figure-html/marginal_densities2-1.png) 
+![](Metropolis_files/figure-html/marginal_densities2-1.png)<!-- -->
 
 
 In our case, there is be no large correlations because I set up the example in that way, but we can easily achieve a correlation between slope and intercept by “uncentering” our data, that is, having x-values that are not centered around 0. To see this, replace in the first large code fragment the creation of the test data by this line which creates non-centered x-values, and run everything again 
@@ -300,11 +311,13 @@ chain = mcmc(run_metropolis_MCMC(startvalue, 10000)[5000:ncol(chain),], start = 
 betterPairs(data.frame(chain))
 ```
 
-![](Metropolis_files/figure-html/marginal_densities3-1.png) 
+![](Metropolis_files/figure-html/marginal_densities3-1.png)<!-- -->
 
 You can see the strong correlation between the first and the second parameter (slope and intercept), and you can also see that your marginal uncertainty for each parameter (on the diagonal, or in your plot() function) has increased. However, it is really important to understand that this does not mean that the fit is fundamentally more uncertain – the Bayesian analysis doesn’t care if you shift the x-values by 20 to the right. Unlike some other statistical techniques, the method has no problems with such correlations. However, it is problematic now to summarize the results of such an analysis e.g. in terms of marginal values, because this is hiding the correlations. For example, it doesn’t make sense any more to say that the slope has a value of x +/- sd because this misses that point that for any given parameter of the intercept, the uncertainty of the slope is much smaller. For that reason, one should always check the correlations, and if possible, one should try to avoid correlations between parameters because this makes the analysis easier.
 
 Note that we only checked for pairwise correlations here, there may still be higher order interactions that don’t show up in an analysis like that, so you may still be missing something. For that reason, the advice is to summarize the chain only when really necessary, otherwise things like the prior predictive distribution etc. should always be created by sampling directly from the chain.
+
+
 
 ## Convergence diagnostics
 
@@ -318,7 +331,7 @@ combinedchains = mcmc.list(chain, chain2)
 plot(combinedchains)
 ```
 
-![](Metropolis_files/figure-html/Convergence_diagnostics-1.png) 
+![](Metropolis_files/figure-html/Convergence_diagnostics-1.png)<!-- -->
 
 ```r
 gelman.diag(combinedchains)
@@ -344,7 +357,7 @@ The gelman.diag gives you the scale reduction factors for each parameter. A fact
 cumuplot(chain)
 ```
 
-![](Metropolis_files/figure-html/unnamed-chunk-6-1.png) 
+![](Metropolis_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 The point to note here is that the median typically stabalizes a lot quicker than the 0.025 quantiles, or other extreme value statistics such as the max, which one should expect when sampling from a distribution. The recommendations for the gelman diagnostics are derived for estimations of central summary statistics of the chain, such as median and mean. If you want to estimate other properties, you may want to be more critical. 
 
@@ -355,7 +368,7 @@ Another issue about the gelman-diag is that the diagnostics itself is quite vari
 gelman.plot(combinedchains)
 ```
 
-![](Metropolis_files/figure-html/unnamed-chunk-7-1.png) 
+![](Metropolis_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 The gelman,plot shows you the development of the scale-reduction over time (chain steps), which is useful to see whether a low chain reduction is also stable (sometimes, the factors go down and then up again, as you will see). Also, note that for any real analysis, you have to make sure to discard any bias that arises from the starting point of your chain (burn-in), typical values here are a few 1000-10000 steps. The gelman plot is also a nice tool to see roughly where this point is, that is, from which point on the chains seem roughly converged.
 
@@ -386,7 +399,7 @@ combinedchains = mcmc.list(chain1, chain2)
 plot(combinedchains)
 ```
 
-![](Metropolis_files/figure-html/unnamed-chunk-8-1.png) 
+![](Metropolis_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 ```r
 #gelman.plot(combinedchains)
@@ -405,7 +418,7 @@ combinedchains = mcmc.list(chain1, chain2)
 plot(combinedchains)
 ```
 
-![](Metropolis_files/figure-html/unnamed-chunk-9-1.png) 
+![](Metropolis_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 ```r
 #gelman.plot(combinedchains)
@@ -426,11 +439,11 @@ As displayed in the figure, these problems can be seen in the trace plots. Theor
 
 ### References for further reading
 
-Gelman, A.; Carlin, J. B.; Stern, H. S. & Rubin, D. B. (2003) Bayesian Data Analysis
+* Gelman, A.; Carlin, J. B.; Stern, H. S. & Rubin, D. B. (2003) Bayesian Data Analysis
 
-Andrieu, C.; de Freitas, N.; Doucet, A. & Jordan, M. I. (2003) An introduction to MCMC for machine learning Mach. Learning, Springer, 50, 5-43
+* Andrieu, C.; de Freitas, N.; Doucet, A. & Jordan, M. I. (2003) An introduction to MCMC for machine learning Mach. Learning, Springer, 50, 5-43
 
-Hartig, F.; Calabrese, J. M.; Reineking, B.; Wiegand, T. & Huth, A. (2011) Statistical inference for stochastic simulation models – theory and application Ecol. Lett., 14, 816–827.
+* Hartig, F.; Calabrese, J. M.; Reineking, B.; Wiegand, T. & Huth, A. (2011) Statistical inference for stochastic simulation models – theory and application Ecol. Lett., 14, 816–827.
 
 ---
 **Copyright, reuse and updates**: By Florian Hartig. Updates will be posted at https://github.com/florianhartig/LearningBayes. Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License

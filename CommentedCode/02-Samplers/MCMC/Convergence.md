@@ -33,7 +33,7 @@ y <-  trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)
 plot(x,y, main="Test Data")
 ```
 
-![](Convergence_files/figure-html/model-1.png) 
+![](Convergence_files/figure-html/model-1.png)<!-- -->
 
 ```r
 # Likelihood function
@@ -138,13 +138,11 @@ summary(chain)
 plot(chain)
 ```
 
-![](Convergence_files/figure-html/coda_summary-1.png) 
+![](Convergence_files/figure-html/coda_summary-1.png)<!-- -->
 
-<br />
 
 I think the summary is self-explanatory (otherwise check out the help), but maybe a few words on the results of the plot() function: each row corresponds to one parameter, so there a are two plots for each parameter. The left plot is called a trace plot – it shows the values the parameter took during the runtime of the chain. The right plot is usually called a marginal density plot. Basically, it is the (smoothened) histogram of the values in the trace-plot, i.e. the distribution of the values of the parameter in the chain.
 
-<br />
 
 ## Marginal densities hide correlations
 
@@ -159,6 +157,9 @@ library(IDPmisc)
 
 ```
 ## Loading required package: grid
+```
+
+```
 ## Loading required package: lattice
 ```
 
@@ -198,7 +199,7 @@ betterPairs <- function(YourData){
 betterPairs(data.frame(chain))
 ```
 
-![](Convergence_files/figure-html/unnamed-chunk-2-1.png) 
+![](Convergence_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
 
 In our case, there is be no large correlations because I set up the example in that way, but we can easily achieve a correlation between slope and intercept by “uncentering” our data, that is, having x-values that are not centered around 0. To see this, replace in the first large code fragment the creation of the test data by this line which creates non-centered x-values, and run everything again 
 
@@ -211,7 +212,7 @@ chain = run_metropolis_MCMC(startvalue, 10000)
 betterPairs(data.frame(chain))
 ```
 
-![](Convergence_files/figure-html/marginal_densities3-1.png) 
+![](Convergence_files/figure-html/marginal_densities3-1.png)<!-- -->
 
 You can see the strong correlation between the first and the second parameter (slope and intercept), and you can also see that your marginal uncertainty for each parameter (on the diagonal, or in your plot() function) has increased. However, it is really important to understand that this does not mean that the fit is fundamentally more uncertain – the Bayesian analysis doesn’t care if you shift the x-values by 20 to the right. Unlike some other statistical techniques, the method has no problems with such correlations. However, it is problematic now to summarize the results of such an analysis e.g. in terms of marginal values, because this is hiding the correlations. For example, it doesn’t make sense any more to say that the slope has a value of x +/- sd because this misses that point that for any given parameter of the intercept, the uncertainty of the slope is much smaller. For that reason, one should always check the correlations, and if possible, one should try to avoid correlations between parameters because this makes the analysis easier.
 
@@ -229,7 +230,7 @@ combinedchains = mcmc.list(chain, chain2)
 plot(combinedchains)
 ```
 
-![](Convergence_files/figure-html/Convergence_diagnostics-1.png) 
+![](Convergence_files/figure-html/Convergence_diagnostics-1.png)<!-- -->
 
 ```r
 gelman.diag(combinedchains)
@@ -255,7 +256,7 @@ The gelman.diag gives you the scale reduction factors for each parameter. A fact
 cumuplot(chain)
 ```
 
-![](Convergence_files/figure-html/unnamed-chunk-3-1.png) 
+![](Convergence_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
 The point to note here is that the median typically stabalizes a lot quicker than the 0.025 quantiles, or other extreme value statistics such as the max, which one should expect when sampling from a distribution. The recommendations for the gelman diagnostics are derived for estimations of central summary statistics of the chain, such as median and mean. If you want to estimate other properties, you may want to be more critical. 
 
@@ -266,7 +267,7 @@ Another issue about the gelman-diag is that the diagnostics itself is quite vari
 gelman.plot(combinedchains)
 ```
 
-![](Convergence_files/figure-html/unnamed-chunk-4-1.png) 
+![](Convergence_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
 The gelman,plot shows you the development of the scale-reduction over time (chain steps), which is useful to see whether a low chain reduction is also stable (sometimes, the factors go down and then up again, as you will see). Also, note that for any real analysis, you have to make sure to discard any bias that arises from the starting point of your chain (burn-in), typical values here are a few 1000-10000 steps. The gelman plot is also a nice tool to see roughly where this point is, that is, from which point on the chains seem roughly converged.
 
@@ -297,7 +298,7 @@ combinedchains = mcmc.list(chain1, chain2)
 plot(combinedchains)
 ```
 
-![](Convergence_files/figure-html/unnamed-chunk-5-1.png) 
+![](Convergence_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 ```r
 #gelman.plot(combinedchains)
@@ -316,7 +317,7 @@ combinedchains = mcmc.list(chain1, chain2)
 plot(combinedchains)
 ```
 
-![](Convergence_files/figure-html/unnamed-chunk-6-1.png) 
+![](Convergence_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 ```r
 #gelman.plot(combinedchains)
