@@ -27,7 +27,7 @@ sampleSize <- 31
 x <- (-(sampleSize-1)/2):((sampleSize-1)/2)
 # Create dependent values according to ax + b + N(0,sd)
 y <-  trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)
- 
+
 # Plot data
 plot(x,y, main="Test Data")
 ```
@@ -54,10 +54,13 @@ likelihood <- function(param){
     sd = param[3]
      
     pred = a*x + b
+    
     singlelikelihoods = dnorm(y, mean = pred, sd = sd, log = T)
     sumll = sum(singlelikelihoods)
     return(sumll)  
 }
+
+
  
 # Example: plot the likelihood profile of the slope a
 slopevalues <- function(x){return(likelihood(c(x, trueB, trueSd)))}
@@ -79,7 +82,9 @@ As a second step, as always in Bayesian statistics, we have to specify a prior d
 
 * I use wide normal distributions for slope and intercept, a standard choice. If I would have many predictors and therefore the danger of overfitting, one could think about making them more narrow, deliberately biasing them towards 0
 
-* I am using a flat prior on 1/sd^2 (the latter expression is often called the precision), which is a standard non-informative choice for the variance. One would think that a flat prior on the variance would be a better idea, but one can show that this would typically lead to too much probability mass for large variances, effectively introducing a bias in the analysis. NOTE: good uniformative choices for parameters are not neccessarily flat!!!
+* I am using a flat prior on 1/sd^2 (the latter expression is often called the precision), which is a standard non-informative choice for the variance. This then corresponds to a decay of the standard deviation with 1/sqrt(sd).
+
+One would think that a flat prior on the variance would be a better idea, but one can show that this would typically lead to too much probability mass for large variances, effectively introducing a bias in the analysis. NOTE: good uniformative choices for parameters are not neccessarily flat!!!
 
 
 
@@ -91,8 +96,7 @@ prior <- function(param){
     aprior = dnorm(param[1], sd = 50, log = T)
     bprior = dnorm(param[2], sd = 50, log = T)
     
-    precision = 1/param[3]^2
-    sdprior = dunif(precision, min=0, max=30, log = T)
+    sdprior = 1/sqrt(param[3]) + dunif(param[3], min=0, max=30, log = T)
     return(aprior+bprior+sdprior)
 }
 ```
@@ -166,7 +170,7 @@ The first steps of the algorithm may be biased by the initial value, and are the
 
 ```r
 burnin = 5000
-result <- mcmc(chain[burnin:ncol(chain),], start = burnin)
+result <- mcmc(chain[burnin:nrow(chain),], start = burnin)
 ```
 
 The mcmc function is part of the coda R package that provides a number of standard functions for plotting and analysis of the posterior samples. For those functions to work, you need to have your output as an object of class “mcmc”, or “mcmc.list”, which we will discuss later. Coda is the standard package for this type of analysis, and most Bayesian packages in R use this class to return MCMC outputs, so you will likely come across this syntax whatever Bayesian code you are running.
@@ -188,25 +192,34 @@ summary(result)
 
 ```
 ## 
-## Iterations = 5000:9997
+## Iterations = 5000:10001
 ## Thinning interval = 1 
 ## Number of chains = 1 
-## Sample size per chain = 4998 
+## Sample size per chain = 5002 
 ## 
 ## 1. Empirical mean and standard deviation for each variable,
 ##    plus standard error of the mean:
 ## 
 ##         Mean     SD Naive SE Time-series SE
-## [1,]  4.7941 0.2208 0.003123        0.01684
-## [2,] -0.2489 1.8022 0.025492        0.21304
-## [3,] 10.1506 1.2411 0.017555        0.17281
+## [1,]  4.7827 0.2073 0.002931        0.01545
+## [2,] -0.2773 1.7699 0.025025        0.20685
+## [3,] 10.1212 1.3518 0.019113        0.19902
 ## 
 ## 2. Quantiles for each variable:
 ## 
-##        2.5%    25%     50%     75% 97.5%
-## var1  4.372  4.650  4.7911  4.9401  5.23
-## var2 -3.617 -1.529 -0.4292  0.9765  3.41
-## var3  8.022  9.263 10.0035 10.9210 12.83
+##        2.5%    25%     50%     75%  97.5%
+## var1  4.333  4.649  4.7873  4.9328  5.162
+## var2 -4.023 -1.389 -0.1709  0.8774  3.015
+## var3  7.938  9.117  9.9757 10.9121 13.136
+```
+
+```r
+rejectionRate(result)
+```
+
+```
+##      var1      var2      var3 
+## 0.2215557 0.2215557 0.2215557
 ```
 
 An interesting statistics provided by summary is the acceptance rate: how often was a proposal rejected by the metropolis-hastings acceptance criterion? The acceptance rate can be influenced by the proposal function: generally, the closer the proposals are, the larger the acceptance rate. Very high acceptance rates, however, are usually not beneficial: this means that the algorithms is “staying” at the same point, which results in a suboptimal probing of the parameter space (mixing). It can be shown that acceptance rates between 20% and 30% are optimal for typical applications (more on that later).
@@ -341,9 +354,9 @@ gelman.diag(combinedchains)
 ## Potential scale reduction factors:
 ## 
 ##      Point est. Upper C.I.
-## [1,]       1.13       1.48
-## [2,]       1.17       1.59
-## [3,]       1.00       1.02
+## [1,]       1.15       1.54
+## [2,]       1.18       1.62
+## [3,]       1.01       1.02
 ## 
 ## Multivariate psrf
 ## 
