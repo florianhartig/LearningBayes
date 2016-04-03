@@ -15,6 +15,7 @@
 # Test of the R2jags system
 # Modified from the help file of the jags function
 
+library(R2jags)
 
 # An example model file is given in:
 model.file <- system.file(package="R2jags", "model", "schools.txt")
