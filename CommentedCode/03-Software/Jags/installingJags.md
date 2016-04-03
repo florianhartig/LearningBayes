@@ -1,6 +1,6 @@
 ### Preparations and installation of software
 
-* If you want to prepare for the course in advance (we do not expect that you will, but just in case), have a look at the recommended reading material [here](http://florianhartig.github.io/LearningBayes/), in particular the nice and free [Bayes intro by Michael Clark](https://sites.google.com/a/umich.edu/micl/miscfiles/IntroBayes.pdf?attredirects=0&d=1)
+* If you want to prepare for the course in advance (we do not expect that you will, but just in case), have a look at the recommended reading material [here](http://florianhartig.github.io/LearningBayes/), in particular the nice and free [Bayes intro by Michael Clark](https://sites.google.com/a/umich.edu/micl/miscfiles/IntroBayes.pdf)
 
 * Please make sure the following software is installed on your laptops
   * [R](http://www.r-project.org/)
