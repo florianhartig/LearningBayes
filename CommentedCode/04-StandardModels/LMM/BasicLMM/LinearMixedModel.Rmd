@@ -1,0 +1,214 @@
+---
+title: "A simple linear mixed model with Jags"
+author: "Florian Hartig"
+date: "30 Jul 2014"
+output:
+  html_document:
+    keep_md: yes
+---
+
+
+```{r, echo=F, warning=F, message=F}
+set.seed(123)
+rm(list=ls(all=TRUE))
+library(rjags)
+library(runjags)
+library(lme4)
+library(effects)
+library(R2jags)
+```
+
+
+## Creation of test data
+
+I create a test dataset with a linear dependency between x and y, with an additional effect that is applied on a grouping factor - you can think of this as a region or site. The structure conforms to a random intercept model.
+
+```{r, fig.width=5, fig.height=5}
+a <- 5
+b <- 10
+sigma <- 10
+rsigma = 30
+group = rep(1:11, each = 5)
+randomEffect = rnorm(11, sd = rsigma)
+
+x <- -27:27
+y <- a * x + b + rnorm(55,0,sd = sigma) + randomEffect[group]
+plot(x,y, col = group, pch = 3)
+```
+
+# Frequentist analysis of this data
+
+## Non-Bayesian analysis of this model, linear model
+
+```{r, fig.width=5, fig.height=5}
+fit <- lm(y ~ x)
+summary(fit)
+plot(allEffects(fit, partial.residuals = T))
+```
+
+## Non-Bayesian analysis of this model, linear mixed model
+
+Adding the random intercept on group. Note that the variances are not correctly estimated. 
+
+```{r, fig.width=5, fig.height=5}
+fit <- lmer(y ~ x + (1|group))
+summary(fit)
+plot(x,y, col = group,  pch = 3)
+for(i in 1:11){
+  abline(coef(fit)$group[i,1], coef(fit)$group[i,2], col = i)
+}
+
+```
+
+# Bayesian analysis of this data
+
+## Linear model (in Jags)
+
+```{r}
+  # 1) Model definition exactly how we created our data 
+  modelCode = "
+    model{
+      
+      # Likelihood
+      for(i in 1:i.max){
+        y[i] ~ dnorm(mu[i],tau)
+        mu[i] <- a*x[i] + b
+      }
+
+      # Prior distributions
+      a ~ dnorm(0,0.001)
+      b ~ dnorm(0,0.001)
+      tau <- 1/(sigma*sigma)
+      sigma ~ dunif(0,100)
+    }
+  "
+  
+  # 2) Set up a list that contains all the necessary data (here, including parameters of the prior distribution)
+  Data = list(y = y, x = x, i.max = length(y))
+
+  # 3) Specify a function to generate inital values for the parameters
+  inits.fn <- function() list(a = rnorm(1), b = rnorm(1), sigma = runif(1,1,100))
+
+```
+
+We have different options to run this model - I first show the most simple package, rjags:
+
+Running the model with rjags
+
+```{r, fig.width=7, fig.height=7}
+  # Compile the model and run the MCMC for an adaptation (burn-in) phase
+  jagsModel <- jags.model(file= textConnection(modelCode), data=Data, init = inits.fn, n.chains = 3, n.adapt= 1000)
+
+  # Specify parameters for which posterior samples are saved
+  para.names <- c("a","b","sigma")
+
+  # Continue the MCMC runs with sampling
+  Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+  
+  # Plot the mcmc chain and the posterior sample for p
+  plot(Samples)
+```
+
+convergence check
+
+```{r}
+gelman.diag(Samples)
+```
+
+```{r}
+summary(Samples)
+```
+
+predictions (not very elegant)
+
+```{r, fig.width=5, fig.height=5}
+plot(x,y)
+sampleMatrix <- as.matrix(Samples)
+selection <- sample(dim(sampleMatrix)[1], 1000)
+for (i in selection) abline(sampleMatrix[i,1], sampleMatrix[i,1], col = "#11111105")
+
+```
+
+
+## Adding a random effect
+
+
+```{r}
+  # 1) Model definition exactly how we created our data 
+  modelCode = "
+    model{
+      
+      # Likelihood
+      for(i in 1:i.max){
+        y[i] ~ dnorm(mu[i],tau)
+        mu[i] <- a*x[i] + b + r[group[i]]
+      }
+
+      # random effect
+      for(i in 1:nGroups){
+        r[i] ~ dnorm(0,rTau)
+      }
+
+      # Prior distributions
+      a ~ dnorm(0,0.001)
+      b ~ dnorm(0,0.001)
+
+      tau <- 1/(sigma*sigma)
+      sigma ~ dunif(0,100)
+
+      rTau <- 1/(rSigma*rSigma)
+      rSigma ~ dunif(0,100)
+    }
+  "
+  
+  # 2) Set up a list that contains all the necessary data (here, including parameters of the prior distribution)
+  Data = list(y = y, x = x, i.max = length(y), group = group, nGroups = 11)
+
+  # 3) Specify a function to generate inital values for the parameters
+  inits.fn <- function() list(a = rnorm(1), b = rnorm(1), sigma = runif(1,1,100), rSigma = runif(1,1,100))
+
+```
+
+
+Running the model with rjags
+
+
+```{r, fig.width=7, fig.height=7}
+  # Compile the model and run the MCMC for an adaptation (burn-in) phase
+  jagsModel <- jags.model(file= textConnection(modelCode), data=Data, init = inits.fn, n.chains = 3, n.adapt= 1000)
+
+  # Specify parameters for which posterior samples are saved
+  para.names <- c("a","b","sigma", "rSigma")
+
+  # Continue the MCMC runs with sampling
+  Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+  
+  # Plot the mcmc chain and the posterior sample for p
+  plot(Samples)
+```
+
+
+
+# Running the model with R2jags
+
+For random effects and similar, I often prefer the R2jags package - not only that it has a bit simpler interface, but it also has different standard plots (those are taken from the STAN / Rstan package), which are a bit more complicated at first, but make it easier to display random effects. 
+
+```{r,  fig.width=18, fig.height=18}
+R2JagsResults <- jags(data=Data, inits=inits.fn, parameters.to.save=c("a","b","sigma", "rSigma", "r"), n.chains=3, n.iter=5000, model.file=textConnection(modelCode))
+
+plot(R2JagsResults)
+print(R2JagsResults)
+
+```
+
+Change to coda standard format
+
+```{r, fig.width=14, fig.height=14, eval= F}
+R2JagsCoda <- as.mcmc(R2JagsResults)
+plot(R2JagsCoda)
+summary(R2JagsCoda)
+```
+
+
+---
+**Copyright, reuse and updates**: By Florian Hartig. Updates will be posted at https://github.com/florianhartig/LearningBayes. Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License

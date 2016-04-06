@@ -19,7 +19,7 @@ y <- a * x + b + rnorm(31,0,sd = sigma)
 plot(x,y)
 ```
 
-![](LinearModel_files/figure-html/unnamed-chunk-2-1.png) 
+![](LinearModel_files/figure-html/unnamed-chunk-2-1.png)
 
 ## Non-Bayesian analysis of this model
 
@@ -35,26 +35,26 @@ summary(fit)
 ## lm(formula = y ~ x)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -17.532  -8.802   1.235   6.572  29.200 
+##      Min       1Q   Median       3Q      Max 
+## -17.6462  -5.1083   0.5958   4.9882  18.1263 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  14.2347     2.0600    6.91 1.36e-07 ***
-## x             5.2881     0.2303   22.96  < 2e-16 ***
+## (Intercept)   9.7349     1.7653   5.514 6.08e-06 ***
+## x             5.0086     0.1974  25.377  < 2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 11.47 on 29 degrees of freedom
-## Multiple R-squared:  0.9479,	Adjusted R-squared:  0.9461 
-## F-statistic: 527.2 on 1 and 29 DF,  p-value: < 2.2e-16
+## Residual standard error: 9.829 on 29 degrees of freedom
+## Multiple R-squared:  0.9569,	Adjusted R-squared:  0.9554 
+## F-statistic:   644 on 1 and 29 DF,  p-value: < 2.2e-16
 ```
 
 ```r
 plot(allEffects(fit, partial.residuals = T))
 ```
 
-![](LinearModel_files/figure-html/unnamed-chunk-3-1.png) 
+![](LinearModel_files/figure-html/unnamed-chunk-3-1.png)
 
 
 
@@ -114,7 +114,7 @@ Running the model with rjags
   plot(Samples)
 ```
 
-![](LinearModel_files/figure-html/unnamed-chunk-5-1.png) 
+![](LinearModel_files/figure-html/unnamed-chunk-5-1.png)
 
 convergence check
 
@@ -152,16 +152,16 @@ summary(Samples)
 ##    plus standard error of the mean:
 ## 
 ##         Mean     SD Naive SE Time-series SE
-## a      5.285 0.2418 0.001974        0.00196
-## b     14.224 2.1678 0.017700        0.01703
-## sigma 11.979 1.6791 0.013710        0.02030
+## a      5.009 0.2081 0.001699       0.001699
+## b      9.693 1.8667 0.015242       0.015092
+## sigma 10.294 1.4490 0.011831       0.017111
 ## 
 ## 2. Quantiles for each variable:
 ## 
-##        2.5%    25%    50%    75%  97.5%
-## a     4.804  5.126  5.284  5.446  5.758
-## b     9.954 12.780 14.218 15.657 18.531
-## sigma 9.233 10.789 11.794 12.964 15.786
+##        2.5%   25%    50%    75%  97.5%
+## a     4.595 4.872  5.009  5.144  5.421
+## b     6.020 8.460  9.682 10.913 13.406
+## sigma 7.942 9.272 10.146 11.134 13.558
 ```
 
 predictions (not very elegant)
@@ -174,7 +174,7 @@ selection <- sample(dim(sampleMatrix)[1], 1000)
 for (i in selection) abline(sampleMatrix[i,1], sampleMatrix[i,1], col = "#11111105")
 ```
 
-![](LinearModel_files/figure-html/unnamed-chunk-8-1.png) 
+![](LinearModel_files/figure-html/unnamed-chunk-8-1.png)
 
 # Running the model with runjags
 
@@ -203,7 +203,7 @@ plot(runJagsResults)
 ## Generating plots...
 ```
 
-![](LinearModel_files/figure-html/unnamed-chunk-9-1.png) ![](LinearModel_files/figure-html/unnamed-chunk-9-2.png) ![](LinearModel_files/figure-html/unnamed-chunk-9-3.png) 
+![](LinearModel_files/figure-html/unnamed-chunk-9-1.png)![](LinearModel_files/figure-html/unnamed-chunk-9-2.png)![](LinearModel_files/figure-html/unnamed-chunk-9-3.png)
 
 
 # Running the model with R2jags
@@ -230,7 +230,7 @@ R2JagsResults <- jags(data=Data, inits=inits.fn, parameters.to.save=c("a","b","s
 plot(R2JagsResults)
 ```
 
-![](LinearModel_files/figure-html/unnamed-chunk-10-1.png) 
+![](LinearModel_files/figure-html/unnamed-chunk-10-1.png)
 
 ```r
 print(R2JagsResults)
@@ -241,10 +241,10 @@ print(R2JagsResults)
 ##  2 chains, each with 5000 iterations (first 2500 discarded), n.thin = 2
 ##  n.sims = 2500 iterations saved
 ##          mu.vect sd.vect    2.5%     25%     50%     75%   97.5%  Rhat
-## a          5.297   0.239   4.844   5.130   5.290   5.456   5.763 1.001
-## b         14.116   2.209   9.764  12.759  14.154  15.545  18.400 1.001
-## sigma     11.967   1.670   9.202  10.770  11.808  12.952  15.869 1.001
-## deviance 240.446   2.648 237.417 238.511 239.765 241.712 247.115 1.001
+## a          5.004   0.208   4.585   4.864   5.009   5.146   5.402 1.001
+## b          9.658   1.890   5.890   8.450   9.644  10.909  13.387 1.001
+## sigma     10.270   1.425   7.975   9.238  10.106  11.134  13.495 1.001
+## deviance 230.889   2.631 227.852 228.964 230.276 232.101 237.531 1.001
 ##          n.eff
 ## a         2500
 ## b         2500
@@ -255,7 +255,7 @@ print(R2JagsResults)
 ## and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
 ## 
 ## DIC info (using the rule, pD = var(deviance)/2)
-## pD = 3.5 and DIC = 244.0
+## pD = 3.5 and DIC = 234.4
 ## DIC is an estimate of expected predictive error (lower deviance is better).
 ```
 
@@ -267,7 +267,7 @@ R2JagsCoda <- as.mcmc(R2JagsResults)
 plot(R2JagsCoda)
 ```
 
-![](LinearModel_files/figure-html/unnamed-chunk-11-1.png) 
+![](LinearModel_files/figure-html/unnamed-chunk-11-1.png)
 
 ```r
 summary(R2JagsCoda)
@@ -284,18 +284,18 @@ summary(R2JagsCoda)
 ##    plus standard error of the mean:
 ## 
 ##             Mean     SD Naive SE Time-series SE
-## a          5.297 0.2392 0.004784       0.005226
-## b         14.116 2.2093 0.044187       0.041998
-## deviance 240.446 2.6478 0.052956       0.061182
-## sigma     11.967 1.6704 0.033409       0.037996
+## a          5.004 0.2084 0.004168       0.004168
+## b          9.658 1.8903 0.037807       0.037808
+## deviance 230.889 2.6307 0.052614       0.059262
+## sigma     10.270 1.4246 0.028492       0.033103
 ## 
 ## 2. Quantiles for each variable:
 ## 
-##             2.5%    25%    50%     75%   97.5%
-## a          4.844   5.13   5.29   5.456   5.763
-## b          9.764  12.76  14.15  15.545  18.400
-## deviance 237.417 238.51 239.77 241.712 247.115
-## sigma      9.202  10.77  11.81  12.952  15.869
+##             2.5%     25%     50%     75%   97.5%
+## a          4.585   4.864   5.009   5.146   5.402
+## b          5.890   8.450   9.644  10.909  13.387
+## deviance 227.852 228.964 230.276 232.101 237.531
+## sigma      7.975   9.238  10.106  11.134  13.495
 ```
 
 
