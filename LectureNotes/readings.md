@@ -18,9 +18,9 @@
 * Banerjee, S. et al. (2009) Hierarchical Modeling and Anallysis for Spatial Data. Chapman and Hall/CRC.
 * Clark, J. S. and Gelfand, A. E. (2006) Hierarchical Modelling for the Environmental Sciences. Oxford University Press.
 
-#### Clasics 
+#### Classics 
 
-
+* Jaynes, E. T. (2003) Probability theory: the logic of science. Cambridge university press.
 
 # Important articles
 
