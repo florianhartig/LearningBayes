@@ -15,6 +15,7 @@
 #### Hierarchical
 
 * Kéry, M. and Schaub, M. (2011) Bayesian population analysis using WinBUGS. Academic Press.
+* Kéry, M. & Royle, J. A.(2016) Applied Hierarchical Modeling in Ecology: Analysis of distribution, abundance and species richness in R and BUGS: Volume 1: Prelude and Static Models
 * Banerjee, S. et al. (2009) Hierarchical Modeling and Anallysis for Spatial Data. Chapman and Hall/CRC.
 * Clark, J. S. and Gelfand, A. E. (2006) Hierarchical Modelling for the Environmental Sciences. Oxford University Press.
 
