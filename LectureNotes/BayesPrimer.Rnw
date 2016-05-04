@@ -161,6 +161,11 @@ If you want to go to even more complex models, there is the advan
 
 
 
+\subsection{Estimating the marginal likelihood}
+
+http://arxiv.org/abs/1306.1170
+
+
 
 
 

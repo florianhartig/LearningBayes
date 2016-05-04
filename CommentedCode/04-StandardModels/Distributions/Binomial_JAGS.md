@@ -43,7 +43,7 @@ summary(dat1)
 abline(v=pi.true*N,col="blue")
 ```
 
-![](Binomial_JAGS_files/figure-html/unnamed-chunk-2-1.png) 
+![](Binomial_JAGS_files/figure-html/unnamed-chunk-2-1.png)
 
 ### 2. Bayesian analysis using JAGS
 
@@ -73,7 +73,7 @@ x <- seq(0,1,0.001)
 plot(x,dbeta(x,shape1=1,shape2=1),col=2,type="l",ylab="Prior density")
 ```
 
-![](Binomial_JAGS_files/figure-html/unnamed-chunk-4-1.png) 
+![](Binomial_JAGS_files/figure-html/unnamed-chunk-4-1.png)
 
 The beta-distribution with a=1 and b=1 equals the uniform distribution with min=0 and max=1. But as you will see later te beta-distribution is much more flexible.
 
@@ -136,7 +136,7 @@ We explore the model output using graphics and numeric output. In addition to th
 plot(jags.fit)
 ```
 
-![](Binomial_JAGS_files/figure-html/unnamed-chunk-9-1.png) 
+![](Binomial_JAGS_files/figure-html/unnamed-chunk-9-1.png)
 
 ```r
 print(jags.fit)
@@ -176,7 +176,7 @@ Plotting this mcmc-object provides traceplots for all chains, which is useful to
 plot(jags.mcmc)  
 ```
 
-![](Binomial_JAGS_files/figure-html/unnamed-chunk-11-1.png) 
+![](Binomial_JAGS_files/figure-html/unnamed-chunk-11-1.png)
 
 We get numeric output with the following command.
 
@@ -270,7 +270,7 @@ abline(v=HPDinterval(jags.mcmc.lumped[,"pi"]),col="red")
 lines(x,dbeta(x,shape1=1,shape2=1),col=3,lty=2)
 ```
 
-![](Binomial_JAGS_files/figure-html/unnamed-chunk-16-1.png) 
+![](Binomial_JAGS_files/figure-html/unnamed-chunk-16-1.png)
 
 *********************************************
 
@@ -283,7 +283,7 @@ As an exercise we change the prior and assess how the posterior distribution cha
 plot(x,dbeta(x,shape1=1,shape2=20),col=2,type="l",ylab="Prior density")
 ```
 
-![](Binomial_JAGS_files/figure-html/unnamed-chunk-17-1.png) 
+![](Binomial_JAGS_files/figure-html/unnamed-chunk-17-1.png)
 
 With the new prior, we need to change the model code:
 
@@ -393,7 +393,7 @@ lines(density(jags.mcmc.lumped2[,"pi"]),col="red")
 lines(x,dbeta(x,shape1=1,shape2=20),col="red",lty=2)
 ```
 
-![](Binomial_JAGS_files/figure-html/unnamed-chunk-21-1.png) 
+![](Binomial_JAGS_files/figure-html/unnamed-chunk-21-1.png)
 
 The informative prior change the posterior distribution, but not too much. This indicates that out (fake) data set is already pretty informative on the distribution of pi.
 

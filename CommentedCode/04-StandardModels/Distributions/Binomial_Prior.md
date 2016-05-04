@@ -39,7 +39,7 @@ Note that the beta-distribution with a=1 and b=1 equals the uniform distribution
 curve(dbeta(x,1,1))
 ```
 
-![](Binomial_Prior_files/figure-html/unnamed-chunk-3-1.png) 
+![](Binomial_Prior_files/figure-html/unnamed-chunk-3-1.png)
 
 OK, let's run the MCMC for the 50 data sets and storing the results
 
@@ -71,7 +71,7 @@ Summaries of the median parameter estimates of the 50 runs
 hist(results, breaks = 50)
 ```
 
-![](Binomial_Prior_files/figure-html/unnamed-chunk-5-1.png) 
+![](Binomial_Prior_files/figure-html/unnamed-chunk-5-1.png)
 
 ```r
 mean(results)
@@ -93,7 +93,7 @@ Jeffrey's prior for this problem is
 curve(dbeta(x,0.5,0.5))
 ```
 
-![](Binomial_Prior_files/figure-html/unnamed-chunk-6-1.png) 
+![](Binomial_Prior_files/figure-html/unnamed-chunk-6-1.png)
 
 Derivation of Jeffrey's prior for this problem available at http://www.cs.berkeley.edu/~jordan/courses/260-spring10/lectures/lecture7.pdf You can also watch the derivation on youtube https://www.youtube.com/watch?v=UyKqIYGAMHY (I haven't checked though if that source is accurate)
 
@@ -134,7 +134,7 @@ Bias is better, but still small bias towards 0.5.
 hist(results, breaks = 50)
 ```
 
-![](Binomial_Prior_files/figure-html/unnamed-chunk-9-1.png) 
+![](Binomial_Prior_files/figure-html/unnamed-chunk-9-1.png)
 
 ```r
 mean(results)
