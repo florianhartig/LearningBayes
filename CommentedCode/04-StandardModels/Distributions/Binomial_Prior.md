@@ -11,7 +11,7 @@ knitr::opts_chunk$set(fig.width=5, fig.height=5)
 ```r
 set.seed(123) # just for reproducability of the results. 
 
-observation <- 0.9 # seed predation probability
+observation <- 0.99 # seed predation probability
 N <- 100        # number of seeds per seed tray
 replicates <- 200 
 
@@ -78,7 +78,7 @@ mean(results)
 ```
 
 ```
-## [1] 0.8938165
+## [1] 0.9833818
 ```
 
 We see the results are biased towards intermediate (0.5) values. 
@@ -141,7 +141,7 @@ mean(results)
 ```
 
 ```
-## [1] 0.898637
+## [1] 0.9882096
 ```
 
 ## Maximum likelihood
@@ -155,7 +155,7 @@ mean(dat1/N)
 ```
 
 ```
-## [1] 0.8991
+## [1] 0.99
 ```
 
 You see it's unbiased, which can be seen also mathematically.

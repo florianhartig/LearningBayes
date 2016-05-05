@@ -10,6 +10,7 @@ output:
 ```{r, echo = F}
 set.seed(2)
 library(R2jags)
+library(runjags)
 ```
 
 

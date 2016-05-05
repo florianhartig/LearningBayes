@@ -5,6 +5,9 @@ Florian Hartig
 
 ```
 ## Loading required package: rjags
+```
+
+```
 ## Loading required package: coda
 ```
 
@@ -14,13 +17,25 @@ Florian Hartig
 
 ```
 ## Linked to JAGS 3.4.0
+```
+
+```
 ## Loaded modules: basemod,bugs
+```
+
+```
 ## 
 ## Attaching package: 'R2jags'
-## 
+```
+
+```
 ## The following object is masked from 'package:coda':
 ## 
 ##     traceplot
+```
+
+```
+## Warning: package 'runjags' was built under R version 3.1.3
 ```
 
 

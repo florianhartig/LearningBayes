@@ -14,7 +14,7 @@ knitr::opts_chunk$set(fig.width=5, fig.height=5)
 ```{r}
 set.seed(123) # just for reproducability of the results. 
 
-observation <- 0.9 # seed predation probability
+observation <- 0.99 # seed predation probability
 N <- 100        # number of seeds per seed tray
 replicates <- 200 
 
