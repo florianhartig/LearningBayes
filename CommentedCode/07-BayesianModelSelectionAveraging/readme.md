@@ -1,10 +1,15 @@
 
 
 
+
+
 ## Bayes Factor and RJMC
 
 
+## Bayes factor 
 
+* http://stats.stackexchange.com/questions/229852/why-is-the-bayes-factor-sometimes-considered-more-important-than-the-posterior-o
+* http://stats.stackexchange.com/questions/27345/likelihood-ratio-vs-bayes-factor
 
 
 
