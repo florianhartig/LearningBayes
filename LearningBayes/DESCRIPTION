@@ -1,0 +1,16 @@
+Package: LearningBayes
+Title: Material / code for teaching Bayesian statistics
+Version: 0.0.1
+Authors@R: c(person("Florian", "Hartig", email = "florian.hartig@biologie.uni-regensburg.de", role = c("aut", "cre"), comment = "Theoretical Ecology, University of Regensburg, Regensburg, Germany"))
+Description: Material / code for teaching Bayesian statistics
+Depends: R (>= 3.0.2)
+Imports:
+    BayesianTools,
+    rjags,
+    lavaan,
+License: GPL (>= 3)
+URL: http://github.com/florianhartig/LearningBayes
+BugReports: https://github.com/florianhartig/LearningBayes/issues
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
