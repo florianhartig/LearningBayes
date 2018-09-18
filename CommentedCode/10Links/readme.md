@@ -42,4 +42,9 @@ https://sites.google.com/site/doingbayesiandataanalysis/
 
 Bayesian Bootstrap http://www.sumsar.net/blog/2015/04/the-non-parametric-bootstrap-as-a-bayesian-model/
 
+* https://nbviewer.jupyter.org/github/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/tree/master/
+* https://github.com/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers
+
+
+
 
