@@ -1,6 +1,6 @@
 ## Synopsis 
 
-This teaching material on Bayesian Statistics originated mostly from a series of introductory course on Bayesian statistics that I have held over the last years together with various subsets of [Jörn Pagel](https://www.uni-hohenheim.de/person/joern-pagel), [Joseph Chipperfield](http://josephchipperfield.wordpress.com/) and [Björn Reineking](http://www.researchgate.net/profile/Bjoern_Reineking), and [Felix May](https://www.ufz.de/index.php?en=32342). I will announce any upcoming courses [at my blog](https://theoreticalecology.wordpress.com/).
+This teaching material on Bayesian Statistics originated mostly from a series of introductory course on Bayesian statistics that I have held over the last years together with various subsets of [Jörn Pagel](https://www.uni-hohenheim.de/person/joern-pagel), [Joseph Chipperfield](http://josephchipperfield.wordpress.com/) and [Björn Reineking](http://www.researchgate.net/profile/Bjoern_Reineking), and [Felix May](https://www.ufz.de/index.php?en=32342). I will announce any upcoming courses [at my blog](https://theoreticalecology.wordpress.com/) or on [twitter](https://twitter.com/florianhartig?lang=en).
 
 ## Topics, lecture notes and code
 
