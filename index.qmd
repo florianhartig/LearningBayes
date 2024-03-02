@@ -1,0 +1,52 @@
+# Preface {.unnumbered}
+
+```{r, eval=TRUE, include=FALSE}
+# Automatically create a bib database for R packages.
+knitr::write_bib(c(.packages(), 'bookdown', 'knitr', 'rmarkdown'),
+                 'packages.bib')
+
+knitr::opts_chunk$set(cache = TRUE)
+set.seed(123)
+```
+
+This course provides a practical introduction to Bayesian inference covering both the theory and application of Bayesian methods using a number of examples motivated from the biological and environmental sciences, including
+
+-   Introduction to concepts of Bayesian statistics (Priors, Likelihoods, etc.)
+-   Sampling methods (e.g. Markov Chain Monte Carlo) and model specification languages and frameworks (STAN, brms, BayesianTools)
+-   Workflow of Bayesian inference, including model checks, model specification etc.
+-   Bayesian model choice and model selection
+-   Discussion of common hierarchical model structures, including mixed models, error in variable models, etc.
+
+This material assumes prior knowledge of standard statistical methods and concepts (tests, regressions, p-value, power, CIs, ...) and the ability to apply those in R. At the University of Regensburg, this knowledge would be taught in the Bachelors Biology Lecture "Statistik und Bioinformatik" (lecture notes in German [here](https://www.dropbox.com/s/nefr3bteve5lym7/GrundlagenDerStatistik.pdf?dl=0)), and the block course "Introduction to statistics in R". If you didn't take those or comparable courses, you should at least try to get some basic understanding of R before proceeding with this book. On top of that, a good grasp of GLMMs would be helpful for following this course. As a reference, have at my lecture notes on for the course [Advanced Regression Models](https://theoreticalecology.github.io/AdvancedRegressionModels/).
+
+I want to acknowledge that much of this material was inspired by a serious of courses and summer schools that I did in various combinations of people, but mostly with my colleagues Jörn Page, Joe Chipperfield and Björn Reineking. Those past courses inlcuded
+
+-   Sept 2019 Münster, Germany
+
+-   Feb 2019 Bangkok, Thailand
+
+-   Sept 2018 Bergen Norway
+
+-   April 2018 Frankfurt, Germany
+
+-   Sept 2017 Bergen Norway
+
+-   Sept 2015 Bergen Norway
+
+-   Leipzig 2015,Germany
+
+-   [Bergen 2014](https://theoreticalecology.wordpress.com/2014/09/24/back-from-bayes-iv/), Norway
+
+-   [Freiburg 2013](https://theoreticalecology.wordpress.com/2013/08/06/back-from-bayes-again/), Germany
+
+-   [Göttingen 2013](http://theoreticalecology.wordpress.com/2013/03/24/back-from-bayes/), Germany
+
+-   [Bayreuth 2012](http://theoreticalecology.wordpress.com/2011/06/18/summer-school-in-bayreuth-2nd-5th-of-august-2011-an-introduction-to-bayesian-modeling-for-ecologists/), Germany
+
+-   [Bayreuth 2011](http://theoreticalecology.wordpress.com/2012/07/17/summer-school-in-bayreuth-17th-21th-of-september-2012-an-introduction-to-bayesian-modeling-for-ecologists/), Germany
+
+If you have comments, questions or suggestions regarding this book, please submit them [here](https://github.com/TheoreticalEcology/AdvancedRegressionModels/issues).
+
+```{=html}
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. Note that some elements of this work (embedded videos, graphics) may be under a seperate licence and are thus not included in this licence. 
+```
