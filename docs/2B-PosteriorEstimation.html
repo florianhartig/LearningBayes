@@ -1,0 +1,2220 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Introduction to Bayesian Statistics with R - 3&nbsp; Posterior estimation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./2C-ModelSelection.html" rel="next">
+<link href="./2A-BayesianLogic.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<meta name="citation_title" content="[3]{.chapter-number}&nbsp; [Posterior estimation]{.chapter-title}">
+<meta name="citation_fulltext_html_url" content="https://TheoreticalEcology.github.io/LearningBayes//2B-PosteriorEstimation.html">
+<meta name="citation_language" content="en">
+<meta name="citation_reference" content="citation_title=ńgrundlangen der statistik;,citation_author=Florian Hartig;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_publisher=https://www.dropbox.com/s/nefr3bteve5lym7/GrundlagenDerStatistik.pdf?dl=0;">
+<meta name="citation_reference" content="citation_title=ństatistical rethinking;,citation_author=Richard McElreath;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_publisher=CRC Press;">
+<meta name="citation_reference" content="citation_title=ńan introduction to statistical learning;,citation_author=Gareth James;,citation_author=Daniela Witten;,citation_author=Trevor Hastie;,citation_author=Rob Tibshirani;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_publisher=https://www.statlearning.com/; Springer;">
+<meta name="citation_reference" content="citation_title=What is the difference between missing completely at random and missing at random?;,citation_author=Krishnan Bhaskaran;,citation_author=Liam Smeeth;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_issue=4;,citation_volume=43;,citation_journal_title=International journal of epidemiology;,citation_publisher=Oxford University Press;">
+<meta name="citation_reference" content="citation_title=Computational methods for mixed models;,citation_author=Douglas Bates;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_journal_title=Vignette for lme4;">
+<meta name="citation_reference" content="citation_title=R: A language and environment for statistical computing;,citation_author=R Core Team;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_fulltext_html_url=https://www.R-project.org/;">
+<meta name="citation_reference" content="citation_title=Bookdown: Authoring books and technical documents with r markdown;,citation_author=Yihui Xie;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=bookdown;">
+<meta name="citation_reference" content="citation_title=Knitr: A general-purpose package for dynamic report generation in r;,citation_author=Yihui Xie;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://yihui.org/knitr/;">
+<meta name="citation_reference" content="citation_title=Rmarkdown: Dynamic documents for r;,citation_author=JJ Allaire;,citation_author=Yihui Xie;,citation_author=Jonathan McPherson;,citation_author=Javier Luraschi;,citation_author=Kevin Ushey;,citation_author=Aron Atkins;,citation_author=Hadley Wickham;,citation_author=Joe Cheng;,citation_author=Winston Chang;,citation_author=Richard Iannone;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=rmarkdown;">
+<meta name="citation_reference" content="citation_title=Bookdown: Authoring books and technical documents with R markdown;,citation_author=Yihui Xie;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_fulltext_html_url=https://bookdown.org/yihui/bookdown;">
+<meta name="citation_reference" content="citation_title=Dynamic documents with R and knitr;,citation_author=Yihui Xie;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_fulltext_html_url=https://yihui.org/knitr/;">
+<meta name="citation_reference" content="citation_title=Knitr: A comprehensive tool for reproducible research in R;,citation_author=Yihui Xie;,citation_editor=Victoria Stodden;,citation_editor=Friedrich Leisch;,citation_editor=Roger D. Peng;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_fulltext_html_url=http://www.crcpress.com/product/isbn/9781466561595;,citation_inbook_title=Implementing reproducible computational research;">
+<meta name="citation_reference" content="citation_title=R markdown: The definitive guide;,citation_author=Yihui Xie;,citation_author=J. J. Allaire;,citation_author=Garrett Grolemund;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_fulltext_html_url=https://bookdown.org/yihui/rmarkdown;">
+<meta name="citation_reference" content="citation_title=R markdown cookbook;,citation_author=Yihui Xie;,citation_author=Christophe Dervieux;,citation_author=Emily Riederer;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_fulltext_html_url=https://bookdown.org/yihui/rmarkdown-cookbook;">
+<meta name="citation_reference" content="citation_title=Freshwater snails of biomedical importance in the niger river valley: Evidence of temporal and spatial patterns in abundance, distribution and infection with schistosoma spp.;,citation_author=Muriel Rabone;,citation_author=Joris Hendrik Wiethase;,citation_author=Fiona Allan;,citation_author=Anouk Nathalie Gouvras;,citation_author=Tom Pennance;,citation_author=Amina Amadou Hamidou;,citation_author=Bonnie Lee Webster;,citation_author=Rabiou Labbo;,citation_author=Aidan Mark Emery;,citation_author=Amadou Djirmay Garba;,citation_author=others;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_issue=1;,citation_volume=12;,citation_journal_title=Parasites &amp;amp;amp; vectors;,citation_publisher=BioMed Central;">
+<meta name="citation_reference" content="citation_title=Inferring community assembly processes from functional seed trait variation along elevation gradient;,citation_author=Sergey Rosbakh;,citation_author=Loı̈c Chalmandrier;,citation_author=Shyam Phartyal;,citation_author=Peter Poschlod;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_journal_title=Journal of Ecology;,citation_publisher=Wiley Online Library;">
+<meta name="citation_reference" content="citation_title=Analysis of variance with unbalanced data: An update for ecology &amp;amp;amp; evolution;,citation_author=Andy Hector;,citation_author=Stefanie Von Felten;,citation_author=Bernhard Schmid;,citation_publication_date=2010;,citation_cover_date=2010;,citation_year=2010;,citation_issue=2;,citation_volume=79;,citation_journal_title=Journal of animal ecology;,citation_publisher=Wiley Online Library;">
+<meta name="citation_reference" content="citation_title=A biologist’s guide to model selection and causal inference;,citation_author=Zachary M Laubach;,citation_author=Eleanor J Murray;,citation_author=Kim L Hoke;,citation_author=Rebecca J Safran;,citation_author=Wei Perng;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_issue=1943;,citation_volume=288;,citation_journal_title=Proceedings of the Royal Society B;,citation_publisher=The Royal Society;">
+<meta name="citation_reference" content="citation_title=Control of confounding and reporting of results in causal inference studies. Guidance for authors from editors of respiratory, sleep, and critical care journals;,citation_author=David J Lederer;,citation_author=Scott C Bell;,citation_author=Richard D Branson;,citation_author=James D Chalmers;,citation_author=Rachel Marshall;,citation_author=David M Maslove;,citation_author=David E Ost;,citation_author=Naresh M Punjabi;,citation_author=Michael Schatz;,citation_author=Alan R Smyth;,citation_author=others;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_issue=1;,citation_volume=16;,citation_journal_title=Annals of the American Thoracic Society;,citation_publisher=American Thoracic Society;">
+<meta name="citation_reference" content="citation_title=A note on model selection using information criteria for general linear models estimated using REML;,citation_author=Arunas Petras Verbyla;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_fulltext_html_url=https://onlinelibrary.wiley.com/doi/abs/10.1111/anzs.12254;,citation_issue=1;,citation_doi=10.1111/anzs.12254;,citation_volume=61;,citation_language=en;,citation_journal_title=Australian &amp;amp;amp; New Zealand Journal of Statistics;">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./2A-BayesianLogic.html">Introduction and Philosophy</a></li><li class="breadcrumb-item"><a href="./2B-PosteriorEstimation.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Posterior estimation</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to Bayesian Statistics with R</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/TheoreticalEcology/LearningBayes" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1A-GettingStarted.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Introduction and Philosophy</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2A-BayesianLogic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Bayesian Logic</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2B-PosteriorEstimation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Posterior estimation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2C-ModelSelection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian model selection</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2D-Workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Workflow</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Bayesian GLMMs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3A-LMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear and linear mixed models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3B-GLMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Generalized linear mixed models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3C-VarianceAndObservation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Variance and observation models</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Hierachical models</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4A-ErrorInVariable.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Error in variable models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4B-Occupancy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Occupancy models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4C-StateSpaceModels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State-space models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4D-AutoregressiveModels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Autoregressive models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4E-IntegratedModels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Integrated Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4F-BayesianSEMs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Lavaan and blavaan</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4G-ProcessBased.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Process-based models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4H-ApproximateBayesian.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Summary and conclusions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./5-Summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Summary and Conclusions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./6A-References.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">References</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./6B-BayesianNumerics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Bayesian Numerics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./6C-CaseStudies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Case Studies</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#fitting-a-linear-regression-with-different-mcmcs" id="toc-fitting-a-linear-regression-with-different-mcmcs" class="nav-link active" data-scroll-target="#fitting-a-linear-regression-with-different-mcmcs"><span class="header-section-number">3.1</span> Fitting a linear regression with different MCMCs</a>
+  <ul class="collapse">
+  <li><a href="#frequentist-inference" id="toc-frequentist-inference" class="nav-link" data-scroll-target="#frequentist-inference"><span class="header-section-number">3.1.1</span> Frequentist inference</a></li>
+  <li><a href="#bayesian-regression-with-brms" id="toc-bayesian-regression-with-brms" class="nav-link" data-scroll-target="#bayesian-regression-with-brms"><span class="header-section-number">3.1.2</span> Bayesian regression with brms</a></li>
+  <li><a href="#bayesian-analysis-with-jags" id="toc-bayesian-analysis-with-jags" class="nav-link" data-scroll-target="#bayesian-analysis-with-jags"><span class="header-section-number">3.1.3</span> Bayesian analysis with JAGS</a></li>
+  <li><a href="#bayesian-analysis-with-stan" id="toc-bayesian-analysis-with-stan" class="nav-link" data-scroll-target="#bayesian-analysis-with-stan"><span class="header-section-number">3.1.4</span> Bayesian analysis with STAN</a></li>
+  <li><a href="#bayesian-analysis-via-bayesiantools" id="toc-bayesian-analysis-via-bayesiantools" class="nav-link" data-scroll-target="#bayesian-analysis-via-bayesiantools"><span class="header-section-number">3.1.5</span> Bayesian analysis via BayesianTools</a></li>
+  </ul></li>
+  <li><a href="#checking-and-expecting-the-results" id="toc-checking-and-expecting-the-results" class="nav-link" data-scroll-target="#checking-and-expecting-the-results"><span class="header-section-number">3.2</span> Checking and expecting the results</a>
+  <ul class="collapse">
+  <li><a href="#convergence-checks" id="toc-convergence-checks" class="nav-link" data-scroll-target="#convergence-checks"><span class="header-section-number">3.2.1</span> Convergence checks</a></li>
+  <li><a href="#summary-table" id="toc-summary-table" class="nav-link" data-scroll-target="#summary-table"><span class="header-section-number">3.2.2</span> Summary Table</a></li>
+  <li><a href="#plots" id="toc-plots" class="nav-link" data-scroll-target="#plots"><span class="header-section-number">3.2.3</span> Plots</a></li>
+  <li><a href="#posterior-predictive-distribution" id="toc-posterior-predictive-distribution" class="nav-link" data-scroll-target="#posterior-predictive-distribution"><span class="header-section-number">3.2.4</span> Posterior predictive distribution</a></li>
+  </ul></li>
+  <li><a href="#playing-around-with-the-pipeline" id="toc-playing-around-with-the-pipeline" class="nav-link" data-scroll-target="#playing-around-with-the-pipeline"><span class="header-section-number">3.3</span> Playing around with the pipeline</a>
+  <ul class="collapse">
+  <li><a href="#prior-choice" id="toc-prior-choice" class="nav-link" data-scroll-target="#prior-choice"><span class="header-section-number">3.3.1</span> Prior choice</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/TheoreticalEcology/LearningBayes/edit/master/2B-PosteriorEstimation.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Posterior estimation</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="fitting-a-linear-regression-with-different-mcmcs" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="fitting-a-linear-regression-with-different-mcmcs"><span class="header-section-number">3.1</span> Fitting a linear regression with different MCMCs</h2>
+<p>We will use the dataset airquality, just removing NAs and scaling all variables for convenience</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>airqualityCleaned <span class="ot">=</span> airquality[<span class="fu">complete.cases</span>(airquality),]</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>airqualityCleaned <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">scale</span>(airqualityCleaned))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Ozone <span class="sc">~</span> Temp, <span class="at">data =</span> airqualityCleaned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="frequentist-inference" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="frequentist-inference"><span class="header-section-number">3.1.1</span> Frequentist inference</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp, <span class="at">data =</span> airqualityCleaned)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Ozone ~ Temp, data = airqualityCleaned)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.2298 -0.5247 -0.0263  0.3138  3.5485 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 1.232e-17  6.823e-02    0.00        1    
+Temp        6.985e-01  6.854e-02   10.19   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.7188 on 109 degrees of freedom
+Multiple R-squared:  0.488, Adjusted R-squared:  0.4833 
+F-statistic: 103.9 on 1 and 109 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effects)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: carData</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>lattice theme set by effectsTheme()
+See ?effectsTheme for details.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">allEffects</span>(fit, <span class="at">partial.residuals =</span> T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit) <span class="co"># residuals</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="bayesian-regression-with-brms" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="bayesian-regression-with-brms"><span class="header-section-number">3.1.2</span> Bayesian regression with brms</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Rcpp</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading 'brms' package (version 2.17.0). Useful instructions
+can be found by typing help('brms'). A more detailed introduction
+to the package is available through vignette('brms_overview').</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'brms'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    ar</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">brm</span>(Ozone <span class="sc">~</span> Temp, <span class="at">data =</span> airqualityCleaned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Compiling Stan program...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Start sampling</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 2.7e-05 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.27 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 0.023 seconds (Warm-up)
+Chain 1:                0.023 seconds (Sampling)
+Chain 1:                0.046 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
+Chain 2: 
+Chain 2: Gradient evaluation took 8e-06 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 2: 
+Chain 2:  Elapsed Time: 0.022 seconds (Warm-up)
+Chain 2:                0.022 seconds (Sampling)
+Chain 2:                0.044 seconds (Total)
+Chain 2: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
+Chain 3: 
+Chain 3: Gradient evaluation took 8e-06 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 3: 
+Chain 3:  Elapsed Time: 0.021 seconds (Warm-up)
+Chain 3:                0.024 seconds (Sampling)
+Chain 3:                0.045 seconds (Total)
+Chain 3: 
+
+SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
+Chain 4: 
+Chain 4: Gradient evaluation took 4e-06 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.04 seconds.
+Chain 4: Adjust your expectations accordingly!
+Chain 4: 
+Chain 4: 
+Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
+Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
+Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
+Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
+Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
+Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+Chain 4: 
+Chain 4:  Elapsed Time: 0.022 seconds (Warm-up)
+Chain 4:                0.023 seconds (Sampling)
+Chain 4:                0.045 seconds (Total)
+Chain 4: </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: gaussian 
+  Links: mu = identity; sigma = identity 
+Formula: Ozone ~ Temp 
+   Data: airqualityCleaned (Number of observations: 111) 
+  Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+         total post-warmup draws = 4000
+
+Population-Level Effects: 
+          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept    -0.00      0.07    -0.14     0.14 1.00     3915     2692
+Temp          0.70      0.07     0.56     0.84 1.00     4063     2825
+
+Family Specific Parameters: 
+      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sigma     0.73      0.05     0.64     0.84 1.00     3587     2925
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit, <span class="at">ask =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">conditional_effects</span>(fit), <span class="at">ask =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>fit<span class="sc">$</span>model <span class="co"># model that is actually fit via </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>// generated with brms 2.17.0
+functions {
+}
+data {
+  int&lt;lower=1&gt; N;  // total number of observations
+  vector[N] Y;  // response variable
+  int&lt;lower=1&gt; K;  // number of population-level effects
+  matrix[N, K] X;  // population-level design matrix
+  int prior_only;  // should the likelihood be ignored?
+}
+transformed data {
+  int Kc = K - 1;
+  matrix[N, Kc] Xc;  // centered version of X without an intercept
+  vector[Kc] means_X;  // column means of X before centering
+  for (i in 2:K) {
+    means_X[i - 1] = mean(X[, i]);
+    Xc[, i - 1] = X[, i] - means_X[i - 1];
+  }
+}
+parameters {
+  vector[Kc] b;  // population-level effects
+  real Intercept;  // temporary intercept for centered predictors
+  real&lt;lower=0&gt; sigma;  // dispersion parameter
+}
+transformed parameters {
+  real lprior = 0;  // prior contributions to the log posterior
+  lprior += student_t_lpdf(Intercept | 3, -0.3, 2.5);
+  lprior += student_t_lpdf(sigma | 3, 0, 2.5)
+    - 1 * student_t_lccdf(0 | 3, 0, 2.5);
+}
+model {
+  // likelihood including constants
+  if (!prior_only) {
+    target += normal_id_glm_lpdf(Y | Xc, Intercept, b, sigma);
+  }
+  // priors including constants
+  target += lprior;
+}
+generated quantities {
+  // actual population-level intercept
+  real b_Intercept = Intercept - dot_product(means_X, b);
+}</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(fit) <span class="co"># residual check</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Using 10 posterior draws for ppc type 'dens_overlay' by default.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-4-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="bayesian-analysis-with-jags" class="level3" data-number="3.1.3">
+<h3 data-number="3.1.3" class="anchored" data-anchor-id="bayesian-analysis-with-jags"><span class="header-section-number">3.1.3</span> Bayesian analysis with JAGS</h3>
+<p>The general approach in JAGS is to</p>
+<ol type="1">
+<li>Set up a list that contains all the necessary data</li>
+<li>Write the model as a string in the JAGS specific BUGS dialect</li>
+<li>Compile the model and run the MCMC for an adaptation (burn-in) phase</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rjags)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: coda</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linked to JAGS 4.3.0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loaded modules: basemod,bugs</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> <span class="fu">list</span>(<span class="at">y =</span> airqualityCleaned<span class="sc">$</span>Ozone, <span class="at">x =</span> airqualityCleaned<span class="sc">$</span>Temp, <span class="at">nobs =</span> <span class="fu">nrow</span>(airqualityCleaned))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>modelCode <span class="ot">=</span> <span class="st">"</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="st">model{</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:nobs){</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="st">    mu[i] &lt;- a*x[i]+ b</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="st">    y[i] ~ dnorm(mu[i],tau) # dnorm in jags parameterizes via precision = 1/sd^2</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior distributions</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="st">  # For location parameters, normal choice is wide normal</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="st">  a ~ dnorm(0,0.0001)</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="st">  b ~ dnorm(0,0.0001)</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="st">  # For scale parameters, normal choice is decaying</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="st">  tau ~ dgamma(0.001, 0.001)</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma &lt;- 1/sqrt(tau) # this line is optional, just in case you want to observe sigma or set sigma (e.g. for inits)</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify a function to generate inital values for the parameters </span></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a><span class="co"># (optional, if not provided, will start with the mean of the prior )</span></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>inits.fn <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">list</span>(<span class="at">a =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>), <span class="at">b =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>), <span class="at">tau =</span> <span class="dv">1</span><span class="sc">/</span><span class="fu">runif</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">100</span>))</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a><span class="co"># sets up the model</span></span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>jagsModel <span class="ot">&lt;-</span> <span class="fu">jags.model</span>(<span class="at">file=</span> <span class="fu">textConnection</span>(modelCode), <span class="at">data=</span>Data, <span class="at">init =</span> inits.fn, <span class="at">n.chains =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Compiling model graph
+   Resolving undeclared variables
+   Allocating nodes
+Graph information:
+   Observed stochastic nodes: 111
+   Unobserved stochastic nodes: 3
+   Total graph size: 310
+
+Initializing model</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MCMC sample from model</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>Samples <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel, <span class="at">variable.names =</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"sigma"</span>), <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the mcmc chain and the posterior sample </span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Iterations = 1:5000
+Thinning interval = 1 
+Number of chains = 3 
+Sample size per chain = 5000 
+
+1. Empirical mean and standard deviation for each variable,
+   plus standard error of the mean:
+
+            Mean      SD  Naive SE Time-series SE
+a      0.6994702 0.06970 0.0005691      0.0005642
+b     -0.0006431 0.06977 0.0005696      0.0005617
+sigma  0.7241987 0.04994 0.0004078      0.0004078
+
+2. Quantiles for each variable:
+
+         2.5%      25%        50%     75%  97.5%
+a      0.5622  0.65337  0.6987859 0.74532 0.8368
+b     -0.1377 -0.04669 -0.0009866 0.04612 0.1329
+sigma  0.6345  0.68963  0.7214112 0.75572 0.8304</code></pre>
+</div>
+</div>
+</section>
+<section id="bayesian-analysis-with-stan" class="level3" data-number="3.1.4">
+<h3 data-number="3.1.4" class="anchored" data-anchor-id="bayesian-analysis-with-stan"><span class="header-section-number">3.1.4</span> Bayesian analysis with STAN</h3>
+<p>Approach is identical to JAGS just that we have to define all variables in the section data</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: StanHeaders</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+rstan version 2.32.3 (Stan version 2.26.1)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>For execution on a local, multicore CPU with excess RAM we recommend calling
+options(mc.cores = parallel::detectCores()).
+To avoid recompilation of unchanged Stan programs, we recommend calling
+rstan_options(auto_write = TRUE)
+For within-chain threading using `reduce_sum()` or `map_rect()` Stan functions,
+change `threads_per_chain` option:
+rstan_options(threads_per_chain = 1)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rstan'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:coda':
+
+    traceplot</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>stanmodelcode <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="st">  data {</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="st">    int&lt;lower=0&gt; N;</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="st">    vector[N] x;</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="st">    vector[N] y;</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="st">  parameters {</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="st">    real alpha;</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="st">    real beta;</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="st">    real&lt;lower=0&gt; sigma;</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a><span class="st">  model {</span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="st">    y ~ normal(alpha + beta * x, sigma);</span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">list</span>(<span class="at">y =</span> airqualityCleaned<span class="sc">$</span>Ozone, <span class="at">x =</span> airqualityCleaned<span class="sc">$</span>Temp, <span class="at">N =</span> <span class="fu">nrow</span>(airqualityCleaned))</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">stan</span>(<span class="at">model_code =</span> stanmodelcode, <span class="at">model_name =</span> <span class="st">"example"</span>, </span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> dat, <span class="at">iter =</span> <span class="dv">2012</span>, <span class="at">chains =</span> <span class="dv">3</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">sample_file =</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">'norm.csv'</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+TRANSLATING MODEL 'example' FROM Stan CODE TO C++ CODE NOW.
+OS: x86_64, darwin17.0; rstan: 2.32.3; Rcpp: 1.0.11; inline: 0.3.19 
+ &gt;&gt; setting environment variables: 
+PKG_LIBS =  '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/lib//libStanServices.a' -L'/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/lib/' -lStanHeaders -L'/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/lib/' -ltbb 
+PKG_CPPFLAGS =   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1 
+ &gt;&gt; Program source :
+
+   1 : 
+   2 : // includes from the plugin
+   3 : // [[Rcpp::plugins(cpp14)]]
+   4 : 
+   5 : 
+   6 : // user includes
+   7 : #include &lt;Rcpp.h&gt;
+   8 : using namespace Rcpp;
+   9 : #ifndef MODELS_HPP
+  10 : #define MODELS_HPP
+  11 : #define STAN__SERVICES__COMMAND_HPP
+  12 : #include &lt;rstan/rstaninc.hpp&gt;
+  13 : #ifndef USE_STANC3
+  14 : #define USE_STANC3
+  15 : #endif
+  16 : // Code generated by stanc v2.32.2
+  17 : #include &lt;stan/model/model_header.hpp&gt;
+  18 : namespace modelb6c140c94242_example_namespace {
+  19 : using stan::model::model_base_crtp;
+  20 : using namespace stan::math;
+  21 : stan::math::profile_map profiles__;
+  22 : static constexpr std::array&lt;const char*, 10&gt; locations_array__ =
+  23 :   {" (found before start of program)",
+  24 :   " (in 'example', line 7, column 4 to column 15)",
+  25 :   " (in 'example', line 8, column 4 to column 14)",
+  26 :   " (in 'example', line 9, column 4 to column 24)",
+  27 :   " (in 'example', line 12, column 4 to column 40)",
+  28 :   " (in 'example', line 2, column 4 to column 19)",
+  29 :   " (in 'example', line 3, column 11 to column 12)",
+  30 :   " (in 'example', line 3, column 4 to column 16)",
+  31 :   " (in 'example', line 4, column 11 to column 12)",
+  32 :   " (in 'example', line 4, column 4 to column 16)"};
+  33 : class modelb6c140c94242_example final : public model_base_crtp&lt;modelb6c140c94242_example&gt; {
+  34 : private:
+  35 :   int N;
+  36 :   Eigen::Matrix&lt;double,-1,1&gt; x_data__;
+  37 :   Eigen::Matrix&lt;double,-1,1&gt; y_data__;
+  38 :   Eigen::Map&lt;Eigen::Matrix&lt;double,-1,1&gt;&gt; x{nullptr, 0};
+  39 :   Eigen::Map&lt;Eigen::Matrix&lt;double,-1,1&gt;&gt; y{nullptr, 0};
+  40 : public:
+  41 :   ~modelb6c140c94242_example() {}
+  42 :   modelb6c140c94242_example(stan::io::var_context&amp; context__, unsigned int
+  43 :                             random_seed__ = 0, std::ostream*
+  44 :                             pstream__ = nullptr) : model_base_crtp(0) {
+  45 :     int current_statement__ = 0;
+  46 :     using local_scalar_t__ = double;
+  47 :     boost::ecuyer1988 base_rng__ =
+  48 :       stan::services::util::create_rng(random_seed__, 0);
+  49 :     // suppress unused var warning
+  50 :     (void) base_rng__;
+  51 :     static constexpr const char* function__ =
+  52 :       "modelb6c140c94242_example_namespace::modelb6c140c94242_example";
+  53 :     // suppress unused var warning
+  54 :     (void) function__;
+  55 :     local_scalar_t__ DUMMY_VAR__(std::numeric_limits&lt;double&gt;::quiet_NaN());
+  56 :     // suppress unused var warning
+  57 :     (void) DUMMY_VAR__;
+  58 :     try {
+  59 :       int pos__ = std::numeric_limits&lt;int&gt;::min();
+  60 :       pos__ = 1;
+  61 :       current_statement__ = 5;
+  62 :       context__.validate_dims("data initialization", "N", "int",
+  63 :         std::vector&lt;size_t&gt;{});
+  64 :       N = std::numeric_limits&lt;int&gt;::min();
+  65 :       current_statement__ = 5;
+  66 :       N = context__.vals_i("N")[(1 - 1)];
+  67 :       current_statement__ = 5;
+  68 :       stan::math::check_greater_or_equal(function__, "N", N, 0);
+  69 :       current_statement__ = 6;
+  70 :       stan::math::validate_non_negative_index("x", "N", N);
+  71 :       current_statement__ = 7;
+  72 :       context__.validate_dims("data initialization", "x", "double",
+  73 :         std::vector&lt;size_t&gt;{static_cast&lt;size_t&gt;(N)});
+  74 :       x_data__ = Eigen::Matrix&lt;double,-1,1&gt;::Constant(N,
+  75 :                    std::numeric_limits&lt;double&gt;::quiet_NaN());
+  76 :       new (&amp;x) Eigen::Map&lt;Eigen::Matrix&lt;double,-1,1&gt;&gt;(x_data__.data(), N);
+  77 :       {
+  78 :         std::vector&lt;local_scalar_t__&gt; x_flat__;
+  79 :         current_statement__ = 7;
+  80 :         x_flat__ = context__.vals_r("x");
+  81 :         current_statement__ = 7;
+  82 :         pos__ = 1;
+  83 :         current_statement__ = 7;
+  84 :         for (int sym1__ = 1; sym1__ &lt;= N; ++sym1__) {
+  85 :           current_statement__ = 7;
+  86 :           stan::model::assign(x, x_flat__[(pos__ - 1)],
+  87 :             "assigning variable x", stan::model::index_uni(sym1__));
+  88 :           current_statement__ = 7;
+  89 :           pos__ = (pos__ + 1);
+  90 :         }
+  91 :       }
+  92 :       current_statement__ = 8;
+  93 :       stan::math::validate_non_negative_index("y", "N", N);
+  94 :       current_statement__ = 9;
+  95 :       context__.validate_dims("data initialization", "y", "double",
+  96 :         std::vector&lt;size_t&gt;{static_cast&lt;size_t&gt;(N)});
+  97 :       y_data__ = Eigen::Matrix&lt;double,-1,1&gt;::Constant(N,
+  98 :                    std::numeric_limits&lt;double&gt;::quiet_NaN());
+  99 :       new (&amp;y) Eigen::Map&lt;Eigen::Matrix&lt;double,-1,1&gt;&gt;(y_data__.data(), N);
+ 100 :       {
+ 101 :         std::vector&lt;local_scalar_t__&gt; y_flat__;
+ 102 :         current_statement__ = 9;
+ 103 :         y_flat__ = context__.vals_r("y");
+ 104 :         current_statement__ = 9;
+ 105 :         pos__ = 1;
+ 106 :         current_statement__ = 9;
+ 107 :         for (int sym1__ = 1; sym1__ &lt;= N; ++sym1__) {
+ 108 :           current_statement__ = 9;
+ 109 :           stan::model::assign(y, y_flat__[(pos__ - 1)],
+ 110 :             "assigning variable y", stan::model::index_uni(sym1__));
+ 111 :           current_statement__ = 9;
+ 112 :           pos__ = (pos__ + 1);
+ 113 :         }
+ 114 :       }
+ 115 :     } catch (const std::exception&amp; e) {
+ 116 :       stan::lang::rethrow_located(e, locations_array__[current_statement__]);
+ 117 :     }
+ 118 :     num_params_r__ = 1 + 1 + 1;
+ 119 :   }
+ 120 :   inline std::string model_name() const final {
+ 121 :     return "modelb6c140c94242_example";
+ 122 :   }
+ 123 :   inline std::vector&lt;std::string&gt; model_compile_info() const noexcept {
+ 124 :     return std::vector&lt;std::string&gt;{"stanc_version = stanc3 v2.32.2",
+ 125 :              "stancflags = --"};
+ 126 :   }
+ 127 :   template &lt;bool propto__, bool jacobian__, typename VecR, typename VecI,
+ 128 :             stan::require_vector_like_t&lt;VecR&gt;* = nullptr,
+ 129 :             stan::require_vector_like_vt&lt;std::is_integral, VecI&gt;* = nullptr&gt;
+ 130 :   inline stan::scalar_type_t&lt;VecR&gt;
+ 131 :   log_prob_impl(VecR&amp; params_r__, VecI&amp; params_i__, std::ostream*
+ 132 :                 pstream__ = nullptr) const {
+ 133 :     using T__ = stan::scalar_type_t&lt;VecR&gt;;
+ 134 :     using local_scalar_t__ = T__;
+ 135 :     T__ lp__(0.0);
+ 136 :     stan::math::accumulator&lt;T__&gt; lp_accum__;
+ 137 :     stan::io::deserializer&lt;local_scalar_t__&gt; in__(params_r__, params_i__);
+ 138 :     int current_statement__ = 0;
+ 139 :     local_scalar_t__ DUMMY_VAR__(std::numeric_limits&lt;double&gt;::quiet_NaN());
+ 140 :     // suppress unused var warning
+ 141 :     (void) DUMMY_VAR__;
+ 142 :     static constexpr const char* function__ =
+ 143 :       "modelb6c140c94242_example_namespace::log_prob";
+ 144 :     // suppress unused var warning
+ 145 :     (void) function__;
+ 146 :     try {
+ 147 :       local_scalar_t__ alpha = DUMMY_VAR__;
+ 148 :       current_statement__ = 1;
+ 149 :       alpha = in__.template read&lt;local_scalar_t__&gt;();
+ 150 :       local_scalar_t__ beta = DUMMY_VAR__;
+ 151 :       current_statement__ = 2;
+ 152 :       beta = in__.template read&lt;local_scalar_t__&gt;();
+ 153 :       local_scalar_t__ sigma = DUMMY_VAR__;
+ 154 :       current_statement__ = 3;
+ 155 :       sigma = in__.template read_constrain_lb&lt;local_scalar_t__,
+ 156 :                 jacobian__&gt;(0, lp__);
+ 157 :       {
+ 158 :         current_statement__ = 4;
+ 159 :         lp_accum__.add(stan::math::normal_lpdf&lt;propto__&gt;(y,
+ 160 :                          stan::math::add(alpha, stan::math::multiply(beta, x)),
+ 161 :                          sigma));
+ 162 :       }
+ 163 :     } catch (const std::exception&amp; e) {
+ 164 :       stan::lang::rethrow_located(e, locations_array__[current_statement__]);
+ 165 :     }
+ 166 :     lp_accum__.add(lp__);
+ 167 :     return lp_accum__.sum();
+ 168 :   }
+ 169 :   template &lt;typename RNG, typename VecR, typename VecI, typename VecVar,
+ 170 :             stan::require_vector_like_vt&lt;std::is_floating_point,
+ 171 :             VecR&gt;* = nullptr, stan::require_vector_like_vt&lt;std::is_integral,
+ 172 :             VecI&gt;* = nullptr, stan::require_vector_vt&lt;std::is_floating_point,
+ 173 :             VecVar&gt;* = nullptr&gt;
+ 174 :   inline void
+ 175 :   write_array_impl(RNG&amp; base_rng__, VecR&amp; params_r__, VecI&amp; params_i__,
+ 176 :                    VecVar&amp; vars__, const bool
+ 177 :                    emit_transformed_parameters__ = true, const bool
+ 178 :                    emit_generated_quantities__ = true, std::ostream*
+ 179 :                    pstream__ = nullptr) const {
+ 180 :     using local_scalar_t__ = double;
+ 181 :     stan::io::deserializer&lt;local_scalar_t__&gt; in__(params_r__, params_i__);
+ 182 :     stan::io::serializer&lt;local_scalar_t__&gt; out__(vars__);
+ 183 :     static constexpr bool propto__ = true;
+ 184 :     // suppress unused var warning
+ 185 :     (void) propto__;
+ 186 :     double lp__ = 0.0;
+ 187 :     // suppress unused var warning
+ 188 :     (void) lp__;
+ 189 :     int current_statement__ = 0;
+ 190 :     stan::math::accumulator&lt;double&gt; lp_accum__;
+ 191 :     local_scalar_t__ DUMMY_VAR__(std::numeric_limits&lt;double&gt;::quiet_NaN());
+ 192 :     // suppress unused var warning
+ 193 :     (void) DUMMY_VAR__;
+ 194 :     constexpr bool jacobian__ = false;
+ 195 :     static constexpr const char* function__ =
+ 196 :       "modelb6c140c94242_example_namespace::write_array";
+ 197 :     // suppress unused var warning
+ 198 :     (void) function__;
+ 199 :     try {
+ 200 :       double alpha = std::numeric_limits&lt;double&gt;::quiet_NaN();
+ 201 :       current_statement__ = 1;
+ 202 :       alpha = in__.template read&lt;local_scalar_t__&gt;();
+ 203 :       double beta = std::numeric_limits&lt;double&gt;::quiet_NaN();
+ 204 :       current_statement__ = 2;
+ 205 :       beta = in__.template read&lt;local_scalar_t__&gt;();
+ 206 :       double sigma = std::numeric_limits&lt;double&gt;::quiet_NaN();
+ 207 :       current_statement__ = 3;
+ 208 :       sigma = in__.template read_constrain_lb&lt;local_scalar_t__,
+ 209 :                 jacobian__&gt;(0, lp__);
+ 210 :       out__.write(alpha);
+ 211 :       out__.write(beta);
+ 212 :       out__.write(sigma);
+ 213 :       if (stan::math::logical_negation(
+ 214 :             (stan::math::primitive_value(emit_transformed_parameters__) ||
+ 215 :             stan::math::primitive_value(emit_generated_quantities__)))) {
+ 216 :         return ;
+ 217 :       }
+ 218 :       if (stan::math::logical_negation(emit_generated_quantities__)) {
+ 219 :         return ;
+ 220 :       }
+ 221 :     } catch (const std::exception&amp; e) {
+ 222 :       stan::lang::rethrow_located(e, locations_array__[current_statement__]);
+ 223 :     }
+ 224 :   }
+ 225 :   template &lt;typename VecVar, typename VecI,
+ 226 :             stan::require_vector_t&lt;VecVar&gt;* = nullptr,
+ 227 :             stan::require_vector_like_vt&lt;std::is_integral, VecI&gt;* = nullptr&gt;
+ 228 :   inline void
+ 229 :   unconstrain_array_impl(const VecVar&amp; params_r__, const VecI&amp; params_i__,
+ 230 :                          VecVar&amp; vars__, std::ostream* pstream__ = nullptr) const {
+ 231 :     using local_scalar_t__ = double;
+ 232 :     stan::io::deserializer&lt;local_scalar_t__&gt; in__(params_r__, params_i__);
+ 233 :     stan::io::serializer&lt;local_scalar_t__&gt; out__(vars__);
+ 234 :     int current_statement__ = 0;
+ 235 :     local_scalar_t__ DUMMY_VAR__(std::numeric_limits&lt;double&gt;::quiet_NaN());
+ 236 :     // suppress unused var warning
+ 237 :     (void) DUMMY_VAR__;
+ 238 :     try {
+ 239 :       int pos__ = std::numeric_limits&lt;int&gt;::min();
+ 240 :       pos__ = 1;
+ 241 :       local_scalar_t__ alpha = DUMMY_VAR__;
+ 242 :       current_statement__ = 1;
+ 243 :       alpha = in__.read&lt;local_scalar_t__&gt;();
+ 244 :       out__.write(alpha);
+ 245 :       local_scalar_t__ beta = DUMMY_VAR__;
+ 246 :       current_statement__ = 2;
+ 247 :       beta = in__.read&lt;local_scalar_t__&gt;();
+ 248 :       out__.write(beta);
+ 249 :       local_scalar_t__ sigma = DUMMY_VAR__;
+ 250 :       current_statement__ = 3;
+ 251 :       sigma = in__.read&lt;local_scalar_t__&gt;();
+ 252 :       out__.write_free_lb(0, sigma);
+ 253 :     } catch (const std::exception&amp; e) {
+ 254 :       stan::lang::rethrow_located(e, locations_array__[current_statement__]);
+ 255 :     }
+ 256 :   }
+ 257 :   template &lt;typename VecVar, stan::require_vector_t&lt;VecVar&gt;* = nullptr&gt;
+ 258 :   inline void
+ 259 :   transform_inits_impl(const stan::io::var_context&amp; context__, VecVar&amp;
+ 260 :                        vars__, std::ostream* pstream__ = nullptr) const {
+ 261 :     using local_scalar_t__ = double;
+ 262 :     stan::io::serializer&lt;local_scalar_t__&gt; out__(vars__);
+ 263 :     int current_statement__ = 0;
+ 264 :     local_scalar_t__ DUMMY_VAR__(std::numeric_limits&lt;double&gt;::quiet_NaN());
+ 265 :     // suppress unused var warning
+ 266 :     (void) DUMMY_VAR__;
+ 267 :     try {
+ 268 :       current_statement__ = 1;
+ 269 :       context__.validate_dims("parameter initialization", "alpha", "double",
+ 270 :         std::vector&lt;size_t&gt;{});
+ 271 :       current_statement__ = 2;
+ 272 :       context__.validate_dims("parameter initialization", "beta", "double",
+ 273 :         std::vector&lt;size_t&gt;{});
+ 274 :       current_statement__ = 3;
+ 275 :       context__.validate_dims("parameter initialization", "sigma", "double",
+ 276 :         std::vector&lt;size_t&gt;{});
+ 277 :       int pos__ = std::numeric_limits&lt;int&gt;::min();
+ 278 :       pos__ = 1;
+ 279 :       local_scalar_t__ alpha = DUMMY_VAR__;
+ 280 :       current_statement__ = 1;
+ 281 :       alpha = context__.vals_r("alpha")[(1 - 1)];
+ 282 :       out__.write(alpha);
+ 283 :       local_scalar_t__ beta = DUMMY_VAR__;
+ 284 :       current_statement__ = 2;
+ 285 :       beta = context__.vals_r("beta")[(1 - 1)];
+ 286 :       out__.write(beta);
+ 287 :       local_scalar_t__ sigma = DUMMY_VAR__;
+ 288 :       current_statement__ = 3;
+ 289 :       sigma = context__.vals_r("sigma")[(1 - 1)];
+ 290 :       out__.write_free_lb(0, sigma);
+ 291 :     } catch (const std::exception&amp; e) {
+ 292 :       stan::lang::rethrow_located(e, locations_array__[current_statement__]);
+ 293 :     }
+ 294 :   }
+ 295 :   inline void
+ 296 :   get_param_names(std::vector&lt;std::string&gt;&amp; names__, const bool
+ 297 :                   emit_transformed_parameters__ = true, const bool
+ 298 :                   emit_generated_quantities__ = true) const {
+ 299 :     names__ = std::vector&lt;std::string&gt;{"alpha", "beta", "sigma"};
+ 300 :     if (emit_transformed_parameters__) {}
+ 301 :     if (emit_generated_quantities__) {}
+ 302 :   }
+ 303 :   inline void
+ 304 :   get_dims(std::vector&lt;std::vector&lt;size_t&gt;&gt;&amp; dimss__, const bool
+ 305 :            emit_transformed_parameters__ = true, const bool
+ 306 :            emit_generated_quantities__ = true) const {
+ 307 :     dimss__ = std::vector&lt;std::vector&lt;size_t&gt;&gt;{std::vector&lt;size_t&gt;{},
+ 308 :                 std::vector&lt;size_t&gt;{}, std::vector&lt;size_t&gt;{}};
+ 309 :     if (emit_transformed_parameters__) {}
+ 310 :     if (emit_generated_quantities__) {}
+ 311 :   }
+ 312 :   inline void
+ 313 :   constrained_param_names(std::vector&lt;std::string&gt;&amp; param_names__, bool
+ 314 :                           emit_transformed_parameters__ = true, bool
+ 315 :                           emit_generated_quantities__ = true) const final {
+ 316 :     param_names__.emplace_back(std::string() + "alpha");
+ 317 :     param_names__.emplace_back(std::string() + "beta");
+ 318 :     param_names__.emplace_back(std::string() + "sigma");
+ 319 :     if (emit_transformed_parameters__) {}
+ 320 :     if (emit_generated_quantities__) {}
+ 321 :   }
+ 322 :   inline void
+ 323 :   unconstrained_param_names(std::vector&lt;std::string&gt;&amp; param_names__, bool
+ 324 :                             emit_transformed_parameters__ = true, bool
+ 325 :                             emit_generated_quantities__ = true) const final {
+ 326 :     param_names__.emplace_back(std::string() + "alpha");
+ 327 :     param_names__.emplace_back(std::string() + "beta");
+ 328 :     param_names__.emplace_back(std::string() + "sigma");
+ 329 :     if (emit_transformed_parameters__) {}
+ 330 :     if (emit_generated_quantities__) {}
+ 331 :   }
+ 332 :   inline std::string get_constrained_sizedtypes() const {
+ 333 :     return std::string("[{\"name\":\"alpha\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"beta\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"sigma\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"}]");
+ 334 :   }
+ 335 :   inline std::string get_unconstrained_sizedtypes() const {
+ 336 :     return std::string("[{\"name\":\"alpha\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"beta\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"sigma\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"}]");
+ 337 :   }
+ 338 :   // Begin method overload boilerplate
+ 339 :   template &lt;typename RNG&gt; inline void
+ 340 :   write_array(RNG&amp; base_rng, Eigen::Matrix&lt;double,-1,1&gt;&amp; params_r,
+ 341 :               Eigen::Matrix&lt;double,-1,1&gt;&amp; vars, const bool
+ 342 :               emit_transformed_parameters = true, const bool
+ 343 :               emit_generated_quantities = true, std::ostream*
+ 344 :               pstream = nullptr) const {
+ 345 :     const size_t num_params__ = ((1 + 1) + 1);
+ 346 :     const size_t num_transformed = emit_transformed_parameters * (0);
+ 347 :     const size_t num_gen_quantities = emit_generated_quantities * (0);
+ 348 :     const size_t num_to_write = num_params__ + num_transformed +
+ 349 :       num_gen_quantities;
+ 350 :     std::vector&lt;int&gt; params_i;
+ 351 :     vars = Eigen::Matrix&lt;double,-1,1&gt;::Constant(num_to_write,
+ 352 :              std::numeric_limits&lt;double&gt;::quiet_NaN());
+ 353 :     write_array_impl(base_rng, params_r, params_i, vars,
+ 354 :       emit_transformed_parameters, emit_generated_quantities, pstream);
+ 355 :   }
+ 356 :   template &lt;typename RNG&gt; inline void
+ 357 :   write_array(RNG&amp; base_rng, std::vector&lt;double&gt;&amp; params_r, std::vector&lt;int&gt;&amp;
+ 358 :               params_i, std::vector&lt;double&gt;&amp; vars, bool
+ 359 :               emit_transformed_parameters = true, bool
+ 360 :               emit_generated_quantities = true, std::ostream*
+ 361 :               pstream = nullptr) const {
+ 362 :     const size_t num_params__ = ((1 + 1) + 1);
+ 363 :     const size_t num_transformed = emit_transformed_parameters * (0);
+ 364 :     const size_t num_gen_quantities = emit_generated_quantities * (0);
+ 365 :     const size_t num_to_write = num_params__ + num_transformed +
+ 366 :       num_gen_quantities;
+ 367 :     vars = std::vector&lt;double&gt;(num_to_write,
+ 368 :              std::numeric_limits&lt;double&gt;::quiet_NaN());
+ 369 :     write_array_impl(base_rng, params_r, params_i, vars,
+ 370 :       emit_transformed_parameters, emit_generated_quantities, pstream);
+ 371 :   }
+ 372 :   template &lt;bool propto__, bool jacobian__, typename T_&gt; inline T_
+ 373 :   log_prob(Eigen::Matrix&lt;T_,-1,1&gt;&amp; params_r, std::ostream* pstream = nullptr) const {
+ 374 :     Eigen::Matrix&lt;int,-1,1&gt; params_i;
+ 375 :     return log_prob_impl&lt;propto__, jacobian__&gt;(params_r, params_i, pstream);
+ 376 :   }
+ 377 :   template &lt;bool propto__, bool jacobian__, typename T_&gt; inline T_
+ 378 :   log_prob(std::vector&lt;T_&gt;&amp; params_r, std::vector&lt;int&gt;&amp; params_i,
+ 379 :            std::ostream* pstream = nullptr) const {
+ 380 :     return log_prob_impl&lt;propto__, jacobian__&gt;(params_r, params_i, pstream);
+ 381 :   }
+ 382 :   inline void
+ 383 :   transform_inits(const stan::io::var_context&amp; context,
+ 384 :                   Eigen::Matrix&lt;double,-1,1&gt;&amp; params_r, std::ostream*
+ 385 :                   pstream = nullptr) const final {
+ 386 :     std::vector&lt;double&gt; params_r_vec(params_r.size());
+ 387 :     std::vector&lt;int&gt; params_i;
+ 388 :     transform_inits(context, params_i, params_r_vec, pstream);
+ 389 :     params_r = Eigen::Map&lt;Eigen::Matrix&lt;double,-1,1&gt;&gt;(params_r_vec.data(),
+ 390 :                  params_r_vec.size());
+ 391 :   }
+ 392 :   inline void
+ 393 :   transform_inits(const stan::io::var_context&amp; context, std::vector&lt;int&gt;&amp;
+ 394 :                   params_i, std::vector&lt;double&gt;&amp; vars, std::ostream*
+ 395 :                   pstream__ = nullptr) const {
+ 396 :     vars.resize(num_params_r__);
+ 397 :     transform_inits_impl(context, vars, pstream__);
+ 398 :   }
+ 399 :   inline void
+ 400 :   unconstrain_array(const std::vector&lt;double&gt;&amp; params_constrained,
+ 401 :                     std::vector&lt;double&gt;&amp; params_unconstrained, std::ostream*
+ 402 :                     pstream = nullptr) const {
+ 403 :     const std::vector&lt;int&gt; params_i;
+ 404 :     params_unconstrained = std::vector&lt;double&gt;(num_params_r__,
+ 405 :                              std::numeric_limits&lt;double&gt;::quiet_NaN());
+ 406 :     unconstrain_array_impl(params_constrained, params_i,
+ 407 :       params_unconstrained, pstream);
+ 408 :   }
+ 409 :   inline void
+ 410 :   unconstrain_array(const Eigen::Matrix&lt;double,-1,1&gt;&amp; params_constrained,
+ 411 :                     Eigen::Matrix&lt;double,-1,1&gt;&amp; params_unconstrained,
+ 412 :                     std::ostream* pstream = nullptr) const {
+ 413 :     const std::vector&lt;int&gt; params_i;
+ 414 :     params_unconstrained = Eigen::Matrix&lt;double,-1,1&gt;::Constant(num_params_r__,
+ 415 :                              std::numeric_limits&lt;double&gt;::quiet_NaN());
+ 416 :     unconstrain_array_impl(params_constrained, params_i,
+ 417 :       params_unconstrained, pstream);
+ 418 :   }
+ 419 : };
+ 420 : }
+ 421 : using stan_model = modelb6c140c94242_example_namespace::modelb6c140c94242_example;
+ 422 : #ifndef USING_R
+ 423 : // Boilerplate
+ 424 : stan::model::model_base&amp;
+ 425 : new_model(stan::io::var_context&amp; data_context, unsigned int seed,
+ 426 :           std::ostream* msg_stream) {
+ 427 :   stan_model* m = new stan_model(data_context, seed, msg_stream);
+ 428 :   return *m;
+ 429 : }
+ 430 : stan::math::profile_map&amp; get_stan_profile_data() {
+ 431 :   return modelb6c140c94242_example_namespace::profiles__;
+ 432 : }
+ 433 : #endif
+ 434 : #endif
+ 435 : 
+ 436 : RCPP_MODULE(stan_fit4modelb6c140c94242_example_mod) {
+ 437 :   class_&lt;rstan::stan_fit&lt;stan_model, boost::random::ecuyer1988&gt; &gt;(
+ 438 :       "stan_fit4modelb6c140c94242_example")
+ 439 : 
+ 440 :       .constructor&lt;SEXP, SEXP, SEXP&gt;()
+ 441 : 
+ 442 :       .method(
+ 443 :           "call_sampler",
+ 444 :           &amp;rstan::stan_fit&lt;stan_model, boost::random::ecuyer1988&gt;::call_sampler)
+ 445 :       .method(
+ 446 :           "param_names",
+ 447 :           &amp;rstan::stan_fit&lt;stan_model, boost::random::ecuyer1988&gt;::param_names)
+ 448 :       .method("param_names_oi",
+ 449 :               &amp;rstan::stan_fit&lt;stan_model,
+ 450 :                                boost::random::ecuyer1988&gt;::param_names_oi)
+ 451 :       .method("param_fnames_oi",
+ 452 :               &amp;rstan::stan_fit&lt;stan_model,
+ 453 :                                boost::random::ecuyer1988&gt;::param_fnames_oi)
+ 454 :       .method(
+ 455 :           "param_dims",
+ 456 :           &amp;rstan::stan_fit&lt;stan_model, boost::random::ecuyer1988&gt;::param_dims)
+ 457 :       .method("param_dims_oi",
+ 458 :               &amp;rstan::stan_fit&lt;stan_model,
+ 459 :                                boost::random::ecuyer1988&gt;::param_dims_oi)
+ 460 :       .method("update_param_oi",
+ 461 :               &amp;rstan::stan_fit&lt;stan_model,
+ 462 :                                boost::random::ecuyer1988&gt;::update_param_oi)
+ 463 :       .method("param_oi_tidx",
+ 464 :               &amp;rstan::stan_fit&lt;stan_model,
+ 465 :                                boost::random::ecuyer1988&gt;::param_oi_tidx)
+ 466 :       .method("grad_log_prob",
+ 467 :               &amp;rstan::stan_fit&lt;stan_model,
+ 468 :                                boost::random::ecuyer1988&gt;::grad_log_prob)
+ 469 :       .method("log_prob",
+ 470 :               &amp;rstan::stan_fit&lt;stan_model, boost::random::ecuyer1988&gt;::log_prob)
+ 471 :       .method("unconstrain_pars",
+ 472 :               &amp;rstan::stan_fit&lt;stan_model,
+ 473 :                                boost::random::ecuyer1988&gt;::unconstrain_pars)
+ 474 :       .method("constrain_pars",
+ 475 :               &amp;rstan::stan_fit&lt;stan_model,
+ 476 :                                boost::random::ecuyer1988&gt;::constrain_pars)
+ 477 :       .method(
+ 478 :           "num_pars_unconstrained",
+ 479 :           &amp;rstan::stan_fit&lt;stan_model,
+ 480 :                            boost::random::ecuyer1988&gt;::num_pars_unconstrained)
+ 481 :       .method(
+ 482 :           "unconstrained_param_names",
+ 483 :           &amp;rstan::stan_fit&lt;
+ 484 :               stan_model, boost::random::ecuyer1988&gt;::unconstrained_param_names)
+ 485 :       .method(
+ 486 :           "constrained_param_names",
+ 487 :           &amp;rstan::stan_fit&lt;stan_model,
+ 488 :                            boost::random::ecuyer1988&gt;::constrained_param_names)
+ 489 :       .method("standalone_gqs",
+ 490 :               &amp;rstan::stan_fit&lt;stan_model,
+ 491 :                                boost::random::ecuyer1988&gt;::standalone_gqs);
+ 492 : }
+ 493 : 
+ 494 : 
+ 495 : // declarations
+ 496 : extern "C" {
+ 497 : SEXP fileb6c15d1d1c48( ) ;
+ 498 : }
+ 499 : 
+ 500 : // definition
+ 501 : SEXP fileb6c15d1d1c48() {
+ 502 :  return Rcpp::wrap("example");
+ 503 : }
+
+CHECKING DATA AND PREPROCESSING FOR MODEL 'example' NOW.
+
+COMPILING MODEL 'example' NOW.
+
+STARTING SAMPLER FOR MODEL 'example' NOW.
+
+SAMPLING FOR MODEL 'example' NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 5.6e-05 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.56 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:    1 / 2012 [  0%]  (Warmup)
+Chain 1: Iteration:  201 / 2012 [  9%]  (Warmup)
+Chain 1: Iteration:  402 / 2012 [ 19%]  (Warmup)
+Chain 1: Iteration:  603 / 2012 [ 29%]  (Warmup)
+Chain 1: Iteration:  804 / 2012 [ 39%]  (Warmup)
+Chain 1: Iteration: 1005 / 2012 [ 49%]  (Warmup)
+Chain 1: Iteration: 1007 / 2012 [ 50%]  (Sampling)
+Chain 1: Iteration: 1207 / 2012 [ 59%]  (Sampling)
+Chain 1: Iteration: 1408 / 2012 [ 69%]  (Sampling)
+Chain 1: Iteration: 1609 / 2012 [ 79%]  (Sampling)
+Chain 1: Iteration: 1810 / 2012 [ 89%]  (Sampling)
+Chain 1: Iteration: 2011 / 2012 [ 99%]  (Sampling)
+Chain 1: Iteration: 2012 / 2012 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 0.035 seconds (Warm-up)
+Chain 1:                0.038 seconds (Sampling)
+Chain 1:                0.073 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL 'example' NOW (CHAIN 2).
+Chain 2: 
+Chain 2: Gradient evaluation took 5e-06 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: Iteration:    1 / 2012 [  0%]  (Warmup)
+Chain 2: Iteration:  201 / 2012 [  9%]  (Warmup)
+Chain 2: Iteration:  402 / 2012 [ 19%]  (Warmup)
+Chain 2: Iteration:  603 / 2012 [ 29%]  (Warmup)
+Chain 2: Iteration:  804 / 2012 [ 39%]  (Warmup)
+Chain 2: Iteration: 1005 / 2012 [ 49%]  (Warmup)
+Chain 2: Iteration: 1007 / 2012 [ 50%]  (Sampling)
+Chain 2: Iteration: 1207 / 2012 [ 59%]  (Sampling)
+Chain 2: Iteration: 1408 / 2012 [ 69%]  (Sampling)
+Chain 2: Iteration: 1609 / 2012 [ 79%]  (Sampling)
+Chain 2: Iteration: 1810 / 2012 [ 89%]  (Sampling)
+Chain 2: Iteration: 2011 / 2012 [ 99%]  (Sampling)
+Chain 2: Iteration: 2012 / 2012 [100%]  (Sampling)
+Chain 2: 
+Chain 2:  Elapsed Time: 0.036 seconds (Warm-up)
+Chain 2:                0.037 seconds (Sampling)
+Chain 2:                0.073 seconds (Total)
+Chain 2: 
+
+SAMPLING FOR MODEL 'example' NOW (CHAIN 3).
+Chain 3: 
+Chain 3: Gradient evaluation took 5e-06 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.05 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: Iteration:    1 / 2012 [  0%]  (Warmup)
+Chain 3: Iteration:  201 / 2012 [  9%]  (Warmup)
+Chain 3: Iteration:  402 / 2012 [ 19%]  (Warmup)
+Chain 3: Iteration:  603 / 2012 [ 29%]  (Warmup)
+Chain 3: Iteration:  804 / 2012 [ 39%]  (Warmup)
+Chain 3: Iteration: 1005 / 2012 [ 49%]  (Warmup)
+Chain 3: Iteration: 1007 / 2012 [ 50%]  (Sampling)
+Chain 3: Iteration: 1207 / 2012 [ 59%]  (Sampling)
+Chain 3: Iteration: 1408 / 2012 [ 69%]  (Sampling)
+Chain 3: Iteration: 1609 / 2012 [ 79%]  (Sampling)
+Chain 3: Iteration: 1810 / 2012 [ 89%]  (Sampling)
+Chain 3: Iteration: 2011 / 2012 [ 99%]  (Sampling)
+Chain 3: Iteration: 2012 / 2012 [100%]  (Sampling)
+Chain 3: 
+Chain 3:  Elapsed Time: 0.035 seconds (Warm-up)
+Chain 3:                0.033 seconds (Sampling)
+Chain 3:                0.068 seconds (Total)
+Chain 3: </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Inference for Stan model: example.
+3 chains, each with iter=2012; warmup=1006; thin=1; 
+post-warmup draws per chain=1006, total post-warmup draws=3018.
+
+        mean se_mean   sd   2.5%    25%    50%    75%  97.5% n_eff Rhat
+alpha   0.00    0.00 0.07  -0.14  -0.05   0.00   0.05   0.14  3243    1
+beta    0.70    0.00 0.07   0.56   0.65   0.70   0.75   0.84  2880    1
+sigma   0.73    0.00 0.05   0.63   0.69   0.72   0.76   0.83  3059    1
+lp__  -19.73    0.03 1.25 -22.95 -20.34 -19.40 -18.80 -18.30  1473    1
+
+Samples were drawn using NUTS(diag_e) at Sat Mar  2 19:30:10 2024.
+For each parameter, n_eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor on split chains (at 
+convergence, Rhat=1).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ci_level: 0.8 (80% intervals)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>outer_level: 0.95 (95% intervals)</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>rstan<span class="sc">::</span><span class="fu">traceplot</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="bayesian-analysis-via-bayesiantools" class="level3" data-number="3.1.5">
+<h3 data-number="3.1.5" class="anchored" data-anchor-id="bayesian-analysis-via-bayesiantools"><span class="header-section-number">3.1.5</span> Bayesian analysis via BayesianTools</h3>
+<p>Here, we don’t use a model specification language, but just write out the likelihood as an standard R function. The same can be done for the prior. For simplicity, in this case I just used flat priors using the lower / upper arguments.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BayesianTools)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'BayesianTools'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:brms':
+
+    WAIC</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">&lt;-</span> <span class="cf">function</span>(par){</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  a0 <span class="ot">=</span> par[<span class="dv">1</span>]</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  a1 <span class="ot">=</span> par[<span class="dv">2</span>]</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  sigma <span class="ot">&lt;-</span> par[<span class="dv">3</span>]  </span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  logLikel <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">dnorm</span>(a0 <span class="sc">+</span> a1 <span class="sc">*</span> airqualityCleaned<span class="sc">$</span>Temp  <span class="sc">-</span> airqualityCleaned<span class="sc">$</span>Ozone , <span class="at">sd =</span> sigma, <span class="at">log =</span> T))</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(logLikel)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>setup <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(<span class="at">likelihood =</span> likelihood, <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="sc">-</span><span class="dv">10</span>,<span class="fl">0.01</span>), <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">10</span>), <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"a0"</span>, <span class="st">"a1"</span>, <span class="st">"sigma"</span>))</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(setup)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Running DEzs-MCMC, chain  1 iteration 300 of 10002 . Current logp  -202.498 -153.7167 -227.7314 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 600 of 10002 . Current logp  -154.611 -153.7167 -167.3907 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 900 of 10002 . Current logp  -155.1942 -154.8612 -145.2633 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 1200 of 10002 . Current logp  -134.8635 -130.3173 -137.123 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 1500 of 10002 . Current logp  -128.8678 -130.3173 -133.8567 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 1800 of 10002 . Current logp  -128.8678 -129.3644 -130.6236 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 2100 of 10002 . Current logp  -129.3588 -128.6865 -130.8801 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 2400 of 10002 . Current logp  -130.7675 -128.1711 -128.2735 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 2700 of 10002 . Current logp  -129.2359 -128.2103 -128.8519 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 3000 of 10002 . Current logp  -129.8628 -132.0342 -130.4792 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 3300 of 10002 . Current logp  -132.3984 -132.749 -131.4206 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 3600 of 10002 . Current logp  -128.4109 -129.6482 -128.8329 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 3900 of 10002 . Current logp  -128.4334 -128.7258 -132.4875 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 4200 of 10002 . Current logp  -129.6646 -129.9388 -130.0203 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 4500 of 10002 . Current logp  -130.2676 -128.3697 -129.8748 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 4800 of 10002 . Current logp  -128.8383 -131.4647 -130.6134 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 5100 of 10002 . Current logp  -128.471 -128.7697 -128.4745 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 5400 of 10002 . Current logp  -133.2414 -130.6623 -128.5365 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 5700 of 10002 . Current logp  -128.657 -128.1666 -131.6767 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 6000 of 10002 . Current logp  -130.1371 -128.5387 -128.7987 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 6300 of 10002 . Current logp  -129.0501 -128.9982 -128.3913 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 6600 of 10002 . Current logp  -129.798 -128.9166 -129.1881 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 6900 of 10002 . Current logp  -131.1184 -128.8234 -129.9506 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 7200 of 10002 . Current logp  -128.9253 -128.6682 -128.8358 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 7500 of 10002 . Current logp  -129.4913 -131.0569 -130.6163 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 7800 of 10002 . Current logp  -129.4033 -130.8516 -128.5137 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 8100 of 10002 . Current logp  -129.355 -131.9629 -128.5991 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 8400 of 10002 . Current logp  -128.9365 -128.8098 -129.3509 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 8700 of 10002 . Current logp  -128.9559 -129.5155 -128.2577 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 9000 of 10002 . Current logp  -129.4309 -130.2622 -128.7018 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 9300 of 10002 . Current logp  -129.6216 -130.0108 -132.5575 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 9600 of 10002 . Current logp  -132.0099 -128.9564 -129.0163 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 9900 of 10002 . Current logp  -130.0111 -128.9562 -130.7453 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 10002 of 10002 . Current logp  -129.0792 -132.3684 -131.787 . Please wait! </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>runMCMC terminated after 0.936000000000007seconds</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(out, <span class="at">start =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># # # # # # # # # # # # # # # # # # # # # # # # # 
+## MCMC chain summary ## 
+# # # # # # # # # # # # # # # # # # # # # # # # # 
+ 
+# MCMC sampler:  DEzs 
+# Nr. Chains:  3 
+# Iterations per chain:  2335 
+# Rejection rate:  0.802 
+# Effective sample size:  354 
+# Runtime:  0.936  sec. 
+ 
+# Parameters
+        psf   MAP   2.5% median 97.5%
+a0    1.001 0.005 -0.159  0.001 0.145
+a1    1.002 0.703  0.556  0.690 0.826
+sigma 1.060 0.712  0.638  0.726 0.840
+
+## DIC:  266.863 
+## Convergence 
+ Gelman Rubin multivariate psrf:   
+ </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="checking-and-expecting-the-results" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="checking-and-expecting-the-results"><span class="header-section-number">3.2</span> Checking and expecting the results</h2>
+<p>Running the sampler again</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>Samples <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel, <span class="at">variable.names =</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"sigma"</span>), <span class="at">n.iter =</span> <span class="dv">5000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="convergence-checks" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="convergence-checks"><span class="header-section-number">3.2.1</span> Convergence checks</h3>
+<p>Except for details in the syntax, the following is more or less the same for all samplers.</p>
+<p>First thing should always be convergence checks. Visual look at the trace plots,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We want to look at</p>
+<ol type="1">
+<li>Convergence to the right parameter area (seems immediate, else you will see a slow move of the parameters in the traceplot). You should set burn-in after you have converged to the right area</li>
+<li>Mixing: low autocorrelation in the chain after convergence to target area (seems excellent in this case)</li>
+</ol>
+<p>Further convergence checks should be done AFTER removing burn-in</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>coda<span class="sc">::</span><span class="fu">acfplot</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Formal convergence diagnostics via</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>coda<span class="sc">::</span><span class="fu">gelman.diag</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Potential scale reduction factors:
+
+      Point est. Upper C.I.
+a              1          1
+b              1          1
+sigma          1          1
+
+Multivariate psrf
+
+1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>coda<span class="sc">::</span><span class="fu">gelman.plot</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>No fixed rule but typically people require univariate psrf &lt; 1.05 or &lt; 1.1 and multivariate psrf &lt; 1.1 or 1.2</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that the msrf rule was made for estimating the mean / median. If you want to estimate more unstable statistics, e.g.&nbsp;higher quantiles or other values such as the MAP or the DIC (see section on model selection), you may have to run the MCMC chain much longer to get stable outputs.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(BayesianTools)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  bayesianSetup <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(<span class="at">likelihood =</span> testDensityNormal, </span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">prior =</span> <span class="fu">createUniformPrior</span>(<span class="at">lower =</span> <span class="sc">-</span><span class="dv">10</span>,</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>                                                                  <span class="at">upper =</span> <span class="dv">10</span>))</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">=</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> bayesianSetup, <span class="at">settings =</span> <span class="fu">list</span>(<span class="at">iterations =</span> <span class="dv">3000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Running DEzs-MCMC, chain  1 iteration 300 of 3000 . Current logp  -4.040017 -4.020103 -4.693441 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 600 of 3000 . Current logp  -4.56964 -3.92275 -3.941628 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 900 of 3000 . Current logp  -5.98084 -4.197608 -3.915274 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 1200 of 3000 . Current logp  -4.050452 -3.963116 -4.042277 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 1500 of 3000 . Current logp  -4.228673 -5.257808 -4.804105 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 1800 of 3000 . Current logp  -4.776306 -5.356308 -4.727614 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 2100 of 3000 . Current logp  -10.83265 -4.02982 -4.416127 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 2400 of 3000 . Current logp  -4.00334 -4.340035 -3.952809 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 2700 of 3000 . Current logp  -3.921026 -4.117899 -3.931012 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 3000 of 3000 . Current logp  -3.91558 -3.930118 -3.961308 . Please wait! </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>runMCMC terminated after 0.434000000000012seconds</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plotDiagnostic</span>(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="summary-table" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="summary-table"><span class="header-section-number">3.2.2</span> Summary Table</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Iterations = 5001:10000
+Thinning interval = 1 
+Number of chains = 3 
+Sample size per chain = 5000 
+
+1. Empirical mean and standard deviation for each variable,
+   plus standard error of the mean:
+
+           Mean      SD  Naive SE Time-series SE
+a     0.6998750 0.06917 0.0005647      0.0005699
+b     0.0003211 0.06973 0.0005693      0.0005702
+sigma 0.7241738 0.04958 0.0004048      0.0004092
+
+2. Quantiles for each variable:
+
+         2.5%      25%       50%    75%  97.5%
+a      0.5644  0.65373 0.6999803 0.7455 0.8373
+b     -0.1377 -0.04674 0.0001147 0.0474 0.1368
+sigma  0.6358  0.68894 0.7211458 0.7561 0.8294</code></pre>
+</div>
+</div>
+<p>Highest Posterior Density intervals</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">HPDinterval</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+           lower     upper
+a      0.5640937 0.8381073
+b     -0.1436650 0.1300410
+sigma  0.6258080 0.8202026
+attr(,"Probability")
+[1] 0.95
+
+[[2]]
+           lower     upper
+a      0.5579501 0.8300235
+b     -0.1396390 0.1316789
+sigma  0.6339123 0.8242601
+attr(,"Probability")
+[1] 0.95
+
+[[3]]
+           lower     upper
+a      0.5698592 0.8389927
+b     -0.1387591 0.1343107
+sigma  0.6336355 0.8219090
+attr(,"Probability")
+[1] 0.95</code></pre>
+</div>
+</div>
+</section>
+<section id="plots" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="plots"><span class="header-section-number">3.2.3</span> Plots</h3>
+<p>Marginal plots show the parameter distribution (these were also created in the standard coda traceplots)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>BayesianTools<span class="sc">::</span><span class="fu">marginalPlot</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Pair correlation plots show 2nd order correlations</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># coda</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>coda<span class="sc">::</span><span class="fu">crosscorr.plot</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co">#BayesianTools</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">correlationPlot</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="posterior-predictive-distribution" class="level3" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="posterior-predictive-distribution"><span class="header-section-number">3.2.4</span> Posterior predictive distribution</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">as.data.frame</span>(Data)[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> dat[<span class="fu">order</span>(dat<span class="sc">$</span>x),]</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="co"># raw data</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dat[,<span class="dv">2</span>], dat[,<span class="dv">1</span>])</span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a><span class="co"># extract 1000 parameters from posterior from package BayesianTools</span></span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">getSample</span>(Samples, <span class="at">start =</span> <span class="dv">300</span>)</span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">=</span> x[,<span class="dv">2</span>] <span class="sc">+</span> dat[,<span class="dv">2</span>] <span class="sc">%o%</span> x[,<span class="dv">1</span>] </span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(dat[,<span class="dv">2</span>], <span class="fu">apply</span>(pred, <span class="dv">1</span>, median))</span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(dat[,<span class="dv">2</span>], <span class="fu">apply</span>(pred, <span class="dv">1</span>, quantile, <span class="at">probs =</span> <span class="fl">0.2</span>), </span>
+<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(dat[,<span class="dv">2</span>], <span class="fu">apply</span>(pred, <span class="dv">1</span>, quantile, <span class="at">probs =</span> <span class="fl">0.8</span>), </span>
+<span id="cb75-13"><a href="#cb75-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># alternative: plot all 1000 predictions in transparent color</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dat[,<span class="dv">2</span>], dat[,<span class="dv">1</span>])</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(x)) <span class="fu">lines</span>(dat[,<span class="dv">2</span>], pred[,i], <span class="at">col =</span> <span class="st">"#0000EE03"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-17-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># important point - so far, we have plotted </span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="co"># in frequentist, this is know as the confidence vs. the prediction distribution</span></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="co"># in the second case, we add th</span></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">=</span> x[,<span class="dv">2</span>] <span class="sc">+</span> dat[,<span class="dv">2</span>] <span class="sc">%o%</span> x[,<span class="dv">1</span>] </span>
+<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(x))  {</span>
+<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>  pred[,i] <span class="ot">=</span> pred[,i] <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(pred[,i]), <span class="dv">0</span>, <span class="at">sd =</span> x[i,<span class="dv">3</span>])</span>
+<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-11"><a href="#cb77-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dat[,<span class="dv">2</span>], dat[,<span class="dv">1</span>])</span>
+<span id="cb77-12"><a href="#cb77-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(dat[,<span class="dv">2</span>], <span class="fu">apply</span>(pred, <span class="dv">1</span>, median))</span>
+<span id="cb77-13"><a href="#cb77-13" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(dat[,<span class="dv">2</span>], <span class="fu">apply</span>(pred, <span class="dv">1</span>, quantile, <span class="at">probs =</span> <span class="fl">0.2</span>), <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb77-14"><a href="#cb77-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(dat[,<span class="dv">2</span>], <span class="fu">apply</span>(pred, <span class="dv">1</span>, quantile, <span class="at">probs =</span> <span class="fl">0.8</span>), <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb77-15"><a href="#cb77-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-16"><a href="#cb77-16" aria-hidden="true" tabindex="-1"></a><span class="co">#alternative plotting</span></span>
+<span id="cb77-17"><a href="#cb77-17" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="at">x =</span> <span class="fu">c</span>(dat[,<span class="dv">2</span>], <span class="fu">rev</span>(dat[,<span class="dv">2</span>])), </span>
+<span id="cb77-18"><a href="#cb77-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="fu">c</span>(<span class="fu">apply</span>(pred, <span class="dv">1</span>, quantile, <span class="at">probs =</span> <span class="fl">0.2</span>), </span>
+<span id="cb77-19"><a href="#cb77-19" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rev</span>(<span class="fu">apply</span>(pred, <span class="dv">1</span>, quantile, <span class="at">probs =</span> <span class="fl">0.8</span>))), </span>
+<span id="cb77-20"><a href="#cb77-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="st">"#EE000020"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2B-PosteriorEstimation_files/figure-html/unnamed-chunk-17-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="playing-around-with-the-pipeline" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="playing-around-with-the-pipeline"><span class="header-section-number">3.3</span> Playing around with the pipeline</h2>
+<section id="prior-choice" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="prior-choice"><span class="header-section-number">3.3.1</span> Prior choice</h3>
+<p>Priors are not scale-free. What that means: dnorm(0,0.0001) might not be an uninformative prior, if the data scale is extremely small so that you might expect huge effect sizes - scaling all variables makes sure we have a good intuition of what “uninformative means”.</p>
+<p><strong>Task:</strong> play with the following minimal script for a linear regression to understand how scaling parameter affects priors and thus posterior shapes. In particular, change</p>
+<ul>
+<li>Multiply Ozone by 1000000 -&gt; will push sd estimates high</li>
+<li>Multiply Temp by 0.0000001 -&gt; will push parameter estimates high</li>
+</ul>
+<p>Then compare Bayesian parameter estimates and their uncertainty to Bayesian estimates. How would you have to change the priors to fix this problem and keep them uninformative?</p>
+<p><strong>Task: 2</strong> implement mildly informative priors as well as strong shrinkage priors in the regression. Question to discuss: should you put the shrinkage also in the intercept? Why should you center center variables if you include a shrinkage prior on the intercept?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rjags)</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> airquality[<span class="fu">complete.cases</span>(airquality),] </span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a><span class="co"># scaling happens here - change </span></span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Ozone <span class="ot">=</span> <span class="fu">as.vector</span>(<span class="fu">scale</span>(dat<span class="sc">$</span>Ozone))</span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>Temp <span class="ot">=</span> <span class="fu">as.vector</span>(<span class="fu">scale</span>(dat<span class="sc">$</span>Temp)) </span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> <span class="fu">list</span>(<span class="at">y =</span> dat<span class="sc">$</span>Ozone, </span>
+<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">x =</span> dat<span class="sc">$</span>Temp, </span>
+<span id="cb78-11"><a href="#cb78-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">i.max =</span> <span class="fu">nrow</span>(dat))</span>
+<span id="cb78-12"><a href="#cb78-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-13"><a href="#cb78-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Model</span></span>
+<span id="cb78-14"><a href="#cb78-14" aria-hidden="true" tabindex="-1"></a>modelCode <span class="ot">=</span> <span class="st">"</span></span>
+<span id="cb78-15"><a href="#cb78-15" aria-hidden="true" tabindex="-1"></a><span class="st">model{</span></span>
+<span id="cb78-16"><a href="#cb78-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-17"><a href="#cb78-17" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
+<span id="cb78-18"><a href="#cb78-18" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
+<span id="cb78-19"><a href="#cb78-19" aria-hidden="true" tabindex="-1"></a><span class="st">    mu[i] &lt;- Temp*x[i]+ intercept</span></span>
+<span id="cb78-20"><a href="#cb78-20" aria-hidden="true" tabindex="-1"></a><span class="st">    y[i] ~ dnorm(mu[i],tau)</span></span>
+<span id="cb78-21"><a href="#cb78-21" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb78-22"><a href="#cb78-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-23"><a href="#cb78-23" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior distributions</span></span>
+<span id="cb78-24"><a href="#cb78-24" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb78-25"><a href="#cb78-25" aria-hidden="true" tabindex="-1"></a><span class="st">  # For location parameters, typical choice is wide normal</span></span>
+<span id="cb78-26"><a href="#cb78-26" aria-hidden="true" tabindex="-1"></a><span class="st">  intercept ~ dnorm(0,0.0001)</span></span>
+<span id="cb78-27"><a href="#cb78-27" aria-hidden="true" tabindex="-1"></a><span class="st">  Temp ~ dnorm(0,0.0001)</span></span>
+<span id="cb78-28"><a href="#cb78-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-29"><a href="#cb78-29" aria-hidden="true" tabindex="-1"></a><span class="st">  # For scale parameters, typical choice is decaying</span></span>
+<span id="cb78-30"><a href="#cb78-30" aria-hidden="true" tabindex="-1"></a><span class="st">  tau ~ dgamma(0.001, 0.001)</span></span>
+<span id="cb78-31"><a href="#cb78-31" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma &lt;- 1/sqrt(tau) # this line is optional, just in case you want to observe sigma or set sigma (e.g. for inits)</span></span>
+<span id="cb78-32"><a href="#cb78-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-33"><a href="#cb78-33" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb78-34"><a href="#cb78-34" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb78-35"><a href="#cb78-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-36"><a href="#cb78-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify a function to generate inital values for the parameters (optional, if not provided, will start with the mean of the prior )</span></span>
+<span id="cb78-37"><a href="#cb78-37" aria-hidden="true" tabindex="-1"></a>inits.fn <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">list</span>(<span class="at">a =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>), <span class="at">b =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>), </span>
+<span id="cb78-38"><a href="#cb78-38" aria-hidden="true" tabindex="-1"></a>                            <span class="at">tau =</span> <span class="dv">1</span><span class="sc">/</span><span class="fu">runif</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">100</span>))</span>
+<span id="cb78-39"><a href="#cb78-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-40"><a href="#cb78-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile the model and run the MCMC for an adaptation (burn-in) phase</span></span>
+<span id="cb78-41"><a href="#cb78-41" aria-hidden="true" tabindex="-1"></a>jagsModel <span class="ot">&lt;-</span> <span class="fu">jags.model</span>(<span class="at">file=</span> <span class="fu">textConnection</span>(modelCode), <span class="at">data=</span>Data, <span class="at">init =</span> inits.fn, <span class="at">n.chains =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Compiling model graph
+   Resolving undeclared variables
+   Allocating nodes
+Graph information:
+   Observed stochastic nodes: 111
+   Unobserved stochastic nodes: 3
+   Total graph size: 310</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in jags.model(file = textConnection(modelCode), data = Data, init =
+inits.fn, : Unused initial value for "a" in chain 1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in jags.model(file = textConnection(modelCode), data = Data, init =
+inits.fn, : Unused initial value for "b" in chain 1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in jags.model(file = textConnection(modelCode), data = Data, init =
+inits.fn, : Unused initial value for "a" in chain 2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in jags.model(file = textConnection(modelCode), data = Data, init =
+inits.fn, : Unused initial value for "b" in chain 2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in jags.model(file = textConnection(modelCode), data = Data, init =
+inits.fn, : Unused initial value for "a" in chain 3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in jags.model(file = textConnection(modelCode), data = Data, init =
+inits.fn, : Unused initial value for "b" in chain 3</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Initializing model</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run a bit to have a burn-in</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="fu">update</span>(jagsModel, <span class="at">n.iter =</span> <span class="dv">1000</span>)</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Continue the MCMC runs with sampling</span></span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>Samples <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel, <span class="at">variable.names =</span> <span class="fu">c</span>(<span class="st">"intercept"</span>,<span class="st">"Temp"</span>,<span class="st">"sigma"</span>), <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Bayesian results</span></span>
+<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Iterations = 1001:6000
+Thinning interval = 1 
+Number of chains = 3 
+Sample size per chain = 5000 
+
+1. Empirical mean and standard deviation for each variable,
+   plus standard error of the mean:
+
+                Mean      SD  Naive SE Time-series SE
+Temp       0.6981444 0.06960 0.0005683      0.0005687
+intercept -0.0002886 0.06927 0.0005656      0.0005656
+sigma      0.7248217 0.04959 0.0004049      0.0004151
+
+2. Quantiles for each variable:
+
+             2.5%      25%        50%     75%  97.5%
+Temp       0.5605  0.65151  0.6987190 0.74506 0.8353
+intercept -0.1358 -0.04683 -0.0004223 0.04622 0.1363
+sigma      0.6356  0.68992  0.7224335 0.75649 0.8299</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MCMC results</span></span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp, <span class="at">data =</span> dat)</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Ozone ~ Temp, data = dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.2298 -0.5247 -0.0263  0.3138  3.5485 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 1.232e-17  6.823e-02    0.00        1    
+Temp        6.985e-01  6.854e-02   10.19   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.7188 on 109 degrees of freedom
+Multiple R-squared:  0.488, Adjusted R-squared:  0.4833 
+F-statistic: 103.9 on 1 and 109 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./2A-BayesianLogic.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Bayesian Logic</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./2C-ModelSelection.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian model selection</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

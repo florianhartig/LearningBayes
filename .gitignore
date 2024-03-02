@@ -11,7 +11,7 @@ CommentedCode/01-Principles/InferenceMethods.html
 
 CommentedCode/02-Samplers/Rejection/ExampleRejectionSampler.html
 
-*.html
+
 
 LectureNotes/article.pdf
 
@@ -29,3 +29,24 @@ _freeze/
 /*_cache/
 /*_files/
 imagesOriginal/
+
+CommentedCode/01-Principles/Posterior.html
+CommentedCode/01-Principles/Priors.html
+CommentedCode/02-Samplers/Benchmarks/BenchmarkFunctions.html
+CommentedCode/02-Samplers/MCMC/Convergence.html
+CommentedCode/02-Samplers/MCMC/LaplacesDeamon.html
+CommentedCode/02-Samplers/MCMC/Metropolis.html
+CommentedCode/02-Samplers/Optimization/FittingModelOptim.html
+CommentedCode/02-Samplers/SMC/SMC.html
+CommentedCode/04-StandardModels/Distributions/Binomial_JAGS.html
+CommentedCode/04-StandardModels/Distributions/Binomial_Prior.html
+CommentedCode/04-StandardModels/GLMM/Beetles.html
+CommentedCode/04-StandardModels/LM/Linear_Regression_JAGS.html
+CommentedCode/04-StandardModels/LM/LinearModel.html
+CommentedCode/04-StandardModels/LMM/BasicLMM/LinearMixedModel.html
+CommentedCode/05-HierarchicalAndSpatialModels/Basics/hierarchicalExample2Distributions.html
+CommentedCode/05-HierarchicalAndSpatialModels/SpatialAutoregressive/gaussianAutoregressiveExample.html
+CommentedCode/08-ApproximateBayesian/ABC-MovementModel-RecAndMCMC.html
+CommentedCode/08-ApproximateBayesian/ABCAndSynthetic.html
+CommentedCode/08-ApproximateBayesian/abcMCMC.html
+CommentedCode/08-ApproximateBayesian/easyABC.html

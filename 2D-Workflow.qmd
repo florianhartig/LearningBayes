@@ -10,15 +10,15 @@ set.seed(42)
 
 # Bayesian Workflow
 
-![Bayesian Workflow, from Gelman, A., Vehtari, A., Simpson, D., Margossian, C. C., Carpenter, B., Yao, Y., \... & Modrák, M. (2020). Bayesian workflow. <https://arxiv.org/pdf/2011.01808.pdf> ](images/BayesianWorkflow.png){width="800"}
+![Bayesian Workflow, from Gelman, A., Vehtari, A., Simpson, D., Margossian, C. C., Carpenter, B., Yao, Y., \... & Modrák, M. (2020). Bayesian workflow. <https://arxiv.org/pdf/2011.01808.pdf>](images/BayesianWorkflow.png){width="800"}
 
-## Picking an initial model 
+## Picking an initial model
 
 An initial model will consist of a model structure and priors. For priors, see previous section on prior choice. For the initial model structure, you need to know what structures are available and what their advantage / disadvantage are. This is the same as for all statistical analysis. Thus,
 
 ## Prior predictive checks
 
-## Validate computation 
+## Validate computation
 
 Convergence diagnostics
 
@@ -26,13 +26,15 @@ Fake data simulation
 
 Simulation-based calibration
 
-## Posterior model checks 
+## Posterior model checks
 
 ### Prior sensitivity
 
 Prior sensitivity means that you will check to what extend results are driven by the prior
 
-### Posterior predictive checks / residuals  
+### Posterior predictive checks / residuals
+
+https://stats.stackexchange.com/questions/86472/posterior-very-different-to-prior-and-likelihood
 
 ```{r}
 # This first part creates a dataset with beetles counts across an altitudinal gradient (several plots each observed several years), with a random intercept on year and zero-inflation. 
@@ -163,12 +165,12 @@ model {
 
 ```
 
-### Validation or cross-validation 
+### Validation or cross-validation
 
 Validation or cross-validation means that you test the performance of the model on data to which it was not fit. Purpose is to get an idea of overfitting.
 
-## Final inference 
+## Final inference
 
 ### Parameters
 
-### Predictions 
+### Predictions
