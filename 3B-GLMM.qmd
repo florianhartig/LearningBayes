@@ -20,10 +20,10 @@ plot(Dat$Veg,Dat$Count)
 ```{r}
 library(rjags)
 library(DHARMa)
+library(BayesianTools)
 
 # Model specification
-sink('LizardModel.txt')
-cat("
+model = "
   model{
   # Likelihood
   for(i in 1:n.dat){
@@ -39,8 +39,7 @@ cat("
   beta.Veg  ~ dnorm(0,0.001)
   beta.Veg2 ~ dnorm(0,0.001)
   }
- ", fill = TRUE)
-sink()
+ "
 
 ###########################################################
 # Setting up the JAGS run:
@@ -55,7 +54,7 @@ inits.fn <- function() list(alpha = rnorm(1,0,1),
                             beta.Veg2 = rnorm(1,0,1))
 
 # Compile the model and run the MCMC for an adaptation (burn-in) phase
-jagsModel <- jags.model(file= "LizardModel.txt", data=Model.Data, 
+jagsModel <- jags.model(file= textConnection(model), data=Model.Data, 
                         inits = inits.fn, n.chains = 3, n.adapt= 5000)
 # Specify parameters for which posterior samples are saved
 para.names <- c('alpha','beta.Veg','beta.Veg2')
@@ -79,8 +78,7 @@ correlationPlot(Samples)
 ## Adding posterior predictions and residual checks
 
 ```{r}
-sink('LizardModel.txt')
-cat("
+model ="
   model{
   # Likelihood
   for(i in 1:n.dat){
@@ -103,8 +101,7 @@ cat("
     mu.pred[i] <- alpha + beta.Veg*Veg.pred[i] + beta.Veg2*Veg2.pred[i]
     }
   }
- ", fill = TRUE)
-sink()
+ "
 
 ###########################################################
 # Setting up the JAGS run:
@@ -123,7 +120,7 @@ inits.fn <- function() list(alpha = rnorm(1,0,1),
                             beta.Veg2 = rnorm(1,0,1))
 
 # Compile the model and run the MCMC for an adaptation (burn-in) phase
-jagsModel <- jags.model(file= "LizardModel.txt", data=Model.Data, 
+jagsModel <- jags.model(file= textConnection(model), data=Model.Data, 
                         inits = inits.fn, n.chains = 3, n.adapt= 5000)
 # Specify parameters for which posterior samples are saved
 para.names <- c('alpha','beta.Veg','beta.Veg2')
@@ -171,11 +168,10 @@ plot(res)
 ###########################################################
 ```
 
-## Adding an overdispersion term 
+## Adding an overdispersion term
 
 ```{r}
-sink('LizardModel.txt')
-cat("
+model = "
   model{
   # Likelihood
   for(i in 1:n.dat){
@@ -202,9 +198,8 @@ cat("
     eps.pred[i] ~ dnorm(0, tau.eps)
   }
   }
- ", fill = TRUE)
-sink()
 
+"
 ###########################################################
 # Setting up the JAGS run:
 
@@ -224,7 +219,7 @@ inits.fn <- function() list(alpha = rnorm(1,0,1),
                             )
 
 # Compile the model and run the MCMC for an adaptation (burn-in) phase
-jagsModel <- jags.model(file= "LizardModel.txt", data=Model.Data, 
+jagsModel <- jags.model(file= textConnection(model), data=Model.Data, 
                         inits = inits.fn, n.chains = 3, n.adapt= 5000)
 # Specify parameters for which posterior samples are saved
 para.names <- c('alpha','beta.Veg','beta.Veg2',
@@ -277,9 +272,7 @@ plot(res)
 ## Adding zero-inflation
 
 ```{r}
-# Model specification
-sink('LizardModel.txt')
-cat("
+model = "
   model{
   # Likelihood
   for(i in 1:n.dat){
@@ -313,8 +306,7 @@ cat("
     eps.pred[i] ~ dnorm(0, tau.eps)
   }
   }
- ", fill = TRUE)
-sink()
+"
 
 ###########################################################
 # Setting up the JAGS run:
@@ -337,7 +329,7 @@ inits.fn <- function() list(alpha = rnorm(1,0,1),
                             )
 
 # Compile the model and run the MCMC for an adaptation (burn-in) phase
-jagsModel <- jags.model(file= "LizardModel.txt", data=Model.Data, 
+jagsModel <- jags.model(file= textConnection(model), data=Model.Data, 
                         inits = inits.fn, n.chains = 3, n.adapt= 5000)
 # Specify parameters for which posterior samples are saved
 para.names <- c('alpha','beta.Veg','beta.Veg2',

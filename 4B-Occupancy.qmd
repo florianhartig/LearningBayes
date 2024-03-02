@@ -9,3 +9,152 @@ set.seed(42)
 ```
 
 # Occupancy models
+
+```{r}
+library(EcoData)
+library(effects)
+
+plot(lizardsObs ~ earth , data = volcanoisland)
+fit<- glm(lizardsObs ~ earth + windObs , data = volcanoisland, family = binomial)
+summary(fit)
+plot(allEffects(fit))
+```
+
+However, there is something wrong with the model
+
+```{r}
+library(DHARMa)
+res <- simulateResiduals(fit)
+plot(res)
+```
+
+Suspicion - the lizards atually depend on the altitude, but they don't like wind and therefore hide when there is a lot of wind, and wind also correlates with altitude.
+
+```{r}
+plot(windObs ~ sAltitude, data = volcanoisland)
+
+```
+
+Could we find out what's the true effect of the environmental predictors? let's build an occupancy model where we model the true presence of the lizzard as a latent variable.
+
+```{r}
+library(rjags)
+
+Data = list(WindObs = log(volcanoisland$windObs),
+            Altitude = volcanoisland$sAltitude[seq(1, 999, by = 10)],
+            SoilPlot = unique(volcanoisland$earth),
+            LizzardObs =volcanoisland$lizardsObs,
+            plot = as.numeric(volcanoisland$plot),
+            nobs = nrow(volcanoisland),
+            nplots = length(unique(volcanoisland$plot)))
+
+
+modelCode = "
+model{
+
+  # Likelihood
+  for(i in 1:nobs){
+
+    LizzardObs[i] ~ dbern(ObservationProb[i] *  LizzardTrue[plot[i]])
+    logit(ObservationProb[i]) <- intO + windO * WindObs[i]
+
+  }
+
+  for(i in 1:nplots){
+    LizzardTrue[i] ~ dbern(LizzardSuitability[i])
+    logit(LizzardSuitability[i]) <- intL+ SoilL*SoilPlot[i] + altL * Altitude[i]
+  }
+
+  # Prior distributions
+  intO ~ dnorm(0,0.001)
+  windO ~ dnorm(0,0.001)
+  intL ~ dnorm(0,0.001)
+  SoilL ~ dnorm(0,0.001)
+  altL ~ dnorm(0,0.001)
+
+  # posterior predictive simulations
+
+  # Likelihood
+  for(i in 1:nobs){
+    LizzardObsSim[i] ~ dbern(ObservationProb[i] *  LizzardTrueSim[plot[i]])
+  }
+  for(i in 1:nplots){
+    LizzardTrueSim[i] ~ dbern(LizzardSuitability[i])
+  }
+
+}
+"
+
+inits.fn <- function() list(LizzardTrue = rep(1,100))
+jagsModel <- jags.model(file= textConnection(modelCode), inits = inits.fn, data=Data, n.chains = 3)
+
+para.names <- c("intO","windO","intL", "SoilL", "altL")
+Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+plot(Samples)
+summary(Samples)
+
+dic = dic = dic.samples(jagsModel, n.iter = 5000, type = "pD")
+dic
+
+```
+
+Inspecting the occupancy results
+
+```{r}
+para.names <- c("LizzardTrue")
+Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+
+library(BayesianTools)
+x = getSample(Samples)
+
+# there was no Lizard observed on plot 3 on all 10 replicates
+volcanoisland$lizardsObs[21:30]
+
+# Still, occupancy probability that the species is there is 22 percent
+barplot(table(x[,3]))
+
+para.names <- c("LizzardSuitability")
+Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+x = getSample(Samples)
+S=x
+Suitability = apply(S,2,mean)
+uncertaintyS = apply(S,2,sd)
+
+x = volcanoisland$x[seq(1, 999, by = 10)]
+y = volcanoisland$y[seq(1, 999, by = 10)]
+
+par(mfrow = c(1,2))
+
+plot(x,y, cex = Suitability)
+plot(x,y, cex = uncertaintyS)
+
+```
+
+Checking residuals of this model
+
+```{r}
+para.names <- c("LizzardObsSim")
+Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+
+library(DHARMa)
+x = getSample(Samples)
+
+
+sim = createDHARMa(simulatedResponse = t(x), observedResponse = volcanoisland$lizardsObs, fittedPredictedResponse = apply(x, 2, mean), integerResponse = T)
+plot(sim)
+
+# fix for a bug in DHARMa, will be corrected
+sim$simulatedResponse = t(x)
+sim$refit = F
+sim$integerResponse = T
+
+res2 = recalculateResiduals(sim, group = as.factor(volcanoisland$plot))
+
+plot(res2)
+testDispersion(res2)
+
+x = volcanoisland$x[seq(1, 999, by = 10)]
+y = volcanoisland$y[seq(1, 999, by = 10)]
+
+testSpatialAutocorrelation(res2, x = x, y = y)
+```

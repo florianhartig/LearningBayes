@@ -154,7 +154,7 @@ dat = airquality
 6.  Single continuous variables can be visualized using a histogram (`hist)` , for two variables, it depends on their data types:
 
     | Scenario                     | Which plot                    | R command                                                                            |
-    |-------------------|-------------------|-----------------------------------|
+    |------------------------------|-------------------------------|--------------------------------------------------------------------------------------|
     | Numeric                      | Histogram or boxplot          | `hist()` and`boxplot`                                                                |
     | Numeric with numeric         | Scatterplot                   | `plot`                                                                               |
     | Numeric with categorical     | Boxplot                       | `boxplot(numeric~categorical)`                                                       |

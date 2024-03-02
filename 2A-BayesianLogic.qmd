@@ -122,7 +122,6 @@ sum(pValueAdjusted < 0.05)
 Remember: in general, if you choose an alpha level of 5%, and you have absolutely random data, you should get 5% false positives (type I error) asymptotically, and the distribution of p-values in repeated experiments will be flat.
 :::
 
-
 ::: callout-note
 #### Summary NHST
 
@@ -133,13 +132,11 @@ Remember: in general, if you choose an alpha level of 5%, and you have absolutel
 Also note: we are free to choose the null-hypothesis as we want. What would you do if you null hypothesis is that a coin should have an 0.8 probability of head?
 :::
 
-
-
 ### The BAYESIAN ESTIMATE
 
 Remember for Bayes p(M\|D) = p(D\|M) \* p(M) / P(D), and we can show that p(D) is just the integral over p(D\|M) \* p(M)
 
-We had already calculated p(D\|M), so we just need to define p(M), the prior. For the moment, we will use a flat prior, but see the comments on prior choice later in the book - for a bernoulli trial often other priors, in particular the beta distribution, are used. 
+We had already calculated p(D\|M), so we just need to define p(M), the prior. For the moment, we will use a flat prior, but see the comments on prior choice later in the book - for a bernoulli trial often other priors, in particular the beta distribution, are used.
 
 ```{r}
 prior <- rep(1,1001)
@@ -168,10 +165,8 @@ you can see that the likelihood moves the posterior away from the prior, but not
 ::: callout-note
 #### Summary Bayes
 
-Distribution in, distribution out: prior * likelihood = posterior
+Distribution in, distribution out: prior \* likelihood = posterior
 :::
-
-
 
 ## Interpreting the Posterior
 
@@ -479,12 +474,20 @@ where F(phi) is the [Fisher information matrix](http://en.wikipedia.org/wiki/Fis
 To me, this seems to cover the main agreements about prior choice. Unfortunately, Jeffrey's prior seems to have some problems for multivariate and hierarchical models, so it's not a general panacea. However, partly based on the intuition gained from Jeffrey's prior, a few general default prior choices have emerged:
 
 1.  For **scale parameters** (something that affects the output linearly, like slope or intercept in a regression), use flat or quasi flat priors such as a bounded uniform distribution or (most common choice) a **wide normal distribution**. Note that, people often modify this priors by having a bit more probability mass around a neutral value (usually 0) to get the Bayesian analogue of Lasso or Ridge regression, see Park, T. & Casella, G. (2008), Kyung, M.; Gill, J.; Ghosh, M.; Casella, G. et al. (2010) Penalized regression, standard errors, and Bayesian lassos. Bayesian Analysis, 5, 369-411. If this effect is small, we speak about **mildly regularizing priors**. If the effect is strong, we speak about **shrinkage priors**. Shrinkage priors can be designed with a fixed or adaptive shrinkage, were fixed means that that the strength of the shrinkage (e.g. controlled by the sd in a normal prior) is fixed, whereas adaptive shrinkage priors fit the shrinkage via a hyperprior.
+
 2.  For **variance parameters** (something like the standard deviation in a linear regression), use decaying parameters such as 1/x (standard choice according to Jeffrey's prior) or inverse-gamma (very common choice because of conjugacy, see next subjsection)
 
 3.  For **variance hyperparameters in hierarchical models**, use again decaying priors such as inverse-gamma or half-t family (suggested by Gelman, 2006)
-4. For binomial distribution, Jeffrey's prior is a beta(1/2,1/2) - this is a good default choice.
+
+4.  For binomial distribution, Jeffrey's prior is a beta(1/2,1/2) - this is a good default choice.
 
 In doubt, prior effects can be examined by varying the prior in a sensitivity analysis.
+
+See also
+
+-   http://stats.stackexchange.com/questions/6493/weakly-informative-prior-distributions-for-scale-parameters
+
+-   http://stats.stackexchange.com/questions/61928/choosing-non-informative-priors?rq=1
 
 ### Conjugacy
 

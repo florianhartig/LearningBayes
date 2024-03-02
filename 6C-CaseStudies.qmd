@@ -47,7 +47,6 @@ m2 <- glm(SiblingNegotiation ~ FoodTreatment*SexParent + offset(log(BroodSize)),
 
 **Exercise 3:** check residuals and / or add obvious additional components to the model inspired by the frequentist example [here](https://theoreticalecology.github.io/AdvancedRegressionModels/6C-CaseStudies.html#owls).
 
-
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 #### Solution using brms
 
@@ -64,7 +63,6 @@ summary(m2)
 plot(m2, ask = FALSE)
 ```
 :::
-
 
 ## CNDD estimated, Comita et al., 2010
 
@@ -149,5 +147,3 @@ model{
   
 }
 ```
-
-

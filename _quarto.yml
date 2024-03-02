@@ -1,0 +1,62 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Introduction to Bayesian Statistics with R"
+  author: 
+     name: "Florian Hartig"
+     url: https://www.uni-regensburg.de/biologie-vorklinische-medizin/theoretische-oekologie/mitarbeiter/hartig/
+  date: "Sept 2022"
+  site-url: https://TheoreticalEcology.github.io/LearningBayes/
+  repo-url: https://github.com/TheoreticalEcology/LearningBayes
+  repo-branch: master
+  repo-actions: [edit]
+  sharing: [twitter, facebook, linkedin]
+  chapters:
+    - index.qmd
+    - 1A-GettingStarted.qmd
+    - part: "Introduction and Philosophy"
+      chapters: 
+      - 2A-BayesianLogic.qmd
+      - 2B-PosteriorEstimation.qmd
+      - 2C-ModelSelection.qmd
+      - 2D-Workflow.qmd
+    - part: "Bayesian GLMMs"
+      chapters: 
+      - 3A-LMM.qmd
+      - 3B-GLMM.qmd
+      - 3C-VarianceAndObservation.qmd
+    - part: "Hierachical models"
+      chapters: 
+      - 4A-ErrorInVariable.qmd
+      - 4B-Occupancy.qmd
+      - 4C-StateSpaceModels.qmd
+      - 4D-AutoregressiveModels.qmd
+      - 4E-IntegratedModels.qmd
+      - 4F-BayesianSEMs.qmd
+      - 4G-ProcessBased.qmd
+      - 4H-ApproximateBayesian.qmd
+    - part: "Summary and conclusions"
+      chapters: 
+      - 5-Summary.qmd   
+  appendices:
+  - 6A-References.qmd
+  - 6B-BayesianNumerics.qmd
+  - 6C-CaseStudies.qmd
+  
+engine: knitr
+  
+bibliography: literature.bib
+google-scholar: true
+
+execute:
+  freeze: auto
+  cache: false
+
+format:
+  html:
+    theme: cosmo
+editor: visual
+
+

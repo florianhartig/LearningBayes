@@ -1,4 +1,3 @@
-
 ---
 title: "SMC Sampling"
 author: "FlorianHartig"
@@ -7,11 +6,9 @@ output:
     keep_md: yes
 ---
 
-
 ```{r, echo = F}
 set.seed(123)
 ```
-
 
 ### Overview
 
@@ -29,13 +26,13 @@ Assume we want to sample from a narrow, 2-dim normal distribution with mean 0.5,
 likelihood <- function(x) sum(dnorm(x,0.5, 0.01, log = T))
 ```
 
-Assume our prior is unifor from 0 to 1. 
+Assume our prior is unifor from 0 to 1.
 
 ```{r}
 prior = function(x)sum(dunif(x,0,1))
 ```
 
-Start with a random sample from the prior 
+Start with a random sample from the prior
 
 ```{r}
 initialParticles <- matrix(runif(1000,0,1), ncol = 2)
@@ -44,12 +41,11 @@ initialParticles <- matrix(runif(1000,0,1), ncol = 2)
 
 Now comes the SMC. The idea is to
 
-1. Particles drawn from the prior, if we do nothing or likelihood flat it just stays prior (could generalize this to other starting distributions)
-2. For N steps do
-  1. Calculate Likelihood L for the particles
-  2. Select particles for next step with probability L^(1/N) (to compensate for the several steps)
-  3. Add a Metropolis-Hastings resampling step to avoid particle depletion / starvation (ending up with very few identical particles)
-
+1.  Particles drawn from the prior, if we do nothing or likelihood flat it just stays prior (could generalize this to other starting distributions)
+2.  For N steps do
+3.  Calculate Likelihood L for the particles
+4.  Select particles for next step with probability L\^(1/N) (to compensate for the several steps)
+5.  Add a Metropolis-Hastings resampling step to avoid particle depletion / starvation (ending up with very few identical particles)
 
 ```{r}
 
@@ -110,4 +106,11 @@ hist(finalParticles[,2], freq = F, col = "grey", breaks = 50, xlim = c(0,1), mai
 curve(dnorm(x,0.5, 0.01),0,1, n = 5000, add =T, col = "red")
 
 ```
+
+More advanced SMC methods
+
+* BayesianTools
+* Speich, M., Dormann, C. F., & Hartig, F. (2021). Sequential Monte-Carlo algorithms for Bayesian model calibration–A review and method comparison✰. Ecological Modelling, 455, 109608.
+* https://github.com/biips/rbiips
+
 

@@ -10,8 +10,7 @@ set.seed(42)
 
 # Error in variable models
 
-## Example 
-
+## Example
 
 ```{r, echo=F, warning=F, message=F}
 set.seed(123)
@@ -112,4 +111,78 @@ It's allways good to check the correlation structure in the posterior
 
 ```{r}
 pairs(as.matrix(results))
+```
+
+## Regression dillution
+
+```{r}
+library(EcoData)
+library(rjags)
+
+nobs = nrow(volcanoisland)
+
+# imagine we had a very bad measurement devide for the altitude
+volcanoisland$sAltitudeR = volcanoisland$sAltitude + rnorm(nobs)
+
+plot(log(windObs) ~ sAltitude, data = volcanoisland)
+fit = lm(log(windObs) ~ sAltitude, data = volcanoisland)
+summary(fit)
+abline(fit, col = "red")
+
+fit = lm(log(windObs) ~ sAltitudeR, data = volcanoisland)
+summary(fit)
+abline(fit, col = "blue")
+```
+
+let's see if we can correct the error
+
+```{r}
+data = list(WindObs = log(volcanoisland$windObs),
+            Altitude = volcanoisland$sAltitudeR,
+            plot = as.numeric(volcanoisland$plot),
+            nobs = nobs,
+            nplots = length(unique(volcanoisland$plot)))
+
+
+modelCode = "model{
+
+  # Likelihood
+  for(i in 1:nobs){
+
+    # error on y
+    WindObs[i] ~ dnorm(mu[i],tau)
+
+    # error on x
+    Altitude[i] ~ dnorm(TrueAltitude[plot[i]],tauMeasure)
+
+    mu[i] <- AltitudeEffect*TrueAltitude[plot[i]]+ Intercept
+  }
+  
+  # Prior distributions
+  
+  # For location parameters, normal choice is wide normal
+  AltitudeEffect ~ dnorm(0,0.0001)
+  Intercept ~ dnorm(0,0.0001)
+
+  for(i in 1:nplots){
+     TrueAltitude[i] ~ dnorm(0,0.0001)
+  }
+
+  # For scale parameters, normal choice is decaying
+  tau ~ dgamma(0.001, 0.001)
+  sigma <- 1/sqrt(tau)
+
+  tauMeasure ~ dgamma(0.001, 0.001)
+  sdMeasure <- 1/sqrt(tauMeasure)
+
+}
+"
+
+jagsModel <- jags.model(file= textConnection(modelCode), data=data, n.chains = 3)
+
+para.names <- c("AltitudeEffect","Intercept","sigma", "sdMeasure")
+Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+plot(Samples)
+summary(Samples)
+
 ```

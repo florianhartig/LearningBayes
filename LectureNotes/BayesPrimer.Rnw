@@ -1,36 +1,119 @@
-\documentclass[10pt,a4paper]{article}
+\documentclass[a4paper,twoside]{tufte-book} %style file is in the same folder.
+
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
+%\usepackage{german}
+
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{framed}
+\usepackage{listings}
+
 \usepackage{graphicx}
-\usepackage[svgnames]{xcolor}
-\usepackage{hyperref}
-\definecolor{darkblue}{rgb}{0,0,.6}
-\hypersetup{colorlinks=true, breaklinks=true, linkcolor=darkblue, menucolor=darkblue, urlcolor=darkblue, citecolor=darkblue}
-\usepackage[framemethod=default]{mdframed}
 
-\usepackage[]{natbib}
+\usepackage{multicol}              
+\usepackage{multirow}
+\usepackage{booktabs}
+%\usepackage{natbib} 
+
+\usepackage[innerrightmargin = 0.7cm, innerleftmargin = 0.3cm]{mdframed}
+\usepackage{mdwlist}
+
+\usepackage[]{hyperref}
+\definecolor{darkblue}{rgb}{0,0,.5}
+\hypersetup{colorlinks=true, breaklinks=true, linkcolor=darkblue, menucolor=darkblue, urlcolor=blue, citecolor=darkblue}
+
+\usepackage[toc,page]{appendix}
 
 
-\mdfsetup{%
-backgroundcolor=lightgray}
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{1}
+
+\lstset{ % settings for listings needs to be be changed to R sytanx 
+language=R,
+breaklines = true,
+columns=fullflexible,
+breakautoindent = false,
+%basicstyle=\listingsfont, 
+basicstyle=\ttfamily \scriptsize,
+keywordstyle=\color{black},                          
+identifierstyle=\color{black},
+commentstyle=\color{gray},
+xleftmargin=3.4pt,
+xrightmargin=3.4pt,
+numbers=none,
+literate={*}{{\char42}}1
+         {-}{{\char45}}1
+         {\ }{{\copyablespace}}1
+}
+% http://www.monperrus.net/martin/copy-pastable-listings-in-pdf-from-latex
+\usepackage[space=true]{accsupp}
+% requires the latest version of package accsupp
+\newcommand{\copyablespace}{
+    \BeginAccSupp{method=hex,unicode,ActualText=00A0}
+\ %
+    \EndAccSupp{}
+}
 
 
-\author{Florian Hartig}
+<<setup, cache=FALSE, include=FALSE>>=
+library(knitr)
+opts_knit$set(tidy = T, fig=TRUE, fig.height = 4, fig.width=4, fig.align='center')
+render_listings()
+@
+
+<<echo=FALSE, cache=TRUE>>=
+set.seed(123)
+@
+
+
+
+
 \title{A primer to Bayesian Inference}
+\author{Florian Hartig}
+
+
 \begin{document}
 \SweaveOpts{concordance=TRUE}
+%\SweaveOpts{concordance=TRUE} % don't activate this for knitr
+
+\let\cleardoublepage\clearpage % No empty pages between chapters
 \maketitle
 
-\begin{abstract}
-This short text aims at giving a quick and nontechnical introduction to Bayesian statistics. I am avoiding 
+
+\thispagestyle{empty}
+\null
 
 
-\end{abstract}
+\href{Prof. Dr. Florian Hartig}{http://www.uni-regensburg.de/biologie-vorklinische-medizin/theoretische-oekologie/mitarbeiter/hartig/index.html}\\
+University of Regensburg\\
+Germany\\[0.5cm]
+
+\begin{fullwidth}
+Vorlesungsunterlagen für Studierende der
+
+\begin{itemize*}
+  \item BSc Biostatistik
+  \item MSc Einführung in die Statistik mit R
+\end{itemize*}
+
+\vspace{0.5cm}
+
+Fehler oder Verbesserungsvorschläge bitte über den \href{https://github.com/florianhartig/Statistics/issues}{issue tracker} melden. 
+
+\end{fullwidth}
 
 
-\section{Bayesian inference}
+\vfill
+\begin{fullwidth}
+Grundlagen der Statistik Version 0.1.2, compiled \today. Translated into German 2017, based on lecture notes "Essential Statistics", created 2014-2016. This work is licensed under a \href{https://creativecommons.org/licenses/by-nc-nd/4.0/}{Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License}. 
+\end{fullwidth}
+
+
+\newpage
+\tableofcontents
+
+\chapter{Bayesian principles} % Use chapters instead of sections
 
 
 \begin{mdframed}[frametitle={Ask yourself}]
@@ -143,14 +226,86 @@ The most important thing is to understand that p-values and posterior estimates 
 
 Basically, there are the general-purpose frameworks OpenBugs,JAGS and STAN that are based on the bugs language, there are a number of general-purpose MCMC samplers 
 
+
 \chapter{Bayesian Inference with several models}
 
 
-
-The marginal likelihood depends on the choice of the prior \citep{Sinharay-SensitivityBayesFactors-2002}
-
+\section{A Bayesian perspective on multi-model inference}
 
 
+\subsection{Bayesian inference with multiple models}
+
+Bayes' formula makes no fundamental difference between models and parameters. Hence, to perform inference with multiple models, we can simply write down the joint posterior $P(M_i, \Theta_i| D)$ of different models $M_i$ with parameter vectors $\Theta_i$ as 
+
+\begin{equation}\label{eq: joint posterior}
+P(M_i, \Theta_i| D) = L(D|M_i , \Theta_i) \cdot p(\Theta_i) \cdot p(M_i)
+\end{equation}
+
+where $L(D|M_i , \Theta_i)$ is the likelihood of model $M_i$, $p(\Theta_i)$ is the prior distribution of model $M_i$, and $p(M_i)$ is the prior weight on model $M_i$. Fig.\ref{Fig.: 1 - } provides a graphical illustration of this situation, assuming three models with an increasing number of parameters. 
+
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=8cm]{figures/BMA}
+\caption{Illustration of the joint posterior space of several models with a different number of parameters. Size of the bubbles denotes posterior distribution and weight across models and parameters.}
+\label{Fig.: 1 - }
+\end{center}
+\end{figure}
+
+In principle, the joint distribution depiced in Fig.\ref{Fig.: 1 - } provides the full information that can be obtained from the inference, but in most practical cases we want to get some simplified statistics across this distribution such as "the most likely model", or "the combined uncertainty of a parameter of prediction". To obtain such information, there are two routes that we can take - marginalize (average) across parameters space, and marginalize across model space.
+
+If we marginalize across parameter space, we obtain model weights. The first step to do so is calculating the marginal likelihood, defined as the average of eq.\ref{eq: joint posterior} across all parameters for any given model:
+
+\begin{equation}\label{eq: marginal likelihood}
+P(D|M_i) = \int L(D|M_i , \Theta_i) \cdot p(\Theta_i) d \Theta_i
+\end{equation}
+
+From the marginal likelihood, we can compare models via the "Bayes factor", defined as the ratio of their marginal likelihoods, multiplied by the ratio of their model priors $p(M_i)$
+
+\begin{equation}\label{eq: bayes factor}
+BF_{i,j} = \frac{P(D|M_i)}{P(D|M_j)} \cdot \frac{p(M_i)}{p(M_j)}
+\end{equation}
+
+For more than two models, however, it is more useful to standardize this quantity across all models in question, calculating a Bayesian posterior model weight as
+
+\begin{equation}\label{eq: bayesian model weight}
+BMW_i = \frac{P(D|M_i)}{\sum_j P(D|M_j)} \cdot \frac{p(M_i)}{\sum_j p(M_j)}
+\end{equation}
+
+The second route we can take is to marginalize across models to obtain averaged parameters. Note that this makes only sense if the models have some parameters in common (nested models). To obtain the averaged parameters, we simply marginalize across model space
+
+\begin{equation}\label{eq: parameter averages}
+P(\Theta | D) = \sum_i L(D|M_i , \Theta_i) \cdot p(\Theta_i) \cdot p(M_i)
+\end{equation}
+
+resulting in averaged distributions for the parameters.
+
+\subsection{Estimation of these quantities}
+
+While the definition of the Bayesian model weights and averaged parameters is straightforward, the estimation of these quantities is often not. In practice, there are two options to estimate the quantities defined above numerically, both with a number of caveats.
+
+The first option is to sample directly from the joint posterior (eq.\ref{eq: joint posterior}) of the models and the parameters. Basic algorithms such as rejection sampling can do that without any modification \citep[e.g.][]{Toni-ApproximateBayesiancomputation-2009}, but they are inefficient for higher-dimensional parameter spaces. More sophisticated algorithms such as MCMC and SMC \citep[see][for a basic review]{Hartig-Statisticalinferencestochastic-2011} require modifications to deal with the issue of a changing number of parameters when changing between models, as well as with the issue of a changed meaning of the parameters. Such modifications (the most common class are the reversible-jump MCMCs (RJ-MCMC)) are often difficult to program, tune and generalize, which is the reason why they are typically only applied in specialized, well defined settings with a large number of models to be compared. 
+
+
+The second option is to approximate the marginal likelihood \ref{eq: marginal likelihood} of each model independently, and then average parameters or predictions based on the resulting weights. To approximate the marginal likelihood, one has to cover the parameter space with of each single model, e.g. with random sampling or MCMC, store the likelihood, and then compute the marginal likelihood from that. The challenge here is to get a stable approximation of the marginal likelihood, which can be connected with considerable problems \citep{Weinberg-ComputingBayesfactor-2012}. Nevertheless, because of the comparably easier implementation, this approach the more common choice in situations where the number of models to be compared is low.
+
+
+\subsection{Prior influence in the Bayesian model comparison and fractional Bayes factors}
+
+A problem that is often not sufficiently appreciated when performing Bayesian inference across multiple models is the influence of the choice of uninformative parameter priors on the model weight.
+
+The issue arises because in eq.\ref{eq: marginal likelihood}, the prior density enters the marginal likelihood multiplicatively. Although this follows directly from the joint posterior definition and is logically completely consistent, it has the somewhat unintuitive consequence that increasing the width width of an uninformative prior will linearly decrease the marginal likelihood \citep{Sinharay-SensitivityBayesFactors-2002}. In particular, for an infintely wide (inproper) uninformative prior, the model weight goes to zero, regardless of the fit. This behavior is surprising to many practitioners of Bayesian analysis, because they are used to the fact that the influence of increasing prior width on uninformative priors is minimal for fitting parameters.
+
+The fact that Bayesian model weights are strongly dependent on the width of the prior choice has sparked discussion of the appropriateness of this approach in situations with uninformative priors. For example, in situations where multiple nested models are compared, the width of the uniformative prior may completely determine the complexity of models that are being selected. One suggestion that has been made is not to perform multi-model inference with uninformative priors at all, or that at least additional analysis is necessary to find parameter priors that are sensible for the multi-model setup at hand. Another solution is to calibrate the model on a part of the data first, use the result as new priors and then perform the analysis described above (intrinsic Bayes factor \citep{Berger-IntrinsicBayesFactor-1996}, fractional Bayes factor, \citep{OHagan-FractionalBayesFactors-1995}). If sufficient data is available so that the likelihood falls off sufficiently strong during the calibration step, this approach should nearly eliminate any ambiguity resulting from the prior choice. 
+
+
+\subsection{Case study - comparison of forest models}
+
+An example of a Bayesian inference with multiple models is \citet{Oijen-Bayesiancalibrationcomparison-2013}. In the study, the authors compare 6 forest models with large differences in the number of parameters under calibration. The models use climate and soil data as drivers, and predict diameter and height growth on each site. The data for calibration used in the study is growth data from 12 sites distributed across Europe.
+
+To compare model predictions and output, a simple Gaussian likelihood was used that compared observed with predicted diameter and height growth. In a first step, all models were calibrated independently based on a part of this data, using an conventional MCMC. From this MCMC results, 1000 parameters were selected for the calculation of the model weights. 
+
+Those 1000 parameters represent a sample from the new prior for the model parameters that is used in eq.~\ref{eq: marginal likelihood}. To obtain the marginal likelihood for each model, the likelihood of the model for the remaining data was calculated for each of the parameters. From the results, relative model weights were calculated from eq.~\ref{eq: bayesian model weight}
 
 
 \section{Simulation-based inference}
@@ -172,11 +327,9 @@ http://arxiv.org/abs/1306.1170
 Suggested readings: \citep{Hartig-Statisticalinferencestochastic-2011}
 
 
+
 \bibliographystyle{chicago}
-
-\bibliography{/Users/Florian/Home/Bibliography/Databases/flo.bib}
-
-
+\bibliography{/Users/Florian/Home/Bibliography/Databases/flo}
 
 
 \end{document}

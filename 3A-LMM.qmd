@@ -30,22 +30,22 @@ plot(Dat$log_TL.sc, Dat$log_BM)
 
 ### LM with continous predictor
 
-```{r}
-#############################################################
-# Linear regression with lm()
+Linear regression with lm()
 
+```{r}
 LM <- lm(log_BM ~ log_TL.sc, data = Dat)
 summary(LM)
+```
 
-#############################################################
-# Analysis in JAGS                                          #
-#############################################################
+Analysis in JAGS    
+
+```{r}
+library(rjags)
 
 # 1) Save a description of the model in JAGS syntax 
 # to the working directory
-sink("LM.txt")
-cat(
-  "model{
+model ="
+model{
   # Likelihood
   for(i in 1:n.dat){
     y[i] ~ dnorm(mu[i],tau)
@@ -58,9 +58,7 @@ cat(
   tau <- 1/(sigma*sigma)
   sigma ~ dunif(0,100)
   }
-  ",fill = TRUE)
-
-sink()
+"
 
 # 2) Set up a list that contains all the necessary data
 Data = list(y = Dat$log_BM, 
@@ -73,7 +71,7 @@ inits.fn <- function() list(alpha = rnorm(1),
                             sigma = runif(1,1,100))
 
 # Compile the model and run the MCMC for an adaptation (burn-in) phase
-jagsModel <- jags.model(file = "LM.txt", data=Data, 
+jagsModel <- jags.model(file = textConnection(model), data=Data, 
                         init = inits.fn, n.chains = 3, 
                         n.adapt= 5000)
 
@@ -92,22 +90,26 @@ summary(Samples)
 # we could extract posterior means
 PostMeans <- summary(Samples)$statistics[,'Mean']
 
-# Compare this to the lm() results
+# Graphical overview of the samples from the MCMC chains
+plot(Samples)
+```
+
+Compare this to the lm() results
+
+```{r}
+plot(Dat$log_TL.sc, Dat$log_BM)
 coef(LM)
 # and the two regression lines
 abline(LM, col = 'red')
 abline(PostMeans[1:2], col = 'blue')
 
-# Graphical overview of the samples from the MCMC chains
-plot(Samples)
 ```
 
 ### LM with categorical predictor
 
+Inspect relationship between body mass and total body lenght but now seperately for the two sexes
 
 ```{r}
-# Inspect relationship between body mass and total body lenght
-# but now seperately for the two sexes
 point.symbols <- c(f = 1, m = 4)
 plot(Dat$TL, Dat$BM,
      pch = point.symbols[Dat$Sex],
@@ -120,21 +122,17 @@ plot(Dat$log_TL.sc, Dat$log_BM,
      pch = point.symbols[Dat$Sex])
 ```
 
+Linear regression with lm()
 
 ```{r}
-# Linear regression with lm()
-
 LM <- lm(log_BM ~ log_TL.sc + Sex, data = Dat)
 summary(LM)
+```
 
-#############################################################
-# Analysis in JAGS                                          #
-#############################################################
+Analysis in JAGS 
 
-# 1) Save a description of the model in JAGS syntax 
-# to the working directory
-sink("LM.txt")
-cat(
+```{r}
+model = 
   "model{
   # Likelihood
   for(i in 1:n.dat){
@@ -149,9 +147,7 @@ cat(
   tau <- 1/(sigma*sigma)
   sigma ~ dunif(0,100)
   }
-  ",fill = TRUE)
-
-sink()
+  "
 
 # 2) Set up a list that contains all the necessary data
 Data = list(y = Dat$log_BM, 
@@ -166,7 +162,7 @@ inits.fn <- function() list(alpha = rnorm(1),
                             sigma = runif(1,1,100))
 
 # Compile the model and run the MCMC for an adaptation (burn-in) phase
-jagsModel <- jags.model(file = "LM.txt", data=Data, 
+jagsModel <- jags.model(file = textConnection(model), data=Data, 
                         init = inits.fn, n.chains = 3, 
                         n.adapt= 5000)
 
@@ -191,28 +187,24 @@ plot(Samples)
 gelman.diag(Samples)
 
 # Correlation plot
-correlationPlot(Samples)
+BayesianTools::correlationPlot(Samples)
 ```
 
 ### LM with interaction
 
 From the previous plot, it´s obvious that we could also consider an interaction between sex and body mass
 
-```{r}
-####################################################################
-# Linear regression with lm()
+Linear regression with lm()
 
+```{r}
 LM <- lm(log_BM ~ log_TL.sc + Sex + Sex:log_TL.sc, data = Dat)
 summary(LM)
+```
 
-#############################################################
-# Analysis in JAGS                                          #
-#############################################################
+Analysis in JAGS    
 
-# 1) Save a description of the model in JAGS syntax 
-# to the working directory
-sink("LM.txt")
-cat(
+```{r}
+model =
   "model{
   # Likelihood
   for(i in 1:n.dat){
@@ -229,9 +221,7 @@ cat(
   tau <- 1/(sigma*sigma)
   sigma ~ dunif(0,100)
   }
-  ",fill = TRUE)
-
-sink()
+  "
 
 # 2) Set up a list that contains all the necessary data
 Data = list(y = Dat$log_BM, 
@@ -247,7 +237,7 @@ inits.fn <- function() list(alpha = rnorm(1),
                             sigma = runif(1,1,100))
 
 # Compile the model and run the MCMC for an adaptation (burn-in) phase
-jagsModel <- jags.model(file = "LM.txt", data=Data, 
+jagsModel <- jags.model(file = textConnection(model), data=Data, 
                         init = inits.fn, n.chains = 3, 
                         n.adapt= 5000)
 
@@ -272,7 +262,7 @@ plot(Samples)
 gelman.diag(Samples)
 
 # Correlation plot
-correlationPlot(Samples)
+BayesianTools::correlationPlot(Samples)
 ```
 
 
@@ -291,10 +281,7 @@ summary(LME)
 # Analysis in JAGS                                          #
 #############################################################
 
-# 1) Save a description of the model in JAGS syntax 
-# to the working directory
-sink("LM.txt")
-cat(
+model = 
   "model{
   # Likelihood
   for(i in 1:n.dat){
@@ -316,9 +303,7 @@ cat(
   tau.pop <- 1/(sigma.pop*sigma.pop)
   sigma.pop ~ dunif(0,100)
   }
-  ",fill = TRUE)
-
-sink()
+  "
 
 # 2) Set up a list that contains all the necessary data
 Data = list(y = Dat$log_BM, 
@@ -337,7 +322,7 @@ inits.fn <- function() list(mu.alpha = rnorm(1),
                             sigma.pop = runif(1,1,100))
 
 # Compile the model and run the MCMC for an adaptation (burn-in) phase
-jagsModel <- jags.model(file = "LM.txt", data=Data, 
+jagsModel <- jags.model(file = textConnection(model), data=Data, 
                         init = inits.fn, n.chains = 3, 
                         n.adapt= 5000)
 
@@ -362,6 +347,6 @@ plot(Samples)
 gelman.diag(Samples)
 
 # Correlation plot
-correlationPlot(Samples)
+BayesianTools::correlationPlot(Samples)
 ```
 

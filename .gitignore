@@ -25,3 +25,7 @@ ToInclude/
 
 /.quarto/
 .Rhistory
+_freeze/
+/*_cache/
+/*_files/
+imagesOriginal/

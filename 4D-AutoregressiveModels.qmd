@@ -12,8 +12,6 @@ set.seed(42)
 
 ## Example
 
-
-
 This is based on code posted originally by Petr Keil <http://www.petrkeil.com/?p=1910>, to illustrate some comments I made in response to this blog post
 
 ```{r, echo=F, warning=F, message=F}
