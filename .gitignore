@@ -22,3 +22,6 @@ CommentedCode/02-Samplers/MCMC/metropolis_ex/metrop.gif
 CommentedCode/04-StandardModels/GLMM/Beetles_cache/
 ToInclude/
 .Rproj.user
+
+/.quarto/
+.Rhistory

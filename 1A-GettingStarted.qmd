@@ -1,0 +1,186 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Getting Started
+
+## Organization of this book
+
+The aim of this book is to introduce you to the main techniques and concepts that are used when performing regression analyses in applied settings. This book is organized in three parts:
+
+1.  **Introduction and philosophy:** The first part of this book provides a general introduction to Bayesian inference, starting with the internal logic (likelihood, prior, posterior), a short introduction on posterior estimation and interpretation, a section on Bayesian model selection and a overview of the Bayesian workflow
+2.  **Bayesian GLMMs**: The second part covers how standard GLMMs (which could also be fit in R packages lme4 or glmmTMB) would be implemented in a Bayesian worklow
+3.  **Hierarchical models:** The third part of the book shows examples of popular hierarchical model structures that may be the reason why you want to use Bayesian inference.
+
+## Your R System
+
+In this course, we work with the combination of R + RStudio.
+
+-   R is the calculation engine that performs the computations.
+-   RStudio is the editor that helps you sending inputs to R and collect outputs.
+
+Make sure you have a recent version of R + RStudio installed on your computer. If you have never used RStudio, <a href="https://videocampus.sachsen.de/video/First-steps-with-R-and-RStudio/528e5d164219f2d07e32a51736c3f7d1" target="_blank" rel="noopener">here</a> is a good video introducing the basic system and how R and RStudio interact.
+
+## Libraries that you will need
+
+The R engine comes with a number of base functions, but one of the great things about R is that you can extend these base functions by libraries that can be programmed by anyone. In principle, you can install libraries from any website or file. In practice, however, most commonly used libraries are distributed via two major repositories. For statistical methods, this is **CRAN**, and for bioinformatics, this is **Bioconductor**.
+
+::: {.callout-tip collapse="true"}
+#### Click to see more on installing libraries in R
+
+To install a package from a library, use the command
+
+```{r chunk_chapter2_0, eval=FALSE, purl=FALSE}
+install.packages(LIBRARY)
+```
+
+Exchange "LIBRARY" with the name of the library you want to install. The default is to search the package in CRAN, but you can specify other repositories or file locations in the function. For Windows / Mac, R should work out of the box. For other UNIX based systems, may also need to install
+
+```         
+build-essential
+gfortran
+libmagick++-dev
+r-base-dev
+cmake
+```
+
+If you are new to installing packages on Debian / Ubuntu, etc., type the following:
+
+```         
+sudo apt update && sudo apt install -y --install-recommends build-essential gfortran libmagick++-dev r-base-dev cmake
+```
+:::
+
+In this book, we will often use data sets from the `EcoData`{.R} package, which is not on CRAN, but on a GitHub page. To install the package, if you don't have the devtools package installed already, first install devtools from CRAN by running
+
+```{r, eval=FALSE}
+install.packages("devtools")
+```
+
+Then install the EcoData package via
+
+```{r chunk_chapter2_2, eval=FALSE}
+devtools::install_github(repo = "TheoreticalEcology/EcoData",
+                         dependencies = T, build_vignettes = T)
+```
+
+For your convenience, the EcoData installation also forces the installation of most of the packages needed in this book, so this may take a while. If you want to load only the EcoData package, or if you encounter problems during the install, set `dependencies = F, build_vignettes = F`.
+
+In addition to that, to be able to run all examples in the book, please install the following additional packages:
+
+```{r, eval = FALSE}
+install.packages(BayesianTools)
+install.packages(rjags)
+```
+
+Also, you should install the JAGS (see <https://mcmc-jags.sourceforge.io>). You can find the downloads for different operating systems at <https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/>
+
+## Assumed R knowledge
+
+As mentioned in the preface, this book assumes that you have basic knowledge about data manipulation (reading in data, removing or selecting columns or rows, calculating means per group etc.) and plotting in R. Note that for both purposes, there are currently two main schools in the R environment which do the same things, but with very different syntax:
+
+1.  **base R**, which uses functions such as `plot()`, `apply()`, `aggregate()`
+2.  **tidyverse**, with packages such as **dplyr** and **ggplot2**, which provide functions such as `mutate()`, `filter()` and heavily rely on the `%>%` pipe operator.
+
+There are many opinions about advantages and disadvantages of the two schools. I'm agnostic about this, or more precisely, I think you should get to know both schools and then decide based on the purpose. I see advantages of tidyverse in particular for data manipulation, while I often prefer baseR plots over ggplot2. To keep it simple, however, all code in this course uses base R.
+
+::: callout-note
+The tidyverse framework is currently trying to expand to the tasks of statistical / machine learning models as well, trying to streamline statistical workflows. While this certainly has a lot of potential, I don't see it as general / mature enough to recommend it as a default for the statistical workflow.
+:::
+
+In the following box, you will find an exercise that asks you to perform basic plots and data manipulations. To text yourself, please check that you can perform these operations. If you have problems, you should study an introductory R course (for example [here](https://theoreticalecology.github.io/DataScienceInR/)) before continuing with this text.
+
+::: {.callout-caution icon="false"}
+#### Exercise - Data wrangling
+
+We work with the airquality dataset:
+
+```{r}
+dat = airquality
+```
+
+1.  Before working with a dataset, you should always get an overview of it. Helpful functions for this are `str()`, `View()`, `summary()`, `head()`, and `tail()`. Apply them to `dat` and make sure to understand what they do.
+2.  What is the data type of the variable 'Month'? Transform it to a factor
+3.  Scale the variable Wind and save it as a new variable in `dat`
+4.  Transform the variable 'Temp' (log-transform) and save it as a new variable in `dat`
+5.  Extract the first 100 rows of `dat` and remove the NAs from the subsetted dataset
+6.  Plot the variables of the dataset, and against each other (e.g. Wind, Wind vs Temp, Temp vs Month, all simultaneously)
+7.  Calculate correlation indices between the numerical variables (e.g. Wind and Temp, Temp and Ozone). What is the difference between Spearman and Pearson correlation?
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+#### Solution
+
+1.  `str()` helps us to check the data types of the variables, ensure that they are correct, e.g. categorical variables should be factors and continuous variables should be either num (numeric) or int (integer). `summary()`returns important summary statistics of our variables and informs us about NAs in the data
+
+    ```{r}
+    str(dat)
+    summary(dat)
+    ```
+
+    There are NAs in Ozone and Solar.R! Also, Month is not a factor!
+
+2.  We have to transform Month into a factor:
+
+    ```{r}
+    dat$Month = as.factor(dat$Month)
+    str(dat)
+    ```
+
+3.  Scaling means that the variables are centered and standardized (divided by their standard deviation):
+
+    ```{r}
+    dat$sWind = scale(dat$Wind)
+    summary(dat)
+    ```
+
+4.  Use `log`function to transform the variable (be aware of NAs!)
+
+    ```{r}
+    dat$logTemp = log(dat$Temp)
+    ```
+
+5.  Use `[rows, cols]` to subset the data and `complete.cases()` to remove observations with NAs
+
+    ```{r}
+    dat_sub = dat[1:100,]
+    summary(dat_sub)
+    dat_sub = dat_sub[complete.cases(dat_sub),]
+    summary(dat_sub)
+    ```
+
+6.  Single continuous variables can be visualized using a histogram (`hist)` , for two variables, it depends on their data types:
+
+    | Scenario                     | Which plot                    | R command                                                                            |
+    |-------------------|-------------------|-----------------------------------|
+    | Numeric                      | Histogram or boxplot          | `hist()` and`boxplot`                                                                |
+    | Numeric with numeric         | Scatterplot                   | `plot`                                                                               |
+    | Numeric with categorical     | Boxplot                       | `boxplot(numeric~categorical)`                                                       |
+    | Categorical with categorical | mosaicplot or grouped barplot | `mosaicplot(table(categorical, categorical))` or `barplot(data,        beside=TRUE)` |
+
+    ```{r}
+    # Numeric
+    hist(dat$Wind, main = "Wind")
+
+    # Numeric vs numeric
+    plot(dat$Wind, dat$Solar.R)
+
+    # Numeric with categorical
+    boxplot(Wind~Month, data = dat)
+
+    # All with all
+    pairs(dat)
+    ```
+
+7.  Spearman is a rank correlation factor, less sensitive against outliers and non-linearity:
+
+    ```{r}
+    # Pearson
+    cor(dat$Wind, dat$Temp, use = "complete.obs")
+
+    # Spearman
+    cor(dat$Wind, dat$Temp, use = "complete.obs", method = "spearman")
+    ```
+:::

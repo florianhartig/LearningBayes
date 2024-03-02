@@ -1,0 +1,174 @@
+---
+output: html_document
+editor_options:
+  chunk_output_type: console
+---
+
+```{r, include=FALSE}
+set.seed(42)
+```
+
+# Bayesian Workflow
+
+![Bayesian Workflow, from Gelman, A., Vehtari, A., Simpson, D., Margossian, C. C., Carpenter, B., Yao, Y., \... & Modrák, M. (2020). Bayesian workflow. <https://arxiv.org/pdf/2011.01808.pdf> ](images/BayesianWorkflow.png){width="800"}
+
+## Picking an initial model 
+
+An initial model will consist of a model structure and priors. For priors, see previous section on prior choice. For the initial model structure, you need to know what structures are available and what their advantage / disadvantage are. This is the same as for all statistical analysis. Thus,
+
+## Prior predictive checks
+
+## Validate computation 
+
+Convergence diagnostics
+
+Fake data simulation
+
+Simulation-based calibration
+
+## Posterior model checks 
+
+### Prior sensitivity
+
+Prior sensitivity means that you will check to what extend results are driven by the prior
+
+### Posterior predictive checks / residuals  
+
+```{r}
+# This first part creates a dataset with beetles counts across an altitudinal gradient (several plots each observed several years), with a random intercept on year and zero-inflation. 
+
+altitude = rep(seq(0,1,len = 50), each = 20)
+dataID = 1:1000
+spatialCoordinate = rep(seq(0,30, len = 50), each = 20)
+
+# random effects + zeroinflation
+plot = rep(1:50, each = 20)
+year = rep(1:20, times = 50)
+
+yearRandom = rnorm(20, 0, 1)
+plotRandom = rnorm(50, 0, 1)
+overdispersion = rnorm(1000, sd = 0.5)
+zeroinflation = rbinom(1000,1,0.6)
+
+beetles <- rpois(1000, exp( 0  + 12*altitude - 12*altitude^2 
+                            #  + overdispersion   + plotRandom[plot]
+                            + yearRandom[year]) * zeroinflation )
+
+data = data.frame(dataID, beetles, altitude, plot, year, spatialCoordinate)
+
+plot(year, altitude, cex = beetles/50, pch =2, main = "Beetle counts across altitudinal gradient\n triangle is proportional to counts")
+
+```
+
+```{r}
+
+library(R2jags)
+modelData=as.list(data)
+modelData = append(data, list(nobs=1000, nplots = 50, nyears = 20))
+head(data)
+
+# 1) Fit GLM only 
+
+modelstring="
+model {
+  
+  # Likelihood
+  for (i in 1:nobs) {
+    lambda[i] <- exp(intercept + alt * altitude[i] + alt2 * altitude[i] * altitude[i]) 
+    beetles[i]~dpois(lambda[i]) 
+  }
+  
+  # Fixed effect priors 
+  intercept ~ dnorm(0,0.0001)
+  alt ~ dnorm(0,0.0001)
+  alt2 ~ dnorm(0,0.0001)
+
+  # Posterior predictive simulations 
+  
+  for (i in 1:nobs) {
+    beetlesPred[i]~dpois(lambda[i])
+  }
+  Prediction <- sum(beetlesPred)
+}
+"
+
+model=jags(model.file = textConnection(modelstring), data=modelData, n.iter=10000,  parameters.to.save = c("intercept", "alt", "alt2", "beetlesPred", "lambda"), DIC = F)
+
+library(DHARMa)
+simulations = model$BUGSoutput$sims.list$beetlesPred
+pred = apply(model$BUGSoutput$sims.list$lambda, 2, median)
+dim(simulations)
+sim = createDHARMa(simulatedResponse = t(simulations), observedResponse = data$beetles, fittedPredictedResponse = pred, integerResponse = T)
+plotSimulatedResiduals(sim)
+
+```
+
+GLMM with random intercept on year, observation-level RE for overdispersion, and zero-inflation
+
+```{r}
+modelstring="
+model {
+
+  # Likelihood
+  for (i in 1:nobs) {
+    lambda[i] <- exp(intercept + alt * altitude[i] + alt2 * altitude[i] * altitude[i] + Ryear[year[i]] + RID[i] ) * Zero[i] + 0.00000001 
+    
+    beetles[i]~dpois(lambda[i]) 
+  }
+  
+  # Fixed effect priors 
+  intercept ~ dnorm(0,0.0001)
+  alt ~ dnorm(0,0.0001)
+  alt2 ~ dnorm(0,0.0001)
+  
+  # Random effects 
+  
+  for (i in 1:nyears) {
+  Ryear[i]~dnorm(0,sigmaYear)
+  }
+  
+  for (i in 1:nobs) {
+  RID[i]~dnorm(0,sigmaID)
+  }
+  
+  # Variance priors 
+  sigmaYear~dgamma(1,2)
+  sigmaID~dgamma(0.001,0.001)
+  
+  # Zeroinflation
+  
+  for (i in 1:nobs) {
+  Zero[i]~dbern(zeroMu + altZero * altitude[i])
+  }
+  zeroMu ~ dunif(0,1)
+  altZero ~ dnorm(0,0.0001)
+  
+  # Posterior predictive simulations 
+  for (i in 1:nobs) {
+    beetlesPred[i]~dpois(lambda[i])
+  }
+  
+  Prediction <- sum(beetlesPred)
+}
+"
+  
+  model=jags(model.file = textConnection(modelstring), data=modelData, n.iter=10000,  parameters.to.save = c("intercept", "alt", "alt2", "beetlesPred", "Ryear", "sigmaYear", "lambda", "altZero", "zeroMu"), DIC = F)
+  
+  library(DHARMa)
+  simulations = model$BUGSoutput$sims.list$beetlesPred
+  pred = apply(model$BUGSoutput$sims.list$lambda, 2, median)
+  dim(simulations)
+  sim = createDHARMa(simulatedResponse = t(simulations), observedResponse = data$beetles, fittedPredictedResponse = pred, integerResponse = T)
+  plotSimulatedResiduals(sim)
+
+```
+
+### Validation or cross-validation 
+
+Validation or cross-validation means that you test the performance of the model on data to which it was not fit. Purpose is to get an idea of overfitting.
+
+## Final inference 
+
+### Parameters
+
+### Predictions 

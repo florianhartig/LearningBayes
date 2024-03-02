@@ -1,0 +1,153 @@
+---
+output: html_document
+editor_options:
+  chunk_output_type: console
+---
+
+```{r, include=FALSE}
+set.seed(42)
+```
+
+# Case Studies
+
+## Owls (Poisson GLM)
+
+For this case study, we will use the fairly well known Owl dataset which is provided in glmmTMB (see ?Owls for more info about the data). A frequentist base model would be:
+
+```{r}
+library(glmmTMB)
+library(effects)
+
+m1 <- glm(SiblingNegotiation ~ SexParent, data=Owls , family = poisson)
+summary(m1)
+plot(allEffects(m1))
+```
+
+**Exercise 1:** fit this GLM using a Bayesian approach, e.g. Jags, STAN or brms
+
+::: callout-tip
+For STAN and JAGS, you will have to transform categorical variables to dummy coding, i.e.
+
+```{r, eval=FALSE}
+sex = as.numeric(Owls$SexParent) - 1 
+```
+
+Then you can code
+
+```{r, eval=FALSE}
+sexEffect * sex[i]
+```
+:::
+
+**Exercise 2:** include a log offset to the model too account for BroodSize
+
+```{r}
+m2 <- glm(SiblingNegotiation ~ FoodTreatment*SexParent + offset(log(BroodSize)), data=Owls , family = poisson)
+```
+
+**Exercise 3:** check residuals and / or add obvious additional components to the model inspired by the frequentist example [here](https://theoreticalecology.github.io/AdvancedRegressionModels/6C-CaseStudies.html#owls).
+
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+#### Solution using brms
+
+Here a base model with random effect
+
+```{r, message=FALSE, warning=FALSE}
+library(brms)
+m2 = brms::brm(SiblingNegotiation ~ FoodTreatment * SexParent
+  + (1|Nest) + offset(log(BroodSize)), 
+  data = Owls , 
+  family = negbinomial)
+summary(m2)
+
+plot(m2, ask = FALSE)
+```
+:::
+
+
+## CNDD estimated, Comita et al., 2010
+
+This is the model from Comita, L. S., Muller-Landau, H. C., Aguilar, S., & Hubbell, S. P. (2010). Asymmetric density dependence shapes species abundances in a tropical tree community. Science, 329(5989), 330-332.
+
+The model was originally written in WinBugs. The version here was here slightly modified to be run with JAGS. Rerunning these models were part of the tests we did to settle on the methodology in Hülsmann, L., Chisholm, R. A., Comita, L., Visser, M. D., de Souza Leite, M., Aguilar, S., ... & Hartig, F. (2024). Latitudinal patterns in stabilizing density dependence of forest communities. Nature, 1-8.
+
+Our tests indicated that this model is excellent in recovering CNDD estimates from simulations. The main reason we didn't use a similar model in Hülsmann et al., 2024 were computational limitations and the difficulty to include splines on the species-specific density responses in such a hierarchical setting.
+
+*Task:* go through the paper and the code and try to understand what the structure of the model!
+
+```{r, eval = F}
+model{
+  for (i in 1:N) {
+    SD[i] ~ dbern(p[i])
+    SD_sim[i] ~ dbern(p[i])
+    logit(p[i]) <- B[SPP[i], ] %*% PREDS[i, ] + u[PLOT[i]]
+  }
+  
+  # Standard Random intercept on plot
+  for (m in 1:Nplots) {
+    u[m] ~ dnorm(0, a.tau)
+  }
+  a.sigma ~ dunif(0, 100)
+  a.tau <- 1 / (a.sigma * a.sigma)
+  
+  #redundant parameterization speeds convergence in WinBugs, see Gelman & Hill (2007)
+  for (k in 1:K) {
+    for (j in 1:Nspp) {
+      B[j, k] <- xi[k] * B.raw[j, k]
+    }
+    xi[k] ~ dunif(0, 100)
+  }
+  
+  #multivariate normal distribution for B values of each species
+  for (j in 1:Nspp) {
+    B.raw[j, 1:K] ~ dmnorm(B.raw.hat[j, ], Tau.B.raw[, ])
+    
+    #G.raw is matrix of regression coefficients for species-level model
+    #ABUND is  species-level predictors (abundance and shade tolerance)
+    for (k in 1:K) {
+      B.raw.hat[j, k] <-
+        G.raw[k, ] %*% ABUND[j, ] # ABUND needs to be matrix w/ 1st column all 1's
+    }
+  }
+  
+  #priors for G and redundant parameterization
+  for (k in 1:K) {
+    for (l in 1:3) {
+      G[k, l] <- xi[k] * G.raw[k, l]
+      G.raw[k, l] ~ dnorm(0, 0.1)
+    }
+  }
+  
+  #covariance matrix modeled using scaled inverse wishart model
+  Tau.B.raw[1:K, 1:K] ~ dwish(W[, ], df)
+  df <- K + 1
+  Sigma.B.raw[1:K, 1:K] <- inverse(Tau.B.raw[, ])
+  
+  # correlations
+  for (k in 1:K) {
+    for (k.prime in 1:K) {
+      rho.B[k, k.prime] <-
+        Sigma.B.raw[k, k.prime]  /   sqrt(Sigma.B.raw[k, k] * Sigma.B.raw[k.prime, k.prime])
+    }
+    #
+    sigma.B[k] <- abs(xi[k]) * sqrt(Sigma.B.raw[k, k])
+  }
+  
+  ################ Predictions ############
+  # Addition to original model (Nov 2019)
+  # to estimate the effect of mortality (response) when changing 1 unit on x-axis
+  # data (old, read with the name 'txt') is centered but not scaled, therefore 'zero' is here the value of '-6.81'
+  
+  for (i in 1:N) {
+    baseMort[i] = ilogit(B[SPP[i], 1] * PREDS[i, 1] + B[SPP[i], 2] * (-6.81) + B[SPP[i], 3:5] %*% PREDS[i, 3:5])
+    conMort[i] = ilogit(B[SPP[i], 1] * PREDS[i, 1] + B[SPP[i], 2] * (-5.81) + B[SPP[i], 3:5] %*% PREDS[i, 3:5])
+    # relConEffekt[i] <- (conMort[i] - baseMort[i]) / baseMort[i]
+    # hetEffekt[i] <- ilogit(B[SPP[i],1] * PREDS[i,1] + B[SPP[i],2] * PREDS[i,3]^CC[SPP[i]] + B[SPP[i],3] * 1 + B[SPP[i],4:5] %*% PREDS[i,4:5]) - ilogit(B[SPP[i],1] * PREDS[i,1] + B[SPP[i],2] * PREDS[i,3]^CC[SPP[i]] + B[SPP[i],3] * 0 + B[SPP[i],4:5] %*% PREDS[i,4:5])
+    
+  }
+  
+}
+```
+
+
