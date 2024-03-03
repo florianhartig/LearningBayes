@@ -6,7 +6,6 @@ editor_options:
 
 # Summary and Conclusions
 
-
 ## Further readings
 
 ### Textbooks

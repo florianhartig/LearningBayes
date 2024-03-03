@@ -14,12 +14,10 @@ set.seed(42)
 
 Based on the book "Bayesian population analysis using WinBUGS - a hierarchical perspective" by Marc K�ry & Michael Schaub (2012, Academic Press)
 
-
 ```{r, message=F}
 rm(list=ls())
 library(R2jags)
 ```
-
 
 ```{r}
 
@@ -77,10 +75,13 @@ nc <- 3
 # Call JAGS from R (BRT 3 min)
 hm.ssm <- jags(jags.data, inits, parameters, textConnection(model), n.chains = nc, n.thin = nt, n.iter = ni, n.burnin = nb, working.directory = getwd())
 
-# Summarize posteriors
+```
+
+Summarize posteriors
+
+```{r, results = 'hide'}
 print(hm.ssm, digits = 3)
-
-
+plot(hm.ssm)
 ```
 
 Draw figure
@@ -107,4 +108,3 @@ legend(x = 1, y = 150, legend = c("Counts", "Estimates"), lty = c(1, 1), lwd = c
 # Probability of N(2015) < N(2009)
 mean(hm.ssm$BUGSoutput$sims.list$N[,26] < hm.ssm$BUGSoutput$mean$N[20])
 ```
-

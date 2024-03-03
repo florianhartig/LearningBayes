@@ -52,7 +52,7 @@ google-scholar: true
 
 execute:
   freeze: auto
-  cache: false
+  cache: true
 
 format:
   html:

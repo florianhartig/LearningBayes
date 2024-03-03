@@ -8,11 +8,13 @@ editor_options:
 set.seed(42)
 ```
 
+# Bayesian causal models
+
 This chapter assumes you are aware of causal inference, causal graphs and structural equation models. For a general intro on these topics, see my lecture notes on advanced regression models, section causal inference [here](https://theoreticalecology.github.io/AdvancedRegressionModels/3B-CausalInference.html).
 
 In this chapter, I will show you a few options to fit SEMs with Bayesian methods. We will use the keeley data provided in the package piecewiseSEM
 
-```{r}
+```{r, message=F}
 library(piecewiseSEM) 
 data(keeley)
 ```
@@ -53,7 +55,7 @@ lavaanPlot(model=k_fit_blavaan, coefs = TRUE, sig = .05)
 
 ```
 
-## Piecewise SEMs 
+## Piecewise SEMs
 
 The piecewiseSEM allows you to create a causal model from a set of standard GLMMs. Advantage is that it can handle standard GLMMs. Disadvantage is that it can't handle latent variables
 

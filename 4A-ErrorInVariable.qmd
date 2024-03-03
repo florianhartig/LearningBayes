@@ -10,7 +10,7 @@ set.seed(42)
 
 # Error in variable models
 
-## Example
+## Regression dillution in distribution estimates
 
 ```{r, echo=F, warning=F, message=F}
 set.seed(123)
@@ -19,7 +19,7 @@ library(rjags)
 library(R2jags)
 ```
 
-## Creation of the data
+### Creation of the data
 
 Assume we observe data from an ecological system that creates an exponential size distribution (e.g. tree sizes, see [Taubert, F.; Hartig, F.; Dobner, H.-J. & Huth, A. (2013) On the Challenge of Fitting Tree Size Distributions in Ecology. PLoS ONE, 8, e58036-](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0058036)), but our measurments are performed with a substantial lognormal observation error
 
@@ -43,9 +43,7 @@ barplot(log(t(counts)+1), beside=T)
 
 ```
 
-## Fitting a non-hierarchical model leads to bias
-
-Model specification of a non-hierarchical model in JAGS that does not account for the observation error
+### Fitting a non-hierarchical model leads to bias
 
 ```{r}
 normalModel = textConnection('
@@ -75,9 +73,7 @@ plot(results)
 
 The main thing to note about this is that parameter estimates are heavily biased.
 
-Note: textConnection avoids having to write the string to file (default option). If you need help on how to interpret these plots, see the material about interpreting MCMC output.
-
-## Fitting a hierarchical model removes the bias
+### Fitting a hierarchical model removes the bias
 
 Model specification if hierarchical model that accounts for the observation error in Jags
 
@@ -107,13 +103,9 @@ results = coda.samples( jagsModel , variable.names=params,n.iter=5000)
 plot(results)
 ```
 
-It's allways good to check the correlation structure in the posterior
+It's always good to check the correlation structure in the posterior
 
-```{r}
-pairs(as.matrix(results))
-```
-
-## Regression dillution
+## Regression dilution in slope estimates
 
 ```{r}
 library(EcoData)

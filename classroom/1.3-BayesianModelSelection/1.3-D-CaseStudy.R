@@ -1,8 +1,9 @@
+# By Florian Hartig. An extended commented version of this code as well as possible updates are available at http://florianhartig.github.io/LearningBayes/. Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 
-# dataset airquality
+
+# Run a model selection on the airquality data 
 
 plot(Ozone ~ Temp, data = airquality)
-
 
 # Frequentist analysis
 
@@ -41,7 +42,6 @@ modelCode = "model{
 
 }
 "
-
 jagsModel <- jags.model(file= textConnection(modelCode), data=Data, n.chains = 3)
 
 para.names <- c("a","b","sigma")
@@ -50,57 +50,28 @@ plot(Samples)
 summary(Samples)
 
 ###########################################
+# Add a quadratic effect to the model 
+
+
+###########################################
 # Model selection 1 - no model selection 
 
-# is a significant? Calculate the proportion of a > 0
+# look at posteriors
+# can get an idea about the strength of the evidence for an effect
+# by using the following code
 
 library(BayesianTools)
 mean(getSample(Samples, which = 1) > 0)
 
-# 100% of the posterior > 0, i.e. we are quite certain the effect of Temp on Ozone is positive
+# index in which = 1 needs to match the parameter you want 
 
 ###########################################
 # Model selection 2 - regularization 
 
-# in this case, I put an adaptive shrinkage prior 
-# on the regression parameters. Alternative is to
-# fix the level of shrinkage ad hoc
-
-modelCode = "model{
-
-# Likelihood
-for(i in 1:i.max){
-  mu[i] <- a*x[i]+ b
-  y[i] ~ dnorm(mu[i],tau)
-}
-
-# Prior distributions
-
-# normal with shrinkage
-a ~ dnorm(0,tauShrinkage)
-b ~ dnorm(0,tauShrinkage)
-
-tauShrinkage ~ dgamma(0.001, 0.001)
-sdShrinkage <- 1/sqrt(tauShrinkage)
-
-# For scale parameters, normal choice is decaying
-tau ~ dgamma(0.001, 0.001)
-sigma <- 1/sqrt(tau)
-
-}
-"
-
-jagsModel <- jags.model(file= textConnection(modelCode), data=Data, n.chains = 3)
-
-para.names <- c("a","b","sigma", "sdShrinkage")
-Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
-plot(Samples)
-summary(Samples)
 
 
 ###########################################
 # Model selection 3 - DIC
-
 
 dic = dic.samples(jagsModel, n.iter = 5000)
 # penalty is the effective number of parameters of this model
@@ -109,7 +80,6 @@ dic = dic.samples(jagsModel, n.iter = 5000)
 ###########################################
 # Model selection 4 - Bayes factor and RJ-MCMC
 
-# Not so easy to do with JAGS - see example in appendix of 
-# Dormann et al. 2018 (in the readings) or in the vignette of 
-# the BayesianTools package 
+# Could use BayesianTools package if you wanted 
+
 

@@ -1,26 +1,10 @@
 
 *.aux
-
 *.log
-
 *.out
-
 *.gz
+*.pdf
 
-CommentedCode/01-Principles/InferenceMethods.html
-
-CommentedCode/02-Samplers/Rejection/ExampleRejectionSampler.html
-
-
-
-LectureNotes/article.pdf
-
-CommentedCode/02-Samplers/SMC/Rbiips-examples/
-
-CommentedCode/02-Samplers/MCMC/metropolis_ex/metrop.gif
-
-CommentedCode/04-StandardModels/GLMM/Beetles_cache/
-ToInclude/
 .Rproj.user
 
 /.quarto/
@@ -30,6 +14,8 @@ _freeze/
 /*_files/
 imagesOriginal/
 
+CommentedCode/01-Principles/InferenceMethods.html
+CommentedCode/02-Samplers/Rejection/ExampleRejectionSampler.html
 CommentedCode/01-Principles/Posterior.html
 CommentedCode/01-Principles/Priors.html
 CommentedCode/02-Samplers/Benchmarks/BenchmarkFunctions.html
@@ -50,3 +36,6 @@ CommentedCode/08-ApproximateBayesian/ABC-MovementModel-RecAndMCMC.html
 CommentedCode/08-ApproximateBayesian/ABCAndSynthetic.html
 CommentedCode/08-ApproximateBayesian/abcMCMC.html
 CommentedCode/08-ApproximateBayesian/easyABC.html
+CommentedCode/02-Samplers/SMC/Rbiips-examples/
+CommentedCode/02-Samplers/MCMC/metropolis_ex/metrop.gif
+CommentedCode/04-StandardModels/GLMM/Beetles_cache/

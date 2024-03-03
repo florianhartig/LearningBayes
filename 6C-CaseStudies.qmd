@@ -48,6 +48,132 @@ m2 <- glm(SiblingNegotiation ~ FoodTreatment*SexParent + offset(log(BroodSize)),
 **Exercise 3:** check residuals and / or add obvious additional components to the model inspired by the frequentist example [here](https://theoreticalecology.github.io/AdvancedRegressionModels/6C-CaseStudies.html#owls).
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+#### Solution using jags
+
+Exercise 1:
+
+```{r, message=FALSE, warning=FALSE}
+library(glmmTMB)
+library(rjags)
+
+Data = list(SiblingNegotiation = Owls$SiblingNegotiation, 
+            SexParent = as.numeric(Owls$SexParent)-1, # dummy coding!
+            FoodTreatment = as.numeric(Owls$FoodTreatment)-1,
+            LogBroodSize = log(Owls$BroodSize),
+            nobs = nrow(Owls))
+
+
+modelCode = "model{
+
+  for(i in 1:nobs){
+    SiblingNegotiation[i] ~ dpois(lambda[i])  # poisson error distribution
+    lambda[i] <- exp(eta[i]) # inverse link function
+    eta[i] <- intercept + EffectSexParent*SexParent[i] + EffektFoodTreatment*FoodTreatment[i] + EffektInterSexFood*SexParent[i]*FoodTreatment[i] + LogBroodSize[i]       # linear predictor
+  }
+  
+  intercept ~ dnorm(0,0.0001)
+  EffectSexParent ~ dnorm(0,0.0001)
+  EffektFoodTreatment ~ dnorm(0,0.0001)
+  EffektInterSexFood ~ dnorm(0,0.0001)
+
+}"
+
+jagsModel <- jags.model(file= textConnection(modelCode), data=Data, n.chains = 3)
+para.names <- c("intercept","EffectSexParent", "EffektFoodTreatment", "EffektInterSexFood")
+Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+
+plot(Samples)
+summary(Samples)
+```
+
+Including the offset
+
+```{r}
+library(rjags)
+
+Data = list(SiblingNegotiation = Owls$SiblingNegotiation, 
+            SexParent = as.numeric(Owls$SexParent)-1, # dummy coding!
+            FoodTreatment = as.numeric(Owls$FoodTreatment)-1,
+            LogBroodSize = log(Owls$BroodSize),
+            nobs = nrow(Owls))
+
+
+modelCode = "model{
+
+for(i in 1:nobs){
+SiblingNegotiation[i] ~ dpois(lambda[i])  # poisson error distribution
+lambda[i] <- exp(eta[i]) # inverse link function
+eta[i] <- intercept + EffectSexParent*SexParent[i] + EffektFoodTreatment*FoodTreatment[i] + EffektInterSexFood*SexParent[i]*FoodTreatment[i] + LogBroodSize[i]       # linear predictor
+}
+
+intercept ~ dnorm(0,0.0001)
+EffectSexParent ~ dnorm(0,0.0001)
+EffektFoodTreatment ~ dnorm(0,0.0001)
+EffektInterSexFood ~ dnorm(0,0.0001)
+
+}"
+
+jagsModel <- jags.model(file= textConnection(modelCode), data=Data, n.chains = 3)
+para.names <- c("intercept","EffectSexParent", "EffektFoodTreatment", "EffektInterSexFood")
+Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+
+plot(Samples)
+summary(Samples)
+
+```
+
+Checking residuals
+
+```{r}
+library(rjags)
+
+Data = list(SiblingNegotiation = Owls$SiblingNegotiation, 
+            SexParent = as.numeric(Owls$SexParent)-1, # dummy coding!
+            FoodTreatment = as.numeric(Owls$FoodTreatment)-1,
+            LogBroodSize = log(Owls$BroodSize),
+            nobs = nrow(Owls))
+
+
+modelCode = "model{
+
+  for(i in 1:nobs){
+    SiblingNegotiation[i] ~ dpois(lambda[i])  # poisson error distribution
+    lambda[i] <- exp(eta[i]) # inverse link function
+    eta[i] <- intercept + EffectSexParent*SexParent[i] + EffektFoodTreatment*FoodTreatment[i] + EffektInterSexFood*SexParent[i]*FoodTreatment[i] + LogBroodSize[i]       # linear predictor
+  }
+  
+  intercept ~ dnorm(0,0.0001)
+  EffectSexParent ~ dnorm(0,0.0001)
+  EffektFoodTreatment ~ dnorm(0,0.0001)
+  EffektInterSexFood ~ dnorm(0,0.0001)
+
+  # Posterior predictive simulations 
+  for (i in 1:nobs) {
+    SiblingNegotiationPred[i]~dpois(lambda[i])
+  }
+
+}"
+
+jagsModel <- jags.model(file= textConnection(modelCode), data=Data, n.chains = 3)
+para.names <- c("intercept","EffectSexParent", "EffektFoodTreatment", "EffektInterSexFood","lambda", "SiblingNegotiationPred")
+Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+
+library(BayesianTools)
+library(DHARMa)
+x = getSample(Samples)
+# note - yesterday, we calcualted the predictions from the parameters
+# here we observe them direct - this is the normal way to calcualte the 
+# posterior predictive distribution
+posteriorPredDistr = x[,5:(4+599)]
+posteriorPredSim = x[,(5+599):(4+2*599)]
+
+
+sim = createDHARMa(simulatedResponse = t(posteriorPredSim), observedResponse = Owls$SiblingNegotiation, fittedPredictedResponse = apply(posteriorPredDistr, 2, median), integerResponse = T)
+plot(sim)
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 #### Solution using brms
 
 Here a base model with random effect
@@ -63,6 +189,76 @@ summary(m2)
 plot(m2, ask = FALSE)
 ```
 :::
+
+## Beetles
+
+```{r}
+# This first part creates a dataset with beetles counts across an altitudinal gradient (several plots each observed several years), with a random intercept on year and zero-inflation. 
+
+altitude = rep(seq(0,1,len = 50), each = 20)
+dataID = 1:1000
+spatialCoordinate = rep(seq(0,30, len = 50), each = 20)
+
+# random effects + zeroinflation
+plot = rep(1:50, each = 20)
+year = rep(1:20, times = 50)
+
+yearRandom = rnorm(20, 0, 1)
+plotRandom = rnorm(50, 0, 1)
+overdispersion = rnorm(1000, sd = 0.5)
+zeroinflation = rbinom(1000,1,0.6)
+
+beetles <- rpois(1000, exp( 0  + 12*altitude - 12*altitude^2 
+                            #  + overdispersion   + plotRandom[plot]
+                            + yearRandom[year]) * zeroinflation )
+
+data = data.frame(dataID, beetles, altitude, plot, year, spatialCoordinate)
+
+plot(year, altitude, cex = beetles/50, pch =2, main = "Beetle counts across altitudinal gradient\n triangle is proportional to counts")
+
+```
+
+```{r}
+
+library(R2jags)
+modelData=as.list(data)
+modelData = append(data, list(nobs=1000, nplots = 50, nyears = 20))
+head(data)
+
+# 1) Fit GLM only 
+
+modelstring="
+model {
+  
+  # Likelihood
+  for (i in 1:nobs) {
+    lambda[i] <- exp(intercept + alt * altitude[i] + alt2 * altitude[i] * altitude[i]) 
+    beetles[i]~dpois(lambda[i]) 
+  }
+  
+  # Fixed effect priors 
+  intercept ~ dnorm(0,0.0001)
+  alt ~ dnorm(0,0.0001)
+  alt2 ~ dnorm(0,0.0001)
+
+  # Posterior predictive simulations 
+  
+  for (i in 1:nobs) {
+    beetlesPred[i]~dpois(lambda[i])
+  }
+  Prediction <- sum(beetlesPred)
+}
+"
+
+model=jags(model.file = textConnection(modelstring), data=modelData, n.iter=10000,  parameters.to.save = c("intercept", "alt", "alt2", "beetlesPred", "lambda"), DIC = F)
+
+library(DHARMa)
+simulations = model$BUGSoutput$sims.list$beetlesPred
+pred = apply(model$BUGSoutput$sims.list$lambda, 2, median)
+dim(simulations)
+sim = createDHARMa(simulatedResponse = t(simulations), observedResponse = data$beetles, fittedPredictedResponse = pred, integerResponse = T)
+plotSimulatedResiduals(sim)
+```
 
 ## CNDD estimated, Comita et al., 2010
 
@@ -146,4 +342,165 @@ model{
   }
   
 }
+```
+
+## Support for mixed model
+
+```{r}
+## ---- echo=F, warning=F, message=F---------------------------------------
+set.seed(123)
+rm(list=ls(all=TRUE))
+library(rjags)
+library(runjags)
+library(lme4)
+library(effects)
+library(R2jags)
+
+## ---- fig.width=5, fig.height=5------------------------------------------
+a <- 5
+b <- 10
+sigma <- 10
+rsigma = 30
+group = rep(1:11, each = 5)
+randomEffect = rnorm(11, sd = rsigma)
+
+x <- -27:27
+y <- a * x + b + rnorm(55,0,sd = sigma) + randomEffect[group]
+plot(x,y, col = group, pch = 3)
+
+## ---- fig.width=5, fig.height=5------------------------------------------
+fit <- lm(y ~ x)
+summary(fit)
+plot(allEffects(fit, partial.residuals = T))
+
+## ---- fig.width=5, fig.height=5------------------------------------------
+fit <- lmer(y ~ x + (1|group))
+summary(fit)
+plot(x,y, col = group,  pch = 3)
+for(i in 1:11){
+  abline(coef(fit)$group[i,1], coef(fit)$group[i,2], col = i)
+}
+
+
+## ------------------------------------------------------------------------
+  # 1) Model definition exactly how we created our data 
+  modelCode = "
+    model{
+      
+      # Likelihood
+      for(i in 1:i.max){
+        y[i] ~ dnorm(mu[i],tau)
+        mu[i] <- a*x[i] + b
+      }
+
+      # Prior distributions
+      a ~ dnorm(0,0.001)
+      b ~ dnorm(0,0.001)
+      tau <- 1/(sigma*sigma)
+      sigma ~ dunif(0,100)
+    }
+  "
+  
+  # 2) Set up a list that contains all the necessary data (here, including parameters of the prior distribution)
+  Data = list(y = y, x = x, i.max = length(y))
+
+  # 3) Specify a function to generate inital values for the parameters
+  inits.fn <- function() list(a = rnorm(1), b = rnorm(1), sigma = runif(1,1,100))
+
+
+## ---- fig.width=7, fig.height=7------------------------------------------
+  # Compile the model and run the MCMC for an adaptation (burn-in) phase
+  jagsModel <- jags.model(file= textConnection(modelCode), data=Data, init = inits.fn, n.chains = 3, n.adapt= 1000)
+
+  # Specify parameters for which posterior samples are saved
+  para.names <- c("a","b","sigma")
+
+  # Continue the MCMC runs with sampling
+  Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+  
+  # Plot the mcmc chain and the posterior sample for p
+  plot(Samples)
+
+  dic = dic.samples(jagsModel, n.iter = 5000)
+  dic
+  
+## ------------------------------------------------------------------------
+gelman.diag(Samples)
+
+## ------------------------------------------------------------------------
+summary(Samples)
+
+## ---- fig.width=5, fig.height=5------------------------------------------
+plot(x,y)
+sampleMatrix <- as.matrix(Samples)
+selection <- sample(dim(sampleMatrix)[1], 1000)
+for (i in selection) abline(sampleMatrix[i,1], sampleMatrix[i,1], col = "#11111105")
+```
+
+Alternative: mixed model
+
+```{r}
+## ------------------------------------------------------------------------
+  # 1) Model definition exactly how we created our data 
+  modelCode = "
+    model{
+      
+      # Likelihood
+      for(i in 1:i.max){
+        y[i] ~ dnorm(mu[i],tau)
+        mu[i] <- a*x[i] + b + r[group[i]]
+      }
+
+      # random effect
+      for(i in 1:nGroups){
+        r[i] ~ dnorm(0,rTau)
+      }
+
+      # Prior distributions
+      a ~ dnorm(0,0.001)
+      b ~ dnorm(0,0.001)
+
+      tau <- 1/(sigma*sigma)
+      sigma ~ dunif(0,100)
+
+      rTau <- 1/(rSigma*rSigma)
+      rSigma ~ dunif(0,100)
+    }
+  "
+  
+  # 2) Set up a list that contains all the necessary data (here, including parameters of the prior distribution)
+  Data = list(y = y, x = x, i.max = length(y), group = group, nGroups = 11)
+
+  # 3) Specify a function to generate inital values for the parameters
+  inits.fn <- function() list(a = rnorm(1), b = rnorm(1), sigma = runif(1,1,100), rSigma = runif(1,1,100))
+
+
+## ---- fig.width=7, fig.height=7------------------------------------------
+  # Compile the model and run the MCMC for an adaptation (burn-in) phase
+  jagsModel <- jags.model(file= textConnection(modelCode), data=Data, init = inits.fn, n.chains = 3, n.adapt= 1000)
+
+  # Specify parameters for which posterior samples are saved
+  para.names <- c("a","b","sigma", "rSigma")
+
+  # Continue the MCMC runs with sampling
+  Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+  
+  # Plot the mcmc chain and the posterior sample for p
+  plot(Samples)
+
+## ----  fig.width=18, fig.height=18---------------------------------------
+R2JagsResults <- jags(data=Data, inits=inits.fn, parameters.to.save=c("a","b","sigma", "rSigma", "r"), n.chains=3, n.iter=5000, model.file=textConnection(modelCode))
+
+plot(R2JagsResults)
+print(R2JagsResults)
+
+
+dic = dic.samples(jagsModel, n.iter = 5000)
+dic
+
+
+## ---- fig.width=14, fig.height=14, eval= F-------------------------------
+## R2JagsCoda <- as.mcmc(R2JagsResults)
+## plot(R2JagsCoda)
+## summary(R2JagsCoda)
 ```

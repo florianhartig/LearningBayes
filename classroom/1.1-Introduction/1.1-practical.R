@@ -1,5 +1,5 @@
-# extended commented version of this example at
-# https://github.com/florianhartig/LearningBayes/blob/master/CommentedCode/01-Principles/InferenceMethods.md
+# By Florian Hartig. An extended commented version of this code as well as possible updates are available at http://florianhartig.github.io/LearningBayes/. Reuse permitted under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+
 
 # Assume we flipped a coin 10 times, and want to find out if
 # it is biased - what can we learn about the probability to

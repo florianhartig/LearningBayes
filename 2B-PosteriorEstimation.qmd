@@ -22,7 +22,7 @@ plot(Ozone ~ Temp, data = airqualityCleaned)
 
 ### Frequentist inference
 
-```{r}
+```{r, message = F}
 fit <- lm(Ozone ~ Temp, data = airqualityCleaned)
 summary(fit)
 library(effects)
@@ -31,16 +31,19 @@ par(mfrow = c(2,2))
 plot(fit) # residuals
 ```
 
-### Bayesian regression with brms
+### Bayesian analysis with brms
 
-```{r}
+```{r, message = F, echo=FALSE, results = 'hide'}
 library(brms)
 fit <- brm(Ozone ~ Temp, data = airqualityCleaned)
+```
+
+```{r}
 summary(fit)
 plot(fit, ask = FALSE)
 plot(conditional_effects(fit), ask = FALSE)
 fit$model # model that is actually fit via 
-pp_check(fit) # residual check
+pp_check(fit) # residual checks
 ```
 
 ### Bayesian analysis with JAGS
@@ -96,7 +99,7 @@ summary(Samples)
 
 Approach is identical to JAGS just that we have to define all variables in the section data
 
-```{r}
+```{r, message = F, results = 'hide'}
 library(rstan)
 
 stanmodelcode <- "
@@ -120,6 +123,9 @@ dat = list(y = airqualityCleaned$Ozone, x = airqualityCleaned$Temp, N = nrow(air
 fit <- stan(model_code = stanmodelcode, model_name = "example", 
             data = dat, iter = 2012, chains = 3, verbose = TRUE,
             sample_file = file.path(tempdir(), 'norm.csv')) 
+```
+
+```{r}
 print(fit)
 plot(fit)
 rstan::traceplot(fit)
@@ -129,7 +135,7 @@ rstan::traceplot(fit)
 
 Here, we don't use a model specification language, but just write out the likelihood as an standard R function. The same can be done for the prior. For simplicity, in this case I just used flat priors using the lower / upper arguments.
 
-```{r}
+```{r,  message = F, results='hide'}
 library(BayesianTools)
 
 likelihood <- function(par){
@@ -143,9 +149,11 @@ likelihood <- function(par){
 setup <- createBayesianSetup(likelihood = likelihood, lower = c(-10,-10,0.01), upper = c(10,10,10), names = c("a0", "a1", "sigma"))
 
 out <- runMCMC(setup)
+```
+
+```{r}
 plot(out)
 summary(out, start = 1000)
-
 ```
 
 ## Checking and expecting the results
@@ -189,15 +197,19 @@ No fixed rule but typically people require univariate psrf \< 1.05 or \< 1.1 and
 ::: callout-caution
 Note that the msrf rule was made for estimating the mean / median. If you want to estimate more unstable statistics, e.g. higher quantiles or other values such as the MAP or the DIC (see section on model selection), you may have to run the MCMC chain much longer to get stable outputs.
 
-```{r}
+```{r, message = F, results='hide'}
 
   library(BayesianTools)
   bayesianSetup <- createBayesianSetup(likelihood = testDensityNormal, 
                                        prior = createUniformPrior(lower = -10,
                                                                   upper = 10))
   out = runMCMC(bayesianSetup = bayesianSetup, settings = list(iterations = 3000))
-  plotDiagnostic(out)
+```
 
+The plotDiagnostics function in package BT shows us how statistics develop over time
+
+```{r}
+plotDiagnostic(out)
 ```
 :::
 
@@ -346,3 +358,7 @@ summary(Samples)
 fit <- lm(Ozone ~ Temp, data = dat)
 summary(fit)
 ```
+
+### Missing data
+
+In the analysis above, we removed missing data. What happens if you are leaving the missing data in in a Jags model? Try it out and discuss what happens

@@ -267,196 +267,209 @@ http://stats.stackexchange.com/questions/229852/why-is-the-bayes-factor-sometime
 
 http://stats.stackexchange.com/questions/27345/likelihood-ratio-vs-bayes-factor
 
+The following example shows a comparison of two regression models using the BT package
+
+```{r, message = F, results='hide'}
+library(BayesianTools)
+?BayesianTools::marginalLikelihood
+
+# Creating test data with quadratic relationship
+sampleSize = 30
+x <- (-(sampleSize-1)/2):((sampleSize-1)/2)
+y <-  1 * x + 1*x^2 + rnorm(n=sampleSize,mean=0,sd=10)
+# plot(x,y, main="Test Data")
+
+# likelihoods for linear and quadratic model 
+likelihood1 <- function(param){
+  pred = param[1] + param[2]*x + param[3] * x^2
+  singlelikelihoods = dnorm(y, mean = pred, sd = 1/(param[4]^2), log = TRUE)
+  return(sum(singlelikelihoods))  
+}
+likelihood2 <- function(param){
+  pred = param[1] + param[2]*x 
+  singlelikelihoods = dnorm(y, mean = pred, sd = 1/(param[3]^2), log = TRUE)
+  return(sum(singlelikelihoods))  
+}
+
+setUp1 <- createBayesianSetup(likelihood1, 
+                              lower = c(-5,-5,-5,0.01), 
+                              upper = c(5,5,5,30))
+setUp2 <- createBayesianSetup(likelihood2, 
+                              lower = c(-5,-5,0.01), 
+                              upper = c(5,5,30))
+
+out1 <- runMCMC(bayesianSetup = setUp1)
+M1 = marginalLikelihood(out1, start = 1000)
+
+out2 <- runMCMC(bayesianSetup = setUp2)
+M2 = marginalLikelihood(out2, start = 1000)
+
+```
+
+```{r}
+### Calculating Bayes factor
+
+exp(M1$ln.ML - M2$ln.ML)
+
+# BF > 1 means the evidence is in favor of M1. See Kass, R. E. & Raftery, A. E. 
+# (1995) Bayes Factors. J. Am. Stat. Assoc., Amer Statist Assn, 90, 773-795.
+
+### Calculating Posterior weights
+
+exp(M1$ln.ML) / ( exp(M1$ln.ML) + exp(M2$ln.ML))
+
+# If models have different model priors, multiply with the prior probabilities of each model. 
+```
+
 ### Prior influence on the marginal likelihood
 
 A problem that is often not sufficiently appreciated when performing Bayesian inference across multiple models is the influence of the choice of uninformative parameter priors on the model weight.
 
 The issue arises because the prior density enters the marginal likelihood multiplicative. Although this follows directly from the joint posterior definition and is logically completely consistent, it has the somewhat intuitive consequence that increasing the width width of an uninformative prior will linearly decrease the marginal likelihood (Sinharay-SensitivityBayesFactors-2002). In particular, for an infinitely wide (inproper) uninformative prior, the model weight goes to zero, regardless of the fit. This behavior is surprising to many practitioners of Bayesian analysis, because they are used to the fact that the influence of increasing prior width on uninformative priors is minimal for fitting parameters.
 
+```{r, message = F, results='hide'}
+
+# Motivation: ML is very dependent on the prior, which is a problem if you 
+# have uninformative priors. you can see this via rerunning the upper  
+# example with changed priors - suddenly, support for M1 is gone
+
+
+setUp1 <- createBayesianSetup(likelihood1, 
+                              lower = c(-500,-500,-500,0.01), 
+                              upper = c(500,500,500,3000))
+setUp2 <- createBayesianSetup(likelihood2, 
+                              lower = c(-500,-500,0.01), 
+                              upper = c(500,500,3000))
+
+out1 <- runMCMC(bayesianSetup = setUp1)
+M1 = marginalLikelihood(out1, start = 1000)
+
+out2 <- runMCMC(bayesianSetup = setUp2)
+M2 = marginalLikelihood(out2, start = 1000)
+```
+
+Calculating Bayes factor
+
+```{r}
+exp(M1$ln.ML - M2$ln.ML)
+```
+
+### Fractional BF
+
 The fact that Bayesian model weights are strongly dependent on the width of the prior choice has sparked discussion of the appropriateness of this approach in situations with uninformative priors. For example, in situations where multiple nested models are compared, the width of the uniformative prior may completely determine the complexity of models that are being selected. One suggestion that has been made is not to perform multi-model inference with uninformative priors at all, or that at least additional analysis is necessary to find parameter priors that are sensible for the multi-model setup at hand. Another solution is to calibrate the model on a part of the data first, use the result as new priors and then perform the analysis described above (intrinsic Bayes factor (Berger-IntrinsicBayesFactor-1996), fractional Bayes factor (OHagan-FractionalBayesFactors-1995)). If sufficient data is available so that the likelihood falls off sufficiently strong during the calibration step, this approach should nearly eliminate any ambiguity resulting from the prior choice.
+
+```{r, message = F, results='hide'}
+# likelihoods with half the data 
+likelihood1 <- function(param){
+  pred = param[1] + param[2]*x + param[3] * x^2
+  singlelikelihoods = dnorm(y, mean = pred, sd = 1/(param[4]^2), log = TRUE)
+  return(sum(singlelikelihoods[seq(1, 30, 2)]))  
+}
+likelihood2 <- function(param){
+  pred = param[1] + param[2]*x 
+  singlelikelihoods = dnorm(y, mean = pred, sd = 1/(param[3]^2), log = TRUE)
+  return(sum(singlelikelihoods[seq(1, 30, 2)]))  
+}
+
+setUp1 <- createBayesianSetup(likelihood1, 
+                              lower = c(-500,-500,-500,0.01), 
+                              upper = c(500,500,500,3000))
+setUp2 <- createBayesianSetup(likelihood2, 
+                              lower = c(-500,-500,0.01), 
+                              upper = c(500,500,3000))
+
+out1 <- runMCMC(bayesianSetup = setUp1)
+out2 <- runMCMC(bayesianSetup = setUp2)
+
+newPrior1 = createPriorDensity(out1, start = 200, 
+                               lower = c(-500,-500,-500,0.01), 
+                               upper = c(500,500,500,3000))
+newPrior2 = createPriorDensity(out2, start = 200, 
+                               lower = c(-500,-500,0.01), 
+                               upper = c(500,500,3000))
+
+# now rerun this with likelihoods for the other half of the data and new prior
+
+likelihood1 <- function(param){
+  pred = param[1] + param[2]*x + param[3] * x^2
+  singlelikelihoods = dnorm(y, mean = pred, sd = 1/(param[4]^2), log = TRUE)
+  return(sum(singlelikelihoods[seq(2, 30, 2)]))  
+}
+likelihood2 <- function(param){
+  pred = param[1] + param[2]*x 
+  singlelikelihoods = dnorm(y, mean = pred, sd = 1/(param[3]^2), log = TRUE)
+  return(sum(singlelikelihoods[seq(2, 30, 2)]))  
+}
+
+setUp1 <- createBayesianSetup(likelihood1, prior = newPrior1)
+setUp2 <- createBayesianSetup(likelihood2, prior = newPrior2)
+
+out1 <- runMCMC(bayesianSetup = setUp1)
+M1 = marginalLikelihood(out1, start = 1000)
+
+out2 <- runMCMC(bayesianSetup = setUp2)
+M2 = marginalLikelihood(out2, start = 1000)
+```
+
+Calculating the fractional Bayes factor
+
+```{r}
+exp(M1$ln.ML - M2$ln.ML)
+```
 
 ## Information Criteria
 
+### DIC
+
 DIC can be calculated in Jags using
 
-```{r,}
+```{r,eval = F}
 dic = dic.samples(jagsModel, n.iter = 5000)
-dic
 ```
 
 This was for the previous model, which was the spike and slap. In the result, the penalty is the effective number of parameters of this model.
 
-Note that this value is pretty low which makes sense because although the spike and slap has formally 200 parameters, most of them are, as we have seen, ineffective.
+Note that this value is pretty low (around 12 parameters), which makes sense because although the spike and slap has formally 200 parameters, most of them are, as we have seen, ineffective.
 
-### Example
+**Task:** calculate DIA for the other prior regularizations above and observe the effective number of parameters
 
-```{r}
-## ---- echo=F, warning=F, message=F---------------------------------------
-set.seed(123)
-rm(list=ls(all=TRUE))
-library(rjags)
-library(runjags)
-library(lme4)
-library(effects)
-library(R2jags)
+### WAIC
 
-## ---- fig.width=5, fig.height=5------------------------------------------
-a <- 5
-b <- 10
-sigma <- 10
-rsigma = 30
-group = rep(1:11, each = 5)
-randomEffect = rnorm(11, sd = rsigma)
+It was suggested that WAIC has a bunch of favorable advantages over DIC, but it is also harder to calculate. In Jags, WAIC is a bit complicated. It is better supported in STAN and brms.
 
-x <- -27:27
-y <- a * x + b + rnorm(55,0,sd = sigma) + randomEffect[group]
-plot(x,y, col = group, pch = 3)
+```{r, message = F, results='hide'}
+library(brms)
+?waic
 
-## ---- fig.width=5, fig.height=5------------------------------------------
-fit <- lm(y ~ x)
-summary(fit)
-plot(allEffects(fit, partial.residuals = T))
+# model with population-level effects only
+fit1 <- brm(rating ~ treat + period + carry,
+            data = inhaler)
+waic1 <- waic(fit1)
 
-## ---- fig.width=5, fig.height=5------------------------------------------
-fit <- lmer(y ~ x + (1|group))
-summary(fit)
-plot(x,y, col = group,  pch = 3)
-for(i in 1:11){
-  abline(coef(fit)$group[i,1], coef(fit)$group[i,2], col = i)
-}
-
-
-## ------------------------------------------------------------------------
-  # 1) Model definition exactly how we created our data 
-  modelCode = "
-    model{
-      
-      # Likelihood
-      for(i in 1:i.max){
-        y[i] ~ dnorm(mu[i],tau)
-        mu[i] <- a*x[i] + b
-      }
-
-      # Prior distributions
-      a ~ dnorm(0,0.001)
-      b ~ dnorm(0,0.001)
-      tau <- 1/(sigma*sigma)
-      sigma ~ dunif(0,100)
-    }
-  "
-  
-  # 2) Set up a list that contains all the necessary data (here, including parameters of the prior distribution)
-  Data = list(y = y, x = x, i.max = length(y))
-
-  # 3) Specify a function to generate inital values for the parameters
-  inits.fn <- function() list(a = rnorm(1), b = rnorm(1), sigma = runif(1,1,100))
-
-
-## ---- fig.width=7, fig.height=7------------------------------------------
-  # Compile the model and run the MCMC for an adaptation (burn-in) phase
-  jagsModel <- jags.model(file= textConnection(modelCode), data=Data, init = inits.fn, n.chains = 3, n.adapt= 1000)
-
-  # Specify parameters for which posterior samples are saved
-  para.names <- c("a","b","sigma")
-
-  # Continue the MCMC runs with sampling
-  Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
-  
-  # Plot the mcmc chain and the posterior sample for p
-  plot(Samples)
-
-  dic = dic.samples(jagsModel, n.iter = 5000)
-  dic
-  
-## ------------------------------------------------------------------------
-gelman.diag(Samples)
-
-## ------------------------------------------------------------------------
-summary(Samples)
-
-## ---- fig.width=5, fig.height=5------------------------------------------
-plot(x,y)
-sampleMatrix <- as.matrix(Samples)
-selection <- sample(dim(sampleMatrix)[1], 1000)
-for (i in selection) abline(sampleMatrix[i,1], sampleMatrix[i,1], col = "#11111105")
+# model with an additional varying intercept for subjects
+fit2 <- brm(rating ~ treat + period + carry + (1|subject),
+            data = inhaler)
+waic2 <- waic(fit2)
 ```
 
-Alternative: mixed model
+compare both models
 
 ```{r}
-## ------------------------------------------------------------------------
-  # 1) Model definition exactly how we created our data 
-  modelCode = "
-    model{
-      
-      # Likelihood
-      for(i in 1:i.max){
-        y[i] ~ dnorm(mu[i],tau)
-        mu[i] <- a*x[i] + b + r[group[i]]
-      }
-
-      # random effect
-      for(i in 1:nGroups){
-        r[i] ~ dnorm(0,rTau)
-      }
-
-      # Prior distributions
-      a ~ dnorm(0,0.001)
-      b ~ dnorm(0,0.001)
-
-      tau <- 1/(sigma*sigma)
-      sigma ~ dunif(0,100)
-
-      rTau <- 1/(rSigma*rSigma)
-      rSigma ~ dunif(0,100)
-    }
-  "
-  
-  # 2) Set up a list that contains all the necessary data (here, including parameters of the prior distribution)
-  Data = list(y = y, x = x, i.max = length(y), group = group, nGroups = 11)
-
-  # 3) Specify a function to generate inital values for the parameters
-  inits.fn <- function() list(a = rnorm(1), b = rnorm(1), sigma = runif(1,1,100), rSigma = runif(1,1,100))
-
-
-## ---- fig.width=7, fig.height=7------------------------------------------
-  # Compile the model and run the MCMC for an adaptation (burn-in) phase
-  jagsModel <- jags.model(file= textConnection(modelCode), data=Data, init = inits.fn, n.chains = 3, n.adapt= 1000)
-
-  # Specify parameters for which posterior samples are saved
-  para.names <- c("a","b","sigma", "rSigma")
-
-  # Continue the MCMC runs with sampling
-  Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
-  
-  # Plot the mcmc chain and the posterior sample for p
-  plot(Samples)
-
-## ----  fig.width=18, fig.height=18---------------------------------------
-R2JagsResults <- jags(data=Data, inits=inits.fn, parameters.to.save=c("a","b","sigma", "rSigma", "r"), n.chains=3, n.iter=5000, model.file=textConnection(modelCode))
-
-plot(R2JagsResults)
-print(R2JagsResults)
-
-
-dic = dic.samples(jagsModel, n.iter = 5000)
-dic
-
-
-## ---- fig.width=14, fig.height=14, eval= F-------------------------------
-## R2JagsCoda <- as.mcmc(R2JagsResults)
-## plot(R2JagsCoda)
-## summary(R2JagsCoda)
+loo_compare(waic1, waic2)
 ```
+
+### Careful with model selection
 
 Note that selection based on information criteria shares many of the same problems that appear in frequentist IC selection. Those are in particular
 
 -   Affects uncertainties, in particular p-values
 -   Destroys causal relationships
 
+The issue is known under the term "post-selection inference" and applies to Bayesian and frequentist models alike, see e.g. Kuchibhotla, A. K., Kolassa, J. E., & Kuffner, T. A. (2022). Post-selection inference. *Annual Review of Statistics and Its Application*, *9*, 505-527.
+
 This example shows how AIC selection, followed by a conventional regression analysis of the selected model, massively inflates false positives.
 
-```{r}
+```{r, message = F, results='hide'}
 set.seed(1)
 library(MASS)
 
@@ -466,7 +479,7 @@ fullModel = lm(y ~ . , data = dat)
 summary(fullModel)
 # 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)
 
-selection = stepAIC(fullModel)
+selection = stepAIC(fullModel, trace = F)
 summary(lm(y ~ X1 + X2 + X3 + X5 + X7 + X13 + X20 + X23 + X30 + 
              X37 + X42 + X45 + X46 + X47 + X48 + X64 + X65 + X66 + X71 + 
              X75 + X80 + X81 + X87 + X88 + X89 + X90 + X94 + X100, data = dat))
@@ -487,7 +500,7 @@ fullModel = lm(y ~ . , data = dat)
 summary(fullModel)
 # 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)
 
-selection = stepAIC(fullModel)
+selection = stepAIC(fullModel, trace = F)
 summary(lm(y ~ X1 + X2 + X3 + X4 + X5 + X6 + X7 + X8 + X9 + X10 + X13 + 
              X14 + X20 + X23 + X24 + X26 + X30 + X37 + X42 + X46 + X47 + 
              X48 + X49 + X64 + X65 + X66 + X68 + X71 + X73 + X75 + X80 + 
