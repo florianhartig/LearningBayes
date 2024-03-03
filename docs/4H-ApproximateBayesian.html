@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to Bayesian Statistics with R - 16&nbsp; Approximate Bayesian Inference</title>
+<title>Introduction to Bayesian Statistics with R - 15&nbsp; Approximate Bayesian Inference</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -62,7 +96,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<meta name="citation_title" content="[16]{.chapter-number}&nbsp; [Approximate Bayesian Inference]{.chapter-title}">
+<meta name="citation_title" content="[15]{.chapter-number}&nbsp; [Approximate Bayesian Inference]{.chapter-title}">
 <meta name="citation_fulltext_html_url" content="https://TheoreticalEcology.github.io/LearningBayes//4H-ApproximateBayesian.html">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=ńgrundlangen der statistik;,citation_author=Florian Hartig;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_publisher=https://www.dropbox.com/s/nefr3bteve5lym7/GrundlagenDerStatistik.pdf?dl=0;">
@@ -96,7 +130,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./4A-ErrorInVariable.html">Hierachical models</a></li><li class="breadcrumb-item"><a href="./4H-ApproximateBayesian.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./4A-ErrorInVariable.html">Hierachical models</a></li><li class="breadcrumb-item"><a href="./4H-ApproximateBayesian.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -182,14 +216,8 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2C-ModelSelection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian model selection</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./2D-Workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Workflow</span></span></a>
+  <a href="./2C-LMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear and linear mixed models</span></span></a>
   </div>
 </li>
       </ul>
@@ -197,7 +225,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Bayesian GLMMs</span></a>
+ <span class="menu-text">GLMMs, MS, Workflow</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -205,20 +233,20 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3A-LMM.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear and linear mixed models</span></span></a>
+  <a href="./3A-ModelSelection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian model selection</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3B-GLMM.html" class="sidebar-item-text sidebar-link">
+  <a href="./3B-Workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3C-GLMM.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Generalized linear mixed models</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./3C-VarianceAndObservation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Variance and observation models</span></span></a>
   </div>
 </li>
       </ul>
@@ -235,49 +263,49 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4A-ErrorInVariable.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Error in variable models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Error in variable models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4B-Occupancy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Occupancy models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Occupancy models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4C-StateSpaceModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State-space models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">State-space models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4D-AutoregressiveModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Autoregressive models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Autoregressive models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4E-IntegratedModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Integrated Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Integrated Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4F-BayesianSEMs.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Lavaan and blavaan</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Bayesian causal models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4G-ProcessBased.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Process-based models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Process-based models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4H-ApproximateBayesian.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></span></a>
   </div>
 </li>
       </ul>
@@ -294,7 +322,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./5-Summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Summary and Conclusions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Summary and Conclusions</span></span></a>
   </div>
 </li>
       </ul>
@@ -334,14 +362,33 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link active" data-scroll-target="#motivation"><span class="header-section-number">15.1</span> Motivation</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">15.2</span> Example</a>
+  <ul class="collapse">
+  <li><a href="#summary-statistics" id="toc-summary-statistics" class="nav-link" data-scroll-target="#summary-statistics"><span class="header-section-number">15.2.1</span> Summary statistics</a></li>
+  <li><a href="#abc-mcmc-solution" id="toc-abc-mcmc-solution" class="nav-link" data-scroll-target="#abc-mcmc-solution"><span class="header-section-number">15.2.2</span> ABC-MCMC solution</a></li>
+  <li><a href="#synthetic-likelihood" id="toc-synthetic-likelihood" class="nav-link" data-scroll-target="#synthetic-likelihood"><span class="header-section-number">15.2.3</span> Synthetic likelihood</a></li>
+  </ul></li>
+  <li><a href="#a-movement-model-fit-with-abc-rejection-and-abc-mcmc" id="toc-a-movement-model-fit-with-abc-rejection-and-abc-mcmc" class="nav-link" data-scroll-target="#a-movement-model-fit-with-abc-rejection-and-abc-mcmc"><span class="header-section-number">15.3</span> A movement model fit with ABC-Rejection and ABC-MCMC</a>
+  <ul class="collapse">
+  <li><a href="#the-model-and-data" id="toc-the-model-and-data" class="nav-link" data-scroll-target="#the-model-and-data"><span class="header-section-number">15.3.1</span> The model and data</a></li>
+  <li><a href="#summary-statistics-1" id="toc-summary-statistics-1" class="nav-link" data-scroll-target="#summary-statistics-1"><span class="header-section-number">15.3.2</span> Summary statistics</a></li>
+  <li><a href="#abc-rejection-algorithm" id="toc-abc-rejection-algorithm" class="nav-link" data-scroll-target="#abc-rejection-algorithm"><span class="header-section-number">15.3.3</span> ABC rejection algorithm</a></li>
+  <li><a href="#abc-mcmc-algorithm" id="toc-abc-mcmc-algorithm" class="nav-link" data-scroll-target="#abc-mcmc-algorithm"><span class="header-section-number">15.3.4</span> ABC-MCMC Algorithm</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/TheoreticalEcology/LearningBayes/edit/master/4H-ApproximateBayesian.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></h1>
+<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></h1>
 </div>
 
 
@@ -356,8 +403,266 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="motivation" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="motivation"><span class="header-section-number">15.1</span> Motivation</h2>
+<p>In Hartig, F.; Calabrese, J. M.; Reineking, B.; Wiegand, T. &amp; Huth, A. (2011) Statistical inference for stochastic simulation models - theory and application. Ecol. Lett., 14, 816-827, we classify two main competing methods for models via simulation-based likelihood approximation</p>
+<ol type="1">
+<li><p>Likelihood-approximations based on local, non-parametric approximations of the variance of the simulation outputs, particularly Approximate Bayesian Computation (ABC, Beaumont, M. A. (2010) Approximate Bayesian computation in evolution and ecology. Annu. Rev.&nbsp;Ecol. Evol. Syst., 41, 379-406.)</p></li>
+<li><p>Likelihood-approximations based on parametric, typically global approximation of the simulation output such as Synthetic Likelihood, see Wood, S. N. (2010) Statistical inference for noisy nonlinear ecological dynamic systems. Nature, 466, 1102-1104. An example for fitting a stochastic forest gap model do data via this method is Hartig, F.; Dislich, C.; Wiegand, T. &amp; Huth, A. (2014) Technical Note: Approximate Bayesian parameterization of a process-based tropical forest model. Biogeosciences, 11, 1261-1272.</p></li>
+</ol>
+</section>
+<section id="example" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="example"><span class="header-section-number">15.2</span> Example</h2>
+<p>Assume we have a stochastic model that we want to fit. It takes one parameter, and has an output of 10 values which happen to be around the mean of the parameter that we put in</p>
+<div class="cell" data-hash="4H-ApproximateBayesian_cache/html/unnamed-chunk-2_0edfe1f977efdabb8a49ff4973588dda">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>stochasticModel <span class="ot">&lt;-</span> <span class="cf">function</span>(par){</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (par[<span class="dv">2</span>] <span class="sc">+</span> par[<span class="dv">1</span>] <span class="sc">&lt;=</span> <span class="dv">0</span>) <span class="fu">return</span>(<span class="fu">rep</span>(<span class="sc">-</span><span class="dv">9999</span>,<span class="dv">20</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="fu">return</span>(<span class="fu">rnorm</span>(<span class="dv">20</span>, <span class="at">mean =</span> (<span class="fl">2.7</span><span class="sc">*</span>par[<span class="dv">1</span>] <span class="sc">*</span> par[<span class="dv">2</span>]), <span class="at">sd =</span> par[<span class="dv">2</span>] <span class="sc">+</span> par[<span class="dv">1</span>] ))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Lets’s create some data with known parameters</p>
+<div class="cell" data-hash="4H-ApproximateBayesian_cache/html/unnamed-chunk-3_575e5cb5a6e6b7a0e44b7035275bd723">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">stochasticModel</span>(<span class="fu">c</span>(<span class="dv">3</span>,<span class="sc">-</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="summary-statistics" class="level3" data-number="15.2.1">
+<h3 data-number="15.2.1" class="anchored" data-anchor-id="summary-statistics"><span class="header-section-number">15.2.1</span> Summary statistics</h3>
+<p>We want to use ABC / synthetic likelihood to infer the parameters that were used. Both ABC and synthetic likelihoods require summary statistics, we use mean and sd of the data.</p>
+<div class="cell" data-hash="4H-ApproximateBayesian_cache/html/unnamed-chunk-4_01e75f69773339d995e401fd79b56564">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>meandata <span class="ot">&lt;-</span> <span class="fu">mean</span>(data)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>standarddeviationdata <span class="ot">&lt;-</span> <span class="fu">sd</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="abc-mcmc-solution" class="level3" data-number="15.2.2">
+<h3 data-number="15.2.2" class="anchored" data-anchor-id="abc-mcmc-solution"><span class="header-section-number">15.2.2</span> ABC-MCMC solution</h3>
+<p>Following Marjoram, P.; Molitor, J.; Plagnol, V. &amp; Tavare, S. (2003) Markov chain Monte Carlo without likelihoods. Proc. Natl. Acad. Sci. USA, 100, 15324-15328, we plug the ABC acceptance into a standard metropolis hastings MCMC.</p>
+<div class="cell" data-hash="4H-ApproximateBayesian_cache/html/unnamed-chunk-5_0bd229bef10cf44ffab1993c7619c100">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(coda)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>run_MCMC_ABC <span class="ot">&lt;-</span> <span class="cf">function</span>(startvalue, iterations){</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    chain <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(iterations<span class="sc">+</span><span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    chain[<span class="dv">1</span>,] <span class="ot">=</span> startvalue</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>iterations){</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># proposalfunction</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        proposal <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">2</span>,<span class="at">mean =</span> chain[i,], <span class="at">sd=</span> <span class="fu">c</span>(<span class="fl">0.2</span>,<span class="fl">0.2</span>))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        simulation <span class="ot">&lt;-</span> <span class="fu">stochasticModel</span>(proposal)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># comparison with the observed summary statistics</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        diffmean <span class="ot">&lt;-</span> <span class="fu">abs</span>(<span class="fu">mean</span>(simulation) <span class="sc">-</span> meandata)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        diffsd <span class="ot">&lt;-</span> <span class="fu">abs</span>(<span class="fu">sd</span>(simulation) <span class="sc">-</span> standarddeviationdata)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>          </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>((diffmean <span class="sc">&lt;</span> <span class="fl">0.3</span>) <span class="sc">&amp;</span> (diffsd <span class="sc">&lt;</span> <span class="fl">0.3</span>)){</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>            chain[i<span class="sc">+</span><span class="dv">1</span>,] <span class="ot">=</span> proposal</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        }<span class="cf">else</span>{</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>            chain[i<span class="sc">+</span><span class="dv">1</span>,] <span class="ot">=</span> chain[i,]</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">mcmc</span>(chain))</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> <span class="fu">run_MCMC_ABC</span>(<span class="fu">c</span>(<span class="dv">3</span>,<span class="sc">-</span><span class="dv">2</span>),<span class="dv">50000</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(posterior)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="4H-ApproximateBayesian_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="synthetic-likelihood" class="level3" data-number="15.2.3">
+<h3 data-number="15.2.3" class="anchored" data-anchor-id="synthetic-likelihood"><span class="header-section-number">15.2.3</span> Synthetic likelihood</h3>
+<p>Following Wood, S. N. (2010) Statistical inference for noisy nonlinear ecological dynamic systems. Nature, 466, 1102-1104 and Hartig, F.; Dislich, C.; Wiegand, T. &amp; Huth, A. (2014) Technical Note: Approximate Bayesian parameterization of a process-based tropical forest model. Biogeosciences, 11, 1261-1272, the synthetic likelihood approach is based on sampling a few times from the model, and approximating the likelihood by fitting a Gaussian distribution to the simulation outputs:</p>
+<div class="cell" data-hash="4H-ApproximateBayesian_cache/html/unnamed-chunk-6_afe9b296c28f0a46fd21cdf9738844c1">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>run_MCMC_Synthetic <span class="ot">&lt;-</span> <span class="cf">function</span>(startvalue, iterations){</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    chain <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(iterations<span class="sc">+</span><span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    chain[<span class="dv">1</span>,] <span class="ot">=</span> startvalue</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>iterations){</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># proposalfunction</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        proposal <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">2</span>,<span class="at">mean =</span> chain[i,], <span class="at">sd=</span> <span class="fu">c</span>(<span class="fl">0.2</span>,<span class="fl">0.2</span>))</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># simulate several model runs</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        simualatedData <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> <span class="dv">100</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>          simulation <span class="ot">&lt;-</span> <span class="fu">stochasticModel</span>(<span class="fu">c</span>(<span class="dv">3</span>,<span class="sc">-</span><span class="dv">2</span>))</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>          simualatedData[i,] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">mean</span>(simulation) , <span class="fu">sd</span>(simulation))          </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        syntheticLikelihood1 <span class="ot">&lt;-</span> <span class="fu">fitdistr</span>(simualatedData[<span class="dv">1</span>,], <span class="st">"normal"</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        syntheticLikelihood2 <span class="ot">&lt;-</span> <span class="fu">fitdistr</span>(simualatedData[<span class="dv">2</span>,], <span class="st">"normal"</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        prob1 <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(meandata<span class="sc">-</span>syntheticLikelihood1<span class="sc">$</span>estimate[<span class="dv">1</span>], <span class="at">sd =</span> syntheticLikelihood1<span class="sc">$</span>estimate[<span class="dv">2</span>], <span class="at">log =</span> T)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        prob2 <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(standarddeviationdata<span class="sc">-</span>syntheticLikelihood2<span class="sc">$</span>estimate[<span class="dv">1</span>], <span class="at">sd =</span> syntheticLikelihood2<span class="sc">$</span>estimate[<span class="dv">2</span>], <span class="at">log =</span> T)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(prob <span class="sc">&lt;</span> <span class="fu">runif</span>(<span class="dv">1</span>)){</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>            chain[i<span class="sc">+</span><span class="dv">1</span>,] <span class="ot">=</span> proposal</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        }<span class="cf">else</span>{</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>            chain[i<span class="sc">+</span><span class="dv">1</span>,] <span class="ot">=</span> chain[i,]</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">mcmc</span>(chain))</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> <span class="fu">run_MCMC_ABC</span>(<span class="fu">c</span>(<span class="dv">3</span>,<span class="sc">-</span><span class="dv">2</span>),<span class="dv">20000</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(posterior)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="4H-ApproximateBayesian_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="a-movement-model-fit-with-abc-rejection-and-abc-mcmc" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="a-movement-model-fit-with-abc-rejection-and-abc-mcmc"><span class="header-section-number">15.3</span> A movement model fit with ABC-Rejection and ABC-MCMC</h2>
+<p>The ABC rejection was originally proposed by Tavare, 1997. The ABC-MCMC was suggested by Marjoram, P.; Molitor, J.; Plagnol, V. &amp; Tavare, S. (2003) Markov chain Monte Carlo without likelihoods. Proc. Natl. Acad. Sci. USA, 100, 15324-15328.</p>
+<p>Code implemented by <a href="http://florianhartig.wordpress.com/">Florian Hartig</a>, following the pseudocode from <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.1461-0248.2011.01640.x/suppinfo">Hartig, F.; Calabrese, J. M.; Reineking, B.; Wiegand, T. &amp; Huth, A. (2011) Statistical inference for stochastic simulation models - theory and application. Ecol. Lett., 14, 816-827.</a>, supporting information.</p>
+<section id="the-model-and-data" class="level3" data-number="15.3.1">
+<h3 data-number="15.3.1" class="anchored" data-anchor-id="the-model-and-data"><span class="header-section-number">15.3.1</span> The model and data</h3>
+<section id="process-model" class="level4" data-number="15.3.1.1">
+<h4 data-number="15.3.1.1" class="anchored" data-anchor-id="process-model"><span class="header-section-number">15.3.1.1</span> Process-model</h4>
+<div class="cell" data-hash="4H-ApproximateBayesian_cache/html/unnamed-chunk-8_dadc2905742b82f861e0323030c5ad67">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(compiler)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">params=</span><span class="dv">2</span>, <span class="at">startvalues =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">steps =</span> <span class="dv">200</span>){</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> startvalues[<span class="dv">1</span>]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">=</span> startvalues[<span class="dv">2</span>]</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  direction <span class="ot">=</span> startvalues[<span class="dv">3</span>]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  movementLength <span class="ot">=</span> params[<span class="dv">1</span>]</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  turningWidth <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  output <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, steps<span class="sc">+</span><span class="dv">1</span>), <span class="at">y =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, steps<span class="sc">+</span><span class="dv">1</span>))</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  output[<span class="dv">1</span>, ] <span class="ot">=</span> <span class="fu">c</span>(x,y)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>steps){</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    direction <span class="ot">=</span> direction <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,<span class="dv">0</span>,turningWidth)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    length <span class="ot">=</span> <span class="fu">rexp</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="sc">/</span>movementLength)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">=</span> x <span class="sc">+</span> <span class="fu">sin</span>(direction) <span class="sc">*</span> length</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">=</span> y <span class="sc">+</span> <span class="fu">cos</span>(direction) <span class="sc">*</span> length</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    output[i<span class="sc">+</span><span class="dv">1</span>, ] <span class="ot">=</span> <span class="fu">c</span>(x,y)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span>(output)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">cmpfun</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s see what the model does</p>
+<div class="cell" data-hash="4H-ApproximateBayesian_cache/html/unnamed-chunk-9_8da6460e502aeab3709b68839b25c96e">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">model</span>()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(data, <span class="at">type =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="4H-ApproximateBayesian_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="observation-model" class="level4" data-number="15.3.1.2">
+<h4 data-number="15.3.1.2" class="anchored" data-anchor-id="observation-model"><span class="header-section-number">15.3.1.2</span> Observation model</h4>
+<p>Assume we have recorded the test data. In fact, let’s do it a bit harder. Assume we observe with error, and our measurement device has a problem - if the x-values have a digit larger than 0.7, we get an NA</p>
+<div class="cell" data-hash="4H-ApproximateBayesian_cache/html/unnamed-chunk-10_0cf5de4d229def0e8c951e59ca36f3ea">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>observationModel <span class="ot">&lt;-</span> <span class="cf">function</span>(realData, <span class="at">sd=</span><span class="dv">1</span>){</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  realData<span class="sc">$</span>xobs <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(realData<span class="sc">$</span>x), <span class="at">mean =</span> realData<span class="sc">$</span>x, <span class="at">sd =</span> sd)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  realData<span class="sc">$</span>yobs <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(realData<span class="sc">$</span>x), <span class="at">mean =</span> realData<span class="sc">$</span>y, <span class="at">sd =</span> sd)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  realData<span class="sc">$</span>xobs[realData<span class="sc">$</span>xobs <span class="sc">-</span> <span class="fu">floor</span>(realData<span class="sc">$</span>xobs) <span class="sc">&gt;</span> <span class="fl">0.7</span> ] <span class="ot">=</span> <span class="cn">NA</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(realData)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>obsdata <span class="ot">&lt;-</span> <span class="fu">observationModel</span>(data)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(data, <span class="at">type =</span> <span class="st">"l"</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(obsdata<span class="sc">$</span>xobs, obsdata<span class="sc">$</span>yobs, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">pch =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="4H-ApproximateBayesian_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="summary-statistics-1" class="level3" data-number="15.3.2">
+<h3 data-number="15.3.2" class="anchored" data-anchor-id="summary-statistics-1"><span class="header-section-number">15.3.2</span> Summary statistics</h3>
+<div class="cell" data-hash="4H-ApproximateBayesian_cache/html/unnamed-chunk-11_16c438c3eacfbe3219ba4f72d97b7925">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>summaryStatistics <span class="ot">&lt;-</span> <span class="cf">function</span>(dat){</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  meandisplacement <span class="ot">=</span> <span class="fu">mean</span>(<span class="fu">sqrt</span>(<span class="fu">diff</span>(dat<span class="sc">$</span>xobs)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">diff</span>(dat<span class="sc">$</span>yobs)<span class="sc">^</span><span class="dv">2</span>), <span class="at">na.rm =</span> T)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  meandisplacement10 <span class="ot">=</span> <span class="fu">mean</span>(<span class="fu">sqrt</span>(<span class="fu">diff</span>(dat<span class="sc">$</span>xobs, <span class="at">lag =</span> <span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">diff</span>(dat<span class="sc">$</span>yobs, <span class="at">lag =</span> <span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span>), <span class="at">na.rm =</span> T)<span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#meanturning = mean(abs(diff(atan2(diff(dat$yobs),diff(dat$xobs)))), na.rm = T) </span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(meandisplacement, meandisplacement10))</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>} </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>dataSummary <span class="ot">&lt;-</span> <span class="fu">summaryStatistics</span>(obsdata)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>dataSummary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.803799 1.433168</code></pre>
+</div>
+</div>
+</section>
+<section id="abc-rejection-algorithm" class="level3" data-number="15.3.3">
+<h3 data-number="15.3.3" class="anchored" data-anchor-id="abc-rejection-algorithm"><span class="header-section-number">15.3.3</span> ABC rejection algorithm</h3>
+<div class="cell" data-hash="4H-ApproximateBayesian_cache/html/unnamed-chunk-12_853603c06217e5668ab9c3ba4163fa60">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">movementLength =</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">5</span>), <span class="at">error =</span> <span class="fu">runif</span>(n, <span class="dv">0</span>,<span class="dv">5</span>), <span class="at">distance =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  simulatedPrediction <span class="ot">&lt;-</span> <span class="fu">model</span>(fit[i,<span class="dv">1</span>])</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  simulatedObservation<span class="ot">&lt;-</span> <span class="fu">observationModel</span>(simulatedPrediction, fit[i,<span class="dv">2</span>])</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  simulatedSummary <span class="ot">&lt;-</span> <span class="fu">summaryStatistics</span>(simulatedObservation)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  simulatedSummary</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#deviation = max( simulatedSummary - dataSummary)</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  deviation <span class="ot">=</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>((simulatedSummary <span class="sc">-</span> dataSummary)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  fit[i,<span class="dv">3</span>] <span class="ot">=</span> deviation</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I had already calculated the euclidian distance between observed and simulated summaries. We now plot parameters for different acceptance intervals</p>
+<div class="cell" data-hash="4H-ApproximateBayesian_cache/html/unnamed-chunk-13_aef08e123dbad28abcc06e121551547d">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit[fit[,<span class="dv">3</span>] <span class="sc">&lt;</span> <span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">6</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>), <span class="at">col =</span> <span class="st">"lightgrey"</span>, <span class="at">main =</span> <span class="st">"Accepted parameters for </span><span class="sc">\n</span><span class="st"> different values of epsilon"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(fit[fit[,<span class="dv">3</span>] <span class="sc">&lt;</span> <span class="fl">0.2</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],  <span class="at">pch =</span> <span class="dv">18</span>, <span class="at">col =</span> <span class="st">"gray"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(fit[fit[,<span class="dv">3</span>] <span class="sc">&lt;</span> <span class="fl">0.1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],  <span class="at">pch =</span> <span class="dv">8</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"&lt; 1"</span>, <span class="st">"&lt; 0.2"</span>, <span class="st">"&lt; 0.1"</span>), <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">18</span>,<span class="dv">8</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"lightgrey"</span>, <span class="st">"gray"</span>, <span class="st">"red"</span>))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">2</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">1</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="4H-ApproximateBayesian_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="abc-mcmc-algorithm" class="level3" data-number="15.3.4">
+<h3 data-number="15.3.4" class="anchored" data-anchor-id="abc-mcmc-algorithm"><span class="header-section-number">15.3.4</span> ABC-MCMC Algorithm</h3>
+<div class="cell" data-hash="4H-ApproximateBayesian_cache/html/unnamed-chunk-14_9558ea8d48ab8fa5a62fbe98e879262f">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">movementLength =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n), <span class="at">error =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n), <span class="at">distance =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, n))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>currentPar <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="fl">0.9</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n){</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  newPar <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">2</span>,currentPar, <span class="at">sd =</span> <span class="fu">c</span>(<span class="fl">0.2</span>,<span class="fl">0.2</span>))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">min</span>(newPar) <span class="sc">&lt;</span> <span class="dv">0</span> ) fit[i,] <span class="ot">=</span> <span class="fu">c</span>(currentPar, deviation)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>{</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    simulatedPrediction <span class="ot">&lt;-</span> <span class="fu">model</span>(newPar[<span class="dv">1</span>])</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    simulatedObservation<span class="ot">&lt;-</span> <span class="fu">observationModel</span>(simulatedPrediction, newPar[<span class="dv">2</span>])</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    simulatedSummary <span class="ot">&lt;-</span> <span class="fu">summaryStatistics</span>(simulatedObservation)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    deviation <span class="ot">=</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>( simulatedSummary <span class="sc">-</span> dataSummary)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (deviation <span class="sc">&lt;</span> <span class="fl">0.2</span>){</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>      fit[i,] <span class="ot">=</span> <span class="fu">c</span>(newPar, deviation)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>      currentPar <span class="ot">=</span> newPar</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    } </span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> fit[i,] <span class="ot">=</span> <span class="fu">c</span>(currentPar, deviation)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="4H-ApproximateBayesian_cache/html/unnamed-chunk-15_32b1579d5c6fca764b1c33bb28adac30">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">6</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>), <span class="at">col =</span> <span class="st">"#00000022"</span>, <span class="at">main =</span> <span class="st">"Accepted parameters"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">2</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">1</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="4H-ApproximateBayesian_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -596,12 +901,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./4G-ProcessBased.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Process-based models</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Process-based models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./5-Summary.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Summary and Conclusions</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Summary and Conclusions</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -609,4 +914,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/TheoreticalEcology/LearningBayes/edit/master/4H-ApproximateBayesian.qmd" class="toc-action">Edit this page</a></p></div></div></div></div></footer></body></html>
+</body></html>

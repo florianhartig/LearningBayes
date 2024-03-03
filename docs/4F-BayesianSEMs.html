@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to Bayesian Statistics with R - 14&nbsp; Lavaan and blavaan</title>
+<title>Introduction to Bayesian Statistics with R - 13&nbsp; Bayesian causal models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/grViz-binding-1.0.9/grViz.js"></script>
 
 
-<meta name="citation_title" content="[14]{.chapter-number}&nbsp; [Lavaan and blavaan]{.chapter-title}">
+<meta name="citation_title" content="[13]{.chapter-number}&nbsp; [Bayesian causal models]{.chapter-title}">
 <meta name="citation_fulltext_html_url" content="https://TheoreticalEcology.github.io/LearningBayes//4F-BayesianSEMs.html">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=ńgrundlangen der statistik;,citation_author=Florian Hartig;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_publisher=https://www.dropbox.com/s/nefr3bteve5lym7/GrundlagenDerStatistik.pdf?dl=0;">
@@ -134,7 +134,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./4A-ErrorInVariable.html">Hierachical models</a></li><li class="breadcrumb-item"><a href="./4F-BayesianSEMs.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Lavaan and blavaan</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./4A-ErrorInVariable.html">Hierachical models</a></li><li class="breadcrumb-item"><a href="./4F-BayesianSEMs.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Bayesian causal models</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -220,14 +220,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2C-ModelSelection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian model selection</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./2D-Workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Workflow</span></span></a>
+  <a href="./2C-LMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear and linear mixed models</span></span></a>
   </div>
 </li>
       </ul>
@@ -235,7 +229,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Bayesian GLMMs</span></a>
+ <span class="menu-text">GLMMs, MS, Workflow</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -243,20 +237,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3A-LMM.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear and linear mixed models</span></span></a>
+  <a href="./3A-ModelSelection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian model selection</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3B-GLMM.html" class="sidebar-item-text sidebar-link">
+  <a href="./3B-Workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3C-GLMM.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Generalized linear mixed models</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./3C-VarianceAndObservation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Variance and observation models</span></span></a>
   </div>
 </li>
       </ul>
@@ -273,49 +267,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4A-ErrorInVariable.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Error in variable models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Error in variable models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4B-Occupancy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Occupancy models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Occupancy models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4C-StateSpaceModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State-space models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">State-space models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4D-AutoregressiveModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Autoregressive models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Autoregressive models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4E-IntegratedModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Integrated Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Integrated Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4F-BayesianSEMs.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Lavaan and blavaan</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Bayesian causal models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4G-ProcessBased.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Process-based models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Process-based models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4H-ApproximateBayesian.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></span></a>
   </div>
 </li>
       </ul>
@@ -332,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./5-Summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Summary and Conclusions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Summary and Conclusions</span></span></a>
   </div>
 </li>
       </ul>
@@ -376,8 +370,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#piecewise-sems" id="toc-piecewise-sems" class="nav-link active" data-scroll-target="#piecewise-sems"><span class="header-section-number">14.1</span> Piecewise SEMs</a></li>
-  <li><a href="#freestyle-jags-model" id="toc-freestyle-jags-model" class="nav-link" data-scroll-target="#freestyle-jags-model"><span class="header-section-number">14.2</span> Freestyle JAGS model</a></li>
+  <li><a href="#lavaan-and-blavaan" id="toc-lavaan-and-blavaan" class="nav-link active" data-scroll-target="#lavaan-and-blavaan"><span class="header-section-number">13.1</span> Lavaan and blavaan</a></li>
+  <li><a href="#piecewise-sems" id="toc-piecewise-sems" class="nav-link" data-scroll-target="#piecewise-sems"><span class="header-section-number">13.2</span> Piecewise SEMs</a></li>
+  <li><a href="#freestyle-jags-model" id="toc-freestyle-jags-model" class="nav-link" data-scroll-target="#freestyle-jags-model"><span class="header-section-number">13.3</span> Freestyle JAGS model</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/TheoreticalEcology/LearningBayes/edit/master/4F-BayesianSEMs.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
@@ -386,7 +381,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Lavaan and blavaan</span></h1>
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Bayesian causal models</span></h1>
 </div>
 
 
@@ -403,46 +398,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>This chapter assumes you are aware of causal inference, causal graphs and structural equation models. For a general intro on these topics, see my lecture notes on advanced regression models, section causal inference <a href="https://theoreticalecology.github.io/AdvancedRegressionModels/3B-CausalInference.html">here</a>.</p>
 <p>In this chapter, I will show you a few options to fit SEMs with Bayesian methods. We will use the keeley data provided in the package piecewiseSEM</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(piecewiseSEM) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-  This is piecewiseSEM version 2.3.0.
-
-
-  Questions or bugs can be addressed to &lt;LefcheckJ@si.edu&gt;.</code></pre>
+<div class="cell" data-hash="4F-BayesianSEMs_cache/html/unnamed-chunk-2_7ed39d133c3bc10a57219818f6f7611f">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(piecewiseSEM) </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(keeley)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(keeley)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<section id="lavaan-and-blavaan" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="lavaan-and-blavaan"><span class="header-section-number">13.1</span> Lavaan and blavaan</h2>
 <p>Laavan is the most popular package to fit multivariate normal SEMs. The advantage of lavaan (over piecewiseSEM which we will use later) is that it can easily include latent factors in the analysis (which we will not use in this example). The downside of lavaan is that it can’t handle non-Gaussian responses.</p>
 <p>Here the standard lavaan model:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="4F-BayesianSEMs_cache/html/unnamed-chunk-3_837145ccd06d3e8eaf84368b7e60f8e2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>This is lavaan 0.6-17
 lavaan is FREE software! Please report any bugs.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaanPlot)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>k_mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">  rich ~ firesev + cover</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">  cover ~ firesev"</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>k_fit_lavaan <span class="ot">&lt;-</span> <span class="fu">sem</span>(<span class="at">model =</span> k_mod, <span class="at">data =</span> keeley)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaanPlot)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>k_mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">  rich ~ firesev + cover</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">  cover ~ firesev"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>k_fit_lavaan <span class="ot">&lt;-</span> <span class="fu">sem</span>(<span class="at">model =</span> k_mod, <span class="at">data =</span> keeley)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in lav_data_full(data = data, group = group, cluster = cluster, : lavaan
 WARNING: some observed variances are (at least) a factor 1000 times larger than
 others; use varTable(fit) to investigate</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot</span>(<span class="at">model=</span>k_fit_lavaan, <span class="at">coefs =</span> <span class="cn">TRUE</span>, <span class="at">sig =</span> .<span class="dv">05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot</span>(<span class="at">model=</span>k_fit_lavaan, <span class="at">coefs =</span> <span class="cn">TRUE</span>, <span class="at">sig =</span> .<span class="dv">05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="htmlwidget-30e4409849e39179307f" style="width:100%;height:464px;" class="grViz html-widget"></div>
 <script type="application/json" data-for="htmlwidget-30e4409849e39179307f">{"x":{"diagram":" digraph plot { \n graph [ overlap = true, fontsize = 10 ] \n node [ shape = box ] \n node [shape = box] \n firesev; cover; rich \n node [shape = oval] \n  \n \n edge [ color = black ] \n firesev->rich [label = \"-2.53\"] cover->rich [label = \"\"] firesev->cover [label = \"-0.08\"]  \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>Same as Bayesian fit using blavaan, which is a laavan style interface to STAN</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(blavaan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="4F-BayesianSEMs_cache/html/unnamed-chunk-4_a1b7b279a76729969d33d0d23df99beb">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(blavaan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: Rcpp</code></pre>
 </div>
@@ -453,9 +443,9 @@ others; use varTable(fit) to investigate</code></pre>
 <pre><code>On multicore systems, we suggest use of future::plan("multicore") or
   future::plan("multisession") for faster post-MCMC computations.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>k_fit_blavaan <span class="ot">=</span> <span class="fu">blavaan</span>(<span class="at">model =</span> k_mod, <span class="at">data =</span> keeley,</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">auto.var=</span><span class="cn">TRUE</span>, <span class="at">auto.fix.first=</span><span class="cn">TRUE</span>,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">auto.cov.lv.x=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>k_fit_blavaan <span class="ot">=</span> <span class="fu">blavaan</span>(<span class="at">model =</span> k_mod, <span class="at">data =</span> keeley,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">auto.var=</span><span class="cn">TRUE</span>, <span class="at">auto.fix.first=</span><span class="cn">TRUE</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">auto.cov.lv.x=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in lav_data_full(data = data, group = group, cluster = cluster, : lavaan
 WARNING: some observed variances are (at least) a factor 1000 times larger than
@@ -469,8 +459,8 @@ others; use varTable(fit) to investigate</code></pre>
 <pre><code>
 SAMPLING FOR MODEL 'stanmarg' NOW (CHAIN 1).
 Chain 1: 
-Chain 1: Gradient evaluation took 0.000202 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.02 seconds.
+Chain 1: Gradient evaluation took 0.002524 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 25.24 seconds.
 Chain 1: Adjust your expectations accordingly!
 Chain 1: 
 Chain 1: 
@@ -487,15 +477,15 @@ Chain 1: Iteration: 1250 / 1500 [ 83%]  (Sampling)
 Chain 1: Iteration: 1400 / 1500 [ 93%]  (Sampling)
 Chain 1: Iteration: 1500 / 1500 [100%]  (Sampling)
 Chain 1: 
-Chain 1:  Elapsed Time: 1.034 seconds (Warm-up)
-Chain 1:                0.532 seconds (Sampling)
-Chain 1:                1.566 seconds (Total)
+Chain 1:  Elapsed Time: 1.682 seconds (Warm-up)
+Chain 1:                0.865 seconds (Sampling)
+Chain 1:                2.547 seconds (Total)
 Chain 1: 
 
 SAMPLING FOR MODEL 'stanmarg' NOW (CHAIN 2).
 Chain 2: 
-Chain 2: Gradient evaluation took 9.6e-05 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.96 seconds.
+Chain 2: Gradient evaluation took 0.000143 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.43 seconds.
 Chain 2: Adjust your expectations accordingly!
 Chain 2: 
 Chain 2: 
@@ -512,15 +502,15 @@ Chain 2: Iteration: 1250 / 1500 [ 83%]  (Sampling)
 Chain 2: Iteration: 1400 / 1500 [ 93%]  (Sampling)
 Chain 2: Iteration: 1500 / 1500 [100%]  (Sampling)
 Chain 2: 
-Chain 2:  Elapsed Time: 1.011 seconds (Warm-up)
-Chain 2:                0.532 seconds (Sampling)
-Chain 2:                1.543 seconds (Total)
+Chain 2:  Elapsed Time: 1.659 seconds (Warm-up)
+Chain 2:                0.88 seconds (Sampling)
+Chain 2:                2.539 seconds (Total)
 Chain 2: 
 
 SAMPLING FOR MODEL 'stanmarg' NOW (CHAIN 3).
 Chain 3: 
-Chain 3: Gradient evaluation took 0.000101 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.01 seconds.
+Chain 3: Gradient evaluation took 0.000163 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.63 seconds.
 Chain 3: Adjust your expectations accordingly!
 Chain 3: 
 Chain 3: 
@@ -537,13 +527,13 @@ Chain 3: Iteration: 1250 / 1500 [ 83%]  (Sampling)
 Chain 3: Iteration: 1400 / 1500 [ 93%]  (Sampling)
 Chain 3: Iteration: 1500 / 1500 [100%]  (Sampling)
 Chain 3: 
-Chain 3:  Elapsed Time: 1.178 seconds (Warm-up)
-Chain 3:                0.524 seconds (Sampling)
-Chain 3:                1.702 seconds (Total)
+Chain 3:  Elapsed Time: 1.93 seconds (Warm-up)
+Chain 3:                0.873 seconds (Sampling)
+Chain 3:                2.803 seconds (Total)
 Chain 3: 
 Computing post-estimation metrics (including lvs if requested)...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(k_fit_blavaan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(k_fit_blavaan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>blavaan 0.5.2 ended normally after 1000 iterations
 
@@ -572,22 +562,23 @@ Variances:
    .rich            183.777   26.783  138.601  241.632    1.000 gamma(1,.5)[sd]
    .cover             0.084    0.012    0.063    0.111    1.000 gamma(1,.5)[sd]</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot</span>(<span class="at">model=</span>k_fit_blavaan, <span class="at">coefs =</span> <span class="cn">TRUE</span>, <span class="at">sig =</span> .<span class="dv">05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot</span>(<span class="at">model=</span>k_fit_blavaan, <span class="at">coefs =</span> <span class="cn">TRUE</span>, <span class="at">sig =</span> .<span class="dv">05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="htmlwidget-2e17466358a46d139971" style="width:100%;height:464px;" class="grViz html-widget"></div>
 <script type="application/json" data-for="htmlwidget-2e17466358a46d139971">{"x":{"diagram":" digraph plot { \n graph [ overlap = true, fontsize = 10 ] \n node [ shape = box ] \n node [shape = box] \n firesev; cover; rich \n node [shape = oval] \n  \n \n edge [ color = black ] \n firesev->rich [label = \"-2.66\"] cover->rich [label = \"\"] firesev->cover [label = \"-0.08\"]  \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-<section id="piecewise-sems" class="level2" data-number="14.1">
-<h2 data-number="14.1" class="anchored" data-anchor-id="piecewise-sems"><span class="header-section-number">14.1</span> Piecewise SEMs</h2>
+</section>
+<section id="piecewise-sems" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="piecewise-sems"><span class="header-section-number">13.2</span> Piecewise SEMs</h2>
 <p>The piecewiseSEM allows you to create a causal model from a set of standard GLMMs. Advantage is that it can handle standard GLMMs. Disadvantage is that it can’t handle latent variables</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>k_fit_psem <span class="ot">&lt;-</span> <span class="fu">psem</span>(</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(rich <span class="sc">~</span> firesev <span class="sc">+</span> cover, <span class="at">data=</span>keeley),</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(cover <span class="sc">~</span> firesev, <span class="at">data=</span>keeley),</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> keeley</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(k_fit_psem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="4F-BayesianSEMs_cache/html/unnamed-chunk-5_d065ebdba208f06fc64a90440adb155f">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>k_fit_psem <span class="ot">&lt;-</span> <span class="fu">psem</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(rich <span class="sc">~</span> firesev <span class="sc">+</span> cover, <span class="at">data=</span>keeley),</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(cover <span class="sc">~</span> firesev, <span class="at">data=</span>keeley),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> keeley</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(k_fit_psem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Structural Equation Model of k_fit_psem 
@@ -629,8 +620,8 @@ Individual R-squared:
 </div>
 </div>
 <p>Piecewise SEMs can pretty much in the same way be code in brm:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="4F-BayesianSEMs_cache/html/unnamed-chunk-6_77411704606cc72baffbc10e6b02bd42">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading 'brms' package (version 2.17.0). Useful instructions
 can be found by typing help('brms'). A more detailed introduction
@@ -645,16 +636,32 @@ Attaching package: 'brms'</code></pre>
 
     ar</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>rich_mod <span class="ot">&lt;-</span> <span class="fu">bf</span>(rich <span class="sc">~</span> firesev <span class="sc">+</span> cover)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>cover_mod <span class="ot">&lt;-</span> <span class="fu">bf</span>(cover <span class="sc">~</span> firesev)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>k_fit_brms <span class="ot">&lt;-</span> <span class="fu">brm</span>(rich_mod <span class="sc">+</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                  cover_mod <span class="sc">+</span> </span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">set_rescor</span>(<span class="cn">FALSE</span>), </span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">data=</span>keeley,</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">cores=</span><span class="dv">4</span>, <span class="at">chains =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>rich_mod <span class="ot">&lt;-</span> <span class="fu">bf</span>(rich <span class="sc">~</span> firesev <span class="sc">+</span> cover)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>cover_mod <span class="ot">&lt;-</span> <span class="fu">bf</span>(cover <span class="sc">~</span> firesev)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>k_fit_brms <span class="ot">&lt;-</span> <span class="fu">brm</span>(rich_mod <span class="sc">+</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>                  cover_mod <span class="sc">+</span> </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">set_rescor</span>(<span class="cn">FALSE</span>), </span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">data=</span>keeley,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">cores=</span><span class="dv">4</span>, <span class="at">chains =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Compiling Stan program...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Trying to compile a simple C file</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c
+clang -mmacosx-version-min=10.13 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.2/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/usr/local/include   -fPIC  -Wall -g -O2  -c foo.c -o foo.o
+In file included from &lt;built-in&gt;:1:
+In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
+In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/Dense:1:
+In file included from /Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/Core:19:
+/Library/Frameworks/R.framework/Versions/4.2/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:679:10: fatal error: 'cmath' file not found
+#include &lt;cmath&gt;
+         ^~~~~~~
+1 error generated.
+make: *** [foo.o] Error 1</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Start sampling</code></pre>
@@ -668,11 +675,11 @@ Attaching package: 'brms'</code></pre>
 </div>
 </div>
 </section>
-<section id="freestyle-jags-model" class="level2" data-number="14.2">
-<h2 data-number="14.2" class="anchored" data-anchor-id="freestyle-jags-model"><span class="header-section-number">14.2</span> Freestyle JAGS model</h2>
+<section id="freestyle-jags-model" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="freestyle-jags-model"><span class="header-section-number">13.3</span> Freestyle JAGS model</h2>
 <p>If you want latent variables and non-Gaussian responses, you will have to code by hand. Here an example, which is effectively a piecewise SEM bout could be extended to include latent variables.</p>
 <p>TODO</p>
-<div class="cell">
+<div class="cell" data-hash="4F-BayesianSEMs_cache/html/unnamed-chunk-7_c432134ba82da648e9b7c5e456dc1904">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EcoData)</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effects)</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1009,12 +1016,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./4E-IntegratedModels.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Integrated Models</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Integrated Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./4G-ProcessBased.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Process-based models</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Process-based models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

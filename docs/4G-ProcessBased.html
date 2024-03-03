@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to Bayesian Statistics with R - 15&nbsp; Process-based models</title>
+<title>Introduction to Bayesian Statistics with R - 14&nbsp; Process-based models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -62,7 +96,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<meta name="citation_title" content="[15]{.chapter-number}&nbsp; [Process-based models]{.chapter-title}">
+<meta name="citation_title" content="[14]{.chapter-number}&nbsp; [Process-based models]{.chapter-title}">
 <meta name="citation_fulltext_html_url" content="https://TheoreticalEcology.github.io/LearningBayes//4G-ProcessBased.html">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=ńgrundlangen der statistik;,citation_author=Florian Hartig;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_publisher=https://www.dropbox.com/s/nefr3bteve5lym7/GrundlagenDerStatistik.pdf?dl=0;">
@@ -96,7 +130,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./4A-ErrorInVariable.html">Hierachical models</a></li><li class="breadcrumb-item"><a href="./4G-ProcessBased.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Process-based models</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./4A-ErrorInVariable.html">Hierachical models</a></li><li class="breadcrumb-item"><a href="./4G-ProcessBased.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Process-based models</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -182,14 +216,8 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2C-ModelSelection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian model selection</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./2D-Workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Workflow</span></span></a>
+  <a href="./2C-LMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear and linear mixed models</span></span></a>
   </div>
 </li>
       </ul>
@@ -197,7 +225,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Bayesian GLMMs</span></a>
+ <span class="menu-text">GLMMs, MS, Workflow</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -205,20 +233,20 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3A-LMM.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear and linear mixed models</span></span></a>
+  <a href="./3A-ModelSelection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian model selection</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3B-GLMM.html" class="sidebar-item-text sidebar-link">
+  <a href="./3B-Workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3C-GLMM.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Generalized linear mixed models</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./3C-VarianceAndObservation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Variance and observation models</span></span></a>
   </div>
 </li>
       </ul>
@@ -235,49 +263,49 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4A-ErrorInVariable.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Error in variable models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Error in variable models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4B-Occupancy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Occupancy models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Occupancy models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4C-StateSpaceModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State-space models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">State-space models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4D-AutoregressiveModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Autoregressive models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Autoregressive models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4E-IntegratedModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Integrated Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Integrated Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4F-BayesianSEMs.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Lavaan and blavaan</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Bayesian causal models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4G-ProcessBased.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Process-based models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Process-based models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4H-ApproximateBayesian.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></span></a>
   </div>
 </li>
       </ul>
@@ -294,7 +322,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./5-Summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Summary and Conclusions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Summary and Conclusions</span></span></a>
   </div>
 </li>
       </ul>
@@ -341,7 +369,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Process-based models</span></h1>
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Process-based models</span></h1>
 </div>
 
 
@@ -356,6 +384,211 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<div class="cell" data-hash="4G-ProcessBased_cache/html/unnamed-chunk-2_5a1626e4f0c2bc23e2f9f14ef4deda1d">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BayesianTools)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create input data for the model</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>PAR <span class="ot">&lt;-</span> <span class="fu">VSEMcreatePAR</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(PAR, <span class="at">main =</span> <span class="st">"PAR (driving the model)"</span>, <span class="at">xlab =</span> <span class="st">"Day"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="4G-ProcessBased_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load reference parameter definition (upper, lower prior)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>refPars <span class="ot">&lt;-</span> <span class="fu">VSEMgetDefaults</span>()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># this adds one additional parameter for the likelihood standard deviation (see below)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>refPars[<span class="dv">12</span>,] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="fl">0.1</span>, <span class="dv">4</span>) </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(refPars)[<span class="dv">12</span>] <span class="ot">&lt;-</span> <span class="st">"error-sd"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(refPars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           best lower upper
+KEXT      0.500 2e-01 1e+00
+LAR       1.500 2e-01 3e+00
+LUE       0.002 5e-04 4e-03
+GAMMA     0.400 2e-01 6e-01
+tauV   1440.000 5e+02 3e+03
+tauS  27370.000 4e+03 5e+04</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create some simulated test data </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># generally recommended to start with simulated data before moving to real data</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>referenceData <span class="ot">&lt;-</span> <span class="fu">VSEM</span>(refPars<span class="sc">$</span>best[<span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>], PAR) <span class="co"># model predictions with reference parameters  </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>referenceData[,<span class="dv">1</span>] <span class="ot">=</span> <span class="dv">1000</span> <span class="sc">*</span> referenceData[,<span class="dv">1</span>] </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># this adds the error - needs to conform to the error definition in the likelihood</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>obs <span class="ot">&lt;-</span> referenceData <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(referenceData), <span class="at">sd =</span> refPars<span class="sc">$</span>best[<span class="dv">12</span>])</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>oldpar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) <span class="fu">plotTimeSeries</span>(<span class="at">observed =</span> obs[,i], </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                              <span class="at">predicted =</span> referenceData[,i], <span class="at">main =</span> <span class="fu">colnames</span>(referenceData)[i])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="4G-ProcessBased_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Best to program in a way that we can choose easily which parameters to calibrate</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>parSel <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">12</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># here is the likelihood </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">&lt;-</span> <span class="cf">function</span>(par, <span class="at">sum =</span> <span class="cn">TRUE</span>){</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set parameters that are not calibrated on default values </span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> refPars<span class="sc">$</span>best</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  x[parSel] <span class="ot">=</span> par</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  predicted <span class="ot">&lt;-</span> <span class="fu">VSEM</span>(x[<span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>], PAR) <span class="co"># replace here VSEM with your model </span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  predicted[,<span class="dv">1</span>] <span class="ot">=</span> <span class="dv">1000</span> <span class="sc">*</span> predicted[,<span class="dv">1</span>] <span class="co"># this is just rescaling</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  diff <span class="ot">&lt;-</span> <span class="fu">c</span>(predicted[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>] <span class="sc">-</span> obs[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]) <span class="co"># difference betweeno observed and predicted</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># univariate normal likelihood. Note that there is a parameter involved here that is fit</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  llValues <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(diff, <span class="at">sd =</span> x[<span class="dv">12</span>], <span class="at">log =</span> <span class="cn">TRUE</span>)  </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (sum <span class="sc">==</span> <span class="cn">FALSE</span>) <span class="fu">return</span>(llValues)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="fu">return</span>(<span class="fu">sum</span>(llValues))</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># optional, you can also directly provide lower, upper in the createBayesianSetup, see help</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> <span class="fu">createUniformPrior</span>(<span class="at">lower =</span> refPars<span class="sc">$</span>lower[parSel], </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                            <span class="at">upper =</span> refPars<span class="sc">$</span>upper[parSel], <span class="at">best =</span> refPars<span class="sc">$</span>best[parSel])</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>bayesianSetup <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood, prior, <span class="at">names =</span> <span class="fu">rownames</span>(refPars)[parSel])</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># settings for the sampler, iterations should be increased for real applicatoin</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>settings <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">iterations =</span> <span class="dv">2000</span>, <span class="at">nrChains =</span> <span class="dv">2</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> bayesianSetup, <span class="at">sampler =</span> <span class="st">"DEzs"</span>, <span class="at">settings =</span> settings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Running DEzs-MCMC, chain  1 iteration 300 of 2001 . Current logp  -8566.156 -8499.593 -8507.241 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 600 of 2001 . Current logp  -8489.945 -8489.103 -8485.902 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 900 of 2001 . Current logp  -8486.072 -8489.803 -8489.643 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 1200 of 2001 . Current logp  -8486.468 -8485.746 -8485.014 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 1500 of 2001 . Current logp  -8485.923 -8491.022 -8486.336 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 1800 of 2001 . Current logp  -8485.298 -8487.846 -8484.556 . Please wait! 
+
+ Running DEzs-MCMC, chain  1 iteration 2001 of 2001 . Current logp  -8485.874 -8485.425 -8487.278 . Please wait! </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>runMCMC terminated after 1.579seconds</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Running DEzs-MCMC, chain  2 iteration 300 of 2001 . Current logp  -8561.552 -8563.564 -8569.686 . Please wait! 
+
+ Running DEzs-MCMC, chain  2 iteration 600 of 2001 . Current logp  -8538.887 -8538.977 -8546.54 . Please wait! 
+
+ Running DEzs-MCMC, chain  2 iteration 900 of 2001 . Current logp  -8502.444 -8491.463 -8522.535 . Please wait! 
+
+ Running DEzs-MCMC, chain  2 iteration 1200 of 2001 . Current logp  -8486.893 -8487.119 -8487.553 . Please wait! 
+
+ Running DEzs-MCMC, chain  2 iteration 1500 of 2001 . Current logp  -8487.805 -8486.57 -8484.996 . Please wait! 
+
+ Running DEzs-MCMC, chain  2 iteration 1800 of 2001 . Current logp  -8484.447 -8487.071 -8488.836 . Please wait! 
+
+ Running DEzs-MCMC, chain  2 iteration 2001 of 2001 . Current logp  -8485.458 -8488.215 -8485.654 . Please wait! </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>runMCMC terminated after 1.828seconds</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="4G-ProcessBased_cache/html/unnamed-chunk-3_427534ba20b19cc6c5e5a695acfd9365">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="4G-ProcessBased_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="4G-ProcessBased_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># # # # # # # # # # # # # # # # # # # # # # # # # 
+## MCMC chain summary ## 
+# # # # # # # # # # # # # # # # # # # # # # # # # 
+ 
+# MCMC sampler:  DEzs 
+# Nr. Chains:  6 
+# Iterations per chain:  667 
+# Rejection rate:  0.909 
+# Effective sample size:  72 
+# Runtime:  3.407  sec. 
+ 
+# Parameters
+           psf       MAP      2.5%    median     97.5%
+KEXT     1.210     0.438     0.364     0.549     0.807
+LAR      2.261     2.708     1.358     2.433     2.965
+LUE      5.705     0.002     0.002     0.002     0.002
+GAMMA    6.758     0.515     0.298     0.450     0.527
+tauV     1.189  1475.404  1190.045  1471.547  2867.823
+tauS     1.425 31318.063 12105.862 25200.275 37808.067
+error-sd 1.072     2.016     1.873     2.012     2.202
+
+## DIC:  17263.1 
+## Convergence 
+ Gelman Rubin multivariate psrf:  8.746 
+ 
+## Correlations 
+           KEXT    LAR    LUE  GAMMA   tauV   tauS error-sd
+KEXT      1.000 -0.228 -0.345 -0.286  0.333  0.050   -0.102
+LAR      -0.228  1.000  0.612  0.592 -0.129 -0.052    0.040
+LUE      -0.345  0.612  1.000  0.890  0.029  0.067    0.108
+GAMMA    -0.286  0.592  0.890  1.000  0.080  0.265   -0.017
+tauV      0.333 -0.129  0.029  0.080  1.000  0.170   -0.057
+tauS      0.050 -0.052  0.067  0.265  0.170  1.000   -0.338
+error-sd -0.102  0.040  0.108 -0.017 -0.057 -0.338    1.000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marginalPlot</span>(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="4G-ProcessBased_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gelmanDiagnostics</span>(out) <span class="co"># should be below 1.05 for all parameters to demonstrate convergence </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Potential scale reduction factors:
+
+         Point est. Upper C.I.
+KEXT           1.21       1.51
+LAR            2.26       3.84
+LUE            5.70       9.63
+GAMMA          6.76      11.61
+tauV           1.19       1.50
+tauS           1.42       2.02
+error-sd       1.07       1.17
+
+Multivariate psrf
+
+8.75</code></pre>
+</div>
+</div>
+<div class="cell" data-hash="4G-ProcessBased_cache/html/unnamed-chunk-4_0dff1b5bee108ad03a347b368ebef9d8">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Posterior predictive simulations</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a prediction function</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>createPredictions <span class="ot">&lt;-</span> <span class="cf">function</span>(par){</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set the parameters that are not calibrated on default values </span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> refPars<span class="sc">$</span>best</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  x[parSel] <span class="ot">=</span> par</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  predicted <span class="ot">&lt;-</span> <span class="fu">VSEM</span>(x[<span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>], PAR) <span class="co"># replace here VSEM with your model </span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(predicted[,<span class="dv">1</span>] <span class="sc">*</span> <span class="dv">1000</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an error function</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>createError <span class="ot">&lt;-</span> <span class="cf">function</span>(mean, par){</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rnorm</span>(<span class="fu">length</span>(mean), <span class="at">mean =</span> mean, <span class="at">sd =</span> par[<span class="dv">7</span>]))</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co"># plot prior predictive distribution and prior predictive simulations</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plotTimeSeriesResults</span>(<span class="at">sampler =</span> out, <span class="at">model =</span> createPredictions, <span class="at">observed =</span> obs[,<span class="dv">1</span>],</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>                      <span class="at">error =</span> createError, <span class="at">prior =</span> <span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">"Prior predictive"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>DHARMa::plotTimeSeriesResults called with posterior predictive (residual) diagnostics. Type vignette("DHARMa", package="DHARMa") for a guide on how to interpret these plots</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="4G-ProcessBased_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot posterior predictive distribution and posterior predictive simulations</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotTimeSeriesResults</span>(<span class="at">sampler =</span> out, <span class="at">model =</span> createPredictions, <span class="at">observed =</span> obs[,<span class="dv">1</span>],</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">error =</span> createError, <span class="at">main =</span> <span class="st">"Posterior predictive"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>DHARMa::plotTimeSeriesResults called with posterior predictive (residual) diagnostics. Type vignette("DHARMa", package="DHARMa") for a guide on how to interpret these plots</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="4G-ProcessBased_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
 
@@ -596,12 +829,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./4F-BayesianSEMs.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Lavaan and blavaan</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Bayesian causal models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./4H-ApproximateBayesian.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to Bayesian Statistics with R - 10&nbsp; Occupancy models</title>
+<title>Introduction to Bayesian Statistics with R - 9&nbsp; Occupancy models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -96,7 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<meta name="citation_title" content="[10]{.chapter-number}&nbsp; [Occupancy models]{.chapter-title}">
+<meta name="citation_title" content="[9]{.chapter-number}&nbsp; [Occupancy models]{.chapter-title}">
 <meta name="citation_fulltext_html_url" content="https://TheoreticalEcology.github.io/LearningBayes//4B-Occupancy.html">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=ńgrundlangen der statistik;,citation_author=Florian Hartig;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_publisher=https://www.dropbox.com/s/nefr3bteve5lym7/GrundlagenDerStatistik.pdf?dl=0;">
@@ -130,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./4A-ErrorInVariable.html">Hierachical models</a></li><li class="breadcrumb-item"><a href="./4B-Occupancy.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Occupancy models</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./4A-ErrorInVariable.html">Hierachical models</a></li><li class="breadcrumb-item"><a href="./4B-Occupancy.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Occupancy models</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -216,14 +216,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2C-ModelSelection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian model selection</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./2D-Workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Workflow</span></span></a>
+  <a href="./2C-LMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear and linear mixed models</span></span></a>
   </div>
 </li>
       </ul>
@@ -231,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Bayesian GLMMs</span></a>
+ <span class="menu-text">GLMMs, MS, Workflow</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -239,20 +233,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3A-LMM.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear and linear mixed models</span></span></a>
+  <a href="./3A-ModelSelection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian model selection</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3B-GLMM.html" class="sidebar-item-text sidebar-link">
+  <a href="./3B-Workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3C-GLMM.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Generalized linear mixed models</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./3C-VarianceAndObservation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Variance and observation models</span></span></a>
   </div>
 </li>
       </ul>
@@ -269,49 +263,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4A-ErrorInVariable.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Error in variable models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Error in variable models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4B-Occupancy.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Occupancy models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Occupancy models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4C-StateSpaceModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State-space models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">State-space models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4D-AutoregressiveModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Autoregressive models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Autoregressive models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4E-IntegratedModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Integrated Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Integrated Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4F-BayesianSEMs.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Lavaan and blavaan</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Bayesian causal models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4G-ProcessBased.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Process-based models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Process-based models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4H-ApproximateBayesian.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></span></a>
   </div>
 </li>
       </ul>
@@ -328,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./5-Summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Summary and Conclusions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Summary and Conclusions</span></span></a>
   </div>
 </li>
       </ul>
@@ -375,7 +369,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Occupancy models</span></h1>
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Occupancy models</span></h1>
 </div>
 
 
@@ -390,7 +384,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<div class="cell">
+<div class="cell" data-hash="4B-Occupancy_cache/html/unnamed-chunk-2_6b6015ba969a3e0c043da576329ad39b">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EcoData)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effects)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -441,7 +435,7 @@ Number of Fisher Scoring iterations: 8</code></pre>
 </div>
 </div>
 <p>However, there is something wrong with the model</p>
-<div class="cell">
+<div class="cell" data-hash="4B-Occupancy_cache/html/unnamed-chunk-3_98d2a43f1e8c733e82f00d09f1cc7820">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DHARMa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>This is DHARMa 0.4.6. For overview type '?DHARMa'. For recent changes, type news(package = 'DHARMa')</code></pre>
@@ -453,14 +447,14 @@ Number of Fisher Scoring iterations: 8</code></pre>
 </div>
 </div>
 <p>Suspicion - the lizards atually depend on the altitude, but they don’t like wind and therefore hide when there is a lot of wind, and wind also correlates with altitude.</p>
-<div class="cell">
+<div class="cell" data-hash="4B-Occupancy_cache/html/unnamed-chunk-4_086a5203cd2cbcf483653a9e081ec961">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(windObs <span class="sc">~</span> sAltitude, <span class="at">data =</span> volcanoisland)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="4B-Occupancy_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Could we find out what’s the true effect of the environmental predictors? let’s build an occupancy model where we model the true presence of the lizzard as a latent variable.</p>
-<div class="cell">
+<div class="cell" data-hash="4B-Occupancy_cache/html/unnamed-chunk-5_206c9b6cebce5d02f05fd96cc54e76fb">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rjags)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: coda</code></pre>
@@ -549,21 +543,21 @@ Sample size per chain = 5000
 1. Empirical mean and standard deviation for each variable,
    plus standard error of the mean:
 
-         Mean      SD  Naive SE Time-series SE
-SoilL -0.3201 0.08331 0.0006802       0.001102
-altL   0.0358 0.25156 0.0020539       0.003133
-intL   0.2327 0.26703 0.0021803       0.003622
-intO   5.6513 0.63673 0.0051988       0.036906
-windO -4.1361 0.41613 0.0033977       0.023973
+          Mean      SD  Naive SE Time-series SE
+SoilL -0.32036 0.08307 0.0006783       0.001047
+altL   0.04013 0.25479 0.0020803       0.003181
+intL   0.23622 0.26860 0.0021931       0.003652
+intO   5.66535 0.65717 0.0053657       0.038296
+windO -4.14582 0.42957 0.0035074       0.025122
 
 2. Quantiles for each variable:
 
          2.5%      25%      50%     75%   97.5%
-SoilL -0.4946 -0.37347 -0.31659 -0.2613 -0.1675
-altL  -0.4560 -0.13005  0.03162  0.2030  0.5310
-intL  -0.2721  0.04753  0.22542  0.4134  0.7734
-intO   4.5085  5.20723  5.60582  6.0636  6.9813
-windO -5.0037 -4.40965 -4.10607 -3.8429 -3.3835</code></pre>
+SoilL -0.4928 -0.37404 -0.31692 -0.2632 -0.1663
+altL  -0.4540 -0.13044  0.03736  0.2078  0.5453
+intL  -0.2759  0.05005  0.23318  0.4088  0.7863
+intO   4.4430  5.20658  5.65008  6.1011  6.9961
+windO -5.0138 -4.43041 -4.13413 -3.8423 -3.3544</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>dic <span class="ot">=</span> dic <span class="ot">=</span> <span class="fu">dic.samples</span>(jagsModel, <span class="at">n.iter =</span> <span class="dv">5000</span>, <span class="at">type =</span> <span class="st">"pD"</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>dic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -574,7 +568,7 @@ Penalized deviance: NaN </code></pre>
 </div>
 </div>
 <p>Inspecting the occupancy results</p>
-<div class="cell">
+<div class="cell" data-hash="4B-Occupancy_cache/html/unnamed-chunk-6_09c61438c645ed98e271717259b099b0">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>para.names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"LizzardTrue"</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>Samples <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel, <span class="at">variable.names =</span> para.names, <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -610,7 +604,7 @@ Penalized deviance: NaN </code></pre>
 </div>
 </div>
 <p>Checking residuals of this model</p>
-<div class="cell">
+<div class="cell" data-hash="4B-Occupancy_cache/html/unnamed-chunk-7_8e74d1c7e0ef132a51b1f21422754d64">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>para.names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"LizzardObsSim"</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>Samples <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel, <span class="at">variable.names =</span> para.names, <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -644,7 +638,7 @@ Penalized deviance: NaN </code></pre>
     simulated
 
 data:  simulationOutput
-dispersion = 0.94965, p-value = 0.878
+dispersion = 0.93804, p-value = 0.834
 alternative hypothesis: two.sided</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> volcanoisland<span class="sc">$</span>x[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">999</span>, <span class="at">by =</span> <span class="dv">10</span>)]</span>
@@ -659,8 +653,8 @@ alternative hypothesis: two.sided</code></pre>
     DHARMa Moran's I test for distance-based autocorrelation
 
 data:  res2
-observed = 0.114218, expected = -0.010101, sd = 0.017233, p-value =
-5.429e-13
+observed = 0.115750, expected = -0.010101, sd = 0.017233, p-value =
+2.818e-13
 alternative hypothesis: Distance-based autocorrelation</code></pre>
 </div>
 </div>
@@ -904,12 +898,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./4A-ErrorInVariable.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Error in variable models</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Error in variable models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./4C-StateSpaceModels.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State-space models</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">State-space models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

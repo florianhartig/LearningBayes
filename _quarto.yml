@@ -20,13 +20,12 @@ book:
       chapters: 
       - 2A-BayesianLogic.qmd
       - 2B-PosteriorEstimation.qmd
-      - 2C-ModelSelection.qmd
-      - 2D-Workflow.qmd
-    - part: "Bayesian GLMMs"
+      - 2C-LMM.qmd
+    - part: "GLMMs, MS, Workflow"
       chapters: 
-      - 3A-LMM.qmd
-      - 3B-GLMM.qmd
-      - 3C-VarianceAndObservation.qmd
+      - 3A-ModelSelection.qmd
+      - 3B-Workflow.qmd
+      - 3C-GLMM.qmd
     - part: "Hierachical models"
       chapters: 
       - 4A-ErrorInVariable.qmd

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to Bayesian Statistics with R - 9&nbsp; Error in variable models</title>
+<title>Introduction to Bayesian Statistics with R - 8&nbsp; Error in variable models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./4B-Occupancy.html" rel="next">
-<link href="./3C-VarianceAndObservation.html" rel="prev">
+<link href="./3C-GLMM.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -96,7 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<meta name="citation_title" content="[9]{.chapter-number}&nbsp; [Error in variable models]{.chapter-title}">
+<meta name="citation_title" content="[8]{.chapter-number}&nbsp; [Error in variable models]{.chapter-title}">
 <meta name="citation_fulltext_html_url" content="https://TheoreticalEcology.github.io/LearningBayes//4A-ErrorInVariable.html">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=ńgrundlangen der statistik;,citation_author=Florian Hartig;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_publisher=https://www.dropbox.com/s/nefr3bteve5lym7/GrundlagenDerStatistik.pdf?dl=0;">
@@ -130,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./4A-ErrorInVariable.html">Hierachical models</a></li><li class="breadcrumb-item"><a href="./4A-ErrorInVariable.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Error in variable models</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./4A-ErrorInVariable.html">Hierachical models</a></li><li class="breadcrumb-item"><a href="./4A-ErrorInVariable.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Error in variable models</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -216,14 +216,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2C-ModelSelection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Bayesian model selection</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./2D-Workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian Workflow</span></span></a>
+  <a href="./2C-LMM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear and linear mixed models</span></span></a>
   </div>
 </li>
       </ul>
@@ -231,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Bayesian GLMMs</span></a>
+ <span class="menu-text">GLMMs, MS, Workflow</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -239,20 +233,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3A-LMM.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear and linear mixed models</span></span></a>
+  <a href="./3A-ModelSelection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Bayesian model selection</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3B-GLMM.html" class="sidebar-item-text sidebar-link">
+  <a href="./3B-Workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Bayesian Workflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3C-GLMM.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Generalized linear mixed models</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./3C-VarianceAndObservation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Variance and observation models</span></span></a>
   </div>
 </li>
       </ul>
@@ -269,49 +263,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4A-ErrorInVariable.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Error in variable models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Error in variable models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4B-Occupancy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Occupancy models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Occupancy models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4C-StateSpaceModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State-space models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">State-space models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4D-AutoregressiveModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Autoregressive models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Autoregressive models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4E-IntegratedModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Integrated Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Integrated Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4F-BayesianSEMs.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Lavaan and blavaan</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Bayesian causal models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4G-ProcessBased.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Process-based models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Process-based models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./4H-ApproximateBayesian.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Approximate Bayesian Inference</span></span></a>
   </div>
 </li>
       </ul>
@@ -328,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./5-Summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Summary and Conclusions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Summary and Conclusions</span></span></a>
   </div>
 </li>
       </ul>
@@ -372,11 +366,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#example" id="toc-example" class="nav-link active" data-scroll-target="#example"><span class="header-section-number">9.1</span> Example</a></li>
-  <li><a href="#creation-of-the-data" id="toc-creation-of-the-data" class="nav-link" data-scroll-target="#creation-of-the-data"><span class="header-section-number">9.2</span> Creation of the data</a></li>
-  <li><a href="#fitting-a-non-hierarchical-model-leads-to-bias" id="toc-fitting-a-non-hierarchical-model-leads-to-bias" class="nav-link" data-scroll-target="#fitting-a-non-hierarchical-model-leads-to-bias"><span class="header-section-number">9.3</span> Fitting a non-hierarchical model leads to bias</a></li>
-  <li><a href="#fitting-a-hierarchical-model-removes-the-bias" id="toc-fitting-a-hierarchical-model-removes-the-bias" class="nav-link" data-scroll-target="#fitting-a-hierarchical-model-removes-the-bias"><span class="header-section-number">9.4</span> Fitting a hierarchical model removes the bias</a></li>
-  <li><a href="#regression-dillution" id="toc-regression-dillution" class="nav-link" data-scroll-target="#regression-dillution"><span class="header-section-number">9.5</span> Regression dillution</a></li>
+  <li><a href="#regression-dillution-in-distribution-estimates" id="toc-regression-dillution-in-distribution-estimates" class="nav-link active" data-scroll-target="#regression-dillution-in-distribution-estimates"><span class="header-section-number">8.1</span> Regression dillution in distribution estimates</a>
+  <ul class="collapse">
+  <li><a href="#creation-of-the-data" id="toc-creation-of-the-data" class="nav-link" data-scroll-target="#creation-of-the-data"><span class="header-section-number">8.1.1</span> Creation of the data</a></li>
+  <li><a href="#fitting-a-non-hierarchical-model-leads-to-bias" id="toc-fitting-a-non-hierarchical-model-leads-to-bias" class="nav-link" data-scroll-target="#fitting-a-non-hierarchical-model-leads-to-bias"><span class="header-section-number">8.1.2</span> Fitting a non-hierarchical model leads to bias</a></li>
+  <li><a href="#fitting-a-hierarchical-model-removes-the-bias" id="toc-fitting-a-hierarchical-model-removes-the-bias" class="nav-link" data-scroll-target="#fitting-a-hierarchical-model-removes-the-bias"><span class="header-section-number">8.1.3</span> Fitting a hierarchical model removes the bias</a></li>
+  </ul></li>
+  <li><a href="#regression-dilution-in-slope-estimates" id="toc-regression-dilution-in-slope-estimates" class="nav-link" data-scroll-target="#regression-dilution-in-slope-estimates"><span class="header-section-number">8.2</span> Regression dilution in slope estimates</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/TheoreticalEcology/LearningBayes/edit/master/4A-ErrorInVariable.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
@@ -385,7 +381,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Error in variable models</span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Error in variable models</span></h1>
 </div>
 
 
@@ -400,13 +396,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="example" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="example"><span class="header-section-number">9.1</span> Example</h2>
-</section>
-<section id="creation-of-the-data" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="creation-of-the-data"><span class="header-section-number">9.2</span> Creation of the data</h2>
+<section id="regression-dillution-in-distribution-estimates" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="regression-dillution-in-distribution-estimates"><span class="header-section-number">8.1</span> Regression dillution in distribution estimates</h2>
+<section id="creation-of-the-data" class="level3" data-number="8.1.1">
+<h3 data-number="8.1.1" class="anchored" data-anchor-id="creation-of-the-data"><span class="header-section-number">8.1.1</span> Creation of the data</h3>
 <p>Assume we observe data from an ecological system that creates an exponential size distribution (e.g.&nbsp;tree sizes, see <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0058036">Taubert, F.; Hartig, F.; Dobner, H.-J. &amp; Huth, A. (2013) On the Challenge of Fitting Tree Size Distributions in Ecology. PLoS ONE, 8, e58036-</a>), but our measurments are performed with a substantial lognormal observation error</p>
-<div class="cell">
+<div class="cell" data-hash="4A-ErrorInVariable_cache/html/unnamed-chunk-3_4f6f668ad800da13dd1796678c78f510">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>meanSize <span class="ot">&lt;-</span> <span class="dv">10</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>trueLogSd <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sampleSize <span class="ot">&lt;-</span> <span class="dv">500</span></span>
@@ -414,7 +409,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>observations <span class="ot">=</span> <span class="fu">rlnorm</span>(<span class="at">n =</span> <span class="fu">length</span>(truevalues), <span class="at">mean =</span> <span class="fu">log</span>(truevalues), <span class="at">sd =</span> trueLogSd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Plotting true and observed data</p>
-<div class="cell">
+<div class="cell" data-hash="4A-ErrorInVariable_cache/html/unnamed-chunk-4_dc0207848df88d391b6e905be204442f">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>maxV <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">max</span>(observations,truevalues))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs =</span> <span class="fu">hist</span>(observations, <span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span>maxV, <span class="at">plot =</span> F)<span class="sc">$</span>counts,</span>
@@ -426,10 +421,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="fitting-a-non-hierarchical-model-leads-to-bias" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="fitting-a-non-hierarchical-model-leads-to-bias"><span class="header-section-number">9.3</span> Fitting a non-hierarchical model leads to bias</h2>
-<p>Model specification of a non-hierarchical model in JAGS that does not account for the observation error</p>
-<div class="cell">
+<section id="fitting-a-non-hierarchical-model-leads-to-bias" class="level3" data-number="8.1.2">
+<h3 data-number="8.1.2" class="anchored" data-anchor-id="fitting-a-non-hierarchical-model-leads-to-bias"><span class="header-section-number">8.1.2</span> Fitting a non-hierarchical model leads to bias</h3>
+<div class="cell" data-hash="4A-ErrorInVariable_cache/html/unnamed-chunk-5_e72a45fc1c5f0042e6039f9de9e7c2a5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>normalModel <span class="ot">=</span> <span class="fu">textConnection</span>(<span class="st">'</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">                             model {</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">                             # Priors</span></span>
@@ -468,12 +462,11 @@ Initializing model</code></pre>
 </div>
 </div>
 <p>The main thing to note about this is that parameter estimates are heavily biased.</p>
-<p>Note: textConnection avoids having to write the string to file (default option). If you need help on how to interpret these plots, see the material about interpreting MCMC output.</p>
 </section>
-<section id="fitting-a-hierarchical-model-removes-the-bias" class="level2" data-number="9.4">
-<h2 data-number="9.4" class="anchored" data-anchor-id="fitting-a-hierarchical-model-removes-the-bias"><span class="header-section-number">9.4</span> Fitting a hierarchical model removes the bias</h2>
+<section id="fitting-a-hierarchical-model-removes-the-bias" class="level3" data-number="8.1.3">
+<h3 data-number="8.1.3" class="anchored" data-anchor-id="fitting-a-hierarchical-model-removes-the-bias"><span class="header-section-number">8.1.3</span> Fitting a hierarchical model removes the bias</h3>
 <p>Model specification if hierarchical model that accounts for the observation error in Jags</p>
-<div class="cell">
+<div class="cell" data-hash="4A-ErrorInVariable_cache/html/unnamed-chunk-6_a4c718badf88f714279685e8e15a5fef">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>hierarchicalModel <span class="ot">=</span> <span class="fu">textConnection</span>(<span class="st">'</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">                                   model {</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">                                   # Priors</span></span>
@@ -512,28 +505,23 @@ Initializing model</code></pre>
 <p><img src="4A-ErrorInVariable_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>It’s allways good to check the correlation structure in the posterior</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(<span class="fu">as.matrix</span>(results))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="4A-ErrorInVariable_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
+<p>It’s always good to check the correlation structure in the posterior</p>
 </section>
-<section id="regression-dillution" class="level2" data-number="9.5">
-<h2 data-number="9.5" class="anchored" data-anchor-id="regression-dillution"><span class="header-section-number">9.5</span> Regression dillution</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EcoData)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rjags)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>nobs <span class="ot">=</span> <span class="fu">nrow</span>(volcanoisland)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># imagine we had a very bad measurement devide for the altitude</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>volcanoisland<span class="sc">$</span>sAltitudeR <span class="ot">=</span> volcanoisland<span class="sc">$</span>sAltitude <span class="sc">+</span> <span class="fu">rnorm</span>(nobs)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">log</span>(windObs) <span class="sc">~</span> sAltitude, <span class="at">data =</span> volcanoisland)</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">=</span> <span class="fu">lm</span>(<span class="fu">log</span>(windObs) <span class="sc">~</span> sAltitude, <span class="at">data =</span> volcanoisland)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="regression-dilution-in-slope-estimates" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="regression-dilution-in-slope-estimates"><span class="header-section-number">8.2</span> Regression dilution in slope estimates</h2>
+<div class="cell" data-hash="4A-ErrorInVariable_cache/html/unnamed-chunk-7_16e23d778d433f60b1a5e432215def01">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EcoData)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rjags)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>nobs <span class="ot">=</span> <span class="fu">nrow</span>(volcanoisland)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># imagine we had a very bad measurement devide for the altitude</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>volcanoisland<span class="sc">$</span>sAltitudeR <span class="ot">=</span> volcanoisland<span class="sc">$</span>sAltitude <span class="sc">+</span> <span class="fu">rnorm</span>(nobs)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">log</span>(windObs) <span class="sc">~</span> sAltitude, <span class="at">data =</span> volcanoisland)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">=</span> <span class="fu">lm</span>(<span class="fu">log</span>(windObs) <span class="sc">~</span> sAltitude, <span class="at">data =</span> volcanoisland)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -554,10 +542,10 @@ Residual standard error: 0.8498 on 998 degrees of freedom
 Multiple R-squared:  0.1902,    Adjusted R-squared:  0.1894 
 F-statistic: 234.3 on 1 and 998 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(fit, <span class="at">col =</span> <span class="st">"red"</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">=</span> <span class="fu">lm</span>(<span class="fu">log</span>(windObs) <span class="sc">~</span> sAltitudeR, <span class="at">data =</span> volcanoisland)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(fit, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">=</span> <span class="fu">lm</span>(<span class="fu">log</span>(windObs) <span class="sc">~</span> sAltitudeR, <span class="at">data =</span> volcanoisland)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -565,68 +553,68 @@ lm(formula = log(windObs) ~ sAltitudeR, data = volcanoisland)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--3.8547 -0.5635  0.0334  0.5968  2.6949 
+-3.3499 -0.5476  0.0075  0.6033  2.5089 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  1.74029    0.02825   61.61   &lt;2e-16 ***
-sAltitudeR   0.21411    0.01977   10.83   &lt;2e-16 ***
+(Intercept)  1.75802    0.02821   62.31   &lt;2e-16 ***
+sAltitudeR   0.21449    0.01938   11.07   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.8932 on 998 degrees of freedom
-Multiple R-squared:  0.1051,    Adjusted R-squared:  0.1042 
-F-statistic: 117.3 on 1 and 998 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 0.8911 on 998 degrees of freedom
+Multiple R-squared:  0.1094,    Adjusted R-squared:  0.1085 
+F-statistic: 122.5 on 1 and 998 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(fit, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(fit, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="4A-ErrorInVariable_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<p><img src="4A-ErrorInVariable_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>let’s see if we can correct the error</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">list</span>(<span class="at">WindObs =</span> <span class="fu">log</span>(volcanoisland<span class="sc">$</span>windObs),</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">Altitude =</span> volcanoisland<span class="sc">$</span>sAltitudeR,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">plot =</span> <span class="fu">as.numeric</span>(volcanoisland<span class="sc">$</span>plot),</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">nobs =</span> nobs,</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">nplots =</span> <span class="fu">length</span>(<span class="fu">unique</span>(volcanoisland<span class="sc">$</span>plot)))</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>modelCode <span class="ot">=</span> <span class="st">"model{</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:nobs){</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="st">    # error on y</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="st">    WindObs[i] ~ dnorm(mu[i],tau)</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="st">    # error on x</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="st">    Altitude[i] ~ dnorm(TrueAltitude[plot[i]],tauMeasure)</span></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="st">    mu[i] &lt;- AltitudeEffect*TrueAltitude[plot[i]]+ Intercept</span></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior distributions</span></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="st">  # For location parameters, normal choice is wide normal</span></span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="st">  AltitudeEffect ~ dnorm(0,0.0001)</span></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="st">  Intercept ~ dnorm(0,0.0001)</span></span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:nplots){</span></span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="st">     TrueAltitude[i] ~ dnorm(0,0.0001)</span></span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="st">  # For scale parameters, normal choice is decaying</span></span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="st">  tau ~ dgamma(0.001, 0.001)</span></span>
-<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma &lt;- 1/sqrt(tau)</span></span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a><span class="st">  tauMeasure ~ dgamma(0.001, 0.001)</span></span>
-<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="st">  sdMeasure &lt;- 1/sqrt(tauMeasure)</span></span>
-<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
-<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>jagsModel <span class="ot">&lt;-</span> <span class="fu">jags.model</span>(<span class="at">file=</span> <span class="fu">textConnection</span>(modelCode), <span class="at">data=</span>data, <span class="at">n.chains =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="4A-ErrorInVariable_cache/html/unnamed-chunk-8_f32be48945750c8d1c39eddde090ceba">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">list</span>(<span class="at">WindObs =</span> <span class="fu">log</span>(volcanoisland<span class="sc">$</span>windObs),</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">Altitude =</span> volcanoisland<span class="sc">$</span>sAltitudeR,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">plot =</span> <span class="fu">as.numeric</span>(volcanoisland<span class="sc">$</span>plot),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">nobs =</span> nobs,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">nplots =</span> <span class="fu">length</span>(<span class="fu">unique</span>(volcanoisland<span class="sc">$</span>plot)))</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>modelCode <span class="ot">=</span> <span class="st">"model{</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:nobs){</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="st">    # error on y</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="st">    WindObs[i] ~ dnorm(mu[i],tau)</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="st">    # error on x</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="st">    Altitude[i] ~ dnorm(TrueAltitude[plot[i]],tauMeasure)</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="st">    mu[i] &lt;- AltitudeEffect*TrueAltitude[plot[i]]+ Intercept</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior distributions</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="st">  # For location parameters, normal choice is wide normal</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="st">  AltitudeEffect ~ dnorm(0,0.0001)</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="st">  Intercept ~ dnorm(0,0.0001)</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:nplots){</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="st">     TrueAltitude[i] ~ dnorm(0,0.0001)</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="st">  # For scale parameters, normal choice is decaying</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="st">  tau ~ dgamma(0.001, 0.001)</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma &lt;- 1/sqrt(tau)</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="st">  tauMeasure ~ dgamma(0.001, 0.001)</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a><span class="st">  sdMeasure &lt;- 1/sqrt(tauMeasure)</span></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>jagsModel <span class="ot">&lt;-</span> <span class="fu">jags.model</span>(<span class="at">file=</span> <span class="fu">textConnection</span>(modelCode), <span class="at">data=</span>data, <span class="at">n.chains =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Compiling model graph
    Resolving undeclared variables
@@ -638,13 +626,13 @@ Graph information:
 
 Initializing model</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>para.names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"AltitudeEffect"</span>,<span class="st">"Intercept"</span>,<span class="st">"sigma"</span>, <span class="st">"sdMeasure"</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Samples <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel, <span class="at">variable.names =</span> para.names, <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>para.names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"AltitudeEffect"</span>,<span class="st">"Intercept"</span>,<span class="st">"sigma"</span>, <span class="st">"sdMeasure"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>Samples <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel, <span class="at">variable.names =</span> para.names, <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="4A-ErrorInVariable_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<p><img src="4A-ErrorInVariable_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Iterations = 1:5000
@@ -656,18 +644,18 @@ Sample size per chain = 5000
    plus standard error of the mean:
 
                  Mean      SD  Naive SE Time-series SE
-AltitudeEffect 0.4901 0.03125 0.0002551      0.0004373
-Intercept      1.7364 0.02991 0.0002442      0.0003341
-sdMeasure      1.0469 0.02630 0.0002147      0.0002715
-sigma          0.7833 0.01977 0.0001614      0.0002100
+AltitudeEffect 0.4789 0.03043 0.0002485      0.0004178
+Intercept      1.7767 0.02995 0.0002445      0.0003376
+sdMeasure      1.0588 0.02678 0.0002186      0.0002798
+sigma          0.7837 0.01972 0.0001610      0.0002141
 
 2. Quantiles for each variable:
 
                  2.5%    25%    50%    75%  97.5%
-AltitudeEffect 0.4308 0.4688 0.4897 0.5106 0.5529
-Intercept      1.6775 1.7159 1.7365 1.7566 1.7948
-sdMeasure      0.9975 1.0288 1.0465 1.0642 1.0999
-sigma          0.7459 0.7696 0.7830 0.7965 0.8225</code></pre>
+AltitudeEffect 0.4215 0.4585 0.4782 0.4986 0.5408
+Intercept      1.7191 1.7565 1.7767 1.7970 1.8352
+sdMeasure      1.0085 1.0405 1.0580 1.0763 1.1137
+sigma          0.7463 0.7701 0.7833 0.7968 0.8233</code></pre>
 </div>
 </div>
 
@@ -910,13 +898,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./3C-VarianceAndObservation.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Variance and observation models</span></span>
+      <a href="./3C-GLMM.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Generalized linear mixed models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./4B-Occupancy.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Occupancy models</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Occupancy models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
