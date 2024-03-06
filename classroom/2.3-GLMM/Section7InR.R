@@ -1,30 +1,30 @@
----
-output: html_document
-editor_options:
-  chunk_output_type: console
----
-
-```{r, include=FALSE}
+#' ---
+#' output: html_document
+#' editor_options:
+#'   chunk_output_type: console
+#' ---
+#' 
+## ---- include=FALSE-----------------------------------------------------------------------
 set.seed(42)
-```
 
-# Generalized linear mixed models
-
-## Poisson regression
-
-```{r}
+#' 
+#' # Generalized linear mixed models
+#' 
+#' ## Poisson regression
+#' 
+## -----------------------------------------------------------------------------------------
 Dat <- read.table('https://raw.githubusercontent.com/florianhartig/LearningBayes/master/data/LizardData.txt')
 plot(Dat$Veg,Dat$Count)
-```
 
-Standard frequentist GLM
-
-```{r}
+#' 
+#' Standard frequentist GLM
+#' 
+## -----------------------------------------------------------------------------------------
 fit <- glm(Count ~ Veg, data = Dat, family = "poisson")
 summary(fit)
-```
 
-```{r}
+#' 
+## -----------------------------------------------------------------------------------------
 library(rjags)
 library(DHARMa)
 library(BayesianTools)
@@ -80,11 +80,11 @@ gelman.diag(Samples)
 
 # Correlation plot
 correlationPlot(Samples)
-```
 
-## Adding posterior predictions and residual checks
-
-```{r}
+#' 
+#' ## Adding posterior predictions and residual checks
+#' 
+## -----------------------------------------------------------------------------------------
 model ="
   model{
   # Likelihood
@@ -173,11 +173,11 @@ res = createDHARMa(simulatedResponse = t(Pred.Mat),
                    integer = T)
 plot(res)
 ###########################################################
-```
 
-## Adding an overdispersion term
-
-```{r}
+#' 
+#' ## Adding an overdispersion term
+#' 
+## -----------------------------------------------------------------------------------------
 model = "
   model{
   # Likelihood
@@ -274,11 +274,11 @@ plot(res)
 ###########################################################
 
 
-```
 
-## Adding zero-inflation
-
-```{r}
+#' 
+#' ## Adding zero-inflation
+#' 
+## -----------------------------------------------------------------------------------------
 model = "
   model{
   # Likelihood
@@ -381,4 +381,4 @@ res = createDHARMa(simulatedResponse = t(Pred.Mat),
                    fittedPredictedResponse = apply(Pred.Mat, 2, median),
                    integer = T)
 plot(res)
-```
+

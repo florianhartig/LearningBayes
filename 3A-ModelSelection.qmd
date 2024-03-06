@@ -257,7 +257,11 @@ plot(chains2[,1:2])
 
 ### Estimation of the marginal likelihood
 
-While the definition of the Bayesian model weights and averaged parameters is straightforward, the estimation of these quantities is often not. In practice, there are two options to estimate the quantities defined above numerically, both with a number of caveats.
+While the definition of the Bayesian model weights and averaged parameters is straightforward, the estimation of these quantities is often not.
+
+Only very simple problems can be done by importance sampling, e.g. Hudson, D. W., Hodgson, D. J., Cant, M. A., Thompson, F. J., Delahay, R., McDonald, R. A., & McKinley, T. J. (2023). Importance sampling and Bayesian model comparison in ecology and evolution. Methods in Ecology and Evolution, 14(12), 2994-3006.
+
+In practice, there are two computationally efficient options to estimate the quantities defined above numerically, both with a number of caveats.
 
 The first option is to sample directly from the joint posterior of the models and the parameters. Basic algorithms such as rejection sampling can do that without any modification (Toni-ApproximateBayesiancomputation-2009), but they are inefficient for higher-dimensional parameter spaces. More sophisticated algorithms such as MCMC and SMC require modifications to deal with the issue of a changing number of parameters when changing between models, as well as with the issue of a changed meaning of the parameters. Such modifications (the most common class are the **reversible-jump MCMCs (RJ-MCMC)**) are often difficult to program, tune and generalize, which is the reason why they are typically only applied in specialized, well defined settings with a large number of models to be compared.
 
