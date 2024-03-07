@@ -10,18 +10,31 @@ set.seed(42)
 
 # Bayesian model selection
 
+In this chapter, we will discuss 3 approaches to deal with the problem of model selection.
+
+-   Regularizing priors
+
+-   Bayesian information criteria
+
+-   Bayes Factor and Posterior model weights
+
 ## Regularization
+
+The first option is not really a model selection method, but it replaces model selection in many cases. What I mean by this is the following: in many, maybe most cases where model selection is applied in frequentist analysis, the goal is NOT to find out if one of several alternative hypotheses are better supported by the data, but the goal is rather to deal with the problem that we do not have enough data to to fit the large model that we actually want to fit. The underlying problem is the bias-variance trade-off.
+
+In this case, many frequentists use information theoretical (IT) model selection approaches to simplify the model. These approaches are also available to Bayesians (see next subsection on Bayesian IT approaches), but in many cases prior regularization is a better option to deal with this problem. The idea of this approaches is to control model complexity via priors that are deliberately more restrictive than what we would set when expressing our "pure" uncertainty about the respective parameter.
 
 ![](images/shrinkagePriors.png){fig-alt="Shrinkage priors"}
 
-As an example, I will create a dataset with 100 predictors, of which the first 10 have an effect.
+To show how these approaches works, I will create a dataset with 100 predictors, of which the first 10 have an effect with slope 1, and the 90 remaining predictors have no effect, i.e. an effect with a slope of zero.
 
 ```{r}
 set.seed(1)
-
-dat = data.frame(matrix(runif(20000), ncol = 100))
+dat = data.frame(matrix(runif(20000, -0.5,0.5), ncol = 100))
 dat$y = rnorm(200)
 dat$y = dat$y + rowSums(dat[,1:10]) 
+# Preparing data list for Jags 
+Data = list(y = dat$y, x = as.matrix(dat)[,1:100], i.max = nrow(dat))
 ```
 
 We can look at the results of a standard frequentist regression with all predictors
@@ -29,18 +42,37 @@ We can look at the results of a standard frequentist regression with all predict
 ```{r}
 fullModel = lm(y ~ . , data = dat)
 #summary(fullModel)
-barplot(coef(fullModel), las = 2)
 ```
 
-### Mildly regularizing priors
+We can calculate the mean squared error (MSE) of the estimates via
+
+```{r}
+true = c(rep(1,10), rep(0,90))
+estimated = coef(fullModel)[-1]
+MSE = var(true - estimated)
+```
+
+For our convenience later, I will create a small function to plot this
+
+```{r}
+plotEstimates <- function(estimates, ...){
+  MSE = round(var(true - estimates), digits = 4)
+  out <- barplot(estimates, las = 2, ylim = c(-0.5, 1.5), ...)
+  text(60, 1, paste("MSE", MSE))
+  lines(x = c(0,12), y = c(1,1), lwd = 4)
+  lines(x = c(12,120), y = c(0,0), lwd = 4)
+}
+plotEstimates(estimated)
+
+```
+
+### Uninformative priors
+
+Obviously, the Bayesian equivalent of the model with wide uninformative priors would yield the same result.
 
 ```{r}
 library(rjags)
-dat2 = data.frame(scale(dat)) # also response has to be scaled for adaptive shrinkage!
-Data = list(y = dat2$y, x = as.matrix(dat2)[,1:100], i.max = nrow(dat2))
-
-# fitting the full model - no problem for Jags
-modelCode = "model{
+modelCode0 = "model{
   # Likelihood
   for(i in 1:i.max){
     mu[i] <- inprod(a , x[i,]) + b
@@ -49,26 +81,92 @@ modelCode = "model{
   
   # Prior distributions
   for(i in 1:100){
-    a[i] ~ dnorm(0,0.01)
+    a[i] ~ dnorm(0,0.0001)
   }
-  b ~ dnorm(0,0.01)
+  b ~ dnorm(0,0.0001) # usually no need and safer not to regularize intercept
 
   tau ~ dgamma(0.001, 0.001)
   sigma <- 1/sqrt(tau)
 }
 "
-jagsModel <- jags.model(file= textConnection(modelCode), data=Data, n.chains = 3)
+  
 
-para.names <- c("a","b","sigma")
-Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+jagsModel0 <- jags.model(file= textConnection(modelCode0), 
+                        data=Data, 
+                        n.chains = 3)
+
+Samples0 <- coda.samples(jagsModel0, 
+                        variable.names = c("a","b","sigma"), 
+                        n.iter = 5000)
+
+
+x0<- summary(Samples0)
+est0 <- x0$quantiles[1:100,3] 
+plotEstimates(est0)
+```
+
+### Mildly regularizing priors
+
+The idea of mildly regularizing priors is that we give the regression slopes a small push towards zero. The strength of a mildly regularizing prior should be such that it doesn't strongly influence parameter estimates, but still regularizes the problem. If predictors and responses are scaled and centered, we would expect strong effects to have effect sizes of 1. A typical prior width for a mildly regularizing prior would thus be something in the order of 1 to 10.
+
+::: callout-caution
+As discussed, when working with informative priors, we should be aware of the scale of the predictors and the reponse, as the priors have to be viewed in relation to the data scale to say what is a wide and what is a narrow prior.
+
+However, as we created the data in this case in with a centered uniform distribution and a unit scale, we can skip this step
+:::
+
+In my practical work, I have often found that these priors will often help to avoid parameter identifiability problems, in particular in GLMs, thus making model selection or simplification necessary, while having very little influence on the parameter estimates
+
+```{r}
+library(rjags)
+modelCode1 = "model{
+  # Likelihood
+  for(i in 1:i.max){
+    mu[i] <- inprod(a , x[i,]) + b
+    y[i] ~ dnorm(mu[i],tau)
+  }
+  
+  # Prior distributions
+  for(i in 1:100){
+    a[i] ~ dnorm(0,0.5)
+  }
+  b ~ dnorm(0,0.0001) # usually no need and safer not to regularize intercept
+
+  tau ~ dgamma(0.001, 0.001)
+  sigma <- 1/sqrt(tau)
+}
+"
+  
+
+jagsModel1 <- jags.model(file= textConnection(modelCode1), 
+                        data=Data, 
+                        n.chains = 3)
+
+Samples1 <- coda.samples(jagsModel1, 
+                        variable.names = c("a","b","sigma"), 
+                        n.iter = 5000)
 
 #gelman.diag(Samples)
 #summary(Samples)
 
-x1<- summary(Samples)
+x1<- summary(Samples1)
+est1 <- x1$quantiles[1:100,3] 
+plotEstimates(est1)
 ```
 
-### Classical L1 / L2 shrinkage
+In the result, we see a slightly lower MSE as before, but virtually no influence on the effects of on the parameter estimates.
+
+### Fixed or adaptive shrinkage priors
+
+Shrinkage priors are basically the same as before, just stronger.
+
+There are two options to set the shrinkage:
+
+1.  As common in frequentist L1 / L2 shrikage, you could set the the shrinkage via cross-validation or similar approaches
+
+2.  You can treat the shrinkage as a parameter to be estimated in the model and set a hyperprior on it.
+
+I use the latter example in the code below. Note that this structure is very similar to a mixed model, so in some sense we treat the slopes for the different predictors as "random effects" that come from a common normal distribution, whose SD is estimated.
 
 Regularization via prior - Lasso and Ridge equivalents. Idea is that we put a kind of "random effect" directly on the parameter values
 
@@ -80,10 +178,8 @@ http://stats.stackexchange.com/questions/28609/regularized-bayesian-logistic-reg
 
 http://doingbayesiandataanalysis.blogspot.de/2014/01/bayesian-variable-selection-in-multiple.html
 
-Here a version with adaptive shrinkage, i.e. we estimate the strength of the shrinkage via a hyperprior
-
 ```{r}
-modelCode = "model{
+modelCode2 = "model{
 
   # Likelihood
   for(i in 1:i.max){
@@ -105,19 +201,22 @@ modelCode = "model{
 }
 "
 
-# s = function(x) dgamma(x, shape = 0.0001, rate = 0.001)
-# curve(s, 0, 5)
+jagsModel2 <- jags.model(file= textConnection(modelCode2), data=Data, n.chains = 3)
 
-jagsModel <- jags.model(file= textConnection(modelCode), data=Data, n.chains = 3)
-
-para.names <- c("a","b","sigma", "sdShrinkage")
-Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
+para.names <- 
+Samples2 <- coda.samples(jagsModel2, 
+                         variable.names = c("a","b","sigma", "sdShrinkage"), 
+                         n.iter = 5000)
 
 #gelman.diag(Samples)
 #summary(Samples)
 
-x2<- summary(Samples)
+x2<- summary(Samples2)
+est2 <- x2$quantiles[1:100,3] 
+plotEstimates(est2)
 ```
+
+Note in the results that we now have a notable bias towards zero on the parameter estimates, but also overall a strongly reduced MSE on the estimates.
 
 ### Spike and slap
 
@@ -128,7 +227,7 @@ https://darrenjw.wordpress.com/2012/11/20/getting-started-with-bayesian-variable
 Ishwaran, H. & Rao, J. S. (2005) Spike and Slab Variable Selection: Frequentist and Bayesian Strategies. The Annals of Statistics, Institute of Mathematical Statistics, 33, pp. 730-773.
 
 ```{r}
-modelCode = "model{
+modelCode3 = "model{
   # Likelihood
   for(i in 1:i.max){
     mu[i] <- inprod(a , x[i,]) + b
@@ -149,46 +248,160 @@ modelCode = "model{
   }
 "
 
-jagsModel <- jags.model(file= textConnection(modelCode), data=Data, n.chains = 3)
-
-para.names <- c("a_raw", "ind","sigma")
-Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
-
-#summary(Samples)
-#gelman.diag(Samples)
+jagsModel3 <- jags.model(file= textConnection(modelCode3), data=Data, n.chains = 3)
 
 
-x3<- summary(Samples)
+Samples3 <- coda.samples(jagsModel3, 
+                        variable.names = c("a_raw", "ind","sigma"), 
+                        n.iter = 5000)
 
-# looking at the selection 
-res3 <- x3$statistics[101:200,1] 
-barplot(res3, names.arg = 1:100, las = 2)
+x3<- summary(Samples3)
+
+```
+
+In this model, we get two estimates for each predictor: the probability that a variable is in the model (ind) and the estimate for the variable, conditional on its inclusion in the model. Let's first look at the probability to be in the model
+
+```{r}
+incl <- x3$quantiles[101:200,3] 
+barplot(incl)
+```
+
+Pretty good recovery. Here are the conditional estimates
+
+```{r}
+condEst <- x3$quantiles[1:100,3] 
+plotEstimates(condEst)
+```
+
+As a final estimator, I plot the probability to be included times the conditional estimate:
+
+```{r}
+est3 <- condEst * incl
+plotEstimates(est3)
+```
+
+### Comparison of the methods
+
+Here the comparison of the unregularized model with all 3 prior regularization
+
+```{r}
+par(mfrow = c(2,2))
+plotEstimates(est0, main = "Uninformative")
+plotEstimates(est1, main = "Mildly regularizing")
+plotEstimates(est2, main = "Adaptive shrinkage")
+plotEstimates(est3, main = "Spike and slap")
+
+```
+
+## Information Criteria
+
+### DIC
+
+DIC can be calculated in Jags using
+
+```{r,eval = F}
+dic = dic.samples(jagsModel, n.iter = 5000)
+```
+
+In the result of DIC, you will find
+
+1.  The mean deviance (Likelihood), to be interpreted the average fit of the model
+2.  The estimated complexity of the model
+3.  The penalized deviance, which is deviance penalized for model complexity
+
+We can calculate DICs for all the previous 4 models:
+
+```{r}
+dic0 = dic.samples(jagsModel0, n.iter = 5000)
+dic1 = dic.samples(jagsModel1, n.iter = 5000)
+dic2 = dic.samples(jagsModel2, n.iter = 5000)
+dic3 = dic.samples(jagsModel3, n.iter = 5000)
 ```
 
 ```{r}
-par(mfrow = c(1,3))
-
-
-res1 <- x1$quantiles[1:100,3] 
-barplot(res1, names.arg = 1:100, las = 2)
-abline(h = 1)
-abline(v = 12)
-
-res2 <- x2$quantiles[1:100,3] 
-barplot(res2, names.arg = 1:100, las = 2)
-abline(h = 1)
-abline(v = 12)
-
-res3 <- x3$quantiles[101:200,3] * x3$quantiles[1:100,3]
-barplot(res3, names.arg = 1:100, las = 2)
-abline(h = 1)
-abline(v = 12)
+dic0
+dic1
+dic2
+dic3
 ```
 
-Comparison side by side for the first 20 values
+We see that the effective number of parameters estimated by the DIC is very different between the different models. The shrinkage priors reduce the effective number of parameters. The spike and slap model has formally (by counting in the code) the most parameters of all models, more than 200, but the DIC estimates that it has effectively only 18 parameters.
+
+### WAIC
+
+It was suggested that WAIC has a bunch of favorable advantages over DIC, but it is also harder to calculate. In Jags, WAIC is a bit complicated. It is better supported in STAN and brms.
+
+```{r, message = F, results='hide'}
+library(brms)
+?waic
+
+# model with population-level effects only
+fit1 <- brm(rating ~ treat + period + carry,
+            data = inhaler)
+waic1 <- waic(fit1)
+
+# model with an additional varying intercept for subjects
+fit2 <- brm(rating ~ treat + period + carry + (1|subject),
+            data = inhaler)
+waic2 <- waic(fit2)
+```
+
+compare both models
 
 ```{r}
-barplot(rbind(res1, res2, res3)[,1:20], beside = T)
+loo_compare(waic1, waic2)
+```
+
+### Careful with model selection
+
+Note that selection based on information criteria shares many of the same problems that appear in frequentist IC selection. Those are in particular
+
+-   Affects uncertainties, in particular p-values
+-   Destroys causal relationships
+
+The issue is known under the term "post-selection inference" and applies to Bayesian and frequentist models alike, see e.g. Kuchibhotla, A. K., Kolassa, J. E., & Kuffner, T. A. (2022). Post-selection inference. *Annual Review of Statistics and Its Application*, *9*, 505-527.
+
+This example shows how AIC selection, followed by a conventional regression analysis of the selected model, massively inflates false positives.
+
+```{r, message = F, results='hide'}
+set.seed(1)
+library(MASS)
+
+dat = data.frame(matrix(runif(20000), ncol = 100))
+dat$y = rnorm(200)
+fullModel = lm(y ~ . , data = dat)
+summary(fullModel)
+# 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)
+
+selection = stepAIC(fullModel, trace = F)
+summary(lm(y ~ X1 + X2 + X3 + X5 + X7 + X13 + X20 + X23 + X30 + 
+             X37 + X42 + X45 + X46 + X47 + X48 + X64 + X65 + X66 + X71 + 
+             X75 + X80 + X81 + X87 + X88 + X89 + X90 + X94 + X100, data = dat))
+
+# voila, 15 out of 28 (before 100) predictors significant - looks like we could have good fun to discuss / publish these results!
+
+
+#######################################################
+# Same thing, but now we put in 10 significant predictors (the first 10 x)
+
+set.seed(1)
+library(MASS)
+
+dat = data.frame(matrix(runif(20000), ncol = 100))
+dat$y = rnorm(200)
+dat$y = dat$y + rowSums(dat[,1:10]) 
+fullModel = lm(y ~ . , data = dat)
+summary(fullModel)
+# 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)
+
+selection = stepAIC(fullModel, trace = F)
+summary(lm(y ~ X1 + X2 + X3 + X4 + X5 + X6 + X7 + X8 + X9 + X10 + X13 + 
+             X14 + X20 + X23 + X24 + X26 + X30 + X37 + X42 + X46 + X47 + 
+             X48 + X49 + X64 + X65 + X66 + X68 + X71 + X73 + X75 + X80 + 
+             X81 + X87 + X88 + X89 + X90 + X94, data = dat))
+
+# true positives are good, but false positives remain
+
 ```
 
 ## Bayes Factors
@@ -358,12 +571,18 @@ Calculating Bayes factor
 exp(M1$ln.ML - M2$ln.ML)
 ```
 
+As you see, the value is very different to the value we calculated before. 
+
 ### Fractional BF
 
 The fact that Bayesian model weights are strongly dependent on the width of the prior choice has sparked discussion of the appropriateness of this approach in situations with uninformative priors. For example, in situations where multiple nested models are compared, the width of the uniformative prior may completely determine the complexity of models that are being selected. One suggestion that has been made is not to perform multi-model inference with uninformative priors at all, or that at least additional analysis is necessary to find parameter priors that are sensible for the multi-model setup at hand. Another solution is to calibrate the model on a part of the data first, use the result as new priors and then perform the analysis described above (intrinsic Bayes factor (Berger-IntrinsicBayesFactor-1996), fractional Bayes factor (OHagan-FractionalBayesFactors-1995)). If sufficient data is available so that the likelihood falls off sufficiently strong during the calibration step, this approach should nearly eliminate any ambiguity resulting from the prior choice.
 
 ```{r, message = F, results='hide'}
+
 # likelihoods with half the data 
+# note: half of the data is ensured here by summing only seq(1, 30, 2) of the
+# observations in the likelihood
+
 likelihood1 <- function(param){
   pred = param[1] + param[2]*x + param[3] * x^2
   singlelikelihoods = dnorm(y, mean = pred, sd = 1/(param[4]^2), log = TRUE)
@@ -394,6 +613,9 @@ newPrior2 = createPriorDensity(out2, start = 200,
 
 # now rerun this with likelihoods for the other half of the data and new prior
 
+xTest= x[16:30]
+yTest = y[16:30]
+
 likelihood1 <- function(param){
   pred = param[1] + param[2]*x + param[3] * x^2
   singlelikelihoods = dnorm(y, mean = pred, sd = 1/(param[4]^2), log = TRUE)
@@ -419,97 +641,4 @@ Calculating the fractional Bayes factor
 
 ```{r}
 exp(M1$ln.ML - M2$ln.ML)
-```
-
-## Information Criteria
-
-### DIC
-
-DIC can be calculated in Jags using
-
-```{r,eval = F}
-dic = dic.samples(jagsModel, n.iter = 5000)
-```
-
-This was for the previous model, which was the spike and slap. In the result, the penalty is the effective number of parameters of this model.
-
-Note that this value is pretty low (around 12 parameters), which makes sense because although the spike and slap has formally 200 parameters, most of them are, as we have seen, ineffective.
-
-**Task:** calculate DIA for the other prior regularizations above and observe the effective number of parameters
-
-### WAIC
-
-It was suggested that WAIC has a bunch of favorable advantages over DIC, but it is also harder to calculate. In Jags, WAIC is a bit complicated. It is better supported in STAN and brms.
-
-```{r, message = F, results='hide'}
-library(brms)
-?waic
-
-# model with population-level effects only
-fit1 <- brm(rating ~ treat + period + carry,
-            data = inhaler)
-waic1 <- waic(fit1)
-
-# model with an additional varying intercept for subjects
-fit2 <- brm(rating ~ treat + period + carry + (1|subject),
-            data = inhaler)
-waic2 <- waic(fit2)
-```
-
-compare both models
-
-```{r}
-loo_compare(waic1, waic2)
-```
-
-### Careful with model selection
-
-Note that selection based on information criteria shares many of the same problems that appear in frequentist IC selection. Those are in particular
-
--   Affects uncertainties, in particular p-values
--   Destroys causal relationships
-
-The issue is known under the term "post-selection inference" and applies to Bayesian and frequentist models alike, see e.g. Kuchibhotla, A. K., Kolassa, J. E., & Kuffner, T. A. (2022). Post-selection inference. *Annual Review of Statistics and Its Application*, *9*, 505-527.
-
-This example shows how AIC selection, followed by a conventional regression analysis of the selected model, massively inflates false positives.
-
-```{r, message = F, results='hide'}
-set.seed(1)
-library(MASS)
-
-dat = data.frame(matrix(runif(20000), ncol = 100))
-dat$y = rnorm(200)
-fullModel = lm(y ~ . , data = dat)
-summary(fullModel)
-# 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)
-
-selection = stepAIC(fullModel, trace = F)
-summary(lm(y ~ X1 + X2 + X3 + X5 + X7 + X13 + X20 + X23 + X30 + 
-             X37 + X42 + X45 + X46 + X47 + X48 + X64 + X65 + X66 + X71 + 
-             X75 + X80 + X81 + X87 + X88 + X89 + X90 + X94 + X100, data = dat))
-
-# voila, 15 out of 28 (before 100) predictors significant - looks like we could have good fun to discuss / publish these results!
-
-
-#######################################################
-# Same thing, but now we put in 10 significant predictors (the first 10 x)
-
-set.seed(1)
-library(MASS)
-
-dat = data.frame(matrix(runif(20000), ncol = 100))
-dat$y = rnorm(200)
-dat$y = dat$y + rowSums(dat[,1:10]) 
-fullModel = lm(y ~ . , data = dat)
-summary(fullModel)
-# 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)
-
-selection = stepAIC(fullModel, trace = F)
-summary(lm(y ~ X1 + X2 + X3 + X4 + X5 + X6 + X7 + X8 + X9 + X10 + X13 + 
-             X14 + X20 + X23 + X24 + X26 + X30 + X37 + X42 + X46 + X47 + 
-             X48 + X49 + X64 + X65 + X66 + X68 + X71 + X73 + X75 + X80 + 
-             X81 + X87 + X88 + X89 + X90 + X94, data = dat))
-
-# true positives are good, but false positives remain
-
 ```

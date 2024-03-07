@@ -14,7 +14,6 @@ set.seed(42)
 
 To introduce the typical options in a linear model, we use an example that was originally prepared by Jörn Pagel. In the example, we want to analyze predictors of Body mass in the snake Vipera aspis.
 
-
 ```{r}
 Dat = read.table("https://raw.githubusercontent.com/florianhartig/LearningBayes/master/data/Aspis_data.txt", stringsAsFactors = T)
 
@@ -37,7 +36,7 @@ LM <- lm(log_BM ~ log_TL.sc, data = Dat)
 summary(LM)
 ```
 
-Analysis in JAGS    
+Analysis in JAGS
 
 ```{r}
 library(rjags)
@@ -59,6 +58,10 @@ model{
   sigma ~ dunif(0,100)
   }
 "
+
+# s = function(x) dgamma(x, shape = 0.0001, rate = 0.001)
+# curve(s, 0, 5)
+
 
 # 2) Set up a list that contains all the necessary data
 Data = list(y = Dat$log_BM, 
@@ -129,7 +132,7 @@ LM <- lm(log_BM ~ log_TL.sc + Sex, data = Dat)
 summary(LM)
 ```
 
-Analysis in JAGS 
+Analysis in JAGS
 
 ```{r}
 model = 
@@ -201,7 +204,7 @@ LM <- lm(log_BM ~ log_TL.sc + Sex + Sex:log_TL.sc, data = Dat)
 summary(LM)
 ```
 
-Analysis in JAGS    
+Analysis in JAGS
 
 ```{r}
 model =
@@ -265,9 +268,7 @@ gelman.diag(Samples)
 BayesianTools::correlationPlot(Samples)
 ```
 
-
 ## LMM (mixed effects)
-
 
 ```{r}
 ####################################################################
@@ -349,4 +350,3 @@ gelman.diag(Samples)
 # Correlation plot
 BayesianTools::correlationPlot(Samples)
 ```
-
