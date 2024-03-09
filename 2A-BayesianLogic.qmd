@@ -454,9 +454,7 @@ barplot(priorWeight/values^2, width = values^2, names.arg = values^2,
         xlab = "size [cm^2]", ylab = "priorProbability", col = "darkseagreen")
 ```
 
-The message here is that if we are free to rescale predictors as we want (which is generally true), the prior cannot be flat for all possible parameter transformations.
-
-A key for any rule about finding uninformative priors is therefore that the rule must be invariant under parameter transformation.
+The message here is that if we are free to rescale predictors as we want (which is generally true), the prior cannot be flat for all possible parameter transformations. A key for any rule about finding uninformative priors is therefore that the rule must be invariant under parameter transformation. For more on this, see [@george1993].
 
 A second message is that in Bayesian statistics, you have to be a bit careful about parameter transformations, because we don't just look at one value, but at a whole distribution, and the shape of this distribution will change of we reparameterize.
 
@@ -531,7 +529,3 @@ Jeffreys priors for mixture estimation http://arxiv.org/abs/1511.03145
 **Informative priors**
 
 Choy, S. L.; O'Leary, R. & Mengersen, K. (2009) Elicitation by design in ecology: using expert opinion to inform priors for Bayesian statistical models. Ecology, 90, 265-277
-
-
-
-

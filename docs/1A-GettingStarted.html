@@ -369,7 +369,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#organization-of-this-book" id="toc-organization-of-this-book" class="nav-link active" data-scroll-target="#organization-of-this-book"><span class="header-section-number">1.1</span> Organization of this book</a></li>
   <li><a href="#your-r-system" id="toc-your-r-system" class="nav-link" data-scroll-target="#your-r-system"><span class="header-section-number">1.2</span> Your R System</a></li>
   <li><a href="#libraries-that-you-will-need" id="toc-libraries-that-you-will-need" class="nav-link" data-scroll-target="#libraries-that-you-will-need"><span class="header-section-number">1.3</span> Libraries that you will need</a></li>
-  <li><a href="#assumed-r-knowledge" id="toc-assumed-r-knowledge" class="nav-link" data-scroll-target="#assumed-r-knowledge"><span class="header-section-number">1.4</span> Assumed R knowledge</a></li>
+  <li><a href="#exercises-and-r-code-from-the-book" id="toc-exercises-and-r-code-from-the-book" class="nav-link" data-scroll-target="#exercises-and-r-code-from-the-book"><span class="header-section-number">1.4</span> Exercises and R code from the book</a></li>
+  <li><a href="#assumed-r-knowledge" id="toc-assumed-r-knowledge" class="nav-link" data-scroll-target="#assumed-r-knowledge"><span class="header-section-number">1.5</span> Assumed R knowledge</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/TheoreticalEcology/LearningBayes/edit/master/1A-GettingStarted.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
@@ -458,8 +459,13 @@ cmake</code></pre>
 </div>
 <p>Also, you should install the JAGS (see <a href="https://mcmc-jags.sourceforge.io" class="uri">https://mcmc-jags.sourceforge.io</a>). You can find the downloads for different operating systems at <a href="https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/" class="uri">https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/</a></p>
 </section>
-<section id="assumed-r-knowledge" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="assumed-r-knowledge"><span class="header-section-number">1.4</span> Assumed R knowledge</h2>
+<section id="exercises-and-r-code-from-the-book" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="exercises-and-r-code-from-the-book"><span class="header-section-number">1.4</span> Exercises and R code from the book</h2>
+<p>In case you want to run the code yourself, note that a plain R version of the code of each chapter is provided [here](https://github.com/florianhartig/LearningBayes/tree/master/classroom)</p>
+<p>The same folder holds some R scripts that are meant as classroom exercises, accompanying each chapter.</p>
+</section>
+<section id="assumed-r-knowledge" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="assumed-r-knowledge"><span class="header-section-number">1.5</span> Assumed R knowledge</h2>
 <p>As mentioned in the preface, this book assumes that you have basic knowledge about data manipulation (reading in data, removing or selecting columns or rows, calculating means per group etc.) and plotting in R. Note that for both purposes, there are currently two main schools in the R environment which do the same things, but with very different syntax:</p>
 <ol type="1">
 <li><strong>base R</strong>, which uses functions such as <code>plot()</code>, <code>apply()</code>, <code>aggregate()</code></li>
@@ -636,9 +642,9 @@ Solution
 <li><p>Single continuous variables can be visualized using a histogram (<code>hist)</code> , for two variables, it depends on their data types:</p>
 <table class="table">
 <colgroup>
-<col style="width: 20%">
-<col style="width: 21%">
-<col style="width: 58%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 53%">
 </colgroup>
 <thead>
 <tr class="header">

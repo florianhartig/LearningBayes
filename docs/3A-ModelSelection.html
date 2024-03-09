@@ -54,7 +54,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -121,6 +140,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="citation_reference" content="citation_title=A biologist’s guide to model selection and causal inference;,citation_author=Zachary M Laubach;,citation_author=Eleanor J Murray;,citation_author=Kim L Hoke;,citation_author=Rebecca J Safran;,citation_author=Wei Perng;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_issue=1943;,citation_volume=288;,citation_journal_title=Proceedings of the Royal Society B;,citation_publisher=The Royal Society;">
 <meta name="citation_reference" content="citation_title=Control of confounding and reporting of results in causal inference studies. Guidance for authors from editors of respiratory, sleep, and critical care journals;,citation_author=David J Lederer;,citation_author=Scott C Bell;,citation_author=Richard D Branson;,citation_author=James D Chalmers;,citation_author=Rachel Marshall;,citation_author=David M Maslove;,citation_author=David E Ost;,citation_author=Naresh M Punjabi;,citation_author=Michael Schatz;,citation_author=Alan R Smyth;,citation_author=others;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_issue=1;,citation_volume=16;,citation_journal_title=Annals of the American Thoracic Society;,citation_publisher=American Thoracic Society;">
 <meta name="citation_reference" content="citation_title=A note on model selection using information criteria for general linear models estimated using REML;,citation_author=Arunas Petras Verbyla;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_fulltext_html_url=https://onlinelibrary.wiley.com/doi/abs/10.1111/anzs.12254;,citation_issue=1;,citation_doi=10.1111/anzs.12254;,citation_volume=61;,citation_language=en;,citation_journal_title=Australian &amp;amp;amp; New Zealand Journal of Statistics;">
+<meta name="citation_reference" content="citation_title=On obtaining invariant prior distributions;,citation_author=Edward I. George;,citation_author=Robert McCulloch;,citation_publication_date=1993-11-01;,citation_cover_date=1993-11-01;,citation_year=1993;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/037837589390086L;,citation_issue=2;,citation_doi=10.1016/0378-3758(93)90086-L;,citation_volume=37;,citation_journal_title=Journal of Statistical Planning and Inference;">
+<meta name="citation_reference" content="citation_title=Model selection and multi-model inference: A practical information-theoretic approach;,citation_author=Kenneth P Burnham;,citation_author=David R Anderson;,citation_publication_date=2002;,citation_cover_date=2002;,citation_year=2002;">
+<meta name="citation_reference" content="citation_title=Bayes factors;,citation_author=A. E. Kass, R. E. And Raftery;,citation_publication_date=1995-06;,citation_cover_date=1995-06;,citation_year=1995;,citation_issue=430;,citation_volume=90;,citation_journal_title=Journal of The American Statistical Association;">
+<meta name="citation_reference" content="citation_title=Computing the bayes factor from a markov chain monte carlo simulation of the posterior distribution;,citation_author=Martin D Weinberg;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=3;,citation_volume=7;,citation_journal_title=Bayesian Analysis;">
+<meta name="citation_reference" content="citation_title=Model averaging in ecology: A review of bayesian, information-theoretic, and tactical approaches for predictive inference;,citation_author=F. Dormann Carsten;,citation_author=M. Calabrese Justin;,citation_author=Guillera-Arroita Gurutzeta;,citation_author=Matechou Eleni;,citation_author=Bahn Volker;,citation_author=BartoÅ Kamil;,citation_author=M. Beale Colin;,citation_author=Ciuti Simone;,citation_author=Elith Jane;,citation_author=Gerstner Katharina;,citation_author=Guelat JÃ©rÃ´me;,citation_author=Keil Petr;,citation_author=J. Lahoz-Monfort JosÃ©;,citation_author=J. Pollock Laura;,citation_author=Reineking BjÃ¶rn;,citation_author=R. Roberts David;,citation_author=SchrÃ¶der Boris;,citation_author=Thuiller Wilfried;,citation_author=I. Warton David;,citation_author=A. Wintle Brendan;,citation_author=N. Wood Simon;,citation_author=O. WÃ¼est Rafael;,citation_author=Hartig Florian;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_fulltext_html_url=https://doi.org/10.1002/ecm.1309;,citation_issue=0;,citation_doi=10.1002/ecm.1309;,citation_volume=0;,citation_journal_title=Ecol Monogr;">
 </head>
 
 <body class="nav-sidebar floating">
@@ -370,21 +394,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#regularization" id="toc-regularization" class="nav-link active" data-scroll-target="#regularization"><span class="header-section-number">5.1</span> Regularization</a>
   <ul class="collapse">
-  <li><a href="#mildly-regularizing-priors" id="toc-mildly-regularizing-priors" class="nav-link" data-scroll-target="#mildly-regularizing-priors"><span class="header-section-number">5.1.1</span> Mildly regularizing priors</a></li>
-  <li><a href="#classical-l1-l2-shrinkage" id="toc-classical-l1-l2-shrinkage" class="nav-link" data-scroll-target="#classical-l1-l2-shrinkage"><span class="header-section-number">5.1.2</span> Classical L1 / L2 shrinkage</a></li>
-  <li><a href="#spike-and-slap" id="toc-spike-and-slap" class="nav-link" data-scroll-target="#spike-and-slap"><span class="header-section-number">5.1.3</span> Spike and slap</a></li>
+  <li><a href="#uninformative-priors" id="toc-uninformative-priors" class="nav-link" data-scroll-target="#uninformative-priors"><span class="header-section-number">5.1.1</span> Uninformative priors</a></li>
+  <li><a href="#mildly-regularizing-priors" id="toc-mildly-regularizing-priors" class="nav-link" data-scroll-target="#mildly-regularizing-priors"><span class="header-section-number">5.1.2</span> Mildly regularizing priors</a></li>
+  <li><a href="#fixed-or-adaptive-shrinkage-priors" id="toc-fixed-or-adaptive-shrinkage-priors" class="nav-link" data-scroll-target="#fixed-or-adaptive-shrinkage-priors"><span class="header-section-number">5.1.3</span> Fixed or adaptive shrinkage priors</a></li>
+  <li><a href="#spike-and-slab" id="toc-spike-and-slab" class="nav-link" data-scroll-target="#spike-and-slab"><span class="header-section-number">5.1.4</span> Spike and slab</a></li>
+  <li><a href="#comparison-of-the-methods" id="toc-comparison-of-the-methods" class="nav-link" data-scroll-target="#comparison-of-the-methods"><span class="header-section-number">5.1.5</span> Comparison of the methods</a></li>
   </ul></li>
-  <li><a href="#bayes-factors" id="toc-bayes-factors" class="nav-link" data-scroll-target="#bayes-factors"><span class="header-section-number">5.2</span> Bayes Factors</a>
+  <li><a href="#information-criteria" id="toc-information-criteria" class="nav-link" data-scroll-target="#information-criteria"><span class="header-section-number">5.2</span> Information Criteria</a>
   <ul class="collapse">
-  <li><a href="#estimation-of-the-marginal-likelihood" id="toc-estimation-of-the-marginal-likelihood" class="nav-link" data-scroll-target="#estimation-of-the-marginal-likelihood"><span class="header-section-number">5.2.1</span> Estimation of the marginal likelihood</a></li>
-  <li><a href="#prior-influence-on-the-marginal-likelihood" id="toc-prior-influence-on-the-marginal-likelihood" class="nav-link" data-scroll-target="#prior-influence-on-the-marginal-likelihood"><span class="header-section-number">5.2.2</span> Prior influence on the marginal likelihood</a></li>
-  <li><a href="#fractional-bf" id="toc-fractional-bf" class="nav-link" data-scroll-target="#fractional-bf"><span class="header-section-number">5.2.3</span> Fractional BF</a></li>
+  <li><a href="#dic" id="toc-dic" class="nav-link" data-scroll-target="#dic"><span class="header-section-number">5.2.1</span> DIC</a></li>
+  <li><a href="#waic" id="toc-waic" class="nav-link" data-scroll-target="#waic"><span class="header-section-number">5.2.2</span> WAIC</a></li>
+  <li><a href="#careful-with-step-wise-model-selection" id="toc-careful-with-step-wise-model-selection" class="nav-link" data-scroll-target="#careful-with-step-wise-model-selection"><span class="header-section-number">5.2.3</span> Careful with step-wise model selection</a></li>
   </ul></li>
-  <li><a href="#information-criteria" id="toc-information-criteria" class="nav-link" data-scroll-target="#information-criteria"><span class="header-section-number">5.3</span> Information Criteria</a>
+  <li><a href="#bayes-factors" id="toc-bayes-factors" class="nav-link" data-scroll-target="#bayes-factors"><span class="header-section-number">5.3</span> Bayes Factors</a>
   <ul class="collapse">
-  <li><a href="#dic" id="toc-dic" class="nav-link" data-scroll-target="#dic"><span class="header-section-number">5.3.1</span> DIC</a></li>
-  <li><a href="#waic" id="toc-waic" class="nav-link" data-scroll-target="#waic"><span class="header-section-number">5.3.2</span> WAIC</a></li>
-  <li><a href="#careful-with-model-selection" id="toc-careful-with-model-selection" class="nav-link" data-scroll-target="#careful-with-model-selection"><span class="header-section-number">5.3.3</span> Careful with model selection</a></li>
+  <li><a href="#estimation-of-the-marginal-likelihood-in-practice" id="toc-estimation-of-the-marginal-likelihood-in-practice" class="nav-link" data-scroll-target="#estimation-of-the-marginal-likelihood-in-practice"><span class="header-section-number">5.3.1</span> Estimation of the marginal likelihood in practice</a></li>
+  <li><a href="#prior-influence-on-the-marginal-likelihood" id="toc-prior-influence-on-the-marginal-likelihood" class="nav-link" data-scroll-target="#prior-influence-on-the-marginal-likelihood"><span class="header-section-number">5.3.2</span> Prior influence on the marginal likelihood</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/TheoreticalEcology/LearningBayes/edit/master/3A-ModelSelection.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
@@ -409,30 +434,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<p>In this chapter, we will discuss 3 approaches to deal with the problem of model selection.</p>
+<ul>
+<li><p>Regularizing priors</p></li>
+<li><p>Bayesian information criteria</p></li>
+<li><p>Bayes Factor and Posterior model weights</p></li>
+</ul>
 <section id="regularization" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="regularization"><span class="header-section-number">5.1</span> Regularization</h2>
+<p>The first option is not really a model selection method, but it replaces model selection in many cases. What I mean by this is the following: in many, maybe most cases where model selection is applied in frequentist analysis, the goal is NOT to find out if one of several alternative hypotheses are better supported by the data, but the goal is rather to deal with the problem that we do not have enough data to to fit the large model that we actually want to fit. The underlying problem is the bias-variance trade-off.</p>
+<p>In this case, many frequentists use information theoretical (IT) model selection approaches to simplify the model. These approaches are also available to Bayesians (see next subsection on Bayesian IT approaches), but in many cases prior regularization is a better option to deal with this problem. The idea of this approaches is to control model complexity via priors that are deliberately more restrictive than what we would set when expressing our “pure” uncertainty about the respective parameter.</p>
 <p><img src="images/shrinkagePriors.png" class="img-fluid" alt="Shrinkage priors"></p>
-<p>As an example, I will create a dataset with 100 predictors, of which the first 10 have an effect.</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-2_e8220ebedd8626ecdacd9102e1bee210">
+<p>To show how these approaches works, I will create a dataset with 100 predictors, of which the first 10 have an effect with slope 1, and the 90 remaining predictors have no effect, i.e.&nbsp;an effect with a slope of zero.</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-2_fe87ac6d6d920e44821105a923c7f994">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">20000</span>), <span class="at">ncol =</span> <span class="dv">100</span>))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> dat<span class="sc">$</span>y <span class="sc">+</span> <span class="fu">rowSums</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">20000</span>, <span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">0.5</span>), <span class="at">ncol =</span> <span class="dv">100</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> dat<span class="sc">$</span>y <span class="sc">+</span> <span class="fu">rowSums</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]) </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparing data list for Jags </span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> <span class="fu">list</span>(<span class="at">y =</span> dat<span class="sc">$</span>y, <span class="at">x =</span> <span class="fu">as.matrix</span>(dat)[,<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>], <span class="at">i.max =</span> <span class="fu">nrow</span>(dat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can look at the results of a standard frequentist regression with all predictors</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-3_5f6b558d048b676a9a60be6164f78b05">
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-3_f59ee9626ba4470cf42b61e852438a31">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fullModel <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> . , <span class="at">data =</span> dat)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(fullModel)</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">coef</span>(fullModel), <span class="at">las =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(fullModel)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can calculate the mean squared error (MSE) of the estimates via</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-4_f44b45c3c81d0a3b2e2c9685d7acce7c">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>true <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">10</span>), <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">90</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>estimated <span class="ot">=</span> <span class="fu">coef</span>(fullModel)[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>MSE <span class="ot">=</span> <span class="fu">var</span>(true <span class="sc">-</span> estimated)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For our convenience later, I will create a small function to plot this</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-5_d8bad81c2deaab0c4f3aa07c0238cace">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plotEstimates <span class="ot">&lt;-</span> <span class="cf">function</span>(estimates, ...){</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  MSE <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">var</span>(true <span class="sc">-</span> estimates), <span class="at">digits =</span> <span class="dv">4</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">barplot</span>(estimates, <span class="at">las =</span> <span class="dv">2</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>, <span class="fl">1.5</span>), ...)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="dv">60</span>, <span class="dv">1</span>, <span class="fu">paste</span>(<span class="st">"MSE"</span>, MSE))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">12</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">lwd =</span> <span class="dv">4</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">120</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">lwd =</span> <span class="dv">4</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plotEstimates</span>(estimated)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<section id="mildly-regularizing-priors" class="level3" data-number="5.1.1">
-<h3 data-number="5.1.1" class="anchored" data-anchor-id="mildly-regularizing-priors"><span class="header-section-number">5.1.1</span> Mildly regularizing priors</h3>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-4_378575f50abffc42b479679bff6d717a">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rjags)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="uninformative-priors" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="uninformative-priors"><span class="header-section-number">5.1.1</span> Uninformative priors</h3>
+<p>Obviously, the Bayesian equivalent of the model with wide uninformative priors would yield the same result.</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-6_27d3fd5b60b00bb88862026242d44f16">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rjags)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: coda</code></pre>
 </div>
@@ -442,28 +493,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stderr">
 <pre><code>Loaded modules: basemod,bugs</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dat2 <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">scale</span>(dat)) <span class="co"># also response has to be scaled for adaptive shrinkage!</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> <span class="fu">list</span>(<span class="at">y =</span> dat2<span class="sc">$</span>y, <span class="at">x =</span> <span class="fu">as.matrix</span>(dat2)[,<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>], <span class="at">i.max =</span> <span class="fu">nrow</span>(dat2))</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># fitting the full model - no problem for Jags</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>modelCode <span class="ot">=</span> <span class="st">"model{</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="st">    mu[i] &lt;- inprod(a , x[i,]) + b</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="st">    y[i] ~ dnorm(mu[i],tau)</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior distributions</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:100){</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="st">    a[i] ~ dnorm(0,0.01)</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="st">  b ~ dnorm(0,0.01)</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="st">  tau ~ dgamma(0.001, 0.001)</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma &lt;- 1/sqrt(tau)</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>jagsModel <span class="ot">&lt;-</span> <span class="fu">jags.model</span>(<span class="at">file=</span> <span class="fu">textConnection</span>(modelCode), <span class="at">data=</span>Data, <span class="at">n.chains =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>modelCode0 <span class="ot">=</span> <span class="st">"model{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">    mu[i] &lt;- inprod(a , x[i,]) + b</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">    y[i] ~ dnorm(mu[i],tau)</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior distributions</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:100){</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="st">    a[i] ~ dnorm(0,0.0001)</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">  b ~ dnorm(0,0.0001) # usually no need and safer not to regularize intercept</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="st">  tau ~ dgamma(0.001, 0.001)</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma &lt;- 1/sqrt(tau)</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>jagsModel0 <span class="ot">&lt;-</span> <span class="fu">jags.model</span>(<span class="at">file=</span> <span class="fu">textConnection</span>(modelCode0), </span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data=</span>Data, </span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n.chains =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Compiling model graph
    Resolving undeclared variables
@@ -475,50 +526,138 @@ Graph information:
 
 Initializing model</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>para.names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"sigma"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Samples <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel, <span class="at">variable.names =</span> para.names, <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#gelman.diag(Samples)</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(Samples)</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>x1<span class="ot">&lt;-</span> <span class="fu">summary</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Samples0 <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel0, </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">variable.names =</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"sigma"</span>), </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>x0<span class="ot">&lt;-</span> <span class="fu">summary</span>(Samples0)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>est0 <span class="ot">&lt;-</span> x0<span class="sc">$</span>quantiles[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,<span class="dv">3</span>] </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plotEstimates</span>(est0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 </section>
-<section id="classical-l1-l2-shrinkage" class="level3" data-number="5.1.2">
-<h3 data-number="5.1.2" class="anchored" data-anchor-id="classical-l1-l2-shrinkage"><span class="header-section-number">5.1.2</span> Classical L1 / L2 shrinkage</h3>
+<section id="mildly-regularizing-priors" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="mildly-regularizing-priors"><span class="header-section-number">5.1.2</span> Mildly regularizing priors</h3>
+<p>The idea of mildly regularizing priors is that we give the regression slopes a small push towards zero. The strength of a mildly regularizing prior should be such that it doesn’t strongly influence parameter estimates, but still regularizes the problem. If predictors and responses are scaled and centered, we would expect strong effects to have effect sizes of 1. A typical prior width for a mildly regularizing prior would thus be something in the order of 1 to 10. In the code below, this is implemented by setting medium wide normal priors on the slope.</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-7_b98cdd3d8a0fe4e2b191791511e0b1bc">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>  a[i] <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>,<span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As discussed, when working with informative priors, we should be aware of the scale of the predictors and the reponse, as the priors have to be viewed in relation to the data scale to say what is a wide and what is a narrow prior.</p>
+<p>However, as we created the data in this case in with a centered uniform distribution and a unit scale, we can skip this step</p>
+</div>
+</div>
+<p>In my practical work, I have often found that these priors will often help to avoid parameter identifiability problems, in particular in GLMs, thus making model selection or simplification necessary, while having very little influence on the parameter estimates</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-8_1c40cd57b2479355f719570b0db0a293">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rjags)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>modelCode1 <span class="ot">=</span> <span class="st">"model{</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="st">    mu[i] &lt;- inprod(a , x[i,]) + b</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="st">    y[i] ~ dnorm(mu[i],tau)</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior distributions</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:100){</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="st">    a[i] ~ dnorm(0,0.5)</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="st">  b ~ dnorm(0,0.0001) # usually no need and safer not to regularize intercept</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="st">  tau ~ dgamma(0.001, 0.001)</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma &lt;- 1/sqrt(tau)</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>jagsModel1 <span class="ot">&lt;-</span> <span class="fu">jags.model</span>(<span class="at">file=</span> <span class="fu">textConnection</span>(modelCode1), </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data=</span>Data, </span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n.chains =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Compiling model graph
+   Resolving undeclared variables
+   Allocating nodes
+Graph information:
+   Observed stochastic nodes: 200
+   Unobserved stochastic nodes: 102
+   Total graph size: 20911
+
+Initializing model</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Samples1 <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel1, </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">variable.names =</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"sigma"</span>), </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#gelman.diag(Samples)</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(Samples)</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>x1<span class="ot">&lt;-</span> <span class="fu">summary</span>(Samples1)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>est1 <span class="ot">&lt;-</span> x1<span class="sc">$</span>quantiles[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,<span class="dv">3</span>] </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plotEstimates</span>(est1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>In the result, we see a slightly lower MSE as before, but virtually no influence on the effects of on the parameter estimates.</p>
+</section>
+<section id="fixed-or-adaptive-shrinkage-priors" class="level3" data-number="5.1.3">
+<h3 data-number="5.1.3" class="anchored" data-anchor-id="fixed-or-adaptive-shrinkage-priors"><span class="header-section-number">5.1.3</span> Fixed or adaptive shrinkage priors</h3>
+<p>Shrinkage priors are basically the same as before, just stronger.</p>
+<p>There are two options to set the shrinkage:</p>
+<ol type="1">
+<li><p>As common in frequentist L1 / L2 shrikage, you could set the the shrinkage via cross-validation or similar approaches</p></li>
+<li><p>You can treat the shrinkage as a parameter to be estimated in the model and set a hyperprior on it.</p></li>
+</ol>
+<p>I use the latter example in the code below. The structure added to the model is</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-9_1eaf5b4ca8cb59450492a24bbfff0e01">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    a[i] <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>,tauShrinkage)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  tauShrinkage <span class="sc">~</span> <span class="fu">dgamma</span>(<span class="fl">0.001</span>, <span class="fl">0.001</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  sdShrinkage <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="fu">sqrt</span>(tauShrinkage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that this structure is very similar to a mixed model, so in some sense we treat the slopes for the different predictors as “random effects” that come from a common normal distribution, whose SD is estimated.</p>
 <p>Regularization via prior - Lasso and Ridge equivalents. Idea is that we put a kind of “random effect” directly on the parameter values</p>
 <p>Kyung, M.; Gill, J.; Ghosh, M.; Casella, G. et al.&nbsp;(2010) Penalized regression, standard errors, and Bayesian lassos. Bayesian Analysis, 5, 369-411.</p>
 <p>http://stats.stackexchange.com/questions/95395/ridge-regression-bayesian-interpretation?rq=1</p>
 <p>http://stats.stackexchange.com/questions/28609/regularized-bayesian-logistic-regression-in-jags</p>
 <p>http://doingbayesiandataanalysis.blogspot.de/2014/01/bayesian-variable-selection-in-multiple.html</p>
-<p>Here a version with adaptive shrinkage, i.e.&nbsp;we estimate the strength of the shrinkage via a hyperprior</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-5_404928ff9d1f881ce4a13541f19292de">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>modelCode <span class="ot">=</span> <span class="st">"model{</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="st">    mu[i] &lt;- inprod(a , x[i,]) + b</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">    y[i] ~ dnorm(mu[i],tau)</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior distributions</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:100){</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="st">    a[i] ~ dnorm(0,tauShrinkage)</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="st">  b ~ dnorm(0,0.001)</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="st">  tauShrinkage ~ dgamma(0.001, 0.001)</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="st">  sdShrinkage &lt;- 1/sqrt(tauShrinkage)</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="st">  tau ~ dgamma(0.001, 0.001)</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma &lt;- 1/sqrt(tau)</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co"># s = function(x) dgamma(x, shape = 0.0001, rate = 0.001)</span></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co"># curve(s, 0, 5)</span></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>jagsModel <span class="ot">&lt;-</span> <span class="fu">jags.model</span>(<span class="at">file=</span> <span class="fu">textConnection</span>(modelCode), <span class="at">data=</span>Data, <span class="at">n.chains =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-10_ae877e38f18b16a4d4484b447a41c3d7">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>modelCode2 <span class="ot">=</span> <span class="st">"model{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="st">    mu[i] &lt;- inprod(a , x[i,]) + b</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="st">    y[i] ~ dnorm(mu[i],tau)</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior distributions</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:100){</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="st">    a[i] ~ dnorm(0,tauShrinkage)</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="st">  b ~ dnorm(0,0.001)</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="st">  tauShrinkage ~ dgamma(0.001, 0.001)</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="st">  sdShrinkage &lt;- 1/sqrt(tauShrinkage)</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="st">  tau ~ dgamma(0.001, 0.001)</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma &lt;- 1/sqrt(tau)</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>jagsModel2 <span class="ot">&lt;-</span> <span class="fu">jags.model</span>(<span class="at">file=</span> <span class="fu">textConnection</span>(modelCode2), <span class="at">data=</span>Data, <span class="at">n.chains =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Compiling model graph
    Resolving undeclared variables
@@ -530,43 +669,65 @@ Graph information:
 
 Initializing model</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>para.names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"sigma"</span>, <span class="st">"sdShrinkage"</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>Samples <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel, <span class="at">variable.names =</span> para.names, <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#gelman.diag(Samples)</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(Samples)</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>x2<span class="ot">&lt;-</span> <span class="fu">summary</span>(Samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>para.names <span class="ot">&lt;-</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>Samples2 <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel2, </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">variable.names =</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"sigma"</span>, <span class="st">"sdShrinkage"</span>), </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#gelman.diag(Samples)</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(Samples)</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>x2<span class="ot">&lt;-</span> <span class="fu">summary</span>(Samples2)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>est2 <span class="ot">&lt;-</span> x2<span class="sc">$</span>quantiles[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,<span class="dv">3</span>] </span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plotEstimates</span>(est2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
+</div>
+<p>Note in the results that we now have a notable bias towards zero on the parameter estimates, but also overall a strongly reduced MSE on the estimates.</p>
 </section>
-<section id="spike-and-slap" class="level3" data-number="5.1.3">
-<h3 data-number="5.1.3" class="anchored" data-anchor-id="spike-and-slap"><span class="header-section-number">5.1.3</span> Spike and slap</h3>
-<p>Mixtures of both - Spike and Slab Variable Selection</p>
-<p>https://darrenjw.wordpress.com/2012/11/20/getting-started-with-bayesian-variable-selection-using-jags-and-rjags/</p>
+<section id="spike-and-slab" class="level3" data-number="5.1.4">
+<h3 data-number="5.1.4" class="anchored" data-anchor-id="spike-and-slab"><span class="header-section-number">5.1.4</span> Spike and slab</h3>
+<p>Spike and slab priors, also known as stochastic search variable selection (SSVS),</p>
+<p>George, E. I., &amp; McCulloch, R. E. (1993). Variable selection via Gibbs sampling. Journal of the American Statistical Association, 88(423), 881-889.</p>
+<p>identifies promising subsets of multiple regression covariates via Gibbs sampling (George and McCulloch 1993). Here’s a short SSVS demo with JAGS and R.</p>
+<p>The idea of the spike and slab</p>
 <p>Ishwaran, H. &amp; Rao, J. S. (2005) Spike and Slab Variable Selection: Frequentist and Bayesian Strategies. The Annals of Statistics, Institute of Mathematical Statistics, 33, pp.&nbsp;730-773.</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-6_9fd88dab86e6cdf7bb1a826df83850b1">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>modelCode <span class="ot">=</span> <span class="st">"model{</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="st">    mu[i] &lt;- inprod(a , x[i,]) + b</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="st">    y[i] ~ dnorm(mu[i],tau)</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior distributions</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="st">  pind ~ dbeta(5,5)</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="st">  for(j in 1:100){</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="st">    a_raw[j] ~ dnorm(0,0.01)</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="st">    ind[j] ~ dbern(pind)</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="st">    a[j] = ind[j] * a_raw[j]</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="st">  b ~ dnorm(0,0.01)</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="st">  tau ~ dgamma(0.001, 0.001)</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma &lt;- 1/sqrt(tau)</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>jagsModel <span class="ot">&lt;-</span> <span class="fu">jags.model</span>(<span class="at">file=</span> <span class="fu">textConnection</span>(modelCode), <span class="at">data=</span>Data, <span class="at">n.chains =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Hemant Ishwaran. J. Sunil Rao. “Spike and slab variable selection: Frequentist and Bayesian strategies.” Ann. Statist. 33 (2) 730 - 773, April 2005. https://doi.org/10.1214/009053604000001147</p>
+<p>The structure added to the model used here follows Kuo, L., &amp; Mallick, B. (1998). Variable selection for regression models. Sankhyā: The Indian Journal of Statistics, Series B, 65-81.</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-11_33f8ac5d947bac66076719337885d67b">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>  pind <span class="sc">~</span> <span class="fu">dbeta</span>(<span class="dv">5</span>,<span class="dv">5</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    a_raw[j] <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>,<span class="fl">0.01</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    ind[j] <span class="sc">~</span> <span class="fu">dbern</span>(pind)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    a[j] <span class="ot">=</span> ind[j] <span class="sc">*</span> a_raw[j]</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In this code, the effective slope ind[j] * a_raw[j] consists of two components. The variable ind (zero or one) controls the spike - value of 0 switches off the parameter estimate and thus forces the effective slope towards zero. Ind is drawn from a Bernoulli distribution with a beta prior, which is a standard choice for the Bernoull because it is conjugage and Jeffrey’s prior. The variable a_raw[j] is the slab, which can be interpreted as the estimate of the parameter conditional on the probability ind that it is in the model.</p>
+<p>Here the full model</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-12_c6b0bc909d80a618d117ebb21c9b5bba">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>modelCode3 <span class="ot">=</span> <span class="st">"model{</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="st">    mu[i] &lt;- inprod(a , x[i,]) + b</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="st">    y[i] ~ dnorm(mu[i],tau)</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior distributions</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="st">  pind ~ dbeta(5,5)</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="st">  for(j in 1:100){</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="st">    a_raw[j] ~ dnorm(0,0.01)</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="st">    ind[j] ~ dbern(pind)</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="st">    a[j] = ind[j] * a_raw[j]</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="st">  b ~ dnorm(0,0.01)</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="st">  tau ~ dgamma(0.001, 0.001)</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="st">  sigma &lt;- 1/sqrt(tau)</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>jagsModel3 <span class="ot">&lt;-</span> <span class="fu">jags.model</span>(<span class="at">file=</span> <span class="fu">textConnection</span>(modelCode3), <span class="at">data=</span>Data, <span class="at">n.chains =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Compiling model graph
    Resolving undeclared variables
@@ -578,99 +739,240 @@ Graph information:
 
 Initializing model</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>para.names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a_raw"</span>, <span class="st">"ind"</span>,<span class="st">"sigma"</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>Samples <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel, <span class="at">variable.names =</span> para.names, <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(Samples)</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#gelman.diag(Samples)</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>x3<span class="ot">&lt;-</span> <span class="fu">summary</span>(Samples)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># looking at the selection </span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>res3 <span class="ot">&lt;-</span> x3<span class="sc">$</span>statistics[<span class="dv">101</span><span class="sc">:</span><span class="dv">200</span>,<span class="dv">1</span>] </span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(res3, <span class="at">names.arg =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">las =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>Samples3 <span class="ot">&lt;-</span> <span class="fu">coda.samples</span>(jagsModel3, </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">variable.names =</span> <span class="fu">c</span>(<span class="st">"a_raw"</span>, <span class="st">"ind"</span>,<span class="st">"sigma"</span>), </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>x3<span class="ot">&lt;-</span> <span class="fu">summary</span>(Samples3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In this model, we get two estimates for each predictor: the probability that a variable is in the model (ind) and the estimate for the variable, conditional on its inclusion in the model. Let’s first look at the probability to be in the model</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-13_df89fdfdd876b3d828604915aae31863">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>incl <span class="ot">&lt;-</span> x3<span class="sc">$</span>quantiles[<span class="dv">101</span><span class="sc">:</span><span class="dv">200</span>,<span class="dv">3</span>] </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(incl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-7_13bd2a4e3134457bec3e491b3bb021f3">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> x1<span class="sc">$</span>quantiles[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,<span class="dv">3</span>] </span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(res1, <span class="at">names.arg =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">las =</span> <span class="dv">2</span>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">1</span>)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">12</span>)</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> x2<span class="sc">$</span>quantiles[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,<span class="dv">3</span>] </span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(res2, <span class="at">names.arg =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">las =</span> <span class="dv">2</span>)</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">1</span>)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">12</span>)</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>res3 <span class="ot">&lt;-</span> x3<span class="sc">$</span>quantiles[<span class="dv">101</span><span class="sc">:</span><span class="dv">200</span>,<span class="dv">3</span>] <span class="sc">*</span> x3<span class="sc">$</span>quantiles[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,<span class="dv">3</span>]</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(res3, <span class="at">names.arg =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">las =</span> <span class="dv">2</span>)</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">1</span>)</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Pretty good recovery. Here are the conditional estimates</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-14_686ad8b8e738e6b827e582aa1f9f0129">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>condEst <span class="ot">&lt;-</span> x3<span class="sc">$</span>quantiles[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,<span class="dv">3</span>] </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotEstimates</span>(condEst)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Comparison side by side for the first 20 values</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-8_e7dc6dd3f597963e1cba463dff641e31">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">rbind</span>(res1, res2, res3)[,<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>], <span class="at">beside =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As a final estimator, I plot the probability to be included times the conditional estimate:</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-15_3b07385f46726f71f5f2256076d4349b">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>est3 <span class="ot">&lt;-</span> condEst <span class="sc">*</span> incl</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotEstimates</span>(est3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="comparison-of-the-methods" class="level3" data-number="5.1.5">
+<h3 data-number="5.1.5" class="anchored" data-anchor-id="comparison-of-the-methods"><span class="header-section-number">5.1.5</span> Comparison of the methods</h3>
+<p>Here the comparison of the unregularized model with all 3 prior regularization</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-16_969a98f5f185839bf77846b0e13e76d9">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotEstimates</span>(est0, <span class="at">main =</span> <span class="st">"Uninformative"</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plotEstimates</span>(est1, <span class="at">main =</span> <span class="st">"Mildly regularizing"</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plotEstimates</span>(est2, <span class="at">main =</span> <span class="st">"Adaptive shrinkage"</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plotEstimates</span>(est3, <span class="at">main =</span> <span class="st">"Spike and slap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
 </section>
-<section id="bayes-factors" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="bayes-factors"><span class="header-section-number">5.2</span> Bayes Factors</h2>
+<section id="information-criteria" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="information-criteria"><span class="header-section-number">5.2</span> Information Criteria</h2>
+<section id="dic" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="dic"><span class="header-section-number">5.2.1</span> DIC</h3>
+<p>DIC can be calculated in Jags using</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-17_06f0491698cdd90b04e5c5e9f7b86f2d">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>dic <span class="ot">=</span> <span class="fu">dic.samples</span>(jagsModel, <span class="at">n.iter =</span> <span class="dv">5000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In the result of DIC, you will find</p>
+<ol type="1">
+<li>The mean deviance (Likelihood), to be interpreted the average fit of the model</li>
+<li>The estimated complexity of the model</li>
+<li>The penalized deviance, which is deviance penalized for model complexity</li>
+</ol>
+<p>We can calculate DICs for all the previous 4 models:</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-18_d445ee73b310adc0ed9945b11768e356">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>dic0 <span class="ot">=</span> <span class="fu">dic.samples</span>(jagsModel0, <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>dic1 <span class="ot">=</span> <span class="fu">dic.samples</span>(jagsModel1, <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>dic2 <span class="ot">=</span> <span class="fu">dic.samples</span>(jagsModel2, <span class="at">n.iter =</span> <span class="dv">5000</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>dic3 <span class="ot">=</span> <span class="fu">dic.samples</span>(jagsModel3, <span class="at">n.iter =</span> <span class="dv">5000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-19_c3f66d226a0f1382be903161bc362ea0">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>dic0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean deviance:  530.2 
+penalty 104.2 
+Penalized deviance: 634.4 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>dic1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean deviance:  522 
+penalty 99.42 
+Penalized deviance: 621.4 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>dic2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean deviance:  519.3 
+penalty 61.82 
+Penalized deviance: 581.2 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>dic3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean deviance:  524.4 
+penalty 18.28 
+Penalized deviance: 542.7 </code></pre>
+</div>
+</div>
+<p>We see that the effective number of parameters estimated by the DIC is very different between the different models. The shrinkage priors reduce the effective number of parameters. The spike and slap model has formally (by counting in the code) the most parameters of all models, more than 200, but the DIC estimates that it has effectively only 18 parameters.</p>
+<p>For more R. B. O’Hara. M. J. Sillanpää. “A review of Bayesian variable selection methods: what, how and which.” Bayesian Anal. 4 (1) 85 - 117, March 2009. https://doi.org/10.1214/09-BA403</p>
+</section>
+<section id="waic" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="waic"><span class="header-section-number">5.2.2</span> WAIC</h3>
+<p>It was suggested that WAIC has a bunch of favorable advantages over DIC, but it is also harder to calculate. In Jags, WAIC is a bit complicated. It is better supported in STAN and brms.</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-20_6e923ba6e254a56b7123fcf412f9119f">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>?waic</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># model with population-level effects only</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(rating <span class="sc">~</span> treat <span class="sc">+</span> period <span class="sc">+</span> carry,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> inhaler)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>waic1 <span class="ot">&lt;-</span> <span class="fu">waic</span>(fit1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: 
+2 (0.3%) p_waic estimates greater than 0.4. We recommend trying loo instead.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># model with an additional varying intercept for subjects</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">brm</span>(rating <span class="sc">~</span> treat <span class="sc">+</span> period <span class="sc">+</span> carry <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>subject),</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> inhaler)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>waic2 <span class="ot">&lt;-</span> <span class="fu">waic</span>(fit2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: 
+26 (4.5%) p_waic estimates greater than 0.4. We recommend trying loo instead.</code></pre>
+</div>
+</div>
+<p>compare both models</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-21_b157f7af5ee5266bfbb30eccedd641c0">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(waic1, waic2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     elpd_diff se_diff
+fit2  0.0       0.0   
+fit1 -9.6       4.6   </code></pre>
+</div>
+</div>
+</section>
+<section id="careful-with-step-wise-model-selection" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="careful-with-step-wise-model-selection"><span class="header-section-number">5.2.3</span> Careful with step-wise model selection</h3>
+<p>Note that step-wise selection based on information criteria shares many of the same problems that appear in frequentist IC selection. Those are in particular</p>
+<ul>
+<li>Affects uncertainties, in particular p-values</li>
+<li>Destroys causal relationships</li>
+</ul>
+<p>The issue is known under the term “post-selection inference” and applies to Bayesian and frequentist models alike, see e.g.&nbsp;Kuchibhotla, A. K., Kolassa, J. E., &amp; Kuffner, T. A. (2022). Post-selection inference.&nbsp;<em>Annual Review of Statistics and Its Application</em>,&nbsp;<em>9</em>, 505-527.</p>
+<p>This example shows how AIC selection, followed by a conventional regression analysis of the selected model, massively inflates false positives.</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-22_8b714383071808578b92e75def6faf02">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">20000</span>), <span class="at">ncol =</span> <span class="dv">100</span>))</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>fullModel <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> . , <span class="at">data =</span> dat)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fullModel)</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>selection <span class="ot">=</span> <span class="fu">stepAIC</span>(fullModel, <span class="at">trace =</span> F)</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> X1 <span class="sc">+</span> X2 <span class="sc">+</span> X3 <span class="sc">+</span> X5 <span class="sc">+</span> X7 <span class="sc">+</span> X13 <span class="sc">+</span> X20 <span class="sc">+</span> X23 <span class="sc">+</span> X30 <span class="sc">+</span> </span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>             X37 <span class="sc">+</span> X42 <span class="sc">+</span> X45 <span class="sc">+</span> X46 <span class="sc">+</span> X47 <span class="sc">+</span> X48 <span class="sc">+</span> X64 <span class="sc">+</span> X65 <span class="sc">+</span> X66 <span class="sc">+</span> X71 <span class="sc">+</span> </span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>             X75 <span class="sc">+</span> X80 <span class="sc">+</span> X81 <span class="sc">+</span> X87 <span class="sc">+</span> X88 <span class="sc">+</span> X89 <span class="sc">+</span> X90 <span class="sc">+</span> X94 <span class="sc">+</span> X100, <span class="at">data =</span> dat))</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a><span class="co"># voila, 15 out of 28 (before 100) predictors significant - looks like we could have good fun to discuss / publish these results!</span></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a><span class="do">#######################################################</span></span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Same thing, but now we put in 10 significant predictors (the first 10 x)</span></span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">20000</span>), <span class="at">ncol =</span> <span class="dv">100</span>))</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)</span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> dat<span class="sc">$</span>y <span class="sc">+</span> <span class="fu">rowSums</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]) </span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>fullModel <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> . , <span class="at">data =</span> dat)</span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fullModel)</span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)</span></span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-31"><a href="#cb44-31" aria-hidden="true" tabindex="-1"></a>selection <span class="ot">=</span> <span class="fu">stepAIC</span>(fullModel, <span class="at">trace =</span> F)</span>
+<span id="cb44-32"><a href="#cb44-32" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> X1 <span class="sc">+</span> X2 <span class="sc">+</span> X3 <span class="sc">+</span> X4 <span class="sc">+</span> X5 <span class="sc">+</span> X6 <span class="sc">+</span> X7 <span class="sc">+</span> X8 <span class="sc">+</span> X9 <span class="sc">+</span> X10 <span class="sc">+</span> X13 <span class="sc">+</span> </span>
+<span id="cb44-33"><a href="#cb44-33" aria-hidden="true" tabindex="-1"></a>             X14 <span class="sc">+</span> X20 <span class="sc">+</span> X23 <span class="sc">+</span> X24 <span class="sc">+</span> X26 <span class="sc">+</span> X30 <span class="sc">+</span> X37 <span class="sc">+</span> X42 <span class="sc">+</span> X46 <span class="sc">+</span> X47 <span class="sc">+</span> </span>
+<span id="cb44-34"><a href="#cb44-34" aria-hidden="true" tabindex="-1"></a>             X48 <span class="sc">+</span> X49 <span class="sc">+</span> X64 <span class="sc">+</span> X65 <span class="sc">+</span> X66 <span class="sc">+</span> X68 <span class="sc">+</span> X71 <span class="sc">+</span> X73 <span class="sc">+</span> X75 <span class="sc">+</span> X80 <span class="sc">+</span> </span>
+<span id="cb44-35"><a href="#cb44-35" aria-hidden="true" tabindex="-1"></a>             X81 <span class="sc">+</span> X87 <span class="sc">+</span> X88 <span class="sc">+</span> X89 <span class="sc">+</span> X90 <span class="sc">+</span> X94, <span class="at">data =</span> dat))</span>
+<span id="cb44-36"><a href="#cb44-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-37"><a href="#cb44-37" aria-hidden="true" tabindex="-1"></a><span class="co"># true positives are good, but false positives remain</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="bayes-factors" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="bayes-factors"><span class="header-section-number">5.3</span> Bayes Factors</h2>
 <p>Bayes’ formula makes no fundamental difference between models and parameters. Hence, to perform inference with multiple models, we can simply write down the joint posterior <span class="math inline">\(P(M_i, \Theta_i| D)\)</span> of different models <span class="math inline">\(M_i\)</span> with parameter vectors <span class="math inline">\(\Theta_i\)</span> as</p>
 <p><span class="math display">\[
-P(M_i, \Theta_i| D) = L(D|M_i , \Theta_i) \cdot p(\Theta_i) \cdot p(M_i)
+P(M_i, \Theta_i| D) \sim L(D|M_i , \Theta_i) \cdot p(\Theta_i) \cdot p(M_i)
 \]</span></p>
-<p>where <span class="math inline">\(L(D|M_i , \Theta_i)\)</span> is the likelihood of model <span class="math inline">\(M_i\)</span>, <span class="math inline">\(p(\Theta_i)\)</span> is the prior distribution of model <span class="math inline">\(M_i\)</span>, and <span class="math inline">\(p(M_i)\)</span> is the prior weight on model <span class="math inline">\(M_i\)</span>. The figure below provides a graphical illustration of this situation, assuming three models with an increasing number of parameters.</p>
+<p>where <span class="math inline">\(L(D|M_i , \Theta_i)\)</span> is the likelihood of model <span class="math inline">\(M_i\)</span>, <span class="math inline">\(p(\Theta_i)\)</span> is the prior distribution of model <span class="math inline">\(M_i\)</span>, <span class="math inline">\(p(M_i)\)</span> is the prior weight on model <span class="math inline">\(M_i\)</span>, and the ~ indicates that this the equation still needs to be normalized (i.e.&nbsp;divided by the integral over all models and parameters). The figure below provides a graphical illustration of this situation, assuming that we jump between three models with an increasing number of parameters.</p>
 <p><img src="images/BMA.png" class="img-fluid" alt="Illustration of the joint posterior space of several models with a different number of parameters. Size of the bubbles denotes posterior distribution and weight across models and parameters."></p>
-<p>In principle, the joint distribution depicted in the figure provides the full information that can be obtained from the inference, but in most practical cases we want to get some simplified statistics across this distribution such as “the most likely model”, or “the combined uncertainty of a parameter of prediction”. To obtain such information, there are two routes that we can take - marginalize (average) across parameters space, and marginalize across model space.</p>
-<p>If we marginalize across parameter space, we obtain model weights. The first step to do so is calculating the marginal likelihood, defined as the average of eq.<span class="math inline">\(\ref{eq: joint posterior}\)</span> across all parameters for any given model:</p>
+<p>When looking at this picture as a matrix, we see that we have two options to average (marginalize) across this space of models * parameters</p>
+<ol type="1">
+<li>We look at the posterior for each model parameter marginalized across models (parameter averaging)</li>
+<li>We can look at the marginal probability of each model (posterior weight aka Bayes factor)</li>
+</ol>
+<section id="marginal-likelihood" class="level4" data-number="5.3.0.1">
+<h4 data-number="5.3.0.1" class="anchored" data-anchor-id="marginal-likelihood"><span class="header-section-number">5.3.0.1</span> Marginal likelihood</h4>
+<p>We are mainly interested in the second option here. When looking at the previous equation, we see that the posterior propability of each model can be obtained by the integral of the likelihood over the prior space of each model</p>
 <p><span class="math display">\[
-P(D|M_i) = \int L(D|M_i , \Theta_i) \cdot p(\Theta_i) d \Theta_i
+ML_i = P(D|M_i) = \int L(D|M_i , \Theta_i) \cdot p(\Theta_i) d \Theta_i
 \]</span></p>
-<p>From the marginal likelihood, we can compare models via the “Bayes factor”, defined as the ratio of their marginal likelihoods, multiplied by the ratio of their model priors <span class="math inline">\(p(M_i)\)</span></p>
+<p>which is known as the marginal likelihood (ML). The marginal likelihood can be interpreted similar as the to the Likelihood at MLE of a fitted model - it provides you with an idea about the average fit of the model across the prior. The ratio of the MLs of two models is known as the Bayes factor.</p>
 <p><span class="math display">\[
-BF_{i,j} = \frac{P(D|M_i)}{P(D|M_j)} \cdot \frac{p(M_i)}{p(M_j)}
+BF_{i,j} = \frac{ML_i}{ML_j}
 \]</span></p>
-<p>For more than two models, however, it is more useful to standardize this quantity across all models in question, calculating a Bayesian posterior model weight as</p>
-<p><span class="math display">\[
-BMW_i = \frac{P(D|M_i)}{\sum_j P(D|M_j)} \cdot \frac{p(M_i)}{\sum_j p(M_j)}
-\]</span></p>
-<p>The second route we can take is to marginalize across models to obtain averaged parameters. Note that this makes only sense if the models have some parameters in common (nested models). To obtain the averaged parameters, we simply marginalize across model space</p>
-<p><span class="math display">\[
-P(\Theta | D) = \sum_i L(D|M_i , \Theta_i) \cdot p(\Theta_i) \cdot p(M_i)
-\]</span></p>
-<p>resulting in averaged distributions for the parameters.</p>
+<p>Note that this is analogue to the likelihood ratio in frequentist statistics. However, there is one important difference: as we will discuss in more detail below, the BF is affected by the prior choice as well as the uncertainty around the parameter estimates. More complex models typically have more uncertainties, i.e.&nbsp;more prior volume in areas areas with lower likelihood (as opposed to the MLE).</p>
+<p>The following image explains why this is: imagine our posterior falls off such that always 1/3 of the prior space has high likelihood and 2/3 of the parameter space has low likelihood. Then, you see that the space with high likelihood is getting relatively smaller the higher the dimension of your data.</p>
+<p><img src="images/ScalingPosterior.png" class="img-fluid"></p>
+<p>This has two consequences</p>
+<ul>
+<li><p>Thus, the BF implicitly penalizes for model complexity (or, maybe more precisely, it penalizes for unconstrained parameters) and can thus directly be used to compare models. <span class="citation" data-cites="Kass-BayesFactors-1995">(<a href="6A-References.html#ref-Kass-BayesFactors-1995" role="doc-biblioref">Kass, R. E. And Raftery 1995</a>)</span> without having to add a complexity penalty</p></li>
+<li><p>BF calculations are sensitive to the choice of model priors (see also example below). If you would increase the prior width of all models above, the 2d model would be penalized more strongly than the 1d model. Many authors therefore warn that BF should not be calculated on uninformative priors.</p></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Bayesian Hypothesis tests using the BF package
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <p>For simple models, BF can be calculated using the BayesFactor package</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-9_bb8eeceeccffab3f2cf405f6344e808b">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BayesFactor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: Matrix</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>************
-Welcome to BayesFactor 0.9.12-4.7. If you have questions, please contact Richard Morey (richarddmorey@gmail.com).
-
-Type BFManual() to open the manual.
-************</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sleep)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute difference scores</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>diffScores <span class="ot">=</span> sleep<span class="sc">$</span>extra[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>] <span class="sc">-</span> sleep<span class="sc">$</span>extra[<span class="dv">11</span><span class="sc">:</span><span class="dv">20</span>]</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Traditional two-tailed t test</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(diffScores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-23_02667ea697ddee1e3d65f5a0cfdf6309">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BayesFactor)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sleep)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute difference scores</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>diffScores <span class="ot">=</span> sleep<span class="sc">$</span>extra[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>] <span class="sc">-</span> sleep<span class="sc">$</span>extra[<span class="dv">11</span><span class="sc">:</span><span class="dv">20</span>]</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Traditional two-tailed t test</span></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(diffScores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     One Sample t-test
@@ -684,8 +986,8 @@ sample estimates:
 mean of x 
     -1.58 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>bf <span class="ot">=</span> <span class="fu">ttestBF</span>(<span class="at">x =</span> diffScores, <span class="at">rscale =</span> <span class="dv">10</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>bf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>bf <span class="ot">=</span> <span class="fu">ttestBF</span>(<span class="at">x =</span> diffScores, <span class="at">rscale =</span> <span class="dv">10</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>bf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Bayes factor analysis
 --------------
@@ -696,291 +998,205 @@ Against denominator:
 ---
 Bayes factor type: BFoneSample, JZS</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>chains <span class="ot">=</span> <span class="fu">posterior</span>(bf, <span class="at">iterations =</span> <span class="dv">1000</span>)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(chains)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Iterations = 1:1000
-Thinning interval = 1 
-Number of chains = 1 
-Sample size per chain = 1000 
-
-1. Empirical mean and standard deviation for each variable,
-   plus standard error of the mean:
-
-         Mean        SD Naive SE Time-series SE
-mu     -1.584    0.4174  0.01320        0.01435
-sig2    1.763    1.0318  0.03263        0.03463
-delta  -1.303    0.4221  0.01335        0.01335
-g     302.698 1682.2298 53.19678       53.19678
-
-2. Quantiles for each variable:
-
-         2.5%    25%    50%     75%     97.5%
-mu    -2.3493 -1.853 -1.587  -1.340   -0.7136
-sig2   0.6711  1.117  1.507   2.120    4.2918
-delta -2.1236 -1.601 -1.306  -1.003   -0.4651
-g     13.2340 35.203 70.968 179.638 1826.9768</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>chains2 <span class="ot">=</span> <span class="fu">recompute</span>(chains, <span class="at">iterations =</span> <span class="dv">10000</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(chains2[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<p>The BF package circumvents the prior problem by scaling the prior to the data. This is known under the label “empirical Bayes”. Empirical Bayesian methods estimate or scale prior probability distributions to the data, thus recovering some of the properties of classical frequentist inference.</p>
 </div>
 </div>
-<section id="estimation-of-the-marginal-likelihood" class="level3" data-number="5.2.1">
-<h3 data-number="5.2.1" class="anchored" data-anchor-id="estimation-of-the-marginal-likelihood"><span class="header-section-number">5.2.1</span> Estimation of the marginal likelihood</h3>
-<p>While the definition of the Bayesian model weights and averaged parameters is straightforward, the estimation of these quantities is often not. In practice, there are two options to estimate the quantities defined above numerically, both with a number of caveats.</p>
-<p>The first option is to sample directly from the joint posterior of the models and the parameters. Basic algorithms such as rejection sampling can do that without any modification (Toni-ApproximateBayesiancomputation-2009), but they are inefficient for higher-dimensional parameter spaces. More sophisticated algorithms such as MCMC and SMC require modifications to deal with the issue of a changing number of parameters when changing between models, as well as with the issue of a changed meaning of the parameters. Such modifications (the most common class are the <strong>reversible-jump MCMCs (RJ-MCMC)</strong>) are often difficult to program, tune and generalize, which is the reason why they are typically only applied in specialized, well defined settings with a large number of models to be compared.</p>
-<p>The second option is to approximate the marginal likelihood each model independently, and then average parameters or predictions based on the resulting weights. To approximate the marginal likelihood, one has to cover the parameter space with of each single model, e.g.&nbsp;with random sampling or MCMC, store the likelihood, and then compute the marginal likelihood from that. The challenge here is to get a stable approximation of the marginal likelihood, which can be connected with considerable problems -ComputingBayesfactor-2012. Nevertheless, because of the comparably easier implementation, this approach the more common choice in situations where the number of models to be compared is low.</p>
-<p>http://stats.stackexchange.com/questions/229852/why-is-the-bayes-factor-sometimes-considered-more-important-than-the-posterior-o</p>
-<p>http://stats.stackexchange.com/questions/27345/likelihood-ratio-vs-bayes-factor</p>
-<p>The following example shows a comparison of two regression models using the BT package</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-10_affc177c4dba2ccf5ece6f288b8be276">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BayesianTools)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>?BayesianTools<span class="sc">::</span>marginalLikelihood</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating test data with quadratic relationship</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>sampleSize <span class="ot">=</span> <span class="dv">30</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> (<span class="sc">-</span>(sampleSize<span class="dv">-1</span>)<span class="sc">/</span><span class="dv">2</span>)<span class="sc">:</span>((sampleSize<span class="dv">-1</span>)<span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span>  <span class="dv">1</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="dv">1</span><span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="at">n=</span>sampleSize,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="dv">10</span>)</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(x,y, main="Test Data")</span></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihoods for linear and quadratic model </span></span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>likelihood1 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x <span class="sc">+</span> param[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">4</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods))  </span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>likelihood2 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x </span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods))  </span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, </span>
-<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">5</span>,<span class="fl">0.01</span>), </span>
-<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">30</span>))</span>
-<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, </span>
-<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">5</span>,<span class="fl">0.01</span>), </span>
-<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">30</span>))</span>
-<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
-<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out1, <span class="at">start =</span> <span class="dv">1000</span>)</span>
-<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
-<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out2, <span class="at">start =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-11_6cb8bd9abafb503bdee28a8edb765d4c">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Calculating Bayes factor</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML <span class="sc">-</span> M2<span class="sc">$</span>ln.ML)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="posterior-model-weights" class="level4" data-number="5.3.0.2">
+<h4 data-number="5.3.0.2" class="anchored" data-anchor-id="posterior-model-weights"><span class="header-section-number">5.3.0.2</span> Posterior model weights</h4>
+<p>While the BF compares two models. For more than 2 models, it is more useful to standardize the ML multiplied with the model priors across all models in question, calculating a Bayesian posterior model weight as</p>
+<p><span class="math display">\[
+BMW_i = \frac{P(D|M_i)}{\sum_j P(D|M_j)} \cdot \frac{p(M_i)}{\sum_j p(M_j)}
+\]</span></p>
+<p>Besides inference about the right model, posterior model weights can also be used to make predictions with a weighted ensemble of models (see, e.g., <span class="citation" data-cites="DormannCarsten-Modelaveragingecology-2018">(<a href="6A-References.html#ref-DormannCarsten-Modelaveragingecology-2018" role="doc-biblioref">Dormann Carsten et al. 2018</a>)</span>).</p>
+</section>
+<section id="model-averaged-parameters" class="level4" data-number="5.3.0.3">
+<h4 data-number="5.3.0.3" class="anchored" data-anchor-id="model-averaged-parameters"><span class="header-section-number">5.3.0.3</span> Model-averaged parameters</h4>
+<p>The second route we can take is to marginalize across models to obtain averaged parameters. To obtain the averaged parameters, we simply marginalize across model space</p>
+<p><span class="math display">\[
+P(\Theta | D) = \sum_i L(D|M_i , \Theta_i) \cdot p(\Theta_i) \cdot p(M_i)
+\]</span></p>
+<p>resulting in averaged distributions for the parameters that are shared between models (thus, this only works for models that are at least partly nested). The approach is analogue to parameter averaging in frequentist models (e.g. <span class="citation" data-cites="Burnham-Modelselectionand-2002">(<a href="6A-References.html#ref-Burnham-Modelselectionand-2002" role="doc-biblioref">Burnham and Anderson 2002</a>)</span>) and similarly, it is controversially discussed. The main objection is that under collinearity of predictors x1 and x2, the models M1: y ~ x1 and M1: y ~ x1 + x2 do not really estimate the same quantity when looking at the parameter estimate of x1: in M1, x1 is measuring the raw correlation, while in M2, x1 is measuring y ~ x1|x2. Whether it is desirable to average these quantities into a single distribution should be carefully considered.</p>
+</section>
+<section id="estimation-of-the-marginal-likelihood-in-practice" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="estimation-of-the-marginal-likelihood-in-practice"><span class="header-section-number">5.3.1</span> Estimation of the marginal likelihood in practice</h3>
+<p>While the definition of the Bayesian model weights and averaged parameters is straightforward, the estimation of these quantities is often not. In princile, there are two options to estimate the quantities defined above numerically, both with a number of caveats.</p>
+<p>The first option is to sample directly from the joint posterior of the models and the parameters . Basic algorithms such as rejection sampling can do that without any modification , but they are inefficient for higher-dimensional parameter spaces. More sophisticated algorithms such as MCMC and SMC require modifications to deal with the issue of a changing number of parameters when changing between models, as well as with the issue of a changed meaning of the parameters. Such modifications (the most common class are the <strong>reversible-jump MCMCs (RJ-MCMC)</strong>) are often difficult to program, tune and generalize, which is the reason why they are typically only applied in specialized, well defined settings with a large number of models to be compared.</p>
+<p>The second option is to approximate the marginal likelihood each model independently, and then average parameters or predictions based on the resulting weights. To approximate the marginal likelihood, one has to cover the parameter space with of each single model, e.g.&nbsp;with random sampling or MCMC, store the likelihood, and then compute the marginal likelihood from that. The challenge here is to get a stable approximation of the marginal likelihood, which can be connected with considerable problems <span class="citation" data-cites="weinberg2012">(<a href="6A-References.html#ref-weinberg2012" role="doc-biblioref">Weinberg 2012</a>)</span>. Nevertheless, because of the comparably easier implementation, this approach the more common choice in situations where the number of models to be compared is low.</p>
+<p>For Jags model, the ML can be estimated using the BayesTools package, which, unfortunately, has a very similar name as the BayesianTools package.</p>
+<p>The following example shows a comparison of two regression models using the BayesianTools package</p>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-24_f18baa6585755c76e44673f2c01ad926">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BayesianTools)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>?BayesianTools<span class="sc">::</span>marginalLikelihood</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating test data with quadratic relationship</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>sampleSize <span class="ot">=</span> <span class="dv">30</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> (<span class="sc">-</span>(sampleSize<span class="dv">-1</span>)<span class="sc">/</span><span class="dv">2</span>)<span class="sc">:</span>((sampleSize<span class="dv">-1</span>)<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span>  <span class="dv">1</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="dv">1</span><span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="at">n=</span>sampleSize,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="dv">10</span>)</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(x,y, main="Test Data")</span></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihoods for linear and quadratic model </span></span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>likelihood1 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x <span class="sc">+</span> param[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">4</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods))  </span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>likelihood2 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x </span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods))  </span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, </span>
+<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">5</span>,<span class="fl">0.01</span>), </span>
+<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">30</span>))</span>
+<span id="cb49-25"><a href="#cb49-25" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, </span>
+<span id="cb49-26"><a href="#cb49-26" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">5</span>,<span class="fl">0.01</span>), </span>
+<span id="cb49-27"><a href="#cb49-27" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">30</span>))</span>
+<span id="cb49-28"><a href="#cb49-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-29"><a href="#cb49-29" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
+<span id="cb49-30"><a href="#cb49-30" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out1, <span class="at">start =</span> <span class="dv">1000</span>)</span>
+<span id="cb49-31"><a href="#cb49-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-32"><a href="#cb49-32" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
+<span id="cb49-33"><a href="#cb49-33" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out2, <span class="at">start =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-25_dc28d1b99c6866f508a38d99e3ab96f1">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Calculating Bayes factor</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML <span class="sc">-</span> M2<span class="sc">$</span>ln.ML)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4.057075e+29</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># BF &gt; 1 means the evidence is in favor of M1. See Kass, R. E. &amp; Raftery, A. E. </span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (1995) Bayes Factors. J. Am. Stat. Assoc., Amer Statist Assn, 90, 773-795.</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="do">### Calculating Posterior weights</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML) <span class="sc">/</span> ( <span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML) <span class="sc">+</span> <span class="fu">exp</span>(M2<span class="sc">$</span>ln.ML))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># BF &gt; 1 means the evidence is in favor of M1. See Kass, R. E. &amp; Raftery, A. E. </span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (1995) Bayes Factors. J. Am. Stat. Assoc., Amer Statist Assn, 90, 773-795.</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="do">### Calculating Posterior weights</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML) <span class="sc">/</span> ( <span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML) <span class="sc">+</span> <span class="fu">exp</span>(M2<span class="sc">$</span>ln.ML))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If models have different model priors, multiply with the prior probabilities of each model. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If models have different model priors, multiply with the prior probabilities of each model. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="prior-influence-on-the-marginal-likelihood" class="level3" data-number="5.2.2">
-<h3 data-number="5.2.2" class="anchored" data-anchor-id="prior-influence-on-the-marginal-likelihood"><span class="header-section-number">5.2.2</span> Prior influence on the marginal likelihood</h3>
+<section id="prior-influence-on-the-marginal-likelihood" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="prior-influence-on-the-marginal-likelihood"><span class="header-section-number">5.3.2</span> Prior influence on the marginal likelihood</h3>
 <p>A problem that is often not sufficiently appreciated when performing Bayesian inference across multiple models is the influence of the choice of uninformative parameter priors on the model weight.</p>
 <p>The issue arises because the prior density enters the marginal likelihood multiplicative. Although this follows directly from the joint posterior definition and is logically completely consistent, it has the somewhat intuitive consequence that increasing the width width of an uninformative prior will linearly decrease the marginal likelihood (Sinharay-SensitivityBayesFactors-2002). In particular, for an infinitely wide (inproper) uninformative prior, the model weight goes to zero, regardless of the fit. This behavior is surprising to many practitioners of Bayesian analysis, because they are used to the fact that the influence of increasing prior width on uninformative priors is minimal for fitting parameters.</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-12_ac9be752481734fe70807fce62ce8978">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Motivation: ML is very dependent on the prior, which is a problem if you </span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># have uninformative priors. you can see this via rerunning the upper  </span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># example with changed priors - suddenly, support for M1 is gone</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, </span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, </span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out1, <span class="at">start =</span> <span class="dv">1000</span>)</span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
-<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out2, <span class="at">start =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-26_c47f770ee81582f400f493a516459b9e">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Motivation: ML is very dependent on the prior, which is a problem if you </span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="co"># have uninformative priors. you can see this via rerunning the upper  </span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="co"># example with changed priors - suddenly, support for M1 is gone</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, </span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, </span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out1, <span class="at">start =</span> <span class="dv">1000</span>)</span>
+<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
+<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out2, <span class="at">start =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Calculating Bayes factor</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-13_d4ffbb2a04199b79726aac0023e2eca7">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML <span class="sc">-</span> M2<span class="sc">$</span>ln.ML)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-27_2a428a0e81307dfd32a926bc8bf4ee0e">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML <span class="sc">-</span> M2<span class="sc">$</span>ln.ML)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 832.1584</code></pre>
 </div>
 </div>
-</section>
-<section id="fractional-bf" class="level3" data-number="5.2.3">
-<h3 data-number="5.2.3" class="anchored" data-anchor-id="fractional-bf"><span class="header-section-number">5.2.3</span> Fractional BF</h3>
+<p>As you see, the value is very different to the value we calculated before.</p>
+<section id="fractional-bf" class="level4" data-number="5.3.2.1">
+<h4 data-number="5.3.2.1" class="anchored" data-anchor-id="fractional-bf"><span class="header-section-number">5.3.2.1</span> Fractional BF</h4>
 <p>The fact that Bayesian model weights are strongly dependent on the width of the prior choice has sparked discussion of the appropriateness of this approach in situations with uninformative priors. For example, in situations where multiple nested models are compared, the width of the uniformative prior may completely determine the complexity of models that are being selected. One suggestion that has been made is not to perform multi-model inference with uninformative priors at all, or that at least additional analysis is necessary to find parameter priors that are sensible for the multi-model setup at hand. Another solution is to calibrate the model on a part of the data first, use the result as new priors and then perform the analysis described above (intrinsic Bayes factor (Berger-IntrinsicBayesFactor-1996), fractional Bayes factor (OHagan-FractionalBayesFactors-1995)). If sufficient data is available so that the likelihood falls off sufficiently strong during the calibration step, this approach should nearly eliminate any ambiguity resulting from the prior choice.</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-14_d54a96b6d7520213fc7e70418fab7835">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihoods with half the data </span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>likelihood1 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x <span class="sc">+</span> param[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">4</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>likelihood2 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x </span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, </span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
-<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, </span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
-<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
-<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
-<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>newPrior1 <span class="ot">=</span> <span class="fu">createPriorDensity</span>(out1, <span class="at">start =</span> <span class="dv">200</span>, </span>
-<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>                               <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
-<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>                               <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
-<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>newPrior2 <span class="ot">=</span> <span class="fu">createPriorDensity</span>(out2, <span class="at">start =</span> <span class="dv">200</span>, </span>
-<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>                               <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
-<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a>                               <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
-<span id="cb37-29"><a href="#cb37-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-30"><a href="#cb37-30" aria-hidden="true" tabindex="-1"></a><span class="co"># now rerun this with likelihoods for the other half of the data and new prior</span></span>
-<span id="cb37-31"><a href="#cb37-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-32"><a href="#cb37-32" aria-hidden="true" tabindex="-1"></a>likelihood1 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
-<span id="cb37-33"><a href="#cb37-33" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x <span class="sc">+</span> param[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb37-34"><a href="#cb37-34" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">4</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb37-35"><a href="#cb37-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
-<span id="cb37-36"><a href="#cb37-36" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb37-37"><a href="#cb37-37" aria-hidden="true" tabindex="-1"></a>likelihood2 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
-<span id="cb37-38"><a href="#cb37-38" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x </span>
-<span id="cb37-39"><a href="#cb37-39" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb37-40"><a href="#cb37-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
-<span id="cb37-41"><a href="#cb37-41" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb37-42"><a href="#cb37-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-43"><a href="#cb37-43" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, <span class="at">prior =</span> newPrior1)</span>
-<span id="cb37-44"><a href="#cb37-44" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, <span class="at">prior =</span> newPrior2)</span>
-<span id="cb37-45"><a href="#cb37-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-46"><a href="#cb37-46" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
-<span id="cb37-47"><a href="#cb37-47" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out1, <span class="at">start =</span> <span class="dv">1000</span>)</span>
-<span id="cb37-48"><a href="#cb37-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-49"><a href="#cb37-49" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
-<span id="cb37-50"><a href="#cb37-50" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out2, <span class="at">start =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-28_53b3b138bfc56a769f56f153d4f690c6">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihoods with half the data </span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="co"># note: half of the data is ensured here by summing only seq(1, 30, 2) of the</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="co"># observations in the likelihood</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>likelihood1 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x <span class="sc">+</span> param[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">4</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>likelihood2 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x </span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, </span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, </span>
+<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
+<span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
+<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
+<span id="cb58-24"><a href="#cb58-24" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
+<span id="cb58-25"><a href="#cb58-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-26"><a href="#cb58-26" aria-hidden="true" tabindex="-1"></a>newPrior1 <span class="ot">=</span> <span class="fu">createPriorDensity</span>(out1, <span class="at">start =</span> <span class="dv">200</span>, </span>
+<span id="cb58-27"><a href="#cb58-27" aria-hidden="true" tabindex="-1"></a>                               <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
+<span id="cb58-28"><a href="#cb58-28" aria-hidden="true" tabindex="-1"></a>                               <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
+<span id="cb58-29"><a href="#cb58-29" aria-hidden="true" tabindex="-1"></a>newPrior2 <span class="ot">=</span> <span class="fu">createPriorDensity</span>(out2, <span class="at">start =</span> <span class="dv">200</span>, </span>
+<span id="cb58-30"><a href="#cb58-30" aria-hidden="true" tabindex="-1"></a>                               <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
+<span id="cb58-31"><a href="#cb58-31" aria-hidden="true" tabindex="-1"></a>                               <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
+<span id="cb58-32"><a href="#cb58-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-33"><a href="#cb58-33" aria-hidden="true" tabindex="-1"></a><span class="co"># now rerun this with likelihoods for the other half of the data and new prior</span></span>
+<span id="cb58-34"><a href="#cb58-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-35"><a href="#cb58-35" aria-hidden="true" tabindex="-1"></a>xTest<span class="ot">=</span> x[<span class="dv">16</span><span class="sc">:</span><span class="dv">30</span>]</span>
+<span id="cb58-36"><a href="#cb58-36" aria-hidden="true" tabindex="-1"></a>yTest <span class="ot">=</span> y[<span class="dv">16</span><span class="sc">:</span><span class="dv">30</span>]</span>
+<span id="cb58-37"><a href="#cb58-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-38"><a href="#cb58-38" aria-hidden="true" tabindex="-1"></a>likelihood1 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
+<span id="cb58-39"><a href="#cb58-39" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x <span class="sc">+</span> param[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb58-40"><a href="#cb58-40" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">4</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb58-41"><a href="#cb58-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
+<span id="cb58-42"><a href="#cb58-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb58-43"><a href="#cb58-43" aria-hidden="true" tabindex="-1"></a>likelihood2 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
+<span id="cb58-44"><a href="#cb58-44" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x </span>
+<span id="cb58-45"><a href="#cb58-45" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb58-46"><a href="#cb58-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
+<span id="cb58-47"><a href="#cb58-47" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb58-48"><a href="#cb58-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-49"><a href="#cb58-49" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, <span class="at">prior =</span> newPrior1)</span>
+<span id="cb58-50"><a href="#cb58-50" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, <span class="at">prior =</span> newPrior2)</span>
+<span id="cb58-51"><a href="#cb58-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-52"><a href="#cb58-52" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
+<span id="cb58-53"><a href="#cb58-53" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out1, <span class="at">start =</span> <span class="dv">1000</span>)</span>
+<span id="cb58-54"><a href="#cb58-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-55"><a href="#cb58-55" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
+<span id="cb58-56"><a href="#cb58-56" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out2, <span class="at">start =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Calculating the fractional Bayes factor</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-15_de26ade4dbf555b6a63ccfe670ae753c">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML <span class="sc">-</span> M2<span class="sc">$</span>ln.ML)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-29_770e3c8424d3d81a98b05189f664e20d">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML <span class="sc">-</span> M2<span class="sc">$</span>ln.ML)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1667203</code></pre>
 </div>
 </div>
-</section>
-</section>
-<section id="information-criteria" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="information-criteria"><span class="header-section-number">5.3</span> Information Criteria</h2>
-<section id="dic" class="level3" data-number="5.3.1">
-<h3 data-number="5.3.1" class="anchored" data-anchor-id="dic"><span class="header-section-number">5.3.1</span> DIC</h3>
-<p>DIC can be calculated in Jags using</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-16_c66e86f12cc53389a23c12f4697fabd0">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>dic <span class="ot">=</span> <span class="fu">dic.samples</span>(jagsModel, <span class="at">n.iter =</span> <span class="dv">5000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>This was for the previous model, which was the spike and slap. In the result, the penalty is the effective number of parameters of this model.</p>
-<p>Note that this value is pretty low (around 12 parameters), which makes sense because although the spike and slap has formally 200 parameters, most of them are, as we have seen, ineffective.</p>
-<p><strong>Task:</strong> calculate DIA for the other prior regularizations above and observe the effective number of parameters</p>
-</section>
-<section id="waic" class="level3" data-number="5.3.2">
-<h3 data-number="5.3.2" class="anchored" data-anchor-id="waic"><span class="header-section-number">5.3.2</span> WAIC</h3>
-<p>It was suggested that WAIC has a bunch of favorable advantages over DIC, but it is also harder to calculate. In Jags, WAIC is a bit complicated. It is better supported in STAN and brms.</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-17_f64767377b39ab6fe14393f3c483cdca">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>?waic</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co"># model with population-level effects only</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(rating <span class="sc">~</span> treat <span class="sc">+</span> period <span class="sc">+</span> carry,</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> inhaler)</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>waic1 <span class="ot">&lt;-</span> <span class="fu">waic</span>(fit1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: 
-2 (0.3%) p_waic estimates greater than 0.4. We recommend trying loo instead.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># model with an additional varying intercept for subjects</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">brm</span>(rating <span class="sc">~</span> treat <span class="sc">+</span> period <span class="sc">+</span> carry <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>subject),</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> inhaler)</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>waic2 <span class="ot">&lt;-</span> <span class="fu">waic</span>(fit2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: 
-26 (4.5%) p_waic estimates greater than 0.4. We recommend trying loo instead.</code></pre>
-</div>
-</div>
-<p>compare both models</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-18_62d6cfd7cc0a6962424b5be8ce6eb120">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(waic1, waic2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     elpd_diff se_diff
-fit2  0.0       0.0   
-fit1 -9.8       4.4   </code></pre>
-</div>
-</div>
-</section>
-<section id="careful-with-model-selection" class="level3" data-number="5.3.3">
-<h3 data-number="5.3.3" class="anchored" data-anchor-id="careful-with-model-selection"><span class="header-section-number">5.3.3</span> Careful with model selection</h3>
-<p>Note that selection based on information criteria shares many of the same problems that appear in frequentist IC selection. Those are in particular</p>
-<ul>
-<li>Affects uncertainties, in particular p-values</li>
-<li>Destroys causal relationships</li>
-</ul>
-<p>The issue is known under the term “post-selection inference” and applies to Bayesian and frequentist models alike, see e.g.&nbsp;Kuchibhotla, A. K., Kolassa, J. E., &amp; Kuffner, T. A. (2022). Post-selection inference.&nbsp;<em>Annual Review of Statistics and Its Application</em>,&nbsp;<em>9</em>, 505-527.</p>
-<p>This example shows how AIC selection, followed by a conventional regression analysis of the selected model, massively inflates false positives.</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-19_875a6030f09bfd59fa9f98901e9fd81d">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">20000</span>), <span class="at">ncol =</span> <span class="dv">100</span>))</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>fullModel <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> . , <span class="at">data =</span> dat)</span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fullModel)</span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)</span></span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>selection <span class="ot">=</span> <span class="fu">stepAIC</span>(fullModel, <span class="at">trace =</span> F)</span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> X1 <span class="sc">+</span> X2 <span class="sc">+</span> X3 <span class="sc">+</span> X5 <span class="sc">+</span> X7 <span class="sc">+</span> X13 <span class="sc">+</span> X20 <span class="sc">+</span> X23 <span class="sc">+</span> X30 <span class="sc">+</span> </span>
-<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>             X37 <span class="sc">+</span> X42 <span class="sc">+</span> X45 <span class="sc">+</span> X46 <span class="sc">+</span> X47 <span class="sc">+</span> X48 <span class="sc">+</span> X64 <span class="sc">+</span> X65 <span class="sc">+</span> X66 <span class="sc">+</span> X71 <span class="sc">+</span> </span>
-<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>             X75 <span class="sc">+</span> X80 <span class="sc">+</span> X81 <span class="sc">+</span> X87 <span class="sc">+</span> X88 <span class="sc">+</span> X89 <span class="sc">+</span> X90 <span class="sc">+</span> X94 <span class="sc">+</span> X100, <span class="at">data =</span> dat))</span>
-<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a><span class="co"># voila, 15 out of 28 (before 100) predictors significant - looks like we could have good fun to discuss / publish these results!</span></span>
-<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a><span class="do">#######################################################</span></span>
-<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Same thing, but now we put in 10 significant predictors (the first 10 x)</span></span>
-<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">20000</span>), <span class="at">ncol =</span> <span class="dv">100</span>))</span>
-<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)</span>
-<span id="cb47-26"><a href="#cb47-26" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> dat<span class="sc">$</span>y <span class="sc">+</span> <span class="fu">rowSums</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]) </span>
-<span id="cb47-27"><a href="#cb47-27" aria-hidden="true" tabindex="-1"></a>fullModel <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> . , <span class="at">data =</span> dat)</span>
-<span id="cb47-28"><a href="#cb47-28" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fullModel)</span>
-<span id="cb47-29"><a href="#cb47-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)</span></span>
-<span id="cb47-30"><a href="#cb47-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-31"><a href="#cb47-31" aria-hidden="true" tabindex="-1"></a>selection <span class="ot">=</span> <span class="fu">stepAIC</span>(fullModel, <span class="at">trace =</span> F)</span>
-<span id="cb47-32"><a href="#cb47-32" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> X1 <span class="sc">+</span> X2 <span class="sc">+</span> X3 <span class="sc">+</span> X4 <span class="sc">+</span> X5 <span class="sc">+</span> X6 <span class="sc">+</span> X7 <span class="sc">+</span> X8 <span class="sc">+</span> X9 <span class="sc">+</span> X10 <span class="sc">+</span> X13 <span class="sc">+</span> </span>
-<span id="cb47-33"><a href="#cb47-33" aria-hidden="true" tabindex="-1"></a>             X14 <span class="sc">+</span> X20 <span class="sc">+</span> X23 <span class="sc">+</span> X24 <span class="sc">+</span> X26 <span class="sc">+</span> X30 <span class="sc">+</span> X37 <span class="sc">+</span> X42 <span class="sc">+</span> X46 <span class="sc">+</span> X47 <span class="sc">+</span> </span>
-<span id="cb47-34"><a href="#cb47-34" aria-hidden="true" tabindex="-1"></a>             X48 <span class="sc">+</span> X49 <span class="sc">+</span> X64 <span class="sc">+</span> X65 <span class="sc">+</span> X66 <span class="sc">+</span> X68 <span class="sc">+</span> X71 <span class="sc">+</span> X73 <span class="sc">+</span> X75 <span class="sc">+</span> X80 <span class="sc">+</span> </span>
-<span id="cb47-35"><a href="#cb47-35" aria-hidden="true" tabindex="-1"></a>             X81 <span class="sc">+</span> X87 <span class="sc">+</span> X88 <span class="sc">+</span> X89 <span class="sc">+</span> X90 <span class="sc">+</span> X94, <span class="at">data =</span> dat))</span>
-<span id="cb47-36"><a href="#cb47-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-37"><a href="#cb47-37" aria-hidden="true" tabindex="-1"></a><span class="co"># true positives are good, but false positives remain</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-Burnham-Modelselectionand-2002" class="csl-entry" role="listitem">
+Burnham, Kenneth P, and David R Anderson. 2002. <em>Model Selection and Multi-Model Inference: A Practical Information-Theoretic Approach</em>. Springer Verlag.
+</div>
+<div id="ref-DormannCarsten-Modelaveragingecology-2018" class="csl-entry" role="listitem">
+Dormann Carsten, F., M. Calabrese Justin, Guillera-Arroita Gurutzeta, Matechou Eleni, Bahn Volker, BartoÅ,, Kamil, M. Beale Colin, et al. 2018. <span>“Model Averaging in Ecology: A Review of Bayesian, Information-Theoretic, and Tactical Approaches for Predictive Inference.”</span> <em>Ecol Monogr</em> 0 (0). <a href="https://doi.org/10.1002/ecm.1309">https://doi.org/10.1002/ecm.1309</a>.
+</div>
+<div id="ref-Kass-BayesFactors-1995" class="csl-entry" role="listitem">
+Kass, R. E. And Raftery, A. E. 1995. <span>“Bayes Factors.”</span> <em>Journal of The American Statistical Association</em> 90 (430): 773–95.
+</div>
+<div id="ref-weinberg2012" class="csl-entry" role="listitem">
+Weinberg, Martin D. 2012. <span>“Computing the Bayes Factor from a Markov Chain Monte Carlo Simulation of the Posterior Distribution.”</span> <em>Bayesian Analysis</em> 7 (3): 737–70.
+</div>
+</div>
+</section>
 </section>
 </section>
 

@@ -54,7 +54,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -119,6 +138,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="citation_reference" content="citation_title=A biologist’s guide to model selection and causal inference;,citation_author=Zachary M Laubach;,citation_author=Eleanor J Murray;,citation_author=Kim L Hoke;,citation_author=Rebecca J Safran;,citation_author=Wei Perng;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_issue=1943;,citation_volume=288;,citation_journal_title=Proceedings of the Royal Society B;,citation_publisher=The Royal Society;">
 <meta name="citation_reference" content="citation_title=Control of confounding and reporting of results in causal inference studies. Guidance for authors from editors of respiratory, sleep, and critical care journals;,citation_author=David J Lederer;,citation_author=Scott C Bell;,citation_author=Richard D Branson;,citation_author=James D Chalmers;,citation_author=Rachel Marshall;,citation_author=David M Maslove;,citation_author=David E Ost;,citation_author=Naresh M Punjabi;,citation_author=Michael Schatz;,citation_author=Alan R Smyth;,citation_author=others;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_issue=1;,citation_volume=16;,citation_journal_title=Annals of the American Thoracic Society;,citation_publisher=American Thoracic Society;">
 <meta name="citation_reference" content="citation_title=A note on model selection using information criteria for general linear models estimated using REML;,citation_author=Arunas Petras Verbyla;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_fulltext_html_url=https://onlinelibrary.wiley.com/doi/abs/10.1111/anzs.12254;,citation_issue=1;,citation_doi=10.1111/anzs.12254;,citation_volume=61;,citation_language=en;,citation_journal_title=Australian &amp;amp;amp; New Zealand Journal of Statistics;">
+<meta name="citation_reference" content="citation_title=On obtaining invariant prior distributions;,citation_author=Edward I. George;,citation_author=Robert McCulloch;,citation_publication_date=1993-11-01;,citation_cover_date=1993-11-01;,citation_year=1993;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/037837589390086L;,citation_issue=2;,citation_doi=10.1016/0378-3758(93)90086-L;,citation_volume=37;,citation_journal_title=Journal of Statistical Planning and Inference;">
 </head>
 
 <body class="nav-sidebar floating">
@@ -781,8 +801,7 @@ Summary Bayes
 <p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>The message here is that if we are free to rescale predictors as we want (which is generally true), the prior cannot be flat for all possible parameter transformations.</p>
-<p>A key for any rule about finding uninformative priors is therefore that the rule must be invariant under parameter transformation.</p>
+<p>The message here is that if we are free to rescale predictors as we want (which is generally true), the prior cannot be flat for all possible parameter transformations. A key for any rule about finding uninformative priors is therefore that the rule must be invariant under parameter transformation. For more on this, see <span class="citation" data-cites="george1993">(<a href="6A-References.html#ref-george1993" role="doc-biblioref">George and McCulloch 1993</a>)</span>.</p>
 <p>A second message is that in Bayesian statistics, you have to be a bit careful about parameter transformations, because we don’t just look at one value, but at a whole distribution, and the shape of this distribution will change of we reparameterize.</p>
 </section>
 <section id="default-choices-for-uniformative-priors" class="level3" data-number="2.3.2">
@@ -837,6 +856,11 @@ Summary Bayes
 <p>Choy, S. L.; O’Leary, R. &amp; Mengersen, K. (2009) Elicitation by design in ecology: using expert opinion to inform priors for Bayesian statistical models. Ecology, 90, 265-277</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-george1993" class="csl-entry" role="listitem">
+George, Edward I., and Robert McCulloch. 1993. <span>“On Obtaining Invariant Prior Distributions.”</span> <em>Journal of Statistical Planning and Inference</em> 37 (2): 169–79. <a href="https://doi.org/10.1016/0378-3758(93)90086-L">https://doi.org/10.1016/0378-3758(93)90086-L</a>.
+</div>
+</div>
 </section>
 </section>
 

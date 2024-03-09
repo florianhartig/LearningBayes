@@ -77,6 +77,12 @@ install.packages(rjags)
 
 Also, you should install the JAGS (see <https://mcmc-jags.sourceforge.io>). You can find the downloads for different operating systems at <https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/>
 
+## Exercises and R code from the book
+
+In case you want to run the code yourself, note that a plain R version of the code of each chapter is provided \[here\](https://github.com/florianhartig/LearningBayes/tree/master/classroom)
+
+The same folder holds some R scripts that are meant as classroom exercises, accompanying each chapter.
+
 ## Assumed R knowledge
 
 As mentioned in the preface, this book assumes that you have basic knowledge about data manipulation (reading in data, removing or selecting columns or rows, calculating means per group etc.) and plotting in R. Note that for both purposes, there are currently two main schools in the R environment which do the same things, but with very different syntax:
@@ -154,7 +160,7 @@ dat = airquality
 6.  Single continuous variables can be visualized using a histogram (`hist)` , for two variables, it depends on their data types:
 
     | Scenario                     | Which plot                    | R command                                                                            |
-    |------------------------------|-------------------------------|--------------------------------------------------------------------------------------|
+    |-----------------|-----------------|---------------------------------------|
     | Numeric                      | Histogram or boxplot          | `hist()` and`boxplot`                                                                |
     | Numeric with numeric         | Scatterplot                   | `plot`                                                                               |
     | Numeric with categorical     | Boxplot                       | `boxplot(numeric~categorical)`                                                       |
