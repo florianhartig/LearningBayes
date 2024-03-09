@@ -10,6 +10,12 @@ set.seed(42)
 
 # The Bayesian Logic
 
+::: callout-note
+In this chapter, we will discuss 
+
+:::
+
+
 ## Frequentist and Bayesian coin flip
 
 Assume I'm trying to guess if a coin comes up heads or tails. I have had 10 trials, and 8x success in guessing the side.

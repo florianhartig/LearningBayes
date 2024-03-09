@@ -10,6 +10,11 @@ set.seed(42)
 
 # Occupancy models
 
+::: callout-note
+In this chapter, we will discuss 
+
+:::
+
 ```{r}
 library(EcoData)
 library(effects)

@@ -4,13 +4,18 @@
 #'   chunk_output_type: console
 #' ---
 #' 
-## ---- include=FALSE-----------------------------------------------------------------------
+## ---- include=FALSE--------------------------------------------------------------------------------
 set.seed(42)
 
 #' 
 #' # Occupancy models
 #' 
-## -----------------------------------------------------------------------------------------
+#' ::: callout-note
+#' In this chapter, we will discuss 
+#' 
+#' :::
+#' 
+## --------------------------------------------------------------------------------------------------
 library(EcoData)
 library(effects)
 
@@ -22,7 +27,7 @@ plot(allEffects(fit))
 #' 
 #' However, there is something wrong with the model
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 library(DHARMa)
 res <- simulateResiduals(fit)
 plot(res)
@@ -30,14 +35,14 @@ plot(res)
 #' 
 #' Suspicion - the lizards atually depend on the altitude, but they don't like wind and therefore hide when there is a lot of wind, and wind also correlates with altitude.
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 plot(windObs ~ sAltitude, data = volcanoisland)
 
 
 #' 
 #' Could we find out what's the true effect of the environmental predictors? let's build an occupancy model where we model the true presence of the lizzard as a latent variable.
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 library(rjags)
 
 Data = list(WindObs = log(volcanoisland$windObs),
@@ -100,7 +105,7 @@ dic
 #' 
 #' Inspecting the occupancy results
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 para.names <- c("LizzardTrue")
 Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
 
@@ -132,7 +137,7 @@ plot(x,y, cex = uncertaintyS)
 #' 
 #' Checking residuals of this model
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 para.names <- c("LizzardObsSim")
 Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
 

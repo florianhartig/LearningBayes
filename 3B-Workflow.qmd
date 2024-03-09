@@ -10,6 +10,11 @@ set.seed(42)
 
 # Bayesian Workflow
 
+::: callout-note
+In this chapter, we will discuss 
+
+:::
+
 ![Bayesian Workflow, from Gelman, A., Vehtari, A., Simpson, D., Margossian, C. C., Carpenter, B., Yao, Y., \... & Modrák, M. (2020). Bayesian workflow. <https://arxiv.org/pdf/2011.01808.pdf>](images/BayesianWorkflow.png){width="800"}
 
 ## Picking an initial model

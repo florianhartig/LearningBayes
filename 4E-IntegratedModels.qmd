@@ -10,6 +10,17 @@ set.seed(42)
 
 # Integrated Models
 
+::: callout-note
+In this chapter, we will discuss 
+
+:::
+
+## General ideal 
+
+
+
+## Example from Kéry & Schaub
+
 The following example example of a simple IPM (counts, capture-recapture, reproduction) is from Kéry, M., & Schaub, M. (2011). *Bayesian population analysis using WinBUGS: a hierarchical perspective*. Academic Press., chapter 11.3
 
 ```{r}

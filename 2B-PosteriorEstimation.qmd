@@ -10,6 +10,11 @@ set.seed(42)
 
 # Posterior estimation
 
+::: callout-note
+In this chapter, we will discuss 
+
+:::
+
 ## Fitting a linear regression with different MCMCs
 
 We will use the dataset airquality, just removing NAs and scaling all variables for convenience

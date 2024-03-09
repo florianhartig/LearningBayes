@@ -4,17 +4,22 @@
 #'   chunk_output_type: console
 #' ---
 #' 
-## ---- include=FALSE-----------------------------------------------------------------------
+## ---- include=FALSE--------------------------------------------------------------------------------
 set.seed(42)
 
 #' 
 #' # Posterior estimation
 #' 
+#' ::: callout-note
+#' In this chapter, we will discuss 
+#' 
+#' :::
+#' 
 #' ## Fitting a linear regression with different MCMCs
 #' 
 #' We will use the dataset airquality, just removing NAs and scaling all variables for convenience
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 airqualityCleaned = airquality[complete.cases(airquality),]
 airqualityCleaned = data.frame(scale(airqualityCleaned))
 plot(Ozone ~ Temp, data = airqualityCleaned)
@@ -22,7 +27,7 @@ plot(Ozone ~ Temp, data = airqualityCleaned)
 #' 
 #' ### Frequentist inference
 #' 
-## ---- message = F-------------------------------------------------------------------------
+## ---- message = F----------------------------------------------------------------------------------
 fit <- lm(Ozone ~ Temp, data = airqualityCleaned)
 summary(fit)
 library(effects)
@@ -33,12 +38,12 @@ plot(fit) # residuals
 #' 
 #' ### Bayesian analysis with brms
 #' 
-## ---- message = F, echo=FALSE, results = 'hide'-------------------------------------------
+## ---- message = F, echo=FALSE, results = 'hide'----------------------------------------------------
 library(brms)
 fit <- brm(Ozone ~ Temp, data = airqualityCleaned)
 
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 summary(fit)
 plot(fit, ask = FALSE)
 plot(conditional_effects(fit), ask = FALSE)
@@ -54,7 +59,7 @@ pp_check(fit) # residual checks
 #' 2.  Write the model as a string in the JAGS specific BUGS dialect
 #' 3.  Compile the model and run the MCMC for an adaptation (burn-in) phase
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 library(rjags)
 Data = list(y = airqualityCleaned$Ozone, x = airqualityCleaned$Temp, nobs = nrow(airqualityCleaned))
 
@@ -99,7 +104,7 @@ summary(Samples)
 #' 
 #' Approach is identical to JAGS just that we have to define all variables in the section data
 #' 
-## ---- message = F, results = 'hide'-------------------------------------------------------
+## ---- message = F, results = 'hide'----------------------------------------------------------------
 library(rstan)
 
 stanmodelcode <- "
@@ -125,7 +130,7 @@ fit <- stan(model_code = stanmodelcode, model_name = "example",
             sample_file = file.path(tempdir(), 'norm.csv')) 
 
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 print(fit)
 plot(fit)
 rstan::traceplot(fit)
@@ -135,7 +140,7 @@ rstan::traceplot(fit)
 #' 
 #' Here, we don't use a model specification language, but just write out the likelihood as an standard R function. The same can be done for the prior. For simplicity, in this case I just used flat priors using the lower / upper arguments.
 #' 
-## ----  message = F, results='hide'--------------------------------------------------------
+## ----  message = F, results='hide'-----------------------------------------------------------------
 library(BayesianTools)
 
 likelihood <- function(par){
@@ -151,7 +156,7 @@ setup <- createBayesianSetup(likelihood = likelihood, lower = c(-10,-10,0.01), u
 out <- runMCMC(setup)
 
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 plot(out)
 summary(out, start = 1000)
 
@@ -160,7 +165,7 @@ summary(out, start = 1000)
 #' 
 #' Running the sampler again
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 Samples <- coda.samples(jagsModel, variable.names = c("a","b","sigma"), n.iter = 5000)
 
 #' 
@@ -170,7 +175,7 @@ Samples <- coda.samples(jagsModel, variable.names = c("a","b","sigma"), n.iter =
 #' 
 #' First thing should always be convergence checks. Visual look at the trace plots,
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 plot(Samples)
 
 #' 
@@ -181,13 +186,13 @@ plot(Samples)
 #' 
 #' Further convergence checks should be done AFTER removing burn-in
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 coda::acfplot(Samples)
 
 #' 
 #' Formal convergence diagnostics via
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 coda::gelman.diag(Samples)
 coda::gelman.plot(Samples)
 
@@ -197,7 +202,7 @@ coda::gelman.plot(Samples)
 #' ::: callout-caution
 #' Note that the msrf rule was made for estimating the mean / median. If you want to estimate more unstable statistics, e.g. higher quantiles or other values such as the MAP or the DIC (see section on model selection), you may have to run the MCMC chain much longer to get stable outputs.
 #' 
-## ---- message = F, results='hide'---------------------------------------------------------
+## ---- message = F, results='hide'------------------------------------------------------------------
 
   library(BayesianTools)
   bayesianSetup <- createBayesianSetup(likelihood = testDensityNormal, 
@@ -208,20 +213,20 @@ coda::gelman.plot(Samples)
 #' 
 #' The plotDiagnostics function in package BT shows us how statistics develop over time
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 plotDiagnostic(out)
 
 #' :::
 #' 
 #' ### Summary Table
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 summary(Samples)
 
 #' 
 #' Highest Posterior Density intervals
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 HPDinterval(Samples)
 
 #' 
@@ -229,13 +234,13 @@ HPDinterval(Samples)
 #' 
 #' Marginal plots show the parameter distribution (these were also created in the standard coda traceplots)
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 BayesianTools::marginalPlot(Samples)
 
 #' 
 #' Pair correlation plots show 2nd order correlations
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 # coda
 coda::crosscorr.plot(Samples)
 #BayesianTools
@@ -244,7 +249,7 @@ correlationPlot(Samples)
 #' 
 #' ### Posterior predictive distribution
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 dat = as.data.frame(Data)[,1:2]
 dat = dat[order(dat$x),]
 # raw data
@@ -300,7 +305,7 @@ polygon(x = c(dat[,2], rev(dat[,2])),
 #' 
 #' **Task: 2** implement mildly informative priors as well as strong shrinkage priors in the regression. Question to discuss: should you put the shrinkage also in the intercept? Why should you center center variables if you include a shrinkage prior on the intercept?
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 library(rjags)
 
 dat = airquality[complete.cases(airquality),] 

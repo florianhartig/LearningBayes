@@ -4,17 +4,23 @@
 #'   chunk_output_type: console
 #' ---
 #' 
-## ---- include=FALSE-----------------------------------------------------------------------
+## ---- include=FALSE--------------------------------------------------------------------------------
 set.seed(42)
 
 #' 
 #' # The Bayesian Logic
 #' 
+#' ::: callout-note
+#' In this chapter, we will discuss 
+#' 
+#' :::
+#' 
+#' 
 #' ## Frequentist and Bayesian coin flip
 #' 
 #' Assume I'm trying to guess if a coin comes up heads or tails. I have had 10 trials, and 8x success in guessing the side.
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 trials = 10
 success = 8
 
@@ -23,7 +29,7 @@ success = 8
 #' 
 #' For all three statistical methods, we use the same statistical model which is the binomial model. The probability density is available in R throught he function dbinom. For exammple, dbinom(6,10,0.9) gives you the probability of obtaining 6/10 successes when the true probability of heads is 0.9
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 dbinom(6,10, 0.0)
 
 #' 
@@ -31,7 +37,7 @@ dbinom(6,10, 0.0)
 #' 
 #' The idea of maximum likelihood estimation (MLE) is to look for the set of parameters that would, under the given model assumption, lead to the highest probability to obtain the observed data. In our case we have only one parameter, the probability of success per flip. Let's plot this for different values and look for the maximum.
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 parametervalues <- seq(0,1,0.001) # parameters to check
 likelihood <- dbinom(success,trials,parametervalues) # p(D|oarameters)
 
@@ -48,7 +54,7 @@ abline(v=MLEEstimate, col = "red")
 #' 
 #' The test statistics that can be used to do this are discussed, e.g., in https://onlinecourses.science.psu.edu/stat504/node/39. The result for a 1-parameter model is that the CI is at a log likelihood difference of 1.92
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 plot(parametervalues, likelihood, type = "l")
 legend("topleft", legend = c("Likelihood", "maximum", "CI"), col = c("black", "red", "green"), lwd = 1)
 MLEEstimate <- parametervalues[which.max(likelihood)]
@@ -75,26 +81,26 @@ abline(v=rightCI, col = "green")
 #' 
 #' want to get p-value for a smaller or equal result (1-tailed) given a fair coin p(k\<=kobs\|H0:p=0.5). Basically, we want the sum over the red bars
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 barplot(dbinom(0:10, 10, 0.5), col = c(rep("grey", success ), rep("red", 11-success)))
 line(pbinom(0:10,trials,prob = 0.5, lower.tail = F))
 
 #' 
 #' We can get this with the cummulative distribution function in R
 #' 
-## ---- eval = F----------------------------------------------------------------------------
+## ---- eval = F-------------------------------------------------------------------------------------
 ## pValue <- pbinom(success,trials,prob = 0.5, lower.tail = F)
 
 #' 
 #' but it is a bit tricky, because depeding on which side one wants to test, you have to add a -1 to the successes becaues of the discrete nature of teh data and the definition of the cummulative in R. You can try, but it's safer in practice to use the binom.test, which calculates the same values
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 binom.test(7,trials,0.5) # two sided 
 
 #' 
 #' Alternatively:
 #' 
-## ---- eval = FALSE------------------------------------------------------------------------
+## ---- eval = FALSE---------------------------------------------------------------------------------
 ## binom.test(7,trials,0.5, alternative="greater") # testing for greater
 ## binom.test(7,trials,0.5, alternative="less") # testing for less
 
@@ -104,7 +110,7 @@ binom.test(7,trials,0.5) # two sided
 #' 
 #' Imagine there is no effect, but we keep on repeating the test 100 times. How often do you think will we find a significant effect?
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 data= rbinom(100,10,0.5)
 pValue <- pbinom(data,trials,prob = 0.5, lower.tail = F)
 sum(pValue < 0.05)
@@ -114,7 +120,7 @@ sum(pValue < 0.05)
 #' 
 #' The message here is: if you do repeated tests, and you want to maintain a fixed overall type I error rate, you need to adjust the p-values, e.g. by
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 pValueAdjusted <- p.adjust(pValue, method = "hochberg")
 sum(pValueAdjusted < 0.05)
 
@@ -138,7 +144,7 @@ sum(pValueAdjusted < 0.05)
 #' 
 #' We had already calculated p(D\|M), so we just need to define p(M), the prior. For the moment, we will use a flat prior, but see the comments on prior choice later in the book - for a bernoulli trial often other priors, in particular the beta distribution, are used.
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 prior <- rep(1,1001)
 posterior <- likelihood * prior / sum(likelihood * prior) * length(parametervalues)
 
@@ -150,7 +156,7 @@ legend("topright", c("likelihood", "prior", "posterior"), col = c("black", "red"
 #' 
 #' you see that likelihood and posterior have the same shape. However, this is only because I chose a flat prior. There is still a difference, however, namely that the posterior is normalized, i.e. will integrate to one. It has to be, because we want to interpret it as a pdf, while the likelihood is not a pdf. Let's look at the same example for an informative prior
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 prior <- dnorm(parametervalues, mean = 0.5, sd = 0.1)
 posterior <- likelihood * prior / sum(likelihood * prior) * length(parametervalues)
 
@@ -170,7 +176,7 @@ legend("topright", c("likelihood", "prior", "posterior"), col = c("black", "red"
 #' 
 #' ## Interpreting the Posterior
 #' 
-## ---- echo=F------------------------------------------------------------------------------
+## ---- echo=F---------------------------------------------------------------------------------------
 set.seed(123)
 library(coda)
 library(IDPmisc)
@@ -178,7 +184,7 @@ library(IDPmisc)
 #' 
 #' In standard statistics, we are used to interpret search for the point that maximizes p(D\|phi), and interpret this as the most likely value.
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 parameter = seq(-5,5,len=500)
 likelihood = dnorm(parameter) + dnorm(parameter, mean = 2.5, sd=0.5)
 
@@ -192,7 +198,7 @@ text(2.5,0.8, "MLE", col = "red")
 #' 
 #' Assume the prior is flat, then we get the posterior simply by normalization
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 unnormalizedPosterior = likelihood * 1 
 posterior = unnormalizedPosterior / sum(unnormalizedPosterior/50) 
 
@@ -200,7 +206,7 @@ posterior = unnormalizedPosterior / sum(unnormalizedPosterior/50)
 #' 
 #' In Bayesian statistics, the primary outcome of the inference is the whole distribution.
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 plot(parameter,posterior, type = "l")
 polygon(parameter, posterior, border=NA, col="darksalmon")
 
@@ -213,7 +219,7 @@ polygon(parameter, posterior, border=NA, col="darksalmon")
 #' 
 #' However, if the distribution is very skewed as in our example, it may well be that the MAP is far at one side of the distribution, and doesn't really give a good distribution of where most probability mass is. If it is really neccessary to do predictions with one value (instead of forwarding the whole posterior distribution), I would typically predict with the median of the posterior.
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 plot(parameter,posterior, type = "l")
 polygon(parameter, posterior, border=NA, col="darksalmon")
 
@@ -232,7 +238,7 @@ text(1.8,0.3, "Median", col = "blue")
 #' 
 #' Typically, one also wants uncertainties. There basic option to do this is the Bayesian credible interval, which is the analogue to the frequentist confidence interval. The 95 % Bayesian Credibility interval is the centra 95% of the posterior distribution
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 plot(parameter,posterior, type = "l")
 
 
@@ -254,7 +260,7 @@ text(0.75,0.07, "95 % Credibile\n Interval")
 #' 
 #' 1.  The **Highest Posterior Density** (HPD). The HPD is the x% highest posterior density interval is the shortest interval in parameter space that contains x% of the posterior probability. It would be a bit cumbersome to calculate this in this example, but if you have an MCMC sample, you get the HPD with the package coda via
 #' 
-## ---- eval=FALSE--------------------------------------------------------------------------
+## ---- eval=FALSE-----------------------------------------------------------------------------------
 ## HPDinterval(obj, prob = 0.95, ...)
 
 #' 
@@ -276,7 +282,7 @@ text(0.75,0.07, "95 % Credibile\n Interval")
 #' 
 #' However, if you look at the correlation, you see that the likelihood has excluded vast areas of the prior space (assuming we have had flat uncorrelated likelihoods in this case).
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 library(psych)
 par1= runif(1000,0,1)
 par2 =par1 + rnorm(1000,sd = 0.05)
@@ -291,7 +297,7 @@ scatter.hist(par1,par2)
 #' 
 #' A further issue that many people are not aware of is that the marginal mode (maximum) does not need to coincide with the global mode if correlations in parameter space are nonlinear. Assume we have a posterior with 2 parameters, which are in a complcated, banana-shaped correlation. Assume we are able to sample from this poterior. Here is an example from Meng and Barnard, code from the bayesm package (see Rmd source file for code of this function).
 #' 
-## ---- echo=F------------------------------------------------------------------------------
+## ---- echo=F---------------------------------------------------------------------------------------
 banana=function(A,B,C1,C2,N,keep=10,init=10)
 {
     R=init*keep+N*keep
@@ -408,7 +414,7 @@ scatterhist = function (x, y = NULL, smooth = TRUE, ab = FALSE, correl = TRUE,
 #' 
 #' If we plot the correlation, as well as the marginal distributions (i.e. the histograms for each parameter), you see that the mode of the marginal distributions will not conincide with the multivariate mode (red, solid lines).
 #' 
-## ---- fig.width=8, fig.height=8-----------------------------------------------------------
+## ---- fig.width=8, fig.height=8--------------------------------------------------------------------
 set.seed(124)
 sample=banana(A=0.5,B=0,C1=3,C2=3,50000)
 scatterhist(sample[,1], sample[,2])
@@ -438,7 +444,7 @@ scatterhist(sample[,1], sample[,2])
 #' 
 #' Scaling is key to understand why uninformative priors can't always be flat. Imagine the following situation: we have a dataset on average tree diameters, and we want to infer the average with a Bayesian method. We shouldn't really look at the data before we specify our prior, so let's just specify the prior, and assume we choose a flat prior between 1 and 10 because we don't want to bias our data in any way
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 values = 1:5
 priorWeight = rep(1/5, 5)
 barplot(priorWeight, names.arg = values, xlab = "size [cm]", 
@@ -449,14 +455,12 @@ barplot(priorWeight, names.arg = values, xlab = "size [cm]",
 #' 
 #' If we rescale the x-axis to basal area, the length of each bar on the x-axis changes - large values are getting broader, short values are getting more narrow. If the probability weight is to stay the same, we get the following picture:
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 barplot(priorWeight/values^2, width = values^2, names.arg = values^2, 
         xlab = "size [cm^2]", ylab = "priorProbability", col = "darkseagreen")
 
 #' 
-#' The message here is that if we are free to rescale predictors as we want (which is generally true), the prior cannot be flat for all possible parameter transformations.
-#' 
-#' A key for any rule about finding uninformative priors is therefore that the rule must be invariant under parameter transformation.
+#' The message here is that if we are free to rescale predictors as we want (which is generally true), the prior cannot be flat for all possible parameter transformations. A key for any rule about finding uninformative priors is therefore that the rule must be invariant under parameter transformation. For more on this, see [@george1993].
 #' 
 #' A second message is that in Bayesian statistics, you have to be a bit careful about parameter transformations, because we don't just look at one value, but at a whole distribution, and the shape of this distribution will change of we reparameterize.
 #' 
@@ -531,7 +535,3 @@ barplot(priorWeight/values^2, width = values^2, names.arg = values^2,
 #' **Informative priors**
 #' 
 #' Choy, S. L.; O'Leary, R. & Mengersen, K. (2009) Elicitation by design in ecology: using expert opinion to inform priors for Bayesian statistical models. Ecology, 90, 265-277
-#' 
-#' 
-#' 
-#' 

@@ -10,6 +10,7 @@ set.seed(42)
 
 # Bayesian model selection
 
+::: callout-note
 In this chapter, we will discuss 3 approaches to deal with the problem of model selection.
 
 -   Regularizing priors
@@ -17,6 +18,7 @@ In this chapter, we will discuss 3 approaches to deal with the problem of model 
 -   Bayesian information criteria
 
 -   Bayes Factor and Posterior model weights
+:::
 
 ## Regularization
 
@@ -483,7 +485,7 @@ This has two consequences
 
 -   Thus, the BF implicitly penalizes for model complexity (or, maybe more precisely, it penalizes for unconstrained parameters) and can thus directly be used to compare models. [@Kass-BayesFactors-1995] without having to add a complexity penalty
 
--   BF calculations are sensitive to the choice of model priors (see also example below). If you would increase the prior width of all models above, the 2d model would be penalized more strongly than the 1d model. Many authors therefore warn that BF should not be calculated on uninformative priors. 
+-   BF calculations are sensitive to the choice of model priors (see also example below). If you would increase the prior width of all models above, the 2d model would be penalized more strongly than the 1d model. Many authors therefore warn that BF should not be calculated on uninformative priors.
 
 ::: {.callout-tip collapse="true"}
 #### Bayesian Hypothesis tests using the BF package
@@ -505,11 +507,10 @@ bf = ttestBF(x = diffScores, rscale = 10)
 bf
 ```
 
-The BF package circumvents the prior problem by scaling the prior to the data. This is known under the label "empirical Bayes". Empirical Bayesian methods estimate or scale prior probability distributions to the data, thus recovering some of the properties of classical frequentist inference.  
+The BF package circumvents the prior problem by scaling the prior to the data. This is known under the label "empirical Bayes". Empirical Bayesian methods estimate or scale prior probability distributions to the data, thus recovering some of the properties of classical frequentist inference.
 :::
 
-
-#### Posterior model weights 
+#### Posterior model weights
 
 While the BF compares two models. For more than 2 models, it is more useful to standardize the ML multiplied with the model priors across all models in question, calculating a Bayesian posterior model weight as
 

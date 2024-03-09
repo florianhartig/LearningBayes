@@ -4,11 +4,16 @@
 #'   chunk_output_type: console
 #' ---
 #' 
-## ---- include=FALSE-----------------------------------------------------------------------
+## ---- include=FALSE--------------------------------------------------------------------------------
 set.seed(42)
 
 #' 
 #' # Bayesian Workflow
+#' 
+#' ::: callout-note
+#' In this chapter, we will discuss 
+#' 
+#' :::
 #' 
 #' ![Bayesian Workflow, from Gelman, A., Vehtari, A., Simpson, D., Margossian, C. C., Carpenter, B., Yao, Y., \... & Modrák, M. (2020). Bayesian workflow. <https://arxiv.org/pdf/2011.01808.pdf>](images/BayesianWorkflow.png){width="800"}
 #' 
@@ -18,7 +23,7 @@ set.seed(42)
 #' 
 #' For the following, we will stay with our simple airquality example
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 modelCode = "
 model{
 
@@ -46,7 +51,7 @@ model{
 #' 
 #' Prior predictive checks mean that we check what predictions would be possible or preferred by the model a prior. We can do this either by removing the data in the code above and observing the parameters or predictions, or by adding a prior predictive block directly in the model, such as the following one:
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 modelCode = "
 model{
 
@@ -78,7 +83,7 @@ model{
 #' 
 #' See help of
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 ?BayesianTools::calibrationTest
 
 #' 
@@ -98,7 +103,7 @@ model{
 #' 
 #' Usually one does both things together. Technically, in a posterior simulation, we will add a block to the model where we simulate new data as assumed in the likelihood.
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 
 modelCode = "
 model{
@@ -112,13 +117,13 @@ model{
 #' 
 #' As you see, in the case of a linear regression, this is a very simple expression, but in more complicated models, this can be a longer block. Moreover, note that in hierarchical models, often the question arises on which parameters you want to condition on and on which not. See also comments in
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 ?DHARMa::simulateResiduals
 
 #' 
 #' Let's look at a full example with prior and posterior checks:
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 library(rjags)
 library(BayesianTools)
 library(DHARMa)
@@ -203,7 +208,7 @@ plot(sim)
 #' 
 #' essentially, we see here the same issue as in the standard residual plots
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 fit <- lm(Ozone ~ Temp, data = dat)
 summary(fit)
 library(effects)

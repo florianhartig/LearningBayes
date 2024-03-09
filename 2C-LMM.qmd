@@ -10,6 +10,11 @@ set.seed(42)
 
 # Linear and linear mixed models
 
+::: callout-note
+In this chapter, we will discuss 
+
+:::
+
 ## LM
 
 To introduce the typical options in a linear model, we use an example that was originally prepared by Jörn Pagel. In the example, we want to analyze predictors of Body mass in the snake Vipera aspis.

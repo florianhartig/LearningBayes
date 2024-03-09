@@ -4,17 +4,23 @@
 #'   chunk_output_type: console
 #' ---
 #' 
-## ---- include=FALSE-----------------------------------------------------------------------
+## ---- include=FALSE--------------------------------------------------------------------------------
 set.seed(42)
 
 #' 
 #' # Bayesian causal models
 #' 
+#' ::: callout-note
+#' In this chapter, we will discuss 
+#' 
+#' :::
+#' 
+#' 
 #' This chapter assumes you are aware of causal inference, causal graphs and structural equation models. For a general intro on these topics, see my lecture notes on advanced regression models, section causal inference [here](https://theoreticalecology.github.io/AdvancedRegressionModels/3B-CausalInference.html).
 #' 
 #' In this chapter, I will show you a few options to fit SEMs with Bayesian methods. We will use the keeley data provided in the package piecewiseSEM
 #' 
-## ---- message=F---------------------------------------------------------------------------
+## ---- message=F------------------------------------------------------------------------------------
 library(piecewiseSEM) 
 data(keeley)
 
@@ -25,7 +31,7 @@ data(keeley)
 #' 
 #' Here the standard lavaan model:
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 library(lavaan)
 library(lavaanPlot)
 
@@ -41,7 +47,7 @@ lavaanPlot(model=k_fit_lavaan, coefs = TRUE, sig = .05)
 #' 
 #' Same as Bayesian fit using blavaan, which is a laavan style interface to STAN
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 library(blavaan)
 
 k_fit_blavaan = blavaan(model = k_mod, data = keeley,
@@ -59,7 +65,7 @@ lavaanPlot(model=k_fit_blavaan, coefs = TRUE, sig = .05)
 #' 
 #' The piecewiseSEM allows you to create a causal model from a set of standard GLMMs. Advantage is that it can handle standard GLMMs. Disadvantage is that it can't handle latent variables
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 k_fit_psem <- psem(
   lm(rich ~ firesev + cover, data=keeley),
   lm(cover ~ firesev, data=keeley),
@@ -71,7 +77,7 @@ summary(k_fit_psem)
 #' 
 #' Piecewise SEMs can pretty much in the same way be code in brm:
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 library(brms)
 
 rich_mod <- bf(rich ~ firesev + cover)
@@ -93,7 +99,7 @@ plot(k_fit_brms)
 #' 
 #' TODO
 #' 
-## ---- eval = F----------------------------------------------------------------------------
+## ---- eval = F-------------------------------------------------------------------------------------
 ## library(EcoData)
 ## library(effects)
 ## 

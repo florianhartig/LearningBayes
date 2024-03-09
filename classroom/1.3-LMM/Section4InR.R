@@ -4,18 +4,22 @@
 #'   chunk_output_type: console
 #' ---
 #' 
-## ---- include=FALSE-----------------------------------------------------------------------
+## ---- include=FALSE--------------------------------------------------------------------------------
 set.seed(42)
 
 #' 
 #' # Linear and linear mixed models
 #' 
+#' ::: callout-note
+#' In this chapter, we will discuss 
+#' 
+#' :::
+#' 
 #' ## LM
 #' 
 #' To introduce the typical options in a linear model, we use an example that was originally prepared by Jörn Pagel. In the example, we want to analyze predictors of Body mass in the snake Vipera aspis.
 #' 
-#' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 Dat = read.table("https://raw.githubusercontent.com/florianhartig/LearningBayes/master/data/Aspis_data.txt", stringsAsFactors = T)
 
 # Inspect relationship between body mass and total body lenght
@@ -32,14 +36,14 @@ plot(Dat$log_TL.sc, Dat$log_BM)
 #' 
 #' Linear regression with lm()
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 LM <- lm(log_BM ~ log_TL.sc, data = Dat)
 summary(LM)
 
 #' 
-#' Analysis in JAGS    
+#' Analysis in JAGS
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 library(rjags)
 
 # 1) Save a description of the model in JAGS syntax 
@@ -59,6 +63,10 @@ model{
   sigma ~ dunif(0,100)
   }
 "
+
+# s = function(x) dgamma(x, shape = 0.0001, rate = 0.001)
+# curve(s, 0, 5)
+
 
 # 2) Set up a list that contains all the necessary data
 Data = list(y = Dat$log_BM, 
@@ -96,7 +104,7 @@ plot(Samples)
 #' 
 #' Compare this to the lm() results
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 plot(Dat$log_TL.sc, Dat$log_BM)
 coef(LM)
 # and the two regression lines
@@ -109,7 +117,7 @@ abline(PostMeans[1:2], col = 'blue')
 #' 
 #' Inspect relationship between body mass and total body lenght but now seperately for the two sexes
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 point.symbols <- c(f = 1, m = 4)
 plot(Dat$TL, Dat$BM,
      pch = point.symbols[Dat$Sex],
@@ -124,14 +132,14 @@ plot(Dat$log_TL.sc, Dat$log_BM,
 #' 
 #' Linear regression with lm()
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 LM <- lm(log_BM ~ log_TL.sc + Sex, data = Dat)
 summary(LM)
 
 #' 
-#' Analysis in JAGS 
+#' Analysis in JAGS
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 model = 
   "model{
   # Likelihood
@@ -196,14 +204,14 @@ BayesianTools::correlationPlot(Samples)
 #' 
 #' Linear regression with lm()
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 LM <- lm(log_BM ~ log_TL.sc + Sex + Sex:log_TL.sc, data = Dat)
 summary(LM)
 
 #' 
-#' Analysis in JAGS    
+#' Analysis in JAGS
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 model =
   "model{
   # Likelihood
@@ -265,11 +273,9 @@ gelman.diag(Samples)
 BayesianTools::correlationPlot(Samples)
 
 #' 
-#' 
 #' ## LMM (mixed effects)
 #' 
-#' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 ####################################################################
 # Linear regression with lm()
 library(lme4)
@@ -349,4 +355,3 @@ gelman.diag(Samples)
 # Correlation plot
 BayesianTools::correlationPlot(Samples)
 
-#' 

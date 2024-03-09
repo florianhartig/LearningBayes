@@ -10,6 +10,11 @@ set.seed(42)
 
 # State-space models
 
+::: callout-note
+In this chapter, we will discuss 
+
+:::
+
 ### House marten example from Kery & Schaub
 
 Based on the book "Bayesian population analysis using WinBUGS - a hierarchical perspective" by Marc K�ry & Michael Schaub (2012, Academic Press)

@@ -4,11 +4,16 @@
 #'   chunk_output_type: console
 #' ---
 #' 
-## ---- include=FALSE-----------------------------------------------------------------------
+## ---- include=FALSE--------------------------------------------------------------------------------
 set.seed(42)
 
 #' 
 #' # Autoregressive models
+#' 
+#' ::: callout-note
+#' In this chapter, we will discuss 
+#' 
+#' :::
 #' 
 #' In general, autoregressive models should not be be fit with Jags, but with a
 #' 
@@ -16,7 +21,7 @@ set.seed(42)
 #' 
 #' This is based on code posted originally by Petr Keil <http://www.petrkeil.com/?p=1910>, to illustrate some comments I made in response to this blog post
 #' 
-## ---- echo=F, warning=F, message=F--------------------------------------------------------
+## ---- echo=F, warning=F, message=F-----------------------------------------------------------------
 set.seed(123)
 rm(list=ls(all=TRUE))
 library(mvtnorm)   # to draw multivariate normal outcomes
@@ -27,7 +32,7 @@ library(R2jags)    # JAGS-R interface
 #' 
 #' This helper function that makes distance matrix for a side\*side 2D array
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 dist.matrix <- function(side)
 {
   row.coords <- rep(1:side, times=side)
@@ -41,7 +46,7 @@ dist.matrix <- function(side)
 #' 
 #' Here is the function that simulates the autocorrelated 2D array with a given side, and with exponential decay given by lambda (the mean mu is constant over the array, it equals to global.mu)
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 cor.surface <- function(side, global.mu, lambda)
 {
   D <- dist.matrix(side)
@@ -57,7 +62,7 @@ cor.surface <- function(side, global.mu, lambda)
 #' 
 #' OK, finally simulating the data
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 # parameters (the truth) that I will want to recover by JAGS
 side = 10
 global.mu = 0
@@ -77,14 +82,14 @@ mean(M)
 #' 
 #' preparing the data
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 y <- as.vector(as.matrix(M))
 my.data <- list(N = side * side, D = dist.matrix(side), y = y)
 
 #' 
 #' defining the model
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 modelCode = textConnection("
     model
 {
@@ -117,7 +122,7 @@ modelCode = textConnection("
 #' 
 #' Running the model
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 fit <-  jags(data=my.data, 
              parameters.to.save=c("lambda", "global.mu"),
              model.file=modelCode,

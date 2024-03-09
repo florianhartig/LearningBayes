@@ -4,22 +4,27 @@
 #'   chunk_output_type: console
 #' ---
 #' 
-## ---- include=FALSE-----------------------------------------------------------------------
+## ---- include=FALSE--------------------------------------------------------------------------------
 set.seed(42)
 
 #' 
 #' # State-space models
 #' 
+#' ::: callout-note
+#' In this chapter, we will discuss 
+#' 
+#' :::
+#' 
 #' ### House marten example from Kery & Schaub
 #' 
 #' Based on the book "Bayesian population analysis using WinBUGS - a hierarchical perspective" by Marc K�ry & Michael Schaub (2012, Academic Press)
 #' 
-## ---- message=F---------------------------------------------------------------------------
+## ---- message=F------------------------------------------------------------------------------------
 rm(list=ls())
 library(R2jags)
 
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 
 model = "
 model {
@@ -79,14 +84,14 @@ hm.ssm <- jags(jags.data, inits, parameters, textConnection(model), n.chains = n
 #' 
 #' Summarize posteriors
 #' 
-## ---- results = 'hide'--------------------------------------------------------------------
+## ---- results = 'hide'-----------------------------------------------------------------------------
 print(hm.ssm, digits = 3)
 plot(hm.ssm)
 
 #' 
 #' Draw figure
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 fitted <- lower <- upper <- numeric()
 year <- 1990:2015
 n.years <- length(hm.counts)

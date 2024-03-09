@@ -10,6 +10,12 @@ set.seed(42)
 
 # Bayesian causal models
 
+::: callout-note
+In this chapter, we will discuss 
+
+:::
+
+
 This chapter assumes you are aware of causal inference, causal graphs and structural equation models. For a general intro on these topics, see my lecture notes on advanced regression models, section causal inference [here](https://theoreticalecology.github.io/AdvancedRegressionModels/3B-CausalInference.html).
 
 In this chapter, I will show you a few options to fit SEMs with Bayesian methods. We will use the keeley data provided in the package piecewiseSEM

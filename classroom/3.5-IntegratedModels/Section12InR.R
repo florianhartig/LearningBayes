@@ -4,15 +4,26 @@
 #'   chunk_output_type: console
 #' ---
 #' 
-## ---- include=FALSE-----------------------------------------------------------------------
+## ---- include=FALSE--------------------------------------------------------------------------------
 set.seed(42)
 
 #' 
 #' # Integrated Models
 #' 
+#' ::: callout-note
+#' In this chapter, we will discuss 
+#' 
+#' :::
+#' 
+#' ## General ideal 
+#' 
+#' 
+#' 
+#' ## Example from Kéry & Schaub
+#' 
 #' The following example example of a simple IPM (counts, capture-recapture, reproduction) is from Kéry, M., & Schaub, M. (2011). *Bayesian population analysis using WinBUGS: a hierarchical perspective*. Academic Press., chapter 11.3
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 # Population counts (from years 1 to 10)
 y <- c(45, 48, 44, 59, 62, 62, 55, 51, 46, 42)
 
@@ -43,7 +54,7 @@ R <- c(21, 28, 26, 38, 35, 33, 31, 30, 33)
 #' 
 #' Analysis of the model
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 #library(rjags)
 library(R2jags)
 

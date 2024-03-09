@@ -4,15 +4,20 @@
 #'   chunk_output_type: console
 #' ---
 #' 
-## ---- include=FALSE-----------------------------------------------------------------------
+## ---- include=FALSE--------------------------------------------------------------------------------
 set.seed(42)
 
 #' 
 #' # Error in variable models
 #' 
+#' ::: callout-note
+#' In this chapter, we will discuss 
+#' 
+#' :::
+#' 
 #' ## Regression dillution in distribution estimates
 #' 
-## ---- echo=F, warning=F, message=F--------------------------------------------------------
+## ---- echo=F, warning=F, message=F-----------------------------------------------------------------
 set.seed(123)
 rm(list=ls(all=TRUE))
 library(rjags)
@@ -23,7 +28,7 @@ library(R2jags)
 #' 
 #' Assume we observe data from an ecological system that creates an exponential size distribution (e.g. tree sizes, see [Taubert, F.; Hartig, F.; Dobner, H.-J. & Huth, A. (2013) On the Challenge of Fitting Tree Size Distributions in Ecology. PLoS ONE, 8, e58036-](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0058036)), but our measurments are performed with a substantial lognormal observation error
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 meanSize <- 10
 trueLogSd <- 1
 sampleSize <- 500
@@ -33,7 +38,7 @@ observations = rlnorm(n = length(truevalues), mean = log(truevalues), sd = trueL
 #' 
 #' Plotting true and observed data
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 maxV <- ceiling(max(observations,truevalues))
 counts <- rbind(
   obs = hist(observations, breaks = 0:maxV, plot = F)$counts,
@@ -45,7 +50,7 @@ barplot(log(t(counts)+1), beside=T)
 #' 
 #' ### Fitting a non-hierarchical model leads to bias
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 normalModel = textConnection('
                              model {
                              # Priors
@@ -77,7 +82,7 @@ plot(results)
 #' 
 #' Model specification if hierarchical model that accounts for the observation error in Jags
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 hierarchicalModel = textConnection('
                                    model {
                                    # Priors
@@ -107,7 +112,7 @@ plot(results)
 #' 
 #' ## Regression dilution in slope estimates
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 library(EcoData)
 library(rjags)
 
@@ -128,7 +133,7 @@ abline(fit, col = "blue")
 #' 
 #' let's see if we can correct the error
 #' 
-## -----------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------
 data = list(WindObs = log(volcanoisland$windObs),
             Altitude = volcanoisland$sAltitudeR,
             plot = as.numeric(volcanoisland$plot),

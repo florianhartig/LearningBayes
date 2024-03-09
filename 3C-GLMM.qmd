@@ -10,6 +10,11 @@ set.seed(42)
 
 # Generalized linear mixed models
 
+::: callout-note
+In this chapter, we will discuss 
+
+:::
+
 ## Poisson regression
 
 ```{r}
