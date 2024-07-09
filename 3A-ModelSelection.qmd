@@ -121,7 +121,7 @@ As discussed, when working with informative priors, we should be aware of the sc
 However, as we created the data in this case in with a centered uniform distribution and a unit scale, we can skip this step
 :::
 
-In my practical work, I have often found that these priors will often help to avoid parameter identifiability problems, in particular in GLMs, thus making model selection or simplification necessary, while having very little influence on the parameter estimates
+In my practical work, I have often found that these priors will often help to avoid parameter identifiability problems, in particular in GLMs, thus making model selection or simplification unnecessary, while having very little influence on the parameter estimates
 
 ```{r}
 library(rjags)
@@ -331,7 +331,18 @@ plotEstimates(est3, main = "Spike and slap")
 
 ```
 
+Practical examples of ecological papers using this approach
+
+-   https://www.sciencedirect.com/science/article/pii/S1574954124001031
+
 ## Information Criteria
+
+In Bayesian inference, there are two main IC metrics that are used DIC and the more modern metric WAIC.
+
+Both are essentially extension of the AIC with the
+
+
+DIC is intended as a generalisation of Akaike's Information Criterion (AIC). For non-hierarchical models with little prior information, pD should be approximately the true number of parameters. AIC requires counting parameters and hence any intermediate level ('random-effects') parameters need to be integrated out. A recent 'conditional AIC' by Vaida and Blanchard (2005) focuses on the random effects in normal hierarchical models and uses tr(H) as the effective number of parameters, and so again matches DIC.
 
 ### DIC
 
@@ -372,6 +383,9 @@ For more R. B. O'Hara. M. J. Sillanpää. "A review of Bayesian variable selecti
 It was suggested that WAIC has a bunch of favorable advantages over DIC, but it is also harder to calculate. In Jags, WAIC is a bit complicated. It is better supported in STAN and brms.
 
 ```{r, message = F, results='hide'}
+
+library(loo)
+
 library(brms)
 ?waic
 

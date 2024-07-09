@@ -139,6 +139,10 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=Control of confounding and reporting of results in causal inference studies. Guidance for authors from editors of respiratory, sleep, and critical care journals;,citation_author=David J Lederer;,citation_author=Scott C Bell;,citation_author=Richard D Branson;,citation_author=James D Chalmers;,citation_author=Rachel Marshall;,citation_author=David M Maslove;,citation_author=David E Ost;,citation_author=Naresh M Punjabi;,citation_author=Michael Schatz;,citation_author=Alan R Smyth;,citation_author=others;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_issue=1;,citation_volume=16;,citation_journal_title=Annals of the American Thoracic Society;,citation_publisher=American Thoracic Society;">
 <meta name="citation_reference" content="citation_title=A note on model selection using information criteria for general linear models estimated using REML;,citation_author=Arunas Petras Verbyla;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_fulltext_html_url=https://onlinelibrary.wiley.com/doi/abs/10.1111/anzs.12254;,citation_issue=1;,citation_doi=10.1111/anzs.12254;,citation_volume=61;,citation_language=en;,citation_journal_title=Australian &amp;amp;amp; New Zealand Journal of Statistics;">
 <meta name="citation_reference" content="citation_title=On obtaining invariant prior distributions;,citation_author=Edward I. George;,citation_author=Robert McCulloch;,citation_publication_date=1993-11-01;,citation_cover_date=1993-11-01;,citation_year=1993;,citation_fulltext_html_url=https://www.sciencedirect.com/science/article/pii/037837589390086L;,citation_issue=2;,citation_doi=10.1016/0378-3758(93)90086-L;,citation_volume=37;,citation_journal_title=Journal of Statistical Planning and Inference;">
+<meta name="citation_reference" content="citation_title=Model selection and multi-model inference: A practical information-theoretic approach;,citation_author=Kenneth P Burnham;,citation_author=David R Anderson;,citation_publication_date=2002;,citation_cover_date=2002;,citation_year=2002;">
+<meta name="citation_reference" content="citation_title=Bayes factors;,citation_author=A. E. Kass, R. E. And Raftery;,citation_publication_date=1995-06;,citation_cover_date=1995-06;,citation_year=1995;,citation_issue=430;,citation_volume=90;,citation_journal_title=Journal of The American Statistical Association;">
+<meta name="citation_reference" content="citation_title=Computing the bayes factor from a markov chain monte carlo simulation of the posterior distribution;,citation_author=Martin D Weinberg;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_issue=3;,citation_volume=7;,citation_journal_title=Bayesian Analysis;">
+<meta name="citation_reference" content="citation_title=Model averaging in ecology: A review of bayesian, information-theoretic, and tactical approaches for predictive inference;,citation_author=F. Dormann Carsten;,citation_author=M. Calabrese Justin;,citation_author=Guillera-Arroita Gurutzeta;,citation_author=Matechou Eleni;,citation_author=Bahn Volker;,citation_author=BartoÅ Kamil;,citation_author=M. Beale Colin;,citation_author=Ciuti Simone;,citation_author=Elith Jane;,citation_author=Gerstner Katharina;,citation_author=Guelat JÃ©rÃ´me;,citation_author=Keil Petr;,citation_author=J. Lahoz-Monfort JosÃ©;,citation_author=J. Pollock Laura;,citation_author=Reineking BjÃ¶rn;,citation_author=R. Roberts David;,citation_author=SchrÃ¶der Boris;,citation_author=Thuiller Wilfried;,citation_author=I. Warton David;,citation_author=A. Wintle Brendan;,citation_author=N. Wood Simon;,citation_author=O. WÃ¼est Rafael;,citation_author=Hartig Florian;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_fulltext_html_url=https://doi.org/10.1002/ecm.1309;,citation_issue=0;,citation_doi=10.1002/ecm.1309;,citation_volume=0;,citation_journal_title=Ecol Monogr;">
 </head>
 
 <body class="nav-sidebar floating">
@@ -389,15 +393,16 @@ div.csl-indent {
   <li><a href="#frequentist-and-bayesian-coin-flip" id="toc-frequentist-and-bayesian-coin-flip" class="nav-link active" data-scroll-target="#frequentist-and-bayesian-coin-flip"><span class="header-section-number">2.1</span> Frequentist and Bayesian coin flip</a>
   <ul class="collapse">
   <li><a href="#the-ml-estimator" id="toc-the-ml-estimator" class="nav-link" data-scroll-target="#the-ml-estimator"><span class="header-section-number">2.1.1</span> The ML estimator</a></li>
-  <li><a href="#getting-the-p-value-for-fair-coin" id="toc-getting-the-p-value-for-fair-coin" class="nav-link" data-scroll-target="#getting-the-p-value-for-fair-coin"><span class="header-section-number">2.1.2</span> GETTING THE P-VALUE FOR FAIR COIN</a></li>
-  <li><a href="#the-bayesian-estimate" id="toc-the-bayesian-estimate" class="nav-link" data-scroll-target="#the-bayesian-estimate"><span class="header-section-number">2.1.3</span> The BAYESIAN ESTIMATE</a></li>
+  <li><a href="#getting-the-p-value-for-a-fair-coin" id="toc-getting-the-p-value-for-a-fair-coin" class="nav-link" data-scroll-target="#getting-the-p-value-for-a-fair-coin"><span class="header-section-number">2.1.2</span> Getting the p-value for a fair coin</a></li>
+  <li><a href="#the-bayesian-posterior-estimate" id="toc-the-bayesian-posterior-estimate" class="nav-link" data-scroll-target="#the-bayesian-posterior-estimate"><span class="header-section-number">2.1.3</span> The Bayesian posterior estimate</a></li>
   </ul></li>
   <li><a href="#interpreting-the-posterior" id="toc-interpreting-the-posterior" class="nav-link" data-scroll-target="#interpreting-the-posterior"><span class="header-section-number">2.2</span> Interpreting the Posterior</a>
   <ul class="collapse">
   <li><a href="#the-map-mode-of-posterior" id="toc-the-map-mode-of-posterior" class="nav-link" data-scroll-target="#the-map-mode-of-posterior"><span class="header-section-number">2.2.1</span> The MAP (mode of posterior)</a></li>
-  <li><a href="#bayesian-credibile-intervals" id="toc-bayesian-credibile-intervals" class="nav-link" data-scroll-target="#bayesian-credibile-intervals"><span class="header-section-number">2.2.2</span> Bayesian credibile intervals</a></li>
-  <li><a href="#hpd-and-lpl" id="toc-hpd-and-lpl" class="nav-link" data-scroll-target="#hpd-and-lpl"><span class="header-section-number">2.2.3</span> HPD and LPL</a></li>
-  <li><a href="#multivariate-issues" id="toc-multivariate-issues" class="nav-link" data-scroll-target="#multivariate-issues"><span class="header-section-number">2.2.4</span> Multivariate issues</a></li>
+  <li><a href="#posterior-median-or-mean" id="toc-posterior-median-or-mean" class="nav-link" data-scroll-target="#posterior-median-or-mean"><span class="header-section-number">2.2.2</span> Posterior median or mean</a></li>
+  <li><a href="#bayesian-credibile-intervals" id="toc-bayesian-credibile-intervals" class="nav-link" data-scroll-target="#bayesian-credibile-intervals"><span class="header-section-number">2.2.3</span> Bayesian credibile intervals</a></li>
+  <li><a href="#hpd-and-lpl" id="toc-hpd-and-lpl" class="nav-link" data-scroll-target="#hpd-and-lpl"><span class="header-section-number">2.2.4</span> HPD and LPL</a></li>
+  <li><a href="#multivariate-issues" id="toc-multivariate-issues" class="nav-link" data-scroll-target="#multivariate-issues"><span class="header-section-number">2.2.5</span> Multivariate issues</a></li>
   </ul></li>
   <li><a href="#prior-choice" id="toc-prior-choice" class="nav-link" data-scroll-target="#prior-choice"><span class="header-section-number">2.3</span> Prior Choice</a>
   <ul class="collapse">
@@ -429,6 +434,19 @@ div.csl-indent {
 
 </header>
 
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In this chapter, we will discuss</p>
+</div>
+</div>
 <section id="frequentist-and-bayesian-coin-flip" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="frequentist-and-bayesian-coin-flip"><span class="header-section-number">2.1</span> Frequentist and Bayesian coin flip</h2>
 <p>Assume I’m trying to guess if a coin comes up heads or tails. I have had 10 trials, and 8x success in guessing the side.</p>
@@ -446,7 +464,8 @@ div.csl-indent {
 </div>
 <section id="the-ml-estimator" class="level3" data-number="2.1.1">
 <h3 data-number="2.1.1" class="anchored" data-anchor-id="the-ml-estimator"><span class="header-section-number">2.1.1</span> The ML estimator</h3>
-<p>The idea of maximum likelihood estimation (MLE) is to look for the set of parameters that would, under the given model assumption, lead to the highest probability to obtain the observed data. In our case we have only one parameter, the probability of success per flip. Let’s plot this for different values and look for the maximum.</p>
+<p>The idea of maximum likelihood estimation (MLE) is to look for the set of parameters that would, under the given model assumption, lead to the highest probability of obtaining the observed data.</p>
+<p>In our case we have only one parameter, the probability of success per flip, so you can basically read off the MLE by plotting the for different values of this parameter.</p>
 <div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-4_3305feefe81c927da3c1e80944387d64">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>parametervalues <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.001</span>) <span class="co"># parameters to check</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(success,trials,parametervalues) <span class="co"># p(D|oarameters)</span></span>
@@ -498,8 +517,8 @@ Summary MLE
 </div>
 </section>
 </section>
-<section id="getting-the-p-value-for-fair-coin" class="level3" data-number="2.1.2">
-<h3 data-number="2.1.2" class="anchored" data-anchor-id="getting-the-p-value-for-fair-coin"><span class="header-section-number">2.1.2</span> GETTING THE P-VALUE FOR FAIR COIN</h3>
+<section id="getting-the-p-value-for-a-fair-coin" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="getting-the-p-value-for-a-fair-coin"><span class="header-section-number">2.1.2</span> Getting the p-value for a fair coin</h3>
 <p>want to get p-value for a smaller or equal result (1-tailed) given a fair coin p(k&lt;=kobs|H0:p=0.5). Basically, we want the sum over the red bars</p>
 <div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-6_e7735462bb88380233e77f25eca2cf0c">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="fl">0.5</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"grey"</span>, success ), <span class="fu">rep</span>(<span class="st">"red"</span>, <span class="dv">11</span><span class="sc">-</span>success)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -543,7 +562,7 @@ probability of success
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="dv">7</span>,trials,<span class="fl">0.5</span>, <span class="at">alternative=</span><span class="st">"less"</span>) <span class="co"># testing for less</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -552,7 +571,7 @@ Side-note: multiple testing
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Imagine there is no effect, but we keep on repeating the test 100 times. How often do you think will we find a significant effect?</p>
 <div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-10_5968a4adbc6988821fed39d565f33706">
@@ -595,8 +614,8 @@ Summary NHST
 </div>
 </div>
 </section>
-<section id="the-bayesian-estimate" class="level3" data-number="2.1.3">
-<h3 data-number="2.1.3" class="anchored" data-anchor-id="the-bayesian-estimate"><span class="header-section-number">2.1.3</span> The BAYESIAN ESTIMATE</h3>
+<section id="the-bayesian-posterior-estimate" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="the-bayesian-posterior-estimate"><span class="header-section-number">2.1.3</span> The Bayesian posterior estimate</h3>
 <p>Remember for Bayes p(M|D) = p(D|M) * p(M) / P(D), and we can show that p(D) is just the integral over p(D|M) * p(M)</p>
 <p>We had already calculated p(D|M), so we just need to define p(M), the prior. For the moment, we will use a flat prior, but see the comments on prior choice later in the book - for a bernoulli trial often other priors, in particular the beta distribution, are used.</p>
 <div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-12_84842001c1a056c91c97eee4cd2a6a74">
@@ -672,28 +691,32 @@ Summary Bayes
 <p>If we don’t have to, this is what we should interpret and forecast with. However, in many cases, people what to summarize this distribution by particular values. Here is what you typically use for different situations</p>
 <section id="the-map-mode-of-posterior" class="level3" data-number="2.2.1">
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="the-map-mode-of-posterior"><span class="header-section-number">2.2.1</span> The MAP (mode of posterior)</h3>
-<p>The problem with the best values is that it depends what you want to do with it. If you want to have the most likely parameter value, what you can do is to use the mode of the posterior distribution. It is called the maximum a posteriori probability (MAP) estimate.</p>
-<p>However, if the distribution is very skewed as in our example, it may well be that the MAP is far at one side of the distribution, and doesn’t really give a good distribution of where most probability mass is. If it is really neccessary to do predictions with one value (instead of forwarding the whole posterior distribution), I would typically predict with the median of the posterior.</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-18_e129c414007f033206ffb2e65dd31016">
+<p>If you want to have the most probable parameter value, what you can do is to use the mode of the posterior distribution. It is called the maximum a posteriori probability (MAP) estimate.</p>
+</section>
+<section id="posterior-median-or-mean" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="posterior-median-or-mean"><span class="header-section-number">2.2.2</span> Posterior median or mean</h3>
+<p>Although the MAP is very intutive, it has several problems, which is the reason why it is rarely used in practice.</p>
+<p>The first reason is computational: with the MCMC methods that are used in practice to estimate posterior distributions (see next section), it is very hard to locate the exact position of the MAP in posterior space.</p>
+<p>The second reason is that Bayesian methods are often used for complicated models and in non-assymptotic cases. In such a situation, the likelihood or posterior often has weird, non-normal shapes. If the posterior distribution is very skewed as in our example, it may well be that the MAP doesn’t really give a good idea of where most probability mass is.</p>
+<p>For both reasons, mean or median posterior values are the most common choices if the goal is to summarize the posterior distribution by one value.</p>
+<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-18_9debe2cc2f082c72bf787956ebf82aac">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameter,posterior, <span class="at">type =</span> <span class="st">"l"</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(parameter, posterior, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">col=</span><span class="st">"darksalmon"</span>)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>MAP <span class="ot">&lt;-</span> parameter[<span class="fu">which.max</span>(posterior)]</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>MAP, <span class="at">col =</span> <span class="st">"red"</span>)</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">2.5</span>,<span class="fl">0.4</span>, <span class="st">"MAP"</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>medianPosterior <span class="ot">&lt;-</span> parameter[<span class="fu">min</span>(<span class="fu">which</span>(<span class="fu">cumsum</span>(posterior) <span class="sc">&gt;</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="dv">50</span>))]</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>medianPosterior, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">1.8</span>,<span class="fl">0.3</span>, <span class="st">"Median"</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>medianPosterior <span class="ot">&lt;-</span> parameter[<span class="fu">min</span>(<span class="fu">which</span>(<span class="fu">cumsum</span>(posterior) <span class="sc">&gt;</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="dv">50</span>))]</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>medianPosterior, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">2.9</span>,<span class="fl">0.3</span>, <span class="st">"Median"</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(posterior <span class="sc">*</span> parameter) <span class="sc">/</span> <span class="fu">mean</span>(posterior)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>mean, <span class="at">col =</span> <span class="st">"darkgreen"</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">0.4</span>,<span class="fl">0.25</span>, <span class="st">"Mean"</span>, <span class="at">col =</span> <span class="st">"darkgreen"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
-<section id="bayesian-credibile-intervals" class="level3" data-number="2.2.2">
-<h3 data-number="2.2.2" class="anchored" data-anchor-id="bayesian-credibile-intervals"><span class="header-section-number">2.2.2</span> Bayesian credibile intervals</h3>
+<section id="bayesian-credibile-intervals" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="bayesian-credibile-intervals"><span class="header-section-number">2.2.3</span> Bayesian credibile intervals</h3>
 <p>Typically, one also wants uncertainties. There basic option to do this is the Bayesian credible interval, which is the analogue to the frequentist confidence interval. The 95 % Bayesian Credibility interval is the centra 95% of the posterior distribution</p>
 <div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-19_5bd67a420671b0dcc094fcf50774123e">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameter,posterior, <span class="at">type =</span> <span class="st">"l"</span>)</span>
@@ -713,8 +736,8 @@ Summary Bayes
 </div>
 </div>
 </section>
-<section id="hpd-and-lpl" class="level3" data-number="2.2.3">
-<h3 data-number="2.2.3" class="anchored" data-anchor-id="hpd-and-lpl"><span class="header-section-number">2.2.3</span> HPD and LPL</h3>
+<section id="hpd-and-lpl" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="hpd-and-lpl"><span class="header-section-number">2.2.4</span> HPD and LPL</h3>
 <p>There are two alternatives to the credibility interval that is particularly useful if the posterior has weird correlation structres.</p>
 <ol type="1">
 <li>The <strong>Highest Posterior Density</strong> (HPD). The HPD is the x% highest posterior density interval is the shortest interval in parameter space that contains x% of the posterior probability. It would be a bit cumbersome to calculate this in this example, but if you have an MCMC sample, you get the HPD with the package coda via</li>
@@ -728,11 +751,11 @@ Summary Bayes
 <p>More on both alternatives <a href="http://www.bayesian-inference.com/credible">here</a>.</p>
 <p>More options to plot HPD in 2-d here http://www.sumsar.net/blog/2014/11/how-to-summarize-a-2d-posterior-using-a-highest-density-ellipse/</p>
 </section>
-<section id="multivariate-issues" class="level3" data-number="2.2.4">
-<h3 data-number="2.2.4" class="anchored" data-anchor-id="multivariate-issues"><span class="header-section-number">2.2.4</span> Multivariate issues</h3>
+<section id="multivariate-issues" class="level3" data-number="2.2.5">
+<h3 data-number="2.2.5" class="anchored" data-anchor-id="multivariate-issues"><span class="header-section-number">2.2.5</span> Multivariate issues</h3>
 <p>Things are always getting more difficult if you move to more dimensions, and Bayesian analysis is no exception.</p>
-<section id="marginal-values-hide-correlations" class="level4" data-number="2.2.4.1">
-<h4 data-number="2.2.4.1" class="anchored" data-anchor-id="marginal-values-hide-correlations"><span class="header-section-number">2.2.4.1</span> Marginal values hide correlations</h4>
+<section id="marginal-values-hide-correlations" class="level4" data-number="2.2.5.1">
+<h4 data-number="2.2.5.1" class="anchored" data-anchor-id="marginal-values-hide-correlations"><span class="header-section-number">2.2.5.1</span> Marginal values hide correlations</h4>
 <p>A problem that often occurs when we have more than one parameter are correlations between parameters. In this case, the marginal posterior distributions that are reported in the summary() or plot functions of coda can be VERY misleading.</p>
 <p>Look at the situation below, where we have two parameters that are highly correlated. The marginal posteriors look basically flat, and looking only at them you may think there is no information in the likelihood.</p>
 <p>However, if you look at the correlation, you see that the likelihood has excluded vast areas of the prior space (assuming we have had flat uncorrelated likelihoods in this case).</p>
@@ -748,8 +771,8 @@ Summary Bayes
 <p>It is therefore vital to plot the correlation plots as well to be able to judge the extent to which parameters are uncertaint.</p>
 <p>If you have more parameters, however, you may still miss things here, because there could be higher-order correlations between the parameters that look random in the two-dimensional plot. A good proxy to get an overall reduction of uncertainy across all parameters, including all these higher-order correlations, is to compare the prior predictive distribution with the posterior predictive distribution.</p>
 </section>
-<section id="nonlinear-correlations" class="level4" data-number="2.2.4.2">
-<h4 data-number="2.2.4.2" class="anchored" data-anchor-id="nonlinear-correlations"><span class="header-section-number">2.2.4.2</span> Nonlinear correlations</h4>
+<section id="nonlinear-correlations" class="level4" data-number="2.2.5.2">
+<h4 data-number="2.2.5.2" class="anchored" data-anchor-id="nonlinear-correlations"><span class="header-section-number">2.2.5.2</span> Nonlinear correlations</h4>
 <p>A further issue that many people are not aware of is that the marginal mode (maximum) does not need to coincide with the global mode if correlations in parameter space are nonlinear. Assume we have a posterior with 2 parameters, which are in a complcated, banana-shaped correlation. Assume we are able to sample from this poterior. Here is an example from Meng and Barnard, code from the bayesm package (see Rmd source file for code of this function).</p>
 <p>If we plot the correlation, as well as the marginal distributions (i.e.&nbsp;the histograms for each parameter), you see that the mode of the marginal distributions will not conincide with the multivariate mode (red, solid lines).</p>
 <div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-23_0fed0bb63423b861b64b7f696e42b82d">

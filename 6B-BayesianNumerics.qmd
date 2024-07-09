@@ -8,7 +8,7 @@ editor_options:
 set.seed(42)
 ```
 
-# Bayesian Numerics
+# Bayesian Numerics {#appendix-BayesianNumerics} 
 
 A good but technical introduction on MCMC is \\citet{Andrieu-introductiontoMCMC-2003}. A short overview of sampling algorithms can be found around Fig. 7 in \\citet{Hartig-Statisticalinferencestochastic-2011}. About the software, contemplate about the following: there are three types of software for Bayesian inference
 

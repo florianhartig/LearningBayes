@@ -10,25 +10,70 @@ set.seed(42)
 
 # Posterior estimation
 
-::: callout-note
-In this chapter, we will discuss 
+In the previous chapter, we have calculated our posterior distribution by multiplying prior and likelihood across a set of possible values, and then dividing by the sum of all those to standardize (this is the p(D) in the Bayesian formula). In all but the most simple models, this technique will not work. 
 
+The reason is the so-called "curse of dimensionality" - imagine we have a statistical model with 20 parameters. Imagine we would say for each of this 20 parameters, we consider 20 possible values to evaluate the shape of the posterior - the number of values we would have to calculate would be 
+
+$$
+n = 20^{20} \approx 10^{26}
+$$
+which is probably larger than the memory of your computer. Thus, we need another way to calculate the shape of the posterior. The main method to do this in Bayesian inference is MCMC sampling. 
+
+
+## What is an MCMC?
+
+A Markov-Chain Monte-Carlo algorithm (MCMC) is an algorithm that jumps around in a density function (the so-called target function), in such a way that the probability to be at each point of the function is proportional to the target. To give you a simple example, let's say we wouldn't know how the normal distribution looks like. What you would then probably usually do is to calculate a value of the normal for a number of data points 
+
+
+```{r}
+values = seq(-10,10,length.out = 100)
+density = dnorm(values)
+plot(density)
+```
+
+To produce the same picture with an MCMC sampler, we will use teh BayesianTools package. Here the code to sample from a normal distribution: 
+
+```{r}
+library(BayesianTools)
+
+density = function(x) dnorm(x, log = T) 
+setup = createBayesianSetup(density, lower = -10, upper = 10)
+out = runMCMC(setup, settings = list(iterations = 1000), sampler = "Metropolis")
+plot(out)
+```
+
+What we get as a result is the so-called trace plot to the left, which shows us how the sampler jumped around in parameter space over time, and the density plot to the right, which shows us results of sampling from the normal distribution.
+
+For this simple case, this is not particularly impressive, and looks exactly like the plot that we coded above, using the seq approach. However, as discussed above, the first approach will break down if we have high-dimensional multivariate distributions, wheras MCMC sampling also works for high-dimensional problems. 
+
+::: callout-note
+If you are interested in how an MCMC sampler works internally, you can look at Appendix @appendix-BayesianNumerics.
 :::
 
 ## Fitting a linear regression with different MCMCs
 
-We will use the dataset airquality, just removing NAs and scaling all variables for convenience
+So, how can we MCMC sample from statistical mdoels? We will discuss this by showing you different code options to fit the relationship between Ozone and Temperature in the dataset airquality, using a linear regression.
+
+```{r}
+plot(Ozone ~ Temp, data = airquality)
+```
+
+First, removing NAs and scaling all variables for convenience
 
 ```{r}
 airqualityCleaned = airquality[complete.cases(airquality),]
 airqualityCleaned = data.frame(scale(airqualityCleaned))
-plot(Ozone ~ Temp, data = airqualityCleaned)
 ```
 
-### Frequentist inference
+Just as a reminder: as a frequentist, you would fit the linear regression via 
 
 ```{r, message = F}
 fit <- lm(Ozone ~ Temp, data = airqualityCleaned)
+```
+
+which would calculate the MLE and p-values for this model, and you could evaluate and summarize the results of this via 
+
+```{r, message = F, eval = F}
 summary(fit)
 library(effects)
 plot(allEffects(fit, partial.residuals = T))
@@ -36,22 +81,92 @@ par(mfrow = c(2,2))
 plot(fit) # residuals
 ```
 
+Now, we want to estimate the posterior distribution for this model, using MCMC sampling. I will show you four different options to do this:
+
 ### Bayesian analysis with brms
+
+The simples option is to use brms. brms is a package that allows you to specify regression models in the formular syntax that is familiar to you from standard frequentist R function and packages such as lm, lme4, etc. The application is straightforward
 
 ```{r, message = F, echo=FALSE, results = 'hide'}
 library(brms)
 fit <- brm(Ozone ~ Temp, data = airqualityCleaned)
 ```
 
+In the background, brms will translate you command into a STAN model (see below), fit this model, and return the results!
+
+Here, we see the MCMC chains and the estimated posterior distributions for the intercept, Temperature slope and the residual error sigma. 
+
 ```{r}
-summary(fit)
 plot(fit, ask = FALSE)
-plot(conditional_effects(fit), ask = FALSE)
-fit$model # model that is actually fit via 
-pp_check(fit) # residual checks
 ```
 
+If we want, we could summary the results via 
+
+```{r, eval = FALSE}
+summary(fit)
+plot(conditional_effects(fit), ask = FALSE)
+```
+
+
+### Bayesian analysis with STAN
+
+As said, what the brms package does is to translate the model you specify into STAN code. STAN is an MCMC sampler that allows you to estimate posteriors for any statistical model. The model is provided to the sampler in a particular syntax. You can look at this syntax for your brms model, using
+
+```{r, eval = F}
+fit$model # model that is actually fit via 
+```
+
+This looks a bit overwhelming, but let's try to unpack this: in STAN, you don't have a particular function for the linear regression, you just tell the sampler how all your data points are connected. You do this in at least three steps, which I show in a more minimal code for a linear regression below:
+
+1. The "data" section tells the sampler the dimensions of your data
+2. The "parameter" section tells the sampler which parameters are to be estimated 
+3. The "model" section tells the sampler how the parameters and the data are connected. In this case, we want a linear regression, so we write just the mathematical formula for a linear regression  y ~ normal(alpha + beta * x, sigma)
+
+The model code is specified as a string, and then given to the sampler together with a list of the data.
+
+```{r, message = F, results = 'hide'}
+library(rstan)
+
+stanmodelcode <- "
+  data {
+    int<lower=0> N;
+    vector[N] Temp;
+    vector[N] Ozone;
+  }
+  parameters {
+    real intercept;
+    real TempEffect;
+    real<lower=0> sigma;
+  }
+  model {
+    Ozone ~ normal(intercept + TempEffect * Temp, sigma);
+  }
+"
+
+dat = list(Ozone = airqualityCleaned$Ozone, Temp = airqualityCleaned$Temp, N = nrow(airqualityCleaned))
+
+fit <- stan(model_code = stanmodelcode, model_name = "example", 
+            data = dat, iter = 2012, chains = 3, verbose = TRUE,
+            sample_file = file.path(tempdir(), 'norm.csv')) 
+```
+
+The results are the same as before - here is how the MCMC jumps around in parameter space
+
+```{r}
+rstan::traceplot(fit)
+```
+
+and if you want summaries of the posterior, you can run: 
+
+```{r, eval = F}
+print(fit)
+plot(fit)
+```
+
+
 ### Bayesian analysis with JAGS
+
+The second option is to use JAGS, w
 
 The general approach in JAGS is to
 
@@ -100,41 +215,6 @@ plot(Samples)
 summary(Samples)
 ```
 
-### Bayesian analysis with STAN
-
-Approach is identical to JAGS just that we have to define all variables in the section data
-
-```{r, message = F, results = 'hide'}
-library(rstan)
-
-stanmodelcode <- "
-  data {
-    int<lower=0> N;
-    vector[N] x;
-    vector[N] y;
-  }
-  parameters {
-    real alpha;
-    real beta;
-    real<lower=0> sigma;
-  }
-  model {
-    y ~ normal(alpha + beta * x, sigma);
-  }
-"
-
-dat = list(y = airqualityCleaned$Ozone, x = airqualityCleaned$Temp, N = nrow(airqualityCleaned))
-
-fit <- stan(model_code = stanmodelcode, model_name = "example", 
-            data = dat, iter = 2012, chains = 3, verbose = TRUE,
-            sample_file = file.path(tempdir(), 'norm.csv')) 
-```
-
-```{r}
-print(fit)
-plot(fit)
-rstan::traceplot(fit)
-```
 
 ### Bayesian analysis via BayesianTools
 

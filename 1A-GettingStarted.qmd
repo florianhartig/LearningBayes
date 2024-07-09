@@ -6,20 +6,12 @@ editor_options:
 
 # Getting Started
 
-## Organization of this book
-
-The aim of this book is to introduce you to the main techniques and concepts that are used when performing regression analyses in applied settings. This book is organized in three parts:
-
-1.  **Introduction and philosophy:** The first part of this book provides a general introduction to Bayesian inference, starting with the internal logic (likelihood, prior, posterior), a short introduction on posterior estimation and interpretation, a section on Bayesian model selection and a overview of the Bayesian workflow
-2.  **Bayesian GLMMs**: The second part covers how standard GLMMs (which could also be fit in R packages lme4 or glmmTMB) would be implemented in a Bayesian worklow
-3.  **Hierarchical models:** The third part of the book shows examples of popular hierarchical model structures that may be the reason why you want to use Bayesian inference.
-
 ## Your R System
 
 In this course, we work with the combination of R + RStudio.
 
--   R is the calculation engine that performs the computations.
--   RStudio is the editor that helps you sending inputs to R and collect outputs.
+-   \[R\](https://www.r-project.org) is the calculation engine that performs the computations.
+-   \[RStudio\](https://posit.co/download/rstudio-desktop/) is the editor that helps you sending inputs to R and collect outputs.
 
 Make sure you have a recent version of R + RStudio installed on your computer. If you have never used RStudio, <a href="https://videocampus.sachsen.de/video/First-steps-with-R-and-RStudio/528e5d164219f2d07e32a51736c3f7d1" target="_blank" rel="noopener">here</a> is a good video introducing the basic system and how R and RStudio interact.
 
@@ -53,39 +45,47 @@ sudo apt update && sudo apt install -y --install-recommends build-essential gfor
 ```
 :::
 
-In this book, we will often use data sets from the `EcoData`{.R} package, which is not on CRAN, but on a GitHub page. To install the package, if you don't have the devtools package installed already, first install devtools from CRAN by running
+In this book, we will often use data sets from the `EcoData`{.R} package, which is not on CRAN, but on a GitHub page. To install the package from github, first install devtools package (unless you have the devtools package installed already) by running
 
 ```{r, eval=FALSE}
 install.packages("devtools")
 ```
 
-Then install the EcoData package via
+Then you can use the devtools::install_github function to install the EcoData package via
 
 ```{r chunk_chapter2_2, eval=FALSE}
 devtools::install_github(repo = "TheoreticalEcology/EcoData",
                          dependencies = T, build_vignettes = T)
 ```
 
-For your convenience, the EcoData installation also forces the installation of most of the packages needed in this book, so this may take a while. If you want to load only the EcoData package, or if you encounter problems during the install, set `dependencies = F, build_vignettes = F`.
+Besides providing data, the EcoData installation also forces the installation of most of the packages that we need in this book, so this may take a while. If you want to load only the EcoData package (without installing all the other packages), or if you encounter problems during the install, set `dependencies = F, build_vignettes = F`.
 
-In addition to that, to be able to run all examples in the book, please install the following additional packages:
+In addition to the packages provided in EcoData, to be able to run all examples in the book, please install the following additional packages:
 
 ```{r, eval = FALSE}
 install.packages(BayesianTools)
 install.packages(rjags)
 ```
 
-Also, you should install the JAGS (see <https://mcmc-jags.sourceforge.io>). You can find the downloads for different operating systems at <https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/>
+Additionally, you have to install the [JAGS](https://mcmc-jags.sourceforge.io) MCMC sampler, which is a program independent from R. You can find downloads of Jags versions for different operating systems [here](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/).
 
 ## Exercises and R code from the book
 
-In case you want to run the code yourself, note that a plain R version of the code of each chapter is provided \[here\](https://github.com/florianhartig/LearningBayes/tree/master/classroom)
+If you want to run code from the book, you can copy and paste it to your RStudio, but for your convenience, I also provide a plain R version of the code of each chapter is [here](https://github.com/florianhartig/LearningBayes/tree/master/classroom/).
 
 The same folder holds some R scripts that are meant as classroom exercises, accompanying each chapter.
 
-## Assumed R knowledge
+## Assumed R and statistics knowledge
 
-As mentioned in the preface, this book assumes that you have basic knowledge about data manipulation (reading in data, removing or selecting columns or rows, calculating means per group etc.) and plotting in R. Note that for both purposes, there are currently two main schools in the R environment which do the same things, but with very different syntax:
+As mentioned in the preface, this book assumes that you have basic knowledge about statistical concepts and regression models, as well as data manipulation (reading in data, removing or selecting columns or rows, calculating means per group etc.) and plotting in R.
+
+If you want to brush up your statistical concepts, I would recommend to work through
+
+-   My lecture notes on for the course \[Advanced Regression Models\](https://theoreticalecology.github.io/AdvancedRegressionModels/).
+
+-   McElreath, R. (2018). *Statistical rethinking: A Bayesian course with examples in R and Stan*. Chapman and Hall/CRC.
+
+Regarding data manipulation and coding in R, I want to note that there are currently two main schools in the R environment which do the same things, but with very different syntax:
 
 1.  **base R**, which uses functions such as `plot()`, `apply()`, `aggregate()`
 2.  **tidyverse**, with packages such as **dplyr** and **ggplot2**, which provide functions such as `mutate()`, `filter()` and heavily rely on the `%>%` pipe operator.
@@ -160,7 +160,7 @@ dat = airquality
 6.  Single continuous variables can be visualized using a histogram (`hist)` , for two variables, it depends on their data types:
 
     | Scenario                     | Which plot                    | R command                                                                            |
-    |-----------------|-----------------|---------------------------------------|
+    |------------------|------------------|------------------------------------|
     | Numeric                      | Histogram or boxplot          | `hist()` and`boxplot`                                                                |
     | Numeric with numeric         | Scatterplot                   | `plot`                                                                               |
     | Numeric with categorical     | Boxplot                       | `boxplot(numeric~categorical)`                                                       |

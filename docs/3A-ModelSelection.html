@@ -434,12 +434,24 @@ div.csl-indent {
 
 </header>
 
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>In this chapter, we will discuss 3 approaches to deal with the problem of model selection.</p>
 <ul>
 <li><p>Regularizing priors</p></li>
 <li><p>Bayesian information criteria</p></li>
 <li><p>Bayes Factor and Posterior model weights</p></li>
 </ul>
+</div>
+</div>
 <section id="regularization" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="regularization"><span class="header-section-number">5.1</span> Regularization</h2>
 <p>The first option is not really a model selection method, but it replaces model selection in many cases. What I mean by this is the following: in many, maybe most cases where model selection is applied in frequentist analysis, the goal is NOT to find out if one of several alternative hypotheses are better supported by the data, but the goal is rather to deal with the problem that we do not have enough data to to fit the large model that we actually want to fit. The underlying problem is the bias-variance trade-off.</p>
@@ -559,7 +571,7 @@ Caution
 <p>However, as we created the data in this case in with a centered uniform distribution and a unit scale, we can skip this step</p>
 </div>
 </div>
-<p>In my practical work, I have often found that these priors will often help to avoid parameter identifiability problems, in particular in GLMs, thus making model selection or simplification necessary, while having very little influence on the parameter estimates</p>
+<p>In my practical work, I have often found that these priors will often help to avoid parameter identifiability problems, in particular in GLMs, thus making model selection or simplification unnecessary, while having very little influence on the parameter estimates</p>
 <div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-8_1c40cd57b2479355f719570b0db0a293">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rjags)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>modelCode1 <span class="ot">=</span> <span class="st">"model{</span></span>
@@ -783,10 +795,17 @@ Initializing model</code></pre>
 <p><img src="3A-ModelSelection_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Practical examples of ecological papers using this approach</p>
+<ul>
+<li>https://www.sciencedirect.com/science/article/pii/S1574954124001031</li>
+</ul>
 </section>
 </section>
 <section id="information-criteria" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="information-criteria"><span class="header-section-number">5.2</span> Information Criteria</h2>
+<p>In Bayesian inference, there are two main IC metrics that are used DIC and the more modern metric WAIC.</p>
+<p>Both are essentially extension of the AIC with the</p>
+<p>DIC is intended as a generalisation of Akaike’s Information Criterion (AIC). For non-hierarchical models with little prior information, pD should be approximately the true number of parameters. AIC requires counting parameters and hence any intermediate level (‘random-effects’) parameters need to be integrated out. A recent ‘conditional AIC’ by Vaida and Blanchard (2005) focuses on the random effects in normal hierarchical models and uses tr(H) as the effective number of parameters, and so again matches DIC.</p>
 <section id="dic" class="level3" data-number="5.2.1">
 <h3 data-number="5.2.1" class="anchored" data-anchor-id="dic"><span class="header-section-number">5.2.1</span> DIC</h3>
 <p>DIC can be calculated in Jags using</p>
@@ -838,14 +857,16 @@ Penalized deviance: 542.7 </code></pre>
 <section id="waic" class="level3" data-number="5.2.2">
 <h3 data-number="5.2.2" class="anchored" data-anchor-id="waic"><span class="header-section-number">5.2.2</span> WAIC</h3>
 <p>It was suggested that WAIC has a bunch of favorable advantages over DIC, but it is also harder to calculate. In Jags, WAIC is a bit complicated. It is better supported in STAN and brms.</p>
-<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-20_6e923ba6e254a56b7123fcf412f9119f">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>?waic</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># model with population-level effects only</span></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(rating <span class="sc">~</span> treat <span class="sc">+</span> period <span class="sc">+</span> carry,</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> inhaler)</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>waic1 <span class="ot">&lt;-</span> <span class="fu">waic</span>(fit1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-20_f067a3744640c6fbb43ad78bda27a5d1">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(loo)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>?waic</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="co"># model with population-level effects only</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(rating <span class="sc">~</span> treat <span class="sc">+</span> period <span class="sc">+</span> carry,</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> inhaler)</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>waic1 <span class="ot">&lt;-</span> <span class="fu">waic</span>(fit1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: 
 2 (0.3%) p_waic estimates greater than 0.4. We recommend trying loo instead.</code></pre>
@@ -951,7 +972,7 @@ BF_{i,j} = \frac{ML_i}{ML_j}
 <li><p>BF calculations are sensitive to the choice of model priors (see also example below). If you would increase the prior width of all models above, the 2d model would be penalized more strongly than the 1d model. Many authors therefore warn that BF should not be calculated on uninformative priors.</p></li>
 </ul>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -960,7 +981,7 @@ Bayesian Hypothesis tests using the BF package
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>For simple models, BF can be calculated using the BayesFactor package</p>
 <div class="cell" data-hash="3A-ModelSelection_cache/html/unnamed-chunk-23_02667ea697ddee1e3d65f5a0cfdf6309">

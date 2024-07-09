@@ -17,9 +17,21 @@ This course provides a practical introduction to Bayesian inference covering bot
 -   Bayesian model choice and model selection
 -   Discussion of common hierarchical model structures, including mixed models, error in variable models, etc.
 
+## Organization of this book
+
+This book is organized in three parts:
+
+1.  **Introduction and philosophy:** The first part of this book provides a general introduction to Bayesian inference, starting with the internal logic (likelihood, prior, posterior), a short introduction on posterior estimation and interpretation, a section on Bayesian model selection and a overview of the Bayesian workflow
+2.  **Bayesian GLMMs**: The second part covers how standard GLMMs (which could also be fit in R packages lme4 or glmmTMB) would be implemented in a Bayesian worklow
+3.  **Hierarchical models:** The third part of the book shows examples of popular hierarchical model structures that may be the reason why you want to use Bayesian inference.
+
+## Assumed knowledge
+
 This material assumes prior knowledge of standard statistical methods and concepts (tests, regressions, p-value, power, CIs, ...) and the ability to apply those in R. At the University of Regensburg, this knowledge would be taught in the Bachelors Biology Lecture "Statistik und Bioinformatik" (lecture notes in German [here](https://www.dropbox.com/s/nefr3bteve5lym7/GrundlagenDerStatistik.pdf?dl=0)), and the block course "Introduction to statistics in R". If you didn't take those or comparable courses, you should at least try to get some basic understanding of R before proceeding with this book. On top of that, a good grasp of GLMMs would be helpful for following this course. As a reference, have at my lecture notes on for the course [Advanced Regression Models](https://theoreticalecology.github.io/AdvancedRegressionModels/).
 
-I want to acknowledge that much of this material was inspired by a serious of courses and summer schools that I did in various combinations of people, but mostly with my colleagues Jörn Page, Joe Chipperfield and Björn Reineking. Those past courses inlcuded
+## Acknowledgements
+
+Much of this material was inspired by a serious of courses and summer schools that I did in various combinations of people, but mostly with my colleagues Jörn Page, Joe Chipperfield and Björn Reineking. Those past courses inlcuded
 
 -   Sept 2019 Münster, Germany
 

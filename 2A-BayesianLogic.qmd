@@ -10,24 +10,46 @@ set.seed(42)
 
 # The Bayesian Logic
 
-::: callout-note
-In this chapter, we will discuss 
+So, you are here to learn about Bayesian statistics? So, what's the deal with that?
 
+In a nutshell, Bayesian statistics is just another philosophy to evaluate a statistical model against data, similar to the methods of calculating p-values and the MLE, which you are likely familiar with. So, when you have a linear regression model, you can either evaluate it against data using MLE and p-values, or you can choose to calculate the so-called Bayesian posterior (we will explain what this means shortly).
+
+::: callout-note
+A corollary of what we just discussed is that there are no special Bayesian models - Bayesian statistics is just a different approach to evaluate a given statistical model. 
 :::
 
+So, what is the difference between MLE and p-values (we call those "frequentist methods") and the Bayesian posterior? What are the advantages and disadvantages, and when to choose what? Very briefly, the two main points are that:
+
+* Bayesian inference is computationally more stable for complex models and in the small data limit, which is why it is preferred for complex, hierarchical models and anything that is non-standard
+* The indicators calculated by Bayesian inference carry a different information than what is contained in p-values and the MLE, and many researchers have argued that this information is more intuitive and helpful than what is provided by the frequestist indicators. 
+
+Do not worry if this sounds very abstract at the moment - these points will become clear once you progress through this book. We will start in this chapter by understand what the results are when we apply Bayesian inference to a statistical model, and how this is contrasted to the classical frequentist methods of inference. 
 
 ## Frequentist and Bayesian coin flip
 
-Assume I'm trying to guess if a coin comes up heads or tails. I have had 10 trials, and 8x success in guessing the side.
+To illustrate the difference between a frequentist and a Bayesian approach to evaluating a statistical model, assume I'm trying to understand if I can predict the future. 
+
+My experiment to examine this question is that I flip a coin, with a previous guess if it comes up heads or tails. I have had 10 trials, and 8x success in guessing the side.
 
 ```{r}
 trials = 10
 success = 8
 ```
 
-What we want to know now is what my properties are regarding correctly guessing the outcome of the coin flip experiment, with the three inferential methods in statistics: MLE, NHST and Bayes.
+We now want to evaluate the results of this experiment using the three main inferential methods in statistics: MLE, NHST and Bayes. 
 
-For all three statistical methods, we use the same statistical model which is the binomial model. The probability density is available in R throught he function dbinom. For exammple, dbinom(6,10,0.9) gives you the probability of obtaining 6/10 successes when the true probability of heads is 0.9
+### The statistical model
+
+All three methods require that we have a statistical model, which allows us to express the probability of our possible observations as a function of the model's parameters. 
+
+In the case of a coin flip, such a model is the binomial model, which has one pararameter, p, the probability of a sucess. In R, all simple statistical models have a name, which is complemented by a letter for calculating different aspects of the model. In this case, the name is binom, and then 
+
+* rbinom (r = random) samples from a binomial distribution
+* qbinom (q = quantile) gives the quantile function of the distribution
+* pbinom (p = probability) gives the cummulative probability function
+* dbinom (d = density) gives the probability (density) of a particular observation 
+
+So, for example, dbinom(6,10,0.9) gives you the probability of obtaining 6/10 successes when the true probability of heads is 0.9
 
 ```{r}
 dbinom(6,10, 0.0)
@@ -35,7 +57,9 @@ dbinom(6,10, 0.0)
 
 ### The ML estimator
 
-The idea of maximum likelihood estimation (MLE) is to look for the set of parameters that would, under the given model assumption, lead to the highest probability to obtain the observed data. In our case we have only one parameter, the probability of success per flip. Let's plot this for different values and look for the maximum.
+The idea of maximum likelihood estimation (MLE) is to look for the set of parameters that would, under the given model assumption, lead to the highest probability of obtaining the observed data. 
+
+In our case we have only one parameter, the probability of success per flip, so you can basically read off the MLE by plotting the for different values of this parameter.
 
 ```{r}
 parametervalues <- seq(0,1,0.001) # parameters to check
@@ -77,7 +101,7 @@ Note: there are also other methods to look at uncertainty with likelihoods, e.g.
 -   95% CI --\> if we would do the experiment over and over again, 95% of the CIs would contain the true value. NOTE: this is != saying: for a given dataset, the true value is in the CI with 95% probability!
 :::
 
-### GETTING THE P-VALUE FOR FAIR COIN
+### Getting the p-value for a fair coin
 
 want to get p-value for a smaller or equal result (1-tailed) given a fair coin p(k\<=kobs\|H0:p=0.5). Basically, we want the sum over the red bars
 
@@ -138,7 +162,7 @@ Remember: in general, if you choose an alpha level of 5%, and you have absolutel
 Also note: we are free to choose the null-hypothesis as we want. What would you do if you null hypothesis is that a coin should have an 0.8 probability of head?
 :::
 
-### The BAYESIAN ESTIMATE
+### The Bayesian posterior estimate
 
 Remember for Bayes p(M\|D) = p(D\|M) \* p(M) / P(D), and we can show that p(D) is just the integral over p(D\|M) \* p(M)
 
@@ -215,23 +239,31 @@ If we don't have to, this is what we should interpret and forecast with. However
 
 ### The MAP (mode of posterior)
 
-The problem with the best values is that it depends what you want to do with it. If you want to have the most likely parameter value, what you can do is to use the mode of the posterior distribution. It is called the maximum a posteriori probability (MAP) estimate.
+ If you want to have the most probable parameter value, what you can do is to use the mode of the posterior distribution. It is called the maximum a posteriori probability (MAP) estimate.
 
-However, if the distribution is very skewed as in our example, it may well be that the MAP is far at one side of the distribution, and doesn't really give a good distribution of where most probability mass is. If it is really neccessary to do predictions with one value (instead of forwarding the whole posterior distribution), I would typically predict with the median of the posterior.
+
+### Posterior median or mean 
+
+Although the MAP is very intutive, it has several problems, which is the reason why it is rarely used in practice.
+
+The first reason is computational: with the MCMC methods that are used in practice to estimate posterior distributions (see next section), it is very hard to locate the exact position of the MAP in posterior space.
+
+The second reason is that Bayesian methods are often used for complicated models and in non-assymptotic cases. In such a situation, the likelihood or posterior often has weird, non-normal shapes. If the posterior distribution is very skewed as in our example, it may well be that the MAP doesn't really give a good idea of where most probability mass is. 
+
+For both reasons, mean or median posterior values are the most common choices if the goal is to summarize the posterior distribution by one value.
 
 ```{r}
 plot(parameter,posterior, type = "l")
 polygon(parameter, posterior, border=NA, col="darksalmon")
 
-
-MAP <- parameter[which.max(posterior)]
-abline(v=MAP, col = "red")
-text(2.5,0.4, "MAP", col = "red")
-
-
 medianPosterior <- parameter[min(which(cumsum(posterior) > 0.5 * 50))]
 abline(v=medianPosterior, col = "blue")
-text(1.8,0.3, "Median", col = "blue")
+text(2.9,0.3, "Median", col = "blue")
+
+mean <- mean(posterior * parameter) / mean(posterior)
+abline(v=mean, col = "darkgreen")
+text(0.4,0.25, "Mean", col = "darkgreen")
+
 ```
 
 ### Bayesian credibile intervals
