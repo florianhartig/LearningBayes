@@ -88,7 +88,7 @@ Additionally, you have to install the [JAGS](https://mcmc-jags.sourceforge.io) M
 
 ## Exercises and R code from the book
 
-If you want to run code from the book, you can copy and paste it to your RStudio, but for your convenience, I also provide a plain R version of the code of each chapter is [here](https://github.com/florianhartig/LearningBayes/tree/master/classroom/).
+If you want to run code from the book, you can copy and paste it to your RStudio, but for your convenience, I also provide a plain R version of the code of each chapter [here](https://github.com/florianhartig/LearningBayes/tree/master/classroom/).
 
 The same folder holds some R scripts that are meant as classroom exercises, accompanying each chapter.
 
@@ -98,7 +98,7 @@ As mentioned in the preface, this book assumes that you have basic knowledge abo
 
 If you want to brush up your statistical concepts, I would recommend to work through
 
-- My lecture notes on for the course \[Advanced Regression Models\](https://theoreticalecology.github.io/AdvancedRegressionModels/).
+- My lecture notes for the course \[Advanced Regression Models\](https://theoreticalecology.github.io/AdvancedRegressionModels/).
 
 - McElreath, R. (2018). *Statistical rethinking: A Bayesian course with examples in R and Stan*. Chapman and Hall/CRC.
 
@@ -113,7 +113,7 @@ There are many opinions about advantages and disadvantages of the two schools. I
 The tidyverse framework is currently trying to expand to the tasks of statistical / machine learning models as well, trying to streamline statistical workflows. While this certainly has a lot of potential, I don't see it as general / mature enough to recommend it as a default for the statistical workflow.
 :::
 
-In the following box, you will find an exercise that asks you to perform basic plots and data manipulations. To text yourself, please check that you can perform these operations. If you have problems, you should study an introductory R course (for example [here](https://theoreticalecology.github.io/DataScienceInR/)) before continuing with this text.
+In the following box, you will find an exercise that asks you to perform basic plots and data manipulations. To test yourself, please check that you can perform these operations. If you have problems, you should study an introductory R course (for example [here](https://theoreticalecology.github.io/DataScienceInR/)) before continuing with this text.
 
 ::: {.callout-caution icon="false"}
 #### Exercise - Data wrangling
@@ -136,7 +136,7 @@ dat = airquality
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 #### Solution
 
-1.  `str()` helps us to check the data types of the variables, ensure that they are correct, e.g. categorical variables should be factors and continuous variables should be either num (numeric) or int (integer). `summary()`returns important summary statistics of our variables and informs us about NAs in the data
+1.  `str()` helps us to check the data types of the variables, ensure that they are correct, e.g. categorical variables should be factors and continuous variables should be either num (numeric) or int (integer). `summary()` returns important summary statistics of our variables and informs us about NAs in the data
 
     ```{r}
     str(dat)
@@ -159,7 +159,7 @@ dat = airquality
     summary(dat)
     ```
 
-4.  Use `log`function to transform the variable (be aware of NAs!)
+4.  Use `log()` function to transform the variable (be aware of NAs!)
 
     ```{r}
     dat$logTemp = log(dat$Temp)
@@ -174,7 +174,7 @@ dat = airquality
     summary(dat_sub)
     ```
 
-6.  Single continuous variables can be visualized using a histogram (`hist)` , for two variables, it depends on their data types:
+6.  Single continuous variables can be visualized using a histogram (`hist()`), for two variables, it depends on their data types:
 
     | Scenario | Which plot | R command |
     |-------------------|-------------------|------------------------------------|

@@ -15,7 +15,7 @@ In this chapter, we will discuss
 
 :::
 
-In general, autoregressive models should not be be fit with Jags, but with a
+In general, autoregressive models should not be fit with Jags, but with a
 
 ## Example with Jags
 

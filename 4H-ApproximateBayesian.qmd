@@ -22,7 +22,7 @@ In Hartig, F.; Calabrese, J. M.; Reineking, B.; Wiegand, T. & Huth, A. (2011) St
 
 1.  Likelihood-approximations based on local, non-parametric approximations of the variance of the simulation outputs, particularly Approximate Bayesian Computation (ABC, Beaumont, M. A. (2010) Approximate Bayesian computation in evolution and ecology. Annu. Rev. Ecol. Evol. Syst., 41, 379-406.)
 
-2.  Likelihood-approximations based on parametric, typically global approximation of the simulation output such as Synthetic Likelihood, see Wood, S. N. (2010) Statistical inference for noisy nonlinear ecological dynamic systems. Nature, 466, 1102-1104. An example for fitting a stochastic forest gap model do data via this method is Hartig, F.; Dislich, C.; Wiegand, T. & Huth, A. (2014) Technical Note: Approximate Bayesian parameterization of a process-based tropical forest model. Biogeosciences, 11, 1261-1272.
+2.  Likelihood-approximations based on parametric, typically global approximation of the simulation output such as Synthetic Likelihood, see Wood, S. N. (2010) Statistical inference for noisy nonlinear ecological dynamic systems. Nature, 466, 1102-1104. An example for fitting a stochastic forest gap model to data via this method is Hartig, F.; Dislich, C.; Wiegand, T. & Huth, A. (2014) Technical Note: Approximate Bayesian parameterization of a process-based tropical forest model. Biogeosciences, 11, 1261-1272.
 
 ## Example
 
@@ -35,7 +35,7 @@ stochasticModel <- function(par){
 }
 ```
 
-Lets's create some data with known parameters
+Let's create some data with known parameters
 
 ```{r}
 data <- stochasticModel(c(3,-2))
@@ -102,13 +102,13 @@ run_MCMC_Synthetic <- function(startvalue, iterations){
         proposal = rnorm(2,mean = chain[i,], sd= c(0.2,0.2))
         
         # simulate several model runs
-        simualatedData <- matrix(NA, nrow = 100, ncol = 2)
+        simulatedData <- matrix(NA, nrow = 100, ncol = 2)
         for (i in 1:100){
           simulation <- stochasticModel(c(3,-2))
-          simualatedData[i,] <- c(mean(simulation) , sd(simulation))          
+          simulatedData[i,] <- c(mean(simulation) , sd(simulation))          
         }
-        syntheticLikelihood1 <- fitdistr(simualatedData[1,], "normal")
-        syntheticLikelihood2 <- fitdistr(simualatedData[2,], "normal")
+        syntheticLikelihood1 <- fitdistr(simulatedData[1,], "normal")
+        syntheticLikelihood2 <- fitdistr(simulatedData[2,], "normal")
         
         prob1 <- dnorm(meandata-syntheticLikelihood1$estimate[1], sd = syntheticLikelihood1$estimate[2], log = T)
 

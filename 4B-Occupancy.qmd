@@ -33,14 +33,14 @@ res <- simulateResiduals(fit)
 plot(res)
 ```
 
-Suspicion - the lizards atually depend on the altitude, but they don't like wind and therefore hide when there is a lot of wind, and wind also correlates with altitude.
+Suspicion - the lizards actually depend on the altitude, but they don't like wind and therefore hide when there is a lot of wind, and wind also correlates with altitude.
 
 ```{r}
 plot(windObs ~ sAltitude, data = volcanoisland)
 
 ```
 
-Could we find out what's the true effect of the environmental predictors? let's build an occupancy model where we model the true presence of the lizzard as a latent variable.
+Could we find out what's the true effect of the environmental predictors? let's build an occupancy model where we model the true presence of the lizard as a latent variable.
 
 ```{r}
 library(rjags)
@@ -98,7 +98,7 @@ Samples <- coda.samples(jagsModel, variable.names = para.names, n.iter = 5000)
 plot(Samples)
 summary(Samples)
 
-dic = dic = dic.samples(jagsModel, n.iter = 5000, type = "pD")
+dic = dic.samples(jagsModel, n.iter = 5000, type = "pD")
 dic
 
 ```

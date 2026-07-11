@@ -31,7 +31,7 @@ density = dnorm(values)
 plot(density)
 ```
 
-To produce the same picture with an MCMC sampler, we will use teh BayesianTools package. Here the code to sample from a normal distribution: 
+To produce the same picture with an MCMC sampler, we will use the BayesianTools package. Here the code to sample from a normal distribution: 
 
 ```{r}
 library(BayesianTools)
@@ -52,7 +52,7 @@ If you are interested in how an MCMC sampler works internally, you can look at A
 
 ## Fitting a linear regression with different MCMCs
 
-So, how can we MCMC sample from statistical mdoels? We will discuss this by showing you different code options to fit the relationship between Ozone and Temperature in the dataset airquality, using a linear regression.
+So, how can we MCMC sample from statistical models? We will discuss this by showing you different code options to fit the relationship between Ozone and Temperature in the dataset airquality, using a linear regression.
 
 ```{r}
 plot(Ozone ~ Temp, data = airquality)
@@ -85,14 +85,14 @@ Now, we want to estimate the posterior distribution for this model, using MCMC s
 
 ### Bayesian analysis with brms
 
-The simples option is to use brms. brms is a package that allows you to specify regression models in the formular syntax that is familiar to you from standard frequentist R function and packages such as lm, lme4, etc. The application is straightforward
+The simplest option is to use brms. brms is a package that allows you to specify regression models in the formula syntax that is familiar to you from standard frequentist R function and packages such as lm, lme4, etc. The application is straightforward
 
 ```{r, message = F, echo=FALSE, results = 'hide'}
 library(brms)
 fit <- brm(Ozone ~ Temp, data = airqualityCleaned)
 ```
 
-In the background, brms will translate you command into a STAN model (see below), fit this model, and return the results!
+In the background, brms will translate your command into a STAN model (see below), fit this model, and return the results!
 
 Here, we see the MCMC chains and the estimated posterior distributions for the intercept, Temperature slope and the residual error sigma. 
 
@@ -166,7 +166,7 @@ plot(fit)
 
 ### Bayesian analysis with JAGS
 
-The second option is to use JAGS, w
+The second option is to use JAGS.
 
 The general approach in JAGS is to
 
@@ -241,7 +241,7 @@ plot(out)
 summary(out, start = 1000)
 ```
 
-## Checking and expecting the results
+## Checking and interpreting the results
 
 Running the sampler again
 
@@ -280,7 +280,7 @@ coda::gelman.plot(Samples)
 No fixed rule but typically people require univariate psrf \< 1.05 or \< 1.1 and multivariate psrf \< 1.1 or 1.2
 
 ::: callout-caution
-Note that the msrf rule was made for estimating the mean / median. If you want to estimate more unstable statistics, e.g. higher quantiles or other values such as the MAP or the DIC (see section on model selection), you may have to run the MCMC chain much longer to get stable outputs.
+Note that the psrf rule was made for estimating the mean / median. If you want to estimate more unstable statistics, e.g. higher quantiles or other values such as the MAP or the DIC (see section on model selection), you may have to run the MCMC chain much longer to get stable outputs.
 
 ```{r, message = F, results='hide'}
 
@@ -348,9 +348,9 @@ lines(dat[,2], apply(pred, 1, quantile, probs = 0.8),
 plot(dat[,2], dat[,1])
 for(i in 1:nrow(x)) lines(dat[,2], pred[,i], col = "#0000EE03")
 
-# important point - so far, we have plotted 
-# in frequentist, this is know as the confidence vs. the prediction distribution
-# in the second case, we add th
+# important point - so far, we have plotted the credible interval for the regression line
+# in frequentist terms, this is known as the confidence interval vs. the prediction interval
+# in the second case below, we add the residual (observation-level) uncertainty to get the prediction interval
 
 
 pred = x[,2] + dat[,2] %o% x[,1] 
@@ -383,7 +383,7 @@ Priors are not scale-free. What that means: dnorm(0,0.0001) might not be an unin
 
 Then compare Bayesian parameter estimates and their uncertainty to Bayesian estimates. How would you have to change the priors to fix this problem and keep them uninformative?
 
-**Task: 2** implement mildly informative priors as well as strong shrinkage priors in the regression. Question to discuss: should you put the shrinkage also in the intercept? Why should you center center variables if you include a shrinkage prior on the intercept?
+**Task 2:** implement mildly informative priors as well as strong shrinkage priors in the regression. Question to discuss: should you put the shrinkage also in the intercept? Why should you center variables if you include a shrinkage prior on the intercept?
 
 ```{r}
 library(rjags)

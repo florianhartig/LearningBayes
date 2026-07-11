@@ -27,7 +27,7 @@ data(keeley)
 
 ## Lavaan and blavaan
 
-Laavan is the most popular package to fit multivariate normal SEMs. The advantage of lavaan (over piecewiseSEM which we will use later) is that it can easily include latent factors in the analysis (which we will not use in this example). The downside of lavaan is that it can't handle non-Gaussian responses.
+Lavaan is the most popular package to fit multivariate normal SEMs. The advantage of lavaan (over piecewiseSEM which we will use later) is that it can easily include latent factors in the analysis (which we will not use in this example). The downside of lavaan is that it can't handle non-Gaussian responses.
 
 Here the standard lavaan model:
 
@@ -45,7 +45,7 @@ lavaanPlot(model=k_fit_lavaan, coefs = TRUE, sig = .05)
 
 ```
 
-Same as Bayesian fit using blavaan, which is a laavan style interface to STAN
+Same as Bayesian fit using blavaan, which is a lavaan style interface to STAN
 
 ```{r}
 library(blavaan)
@@ -75,7 +75,7 @@ summary(k_fit_psem)
 
 ```
 
-Piecewise SEMs can pretty much in the same way be code in brm:
+Piecewise SEMs can pretty much in the same way be coded in brms:
 
 ```{r}
 library(brms)
@@ -95,7 +95,7 @@ plot(k_fit_brms)
 
 ## Freestyle JAGS model
 
-If you want latent variables and non-Gaussian responses, you will have to code by hand. Here an example, which is effectively a piecewise SEM bout could be extended to include latent variables.
+If you want latent variables and non-Gaussian responses, you will have to code by hand. Here an example, which is effectively a piecewise SEM but could be extended to include latent variables.
 
 TODO
 
@@ -161,12 +161,12 @@ model{
 }
 "
 
-windPartiallObs <- islandData$windObs
+windPartiallyObs <- islandData$windObs
 sel = sample.int(1000, 500)
-windPartiallObs[sel] = NA
+windPartiallyObs[sel] = NA
 
 # 2) Set up a list that contains all the necessary data (here, including parameters of the prior distribution)
-Data = list(Beetles = islandData$beetles, Alt = islandData$sAltitude, i.max = length(islandData$sAltitude), Wind = windPartiallObs, Ducks = islandData$ducks, Habitat = islandData$habitatQuality, SoilTexture = islandData$earth)
+Data = list(Beetles = islandData$beetles, Alt = islandData$sAltitude, i.max = length(islandData$sAltitude), Wind = windPartiallyObs, Ducks = islandData$ducks, Habitat = islandData$habitatQuality, SoilTexture = islandData$earth)
 
 # 3) Specify a function to generate inital values for the parameters
 

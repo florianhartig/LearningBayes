@@ -22,17 +22,17 @@ To introduce the typical options in a linear model, we use an example that was o
 ```{r}
 Dat = read.table("https://raw.githubusercontent.com/florianhartig/LearningBayes/master/data/Aspis_data.txt", stringsAsFactors = T)
 
-# Inspect relationship between body mass and total body lenght
+# Inspect relationship between body mass and total body length
 plot(Dat$TL, Dat$BM,
      xlab = 'Total length [mm]',
      ylab = 'Body mass [g]')
 
 # For the analysis we use log-transformed body masses
-# and log-transformed and scaled total body lenght (TL)
+# and log-transformed and scaled total body length (TL)
 plot(Dat$log_TL.sc, Dat$log_BM)
 ```
 
-### LM with continous predictor
+### LM with continuous predictor
 
 Linear regression with lm()
 
@@ -115,7 +115,7 @@ abline(PostMeans[1:2], col = 'blue')
 
 ### LM with categorical predictor
 
-Inspect relationship between body mass and total body lenght but now seperately for the two sexes
+Inspect relationship between body mass and total body length but now separately for the two sexes
 
 ```{r}
 point.symbols <- c(f = 1, m = 4)
@@ -125,7 +125,7 @@ plot(Dat$TL, Dat$BM,
      ylab = 'Body mass [g]')
 
 # For the analysis we use log-transformed body masses
-# and log-transformed and scaled total body lenght (TL)
+# and log-transformed and scaled total body length (TL)
 plot(Dat$log_TL.sc, Dat$log_BM, 
      pch = point.symbols[Dat$Sex])
 ```
@@ -200,7 +200,7 @@ BayesianTools::correlationPlot(Samples)
 
 ### LM with interaction
 
-From the previous plot, it´s obvious that we could also consider an interaction between sex and body mass
+From the previous plot, it's obvious that we could also consider an interaction between sex and body mass
 
 Linear regression with lm()
 

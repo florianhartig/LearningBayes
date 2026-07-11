@@ -19,7 +19,7 @@ In this chapter, we will discuss
 
 ## Picking an initial model
 
-An initial model will consist of a model structure and priors. For priors, see previous section on prior choice. For the initial model structure, you need to know what structures are available and what their advantage / disadvantage are. This is the same as for all statistical analysis. Thus, all the the consideration in https://theoreticalecology.github.io/AdvancedRegressionModels/, sections on model choice apply.
+An initial model will consist of a model structure and priors. For priors, see previous section on prior choice. For the initial model structure, you need to know what structures are available and what their advantage / disadvantage are. This is the same as for all statistical analysis. Thus, all the considerations in https://theoreticalecology.github.io/AdvancedRegressionModels/, sections on model choice apply.
 
 For the following, we will stay with our simple airquality example
 
@@ -194,8 +194,8 @@ x <- getSample(Samples, start = 300)
 
 dim(x)
 
-# note - yesterday, we calculated the predictions from the parameters
-# here we observe them direct - this is the normal way to calcualte the 
+# note - previously, we calculated the predictions from the parameters
+# here we observe them directly - this is the normal way to calculate the
 # posterior predictive distribution
 posteriorPredDistr = x[,1:111]
 posteriorPredSim = x[,112:222]

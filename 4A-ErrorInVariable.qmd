@@ -15,7 +15,7 @@ In this chapter, we will discuss
 
 :::
 
-## Regression dillution in distribution estimates
+## Regression dilution in distribution estimates
 
 ```{r, echo=F, warning=F, message=F}
 set.seed(123)
@@ -26,7 +26,7 @@ library(R2jags)
 
 ### Creation of the data
 
-Assume we observe data from an ecological system that creates an exponential size distribution (e.g. tree sizes, see [Taubert, F.; Hartig, F.; Dobner, H.-J. & Huth, A. (2013) On the Challenge of Fitting Tree Size Distributions in Ecology. PLoS ONE, 8, e58036-](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0058036)), but our measurments are performed with a substantial lognormal observation error
+Assume we observe data from an ecological system that creates an exponential size distribution (e.g. tree sizes, see [Taubert, F.; Hartig, F.; Dobner, H.-J. & Huth, A. (2013) On the Challenge of Fitting Tree Size Distributions in Ecology. PLoS ONE, 8, e58036-](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0058036)), but our measurements are performed with a substantial lognormal observation error
 
 ```{r}
 meanSize <- 10
@@ -118,7 +118,7 @@ library(rjags)
 
 nobs = nrow(volcanoisland)
 
-# imagine we had a very bad measurement devide for the altitude
+# imagine we had a very bad measurement device for the altitude
 volcanoisland$sAltitudeR = volcanoisland$sAltitude + rnorm(nobs)
 
 plot(log(windObs) ~ sAltitude, data = volcanoisland)

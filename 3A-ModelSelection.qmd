@@ -22,9 +22,9 @@ In this chapter, we will discuss 3 approaches to deal with the problem of model 
 
 ## Regularization
 
-The first option is not really a model selection method, but it replaces model selection in many cases. What I mean by this is the following: in many, maybe most cases where model selection is applied in frequentist analysis, the goal is NOT to find out if one of several alternative hypotheses are better supported by the data, but the goal is rather to deal with the problem that we do not have enough data to to fit the large model that we actually want to fit. The underlying problem is the bias-variance trade-off.
+The first option is not really a model selection method, but it replaces model selection in many cases. What I mean by this is the following: in many, maybe most cases where model selection is applied in frequentist analysis, the goal is NOT to find out if one of several alternative hypotheses are better supported by the data, but the goal is rather to deal with the problem that we do not have enough data to fit the large model that we actually want to fit. The underlying problem is the bias-variance trade-off.
 
-In this case, many frequentists use information theoretical (IT) model selection approaches to simplify the model. These approaches are also available to Bayesians (see next subsection on Bayesian IT approaches), but in many cases prior regularization is a better option to deal with this problem. The idea of this approaches is to control model complexity via priors that are deliberately more restrictive than what we would set when expressing our "pure" uncertainty about the respective parameter.
+In this case, many frequentists use information theoretical (IT) model selection approaches to simplify the model. These approaches are also available to Bayesians (see next subsection on Bayesian IT approaches), but in many cases prior regularization is a better option to deal with this problem. The idea of these approaches is to control model complexity via priors that are deliberately more restrictive than what we would set when expressing our "pure" uncertainty about the respective parameter.
 
 ![](images/shrinkagePriors.png){fig-alt="Shrinkage priors"}
 
@@ -168,7 +168,7 @@ Shrinkage priors are basically the same as before, just stronger.
 
 There are two options to set the shrinkage:
 
-1.  As common in frequentist L1 / L2 shrikage, you could set the the shrinkage via cross-validation or similar approaches
+1.  As common in frequentist L1 / L2 shrinkage, you could set the shrinkage via cross-validation or similar approaches
 
 2.  You can treat the shrinkage as a parameter to be estimated in the model and set a hyperprior on it.
 
@@ -260,7 +260,7 @@ The structure added to the model used here follows Kuo, L., & Mallick, B. (1998)
   }
 ```
 
-In this code, the effective slope ind\[j\] \* a_raw\[j\] consists of two components. The variable ind (zero or one) controls the spike - value of 0 switches off the parameter estimate and thus forces the effective slope towards zero. Ind is drawn from a Bernoulli distribution with a beta prior, which is a standard choice for the Bernoull because it is conjugage and Jeffrey's prior. The variable a_raw\[j\] is the slab, which can be interpreted as the estimate of the parameter conditional on the probability ind that it is in the model.
+In this code, the effective slope ind\[j\] \* a_raw\[j\] consists of two components. The variable ind (zero or one) controls the spike - value of 0 switches off the parameter estimate and thus forces the effective slope towards zero. Ind is drawn from a Bernoulli distribution with a beta prior, which is a standard choice for the Bernoulli because it is conjugate and Jeffrey's prior. The variable a_raw\[j\] is the slab, which can be interpreted as the estimate of the parameter conditional on the probability ind that it is in the model.
 
 Here the full model
 
@@ -327,7 +327,7 @@ par(mfrow = c(2,2))
 plotEstimates(est0, main = "Uninformative")
 plotEstimates(est1, main = "Mildly regularizing")
 plotEstimates(est2, main = "Adaptive shrinkage")
-plotEstimates(est3, main = "Spike and slap")
+plotEstimates(est3, main = "Spike and slab")
 
 ```
 
@@ -337,9 +337,9 @@ Practical examples of ecological papers using this approach
 
 ## Information Criteria
 
-In Bayesian inference, there are two main IC metrics that are used DIC and the more modern metric WAIC.
+In Bayesian inference, there are two main IC metrics that are used: DIC and the more modern metric WAIC.
 
-Both are essentially extension of the AIC with the
+Both are essentially extensions of the AIC.
 
 DIC is intended as a generalisation of Akaike's Information Criterion (AIC). For non-hierarchical models with little prior information, pD should be approximately the true number of parameters. AIC requires counting parameters and hence any intermediate level ('random-effects') parameters need to be integrated out. A recent 'conditional AIC' by Vaida and Blanchard (2005) focuses on the random effects in normal hierarchical models and uses tr(H) as the effective number of parameters, and so again matches DIC.
 
@@ -373,7 +373,7 @@ dic2
 dic3
 ```
 
-We see that the effective number of parameters estimated by the DIC is very different between the different models. The shrinkage priors reduce the effective number of parameters. The spike and slap model has formally (by counting in the code) the most parameters of all models, more than 200, but the DIC estimates that it has effectively only 18 parameters.
+We see that the effective number of parameters estimated by the DIC is very different between the different models. The shrinkage priors reduce the effective number of parameters. The spike and slab model has formally (by counting in the code) the most parameters of all models, more than 200, but the DIC estimates that it has effectively only 18 parameters.
 
 For more R. B. O'Hara. M. J. Sillanpää. "A review of Bayesian variable selection methods: what, how and which." Bayesian Anal. 4 (1) 85 - 117, March 2009. https://doi.org/10.1214/09-BA403
 
@@ -463,7 +463,7 @@ Bayes' formula makes no fundamental difference between models and parameters. He
 
 $$P(M_i, \Theta_i| D) \sim L(D|M_i , \Theta_i) \cdot p(\Theta_i) \cdot p(M_i)$$
 
-where $L(D|M_i , \Theta_i)$ is the likelihood of model $M_i$, $p(\Theta_i)$ is the prior distribution of model $M_i$, $p(M_i)$ is the prior weight on model $M_i$, and the \~ indicates that this the equation still needs to be normalized (i.e. divided by the integral over all models and parameters). The figure below provides a graphical illustration of this situation, assuming that we jump between three models with an increasing number of parameters.
+where $L(D|M_i , \Theta_i)$ is the likelihood of model $M_i$, $p(\Theta_i)$ is the prior distribution of model $M_i$, $p(M_i)$ is the prior weight on model $M_i$, and the \~ indicates that the equation still needs to be normalized (i.e. divided by the integral over all models and parameters). The figure below provides a graphical illustration of this situation, assuming that we jump between three models with an increasing number of parameters.
 
 ![](images/BMA.png){fig-alt="Illustration of the joint posterior space of several models with a different number of parameters. Size of the bubbles denotes posterior distribution and weight across models and parameters."}
 
@@ -482,7 +482,7 @@ which is known as the marginal likelihood (ML). The marginal likelihood can be i
 
 $$BF_{i,j} = \frac{ML_i}{ML_j} $$
 
-Note that this is analogue to the likelihood ratio in frequentist statistics. However, there is one important difference: as we will discuss in more detail below, the BF is affected by the prior choice as well as the uncertainty around the parameter estimates. More complex models typically have more uncertainties, i.e. more prior volume in areas areas with lower likelihood (as opposed to the MLE).
+Note that this is analogue to the likelihood ratio in frequentist statistics. However, there is one important difference: as we will discuss in more detail below, the BF is affected by the prior choice as well as the uncertainty around the parameter estimates. More complex models typically have more uncertainties, i.e. more prior volume in areas with lower likelihood (as opposed to the MLE).
 
 The following image explains why this is: imagine our posterior falls off such that always 1/3 of the prior space has high likelihood and 2/3 of the parameter space has low likelihood. Then, you see that the space with high likelihood is getting relatively smaller the higher the dimension of your data.
 
@@ -490,7 +490,7 @@ The following image explains why this is: imagine our posterior falls off such t
 
 This has two consequences
 
-- Thus, the BF implicitly penalizes for model complexity (or, maybe more precisely, it penalizes for unconstrained parameters) and can thus directly be used to compare models. [@Kass-BayesFactors-1995] without having to add a complexity penalty
+- Thus, the BF implicitly penalizes for model complexity (or, maybe more precisely, it penalizes for unconstrained parameters) and can thus directly be used to compare models [@Kass-BayesFactors-1995] without having to add a complexity penalty
 
 - BF calculations are sensitive to the choice of model priors (see also example below). If you would increase the prior width of all models above, the 2d model would be penalized more strongly than the 1d model. Many authors therefore warn that BF should not be calculated on uninformative priors.
 
@@ -519,7 +519,7 @@ The BF package circumvents the prior problem by scaling the prior to the data. T
 
 #### Posterior model weights
 
-While the BF compares two models. For more than 2 models, it is more useful to standardize the ML multiplied with the model priors across all models in question, calculating a Bayesian posterior model weight as
+The BF compares two models. For more than 2 models, it is more useful to standardize the ML multiplied with the model priors across all models in question, calculating a Bayesian posterior model weight as
 
 $$BMW_i = \frac{P(D|M_i)}{\sum_j P(D|M_j)} \cdot \frac{p(M_i)}{\sum_j p(M_j)}$$
 
@@ -535,11 +535,11 @@ resulting in averaged distributions for the parameters that are shared between m
 
 ### Estimation of the marginal likelihood in practice
 
-While the definition of the Bayesian model weights and averaged parameters is straightforward, the estimation of these quantities is often not. In princile, there are two options to estimate the quantities defined above numerically, both with a number of caveats.
+While the definition of the Bayesian model weights and averaged parameters is straightforward, the estimation of these quantities is often not. In principle, there are two options to estimate the quantities defined above numerically, both with a number of caveats.
 
-The first option is to sample directly from the joint posterior of the models and the parameters . Basic algorithms such as rejection sampling can do that without any modification , but they are inefficient for higher-dimensional parameter spaces. More sophisticated algorithms such as MCMC and SMC require modifications to deal with the issue of a changing number of parameters when changing between models, as well as with the issue of a changed meaning of the parameters. Such modifications (the most common class are the **reversible-jump MCMCs (RJ-MCMC)**) are often difficult to program, tune and generalize, which is the reason why they are typically only applied in specialized, well defined settings with a large number of models to be compared.
+The first option is to sample directly from the joint posterior of the models and the parameters. Basic algorithms such as rejection sampling can do that without any modification, but they are inefficient for higher-dimensional parameter spaces. More sophisticated algorithms such as MCMC and SMC require modifications to deal with the issue of a changing number of parameters when changing between models, as well as with the issue of a changed meaning of the parameters. Such modifications (the most common class are the **reversible-jump MCMCs (RJ-MCMC)**) are often difficult to program, tune and generalize, which is the reason why they are typically only applied in specialized, well defined settings with a large number of models to be compared.
 
-The second option is to approximate the marginal likelihood \of each model independently, and then average parameters or predictions based on the resulting weights. To approximate the marginal likelihood, one has to cover the parameter space with of each single model, e.g. with random sampling or MCMC, store the likelihood, and then compute the marginal likelihood from that. The challenge here is to get a stable approximation of the marginal likelihood, which can be connected with considerable problems [@weinberg2012]. Nevertheless, because of the comparably easier implementation, this approach the more common choice in situations where the number of models to be compared is low.
+The second option is to approximate the marginal likelihood of each model independently, and then average parameters or predictions based on the resulting weights. To approximate the marginal likelihood, one has to cover the parameter space of each single model, e.g. with random sampling or MCMC, store the likelihood, and then compute the marginal likelihood from that. The challenge here is to get a stable approximation of the marginal likelihood, which can be connected with considerable problems [@weinberg2012]. Nevertheless, because of the comparably easier implementation, this approach is the more common choice in situations where the number of models to be compared is low.
 
 For Jags model, the ML can be estimated using the BayesTools package, which, unfortunately, has a very similar name as the BayesianTools package.
 
@@ -601,7 +601,7 @@ exp(M1$ln.ML) / ( exp(M1$ln.ML) + exp(M2$ln.ML))
 
 A problem that is often not sufficiently appreciated when performing Bayesian inference across multiple models is the influence of the choice of uninformative parameter priors on the model weight.
 
-The issue arises because the prior density enters the marginal likelihood multiplicative. Although this follows directly from the joint posterior definition and is logically completely consistent, it has the somewhat intuitive consequence that increasing the width width of an uninformative prior will linearly decrease the marginal likelihood (Sinharay-SensitivityBayesFactors-2002). In particular, for an infinitely wide (inproper) uninformative prior, the model weight goes to zero, regardless of the fit. This behavior is surprising to many practitioners of Bayesian analysis, because they are used to the fact that the influence of increasing prior width on uninformative priors is minimal for fitting parameters.
+The issue arises because the prior density enters the marginal likelihood multiplicative. Although this follows directly from the joint posterior definition and is logically completely consistent, it has the somewhat counter-intuitive consequence that increasing the width of an uninformative prior will linearly decrease the marginal likelihood (Sinharay-SensitivityBayesFactors-2002). In particular, for an infinitely wide (inproper) uninformative prior, the model weight goes to zero, regardless of the fit. This behavior is surprising to many practitioners of Bayesian analysis, because they are used to the fact that the influence of increasing prior width on uninformative priors is minimal for fitting parameters.
 
 ```{r, message = F, results='hide'}
 

@@ -15,13 +15,13 @@ In this chapter, we will discuss
 
 :::
 
-## General ideal 
+## General idea
 
 
 
 ## Example from Kéry & Schaub
 
-The following example example of a simple IPM (counts, capture-recapture, reproduction) is from Kéry, M., & Schaub, M. (2011). *Bayesian population analysis using WinBUGS: a hierarchical perspective*. Academic Press., chapter 11.3
+The following example of a simple IPM (counts, capture-recapture, reproduction) is from Kéry, M., & Schaub, M. (2011). *Bayesian population analysis using WinBUGS: a hierarchical perspective*. Academic Press., chapter 11.3
 
 ```{r}
 # Population counts (from years 1 to 10)
@@ -112,7 +112,7 @@ for (t in 1:(nyears-1)){
 #-------------------------------------------------
 # 3. The likelihoods of the single data sets
 #-------------------------------------------------
-# 3.1. Likelihood for population population count data (state-space model)
+# 3.1. Likelihood for population count data (state-space model)
    # 3.1.1 System process
    for (t in 2:nyears){
       mean1[t] <- f[t-1] / 2 * sjuv[t-1] * Ntot[t-1]

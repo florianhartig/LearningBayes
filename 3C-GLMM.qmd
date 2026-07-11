@@ -41,7 +41,7 @@ model = "
   for(i in 1:n.dat){
     # poisson model p(y|lambda)
     y[i] ~ dpois(lambda[i])
-    # logit link function
+    # log link function
     log(lambda[i]) <- mu[i]
     # linear predictor on the log scale
     mu[i] <- alpha + beta.Veg*Veg[i] + beta.Veg2*Veg2[i]
@@ -96,7 +96,7 @@ model ="
   for(i in 1:n.dat){
     # poisson model p(y|lambda)
     y[i] ~ dpois(lambda[i])
-    # logit link function
+    # log link function
     log(lambda[i]) <- mu[i]
     # linear predictor on the log scale
     mu[i] <- alpha + beta.Veg*Veg[i] + beta.Veg2*Veg2[i]
@@ -189,7 +189,7 @@ model = "
   for(i in 1:n.dat){
     # poisson model p(y|lambda)
     y[i] ~ dpois(lambda[i])
-    # logit link function
+    # log link function
     log(lambda[i]) <- mu[i] + eps[i]
     # linear predictor on the log scale
     mu[i] <- alpha + beta.Veg*Veg[i] + beta.Veg2*Veg2[i]
@@ -294,7 +294,7 @@ model = "
     lambda.eff[i] <- lambda[i] * Inc[i]
     # binary variable to indicate occupancy
     Inc[i] ~ dbin(p.Inc,1)
-    # logit link function
+    # log link function
     log(lambda[i]) <- mu[i] + eps[i]
     # linear predictor on the log scale
     mu[i] <- alpha + beta.Veg*Veg[i] + beta.Veg2*Veg2[i]
