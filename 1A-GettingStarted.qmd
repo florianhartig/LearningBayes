@@ -10,10 +10,25 @@ editor_options:
 
 In this course, we work with the combination of R + RStudio.
 
--   \[R\](https://www.r-project.org) is the calculation engine that performs the computations.
--   \[RStudio\](https://posit.co/download/rstudio-desktop/) is the editor that helps you sending inputs to R and collect outputs.
+- \[R\](https://www.r-project.org) is the calculation engine that performs the computations.
+- \[RStudio\](https://posit.co/download/rstudio-desktop/) is the editor that helps you sending inputs to R and collect outputs.
 
 Make sure you have a recent version of R + RStudio installed on your computer. If you have never used RStudio, <a href="https://videocampus.sachsen.de/video/First-steps-with-R-and-RStudio/528e5d164219f2d07e32a51736c3f7d1" target="_blank" rel="noopener">here</a> is a good video introducing the basic system and how R and RStudio interact.
+
+## Windows users - install Rtools
+
+As we may need to use R libraries that require a C++ compiler, Windows users should install Rtools (the C++ compiler for R). Either download and install Rtools directly from [here](https://cran.r-project.org/bin/windows/Rtools/) or run the following commands in RStudio
+
+```{r, eval = F}
+# 1. Install the installr package from CRAN
+install.packages("installr")
+
+# 2. Load the package into your session
+library(installr)
+
+# 3. Run the automated Rtools installation
+install.Rtools(check = TRUE, check_r_update = TRUE, GUI = TRUE)
+```
 
 ## Libraries that you will need
 
@@ -63,8 +78,10 @@ Besides providing data, the EcoData installation also forces the installation of
 In addition to the packages provided in EcoData, to be able to run all examples in the book, please install the following additional packages:
 
 ```{r, eval = FALSE}
-install.packages(BayesianTools)
-install.packages(rjags)
+install.packages("BayesianTools")
+install.packages("rjags")
+install.packages("R2jags")
+install.packages("blavaan")
 ```
 
 Additionally, you have to install the [JAGS](https://mcmc-jags.sourceforge.io) MCMC sampler, which is a program independent from R. You can find downloads of Jags versions for different operating systems [here](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/).
@@ -81,9 +98,9 @@ As mentioned in the preface, this book assumes that you have basic knowledge abo
 
 If you want to brush up your statistical concepts, I would recommend to work through
 
--   My lecture notes on for the course \[Advanced Regression Models\](https://theoreticalecology.github.io/AdvancedRegressionModels/).
+- My lecture notes on for the course \[Advanced Regression Models\](https://theoreticalecology.github.io/AdvancedRegressionModels/).
 
--   McElreath, R. (2018). *Statistical rethinking: A Bayesian course with examples in R and Stan*. Chapman and Hall/CRC.
+- McElreath, R. (2018). *Statistical rethinking: A Bayesian course with examples in R and Stan*. Chapman and Hall/CRC.
 
 Regarding data manipulation and coding in R, I want to note that there are currently two main schools in the R environment which do the same things, but with very different syntax:
 
@@ -159,11 +176,11 @@ dat = airquality
 
 6.  Single continuous variables can be visualized using a histogram (`hist)` , for two variables, it depends on their data types:
 
-    | Scenario                     | Which plot                    | R command                                                                            |
-    |------------------|------------------|------------------------------------|
-    | Numeric                      | Histogram or boxplot          | `hist()` and`boxplot`                                                                |
-    | Numeric with numeric         | Scatterplot                   | `plot`                                                                               |
-    | Numeric with categorical     | Boxplot                       | `boxplot(numeric~categorical)`                                                       |
+    | Scenario | Which plot | R command |
+    |-------------------|-------------------|------------------------------------|
+    | Numeric | Histogram or boxplot | `hist()` and`boxplot` |
+    | Numeric with numeric | Scatterplot | `plot` |
+    | Numeric with categorical | Boxplot | `boxplot(numeric~categorical)` |
     | Categorical with categorical | mosaicplot or grouped barplot | `mosaicplot(table(categorical, categorical))` or `barplot(data,        beside=TRUE)` |
 
     ```{r}

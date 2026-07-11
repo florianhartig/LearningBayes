@@ -13,11 +13,11 @@ set.seed(42)
 ::: callout-note
 In this chapter, we will discuss 3 approaches to deal with the problem of model selection.
 
--   Regularizing priors
+- Regularizing priors
 
--   Bayesian information criteria
+- Bayesian information criteria
 
--   Bayes Factor and Posterior model weights
+- Bayes Factor and Posterior model weights
 :::
 
 ## Regularization
@@ -333,14 +333,13 @@ plotEstimates(est3, main = "Spike and slap")
 
 Practical examples of ecological papers using this approach
 
--   https://www.sciencedirect.com/science/article/pii/S1574954124001031
+- https://www.sciencedirect.com/science/article/pii/S1574954124001031
 
 ## Information Criteria
 
 In Bayesian inference, there are two main IC metrics that are used DIC and the more modern metric WAIC.
 
 Both are essentially extension of the AIC with the
-
 
 DIC is intended as a generalisation of Akaike's Information Criterion (AIC). For non-hierarchical models with little prior information, pD should be approximately the true number of parameters. AIC requires counting parameters and hence any intermediate level ('random-effects') parameters need to be integrated out. A recent 'conditional AIC' by Vaida and Blanchard (2005) focuses on the random effects in normal hierarchical models and uses tr(H) as the effective number of parameters, and so again matches DIC.
 
@@ -410,8 +409,8 @@ loo_compare(waic1, waic2)
 
 Note that step-wise selection based on information criteria shares many of the same problems that appear in frequentist IC selection. Those are in particular
 
--   Affects uncertainties, in particular p-values
--   Destroys causal relationships
+- Affects uncertainties, in particular p-values
+- Destroys causal relationships
 
 The issue is known under the term "post-selection inference" and applies to Bayesian and frequentist models alike, see e.g. Kuchibhotla, A. K., Kolassa, J. E., & Kuffner, T. A. (2022). Post-selection inference. *Annual Review of Statistics and Its Application*, *9*, 505-527.
 
@@ -462,9 +461,7 @@ summary(lm(y ~ X1 + X2 + X3 + X4 + X5 + X6 + X7 + X8 + X9 + X10 + X13 +
 
 Bayes' formula makes no fundamental difference between models and parameters. Hence, to perform inference with multiple models, we can simply write down the joint posterior $P(M_i, \Theta_i| D)$ of different models $M_i$ with parameter vectors $\Theta_i$ as
 
-$$
-P(M_i, \Theta_i| D) \sim L(D|M_i , \Theta_i) \cdot p(\Theta_i) \cdot p(M_i)
-$$
+$$P(M_i, \Theta_i| D) \sim L(D|M_i , \Theta_i) \cdot p(\Theta_i) \cdot p(M_i)$$
 
 where $L(D|M_i , \Theta_i)$ is the likelihood of model $M_i$, $p(\Theta_i)$ is the prior distribution of model $M_i$, $p(M_i)$ is the prior weight on model $M_i$, and the \~ indicates that this the equation still needs to be normalized (i.e. divided by the integral over all models and parameters). The figure below provides a graphical illustration of this situation, assuming that we jump between three models with an increasing number of parameters.
 
@@ -479,15 +476,11 @@ When looking at this picture as a matrix, we see that we have two options to ave
 
 We are mainly interested in the second option here. When looking at the previous equation, we see that the posterior propability of each model can be obtained by the integral of the likelihood over the prior space of each model
 
-$$
-ML_i = P(D|M_i) = \int L(D|M_i , \Theta_i) \cdot p(\Theta_i) d \Theta_i
-$$
+$$ML_i = P(D|M_i) = \int L(D|M_i , \Theta_i) \cdot p(\Theta_i) d \Theta_i$$
 
 which is known as the marginal likelihood (ML). The marginal likelihood can be interpreted similar as the to the Likelihood at MLE of a fitted model - it provides you with an idea about the average fit of the model across the prior. The ratio of the MLs of two models is known as the Bayes factor.
 
-$$
-BF_{i,j} = \frac{ML_i}{ML_j} 
-$$
+$$BF_{i,j} = \frac{ML_i}{ML_j} $$
 
 Note that this is analogue to the likelihood ratio in frequentist statistics. However, there is one important difference: as we will discuss in more detail below, the BF is affected by the prior choice as well as the uncertainty around the parameter estimates. More complex models typically have more uncertainties, i.e. more prior volume in areas areas with lower likelihood (as opposed to the MLE).
 
@@ -497,9 +490,9 @@ The following image explains why this is: imagine our posterior falls off such t
 
 This has two consequences
 
--   Thus, the BF implicitly penalizes for model complexity (or, maybe more precisely, it penalizes for unconstrained parameters) and can thus directly be used to compare models. [@Kass-BayesFactors-1995] without having to add a complexity penalty
+- Thus, the BF implicitly penalizes for model complexity (or, maybe more precisely, it penalizes for unconstrained parameters) and can thus directly be used to compare models. [@Kass-BayesFactors-1995] without having to add a complexity penalty
 
--   BF calculations are sensitive to the choice of model priors (see also example below). If you would increase the prior width of all models above, the 2d model would be penalized more strongly than the 1d model. Many authors therefore warn that BF should not be calculated on uninformative priors.
+- BF calculations are sensitive to the choice of model priors (see also example below). If you would increase the prior width of all models above, the 2d model would be penalized more strongly than the 1d model. Many authors therefore warn that BF should not be calculated on uninformative priors.
 
 ::: {.callout-tip collapse="true"}
 #### Bayesian Hypothesis tests using the BF package
@@ -528,9 +521,7 @@ The BF package circumvents the prior problem by scaling the prior to the data. T
 
 While the BF compares two models. For more than 2 models, it is more useful to standardize the ML multiplied with the model priors across all models in question, calculating a Bayesian posterior model weight as
 
-$$
-BMW_i = \frac{P(D|M_i)}{\sum_j P(D|M_j)} \cdot \frac{p(M_i)}{\sum_j p(M_j)}
-$$
+$$BMW_i = \frac{P(D|M_i)}{\sum_j P(D|M_j)} \cdot \frac{p(M_i)}{\sum_j p(M_j)}$$
 
 Besides inference about the right model, posterior model weights can also be used to make predictions with a weighted ensemble of models (see, e.g., [@DormannCarsten-Modelaveragingecology-2018]).
 
@@ -538,9 +529,7 @@ Besides inference about the right model, posterior model weights can also be use
 
 The second route we can take is to marginalize across models to obtain averaged parameters. To obtain the averaged parameters, we simply marginalize across model space
 
-$$
-P(\Theta | D) = \sum_i L(D|M_i , \Theta_i) \cdot p(\Theta_i) \cdot p(M_i)
-$$
+$$P(\Theta | D) = \sum_i L(D|M_i , \Theta_i) \cdot p(\Theta_i) \cdot p(M_i)$$
 
 resulting in averaged distributions for the parameters that are shared between models (thus, this only works for models that are at least partly nested). The approach is analogue to parameter averaging in frequentist models (e.g. [@Burnham-Modelselectionand-2002]) and similarly, it is controversially discussed. The main objection is that under collinearity of predictors x1 and x2, the models M1: y \~ x1 and M1: y \~ x1 + x2 do not really estimate the same quantity when looking at the parameter estimate of x1: in M1, x1 is measuring the raw correlation, while in M2, x1 is measuring y \~ x1\|x2. Whether it is desirable to average these quantities into a single distribution should be carefully considered.
 
