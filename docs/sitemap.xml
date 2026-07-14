@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://TheoreticalEcology.github.io/LearningBayes/2B-PosteriorEstimation.html</loc>
-    <lastmod>2024-07-02T09:26:08.627Z</lastmod>
+    <loc>https://TheoreticalEcology.github.io/LearningBayes/index.html</loc>
+    <lastmod>2026-07-11T14:54:31.278Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/1A-GettingStarted.html</loc>
-    <lastmod>2024-07-02T08:24:25.265Z</lastmod>
+    <lastmod>2026-07-12T10:21:57.817Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/2A-BayesianLogic.html</loc>
-    <lastmod>2024-06-30T15:22:55.162Z</lastmod>
+    <lastmod>2026-07-13T18:20:11.467Z</lastmod>
+  </url>
+  <url>
+    <loc>https://TheoreticalEcology.github.io/LearningBayes/2B-PosteriorEstimation.html</loc>
+    <lastmod>2026-07-13T18:31:58.996Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/2C-LMM.html</loc>
-    <lastmod>2024-03-07T16:41:24.007Z</lastmod>
+    <lastmod>2026-07-11T14:42:54.570Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/3A-ModelSelection.html</loc>
-    <lastmod>2024-07-09T20:50:29.940Z</lastmod>
+    <lastmod>2026-07-11T14:24:37.138Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/3B-Workflow.html</loc>
-    <lastmod>2024-03-03T21:09:43.756Z</lastmod>
+    <lastmod>2026-07-11T14:42:56.972Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/3C-GLMM.html</loc>
-    <lastmod>2024-03-07T16:41:24.025Z</lastmod>
+    <lastmod>2026-07-11T18:13:56.341Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/4A-ErrorInVariable.html</loc>
-    <lastmod>2024-03-03T21:09:43.809Z</lastmod>
+    <lastmod>2026-07-11T14:43:01.379Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/4B-Occupancy.html</loc>
-    <lastmod>2024-03-03T21:09:43.818Z</lastmod>
+    <lastmod>2026-07-11T14:43:03.530Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/4C-StateSpaceModels.html</loc>
-    <lastmod>2024-03-03T21:09:43.827Z</lastmod>
+    <lastmod>2026-07-11T14:43:05.739Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/4D-AutoregressiveModels.html</loc>
-    <lastmod>2024-03-07T16:41:24.037Z</lastmod>
+    <lastmod>2026-07-11T14:43:07.878Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/4E-IntegratedModels.html</loc>
-    <lastmod>2024-03-03T21:09:43.851Z</lastmod>
+    <lastmod>2026-07-11T14:43:10.071Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/4F-BayesianSEMs.html</loc>
-    <lastmod>2024-03-03T21:09:43.861Z</lastmod>
+    <lastmod>2026-07-12T17:03:27.156Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/4G-ProcessBased.html</loc>
-    <lastmod>2024-03-03T21:09:43.868Z</lastmod>
+    <lastmod>2026-07-11T14:43:14.435Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/4H-ApproximateBayesian.html</loc>
-    <lastmod>2024-03-03T21:09:43.886Z</lastmod>
+    <lastmod>2026-07-12T17:23:23.207Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/5-Summary.html</loc>
-    <lastmod>2024-03-03T21:09:43.890Z</lastmod>
+    <lastmod>2026-07-11T14:27:35.008Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/6A-References.html</loc>
-    <lastmod>2024-03-08T09:42:07.126Z</lastmod>
+    <lastmod>2024-02-29T12:47:46.060Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/6B-BayesianNumerics.html</loc>
-    <lastmod>2024-03-03T21:09:43.922Z</lastmod>
+    <lastmod>2026-07-12T15:27:54.486Z</lastmod>
   </url>
   <url>
     <loc>https://TheoreticalEcology.github.io/LearningBayes/6C-CaseStudies.html</loc>
-    <lastmod>2024-03-09T11:14:03.322Z</lastmod>
-  </url>
-  <url>
-    <loc>https://TheoreticalEcology.github.io/LearningBayes/index.html</loc>
-    <lastmod>2024-07-09T20:51:13.692Z</lastmod>
+    <lastmod>2026-07-12T17:03:33.620Z</lastmod>
   </url>
 </urlset>

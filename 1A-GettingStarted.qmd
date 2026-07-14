@@ -82,6 +82,7 @@ install.packages("BayesianTools")
 install.packages("rjags")
 install.packages("R2jags")
 install.packages("blavaan")
+install.packages("runjags")
 ```
 
 Additionally, you have to install the [JAGS](https://mcmc-jags.sourceforge.io) MCMC sampler, which is a program independent from R. You can find downloads of Jags versions for different operating systems [here](https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/).
@@ -177,7 +178,7 @@ dat = airquality
 6.  Single continuous variables can be visualized using a histogram (`hist()`), for two variables, it depends on their data types:
 
     | Scenario | Which plot | R command |
-    |-------------------|-------------------|------------------------------------|
+    |----|----|----|
     | Numeric | Histogram or boxplot | `hist()` and`boxplot` |
     | Numeric with numeric | Scatterplot | `plot` |
     | Numeric with categorical | Boxplot | `boxplot(numeric~categorical)` |

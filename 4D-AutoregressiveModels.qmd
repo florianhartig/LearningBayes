@@ -11,8 +11,11 @@ set.seed(42)
 # Autoregressive models
 
 ::: callout-note
-In this chapter, we will discuss 
+In this chapter, we will discuss autoregressive / spatially autocorrelated models. You will learn
 
+- How spatial autocorrelation can be simulated via a distance-based covariance (precision) matrix
+- How to fit a simple spatially autocorrelated model in JAGS and recover the correlation decay parameter
+- Why JAGS is often not the most efficient or convenient tool for this model class, compared to dedicated spatial/temporal software
 :::
 
 In general, autoregressive models should not be fit with Jags, but with a

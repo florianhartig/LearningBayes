@@ -11,8 +11,12 @@ set.seed(42)
 # Approximate Bayesian Inference
 
 ::: callout-note
-In this chapter, we will discuss 
+In this chapter, we will discuss approximate Bayesian inference, for situations where the likelihood of a (stochastic simulation) model cannot be calculated directly. You will learn
 
+- Why exact likelihood calculation can be infeasible for stochastic simulation models
+- The two main simulation-based inference strategies: Approximate Bayesian Computation (ABC) and synthetic likelihood
+- How to implement ABC-rejection and ABC-MCMC algorithms based on summary statistics
+- A worked example: fitting a stochastic movement model with ABC
 :::
 
 
@@ -90,40 +94,51 @@ plot(posterior)
 Following Wood, S. N. (2010) Statistical inference for noisy nonlinear ecological dynamic systems. Nature, 466, 1102-1104 and Hartig, F.; Dislich, C.; Wiegand, T. & Huth, A. (2014) Technical Note: Approximate Bayesian parameterization of a process-based tropical forest model. Biogeosciences, 11, 1261-1272, the synthetic likelihood approach is based on sampling a few times from the model, and approximating the likelihood by fitting a Gaussian distribution to the simulation outputs:
 
 ```{r}
+library(MASS) # for fitdistr
+
+syntheticLogLikelihood <- function(par){
+  # simulate several model runs at the given parameter values
+  simulatedData <- matrix(NA, nrow = 100, ncol = 2)
+  for (j in 1:100){
+    simulation <- stochasticModel(par)
+    simulatedData[j,] <- c(mean(simulation) , sd(simulation))
+  }
+  # fit a normal distribution to each summary statistic across the 100 replicates
+  syntheticLikelihood1 <- fitdistr(simulatedData[,1], "normal")
+  syntheticLikelihood2 <- fitdistr(simulatedData[,2], "normal")
+
+  prob1 <- dnorm(meandata-syntheticLikelihood1$estimate[1], 
+                 sd = syntheticLikelihood1$estimate[2], log = T)
+  prob2 <- dnorm(standarddeviationdata-syntheticLikelihood2$estimate[1], 
+                 sd = syntheticLikelihood2$estimate[2], log = T)
+
+  return(prob1 + prob2)
+}
 
 run_MCMC_Synthetic <- function(startvalue, iterations){
- 
+
     chain = array(dim = c(iterations+1,2))
     chain[1,] = startvalue
- 
+    currentLL <- syntheticLogLikelihood(chain[1,])
+
     for (i in 1:iterations){
-         
+
         # proposalfunction
         proposal = rnorm(2,mean = chain[i,], sd= c(0.2,0.2))
-        
-        # simulate several model runs
-        simulatedData <- matrix(NA, nrow = 100, ncol = 2)
-        for (i in 1:100){
-          simulation <- stochasticModel(c(3,-2))
-          simulatedData[i,] <- c(mean(simulation) , sd(simulation))          
-        }
-        syntheticLikelihood1 <- fitdistr(simulatedData[1,], "normal")
-        syntheticLikelihood2 <- fitdistr(simulatedData[2,], "normal")
-        
-        prob1 <- dnorm(meandata-syntheticLikelihood1$estimate[1], sd = syntheticLikelihood1$estimate[2], log = T)
 
-        prob2 <- dnorm(standarddeviationdata-syntheticLikelihood2$estimate[1], sd = syntheticLikelihood2$estimate[2], log = T)
-        
-        if(prob < runif(1)){
+        proposalLL <- syntheticLogLikelihood(proposal)
+
+        if(runif(1) < exp(proposalLL - currentLL)){
             chain[i+1,] = proposal
+            currentLL <- proposalLL
         }else{
             chain[i+1,] = chain[i,]
         }
     }
     return(mcmc(chain))
 }
- 
-posterior <- run_MCMC_ABC(c(3,-2),20000)
+
+posterior <- run_MCMC_Synthetic(c(3,-2),20000)
 plot(posterior)
 
 ```

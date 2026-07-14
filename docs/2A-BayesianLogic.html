@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to Bayesian Statistics with R - 2&nbsp; The Bayesian Logic</title>
+<title>2&nbsp; The Bayesian Logic – Introduction to Bayesian Statistics with R</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -21,6 +24,7 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -54,26 +58,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -85,22 +70,29 @@ div.csl-indent {
 <meta name="quarto:offset" content="./">
 <link href="./2B-PosteriorEstimation.html" rel="next">
 <link href="./1A-GettingStarted.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-5ccb035bea26c1e21f80f44cf7c27909.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -109,14 +101,16 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
 
 <meta name="citation_title" content="[2]{.chapter-number}&nbsp; [The Bayesian Logic]{.chapter-title}">
-<meta name="citation_fulltext_html_url" content="https://TheoreticalEcology.github.io/LearningBayes//2A-BayesianLogic.html">
+<meta name="citation_fulltext_html_url" content="https://TheoreticalEcology.github.io/LearningBayes/2A-BayesianLogic.html">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=ńgrundlangen der statistik;,citation_author=Florian Hartig;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_publisher=https://www.dropbox.com/s/nefr3bteve5lym7/GrundlagenDerStatistik.pdf?dl=0;">
 <meta name="citation_reference" content="citation_title=ństatistical rethinking;,citation_author=Richard McElreath;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_publisher=CRC Press;">
@@ -145,18 +139,18 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=Model averaging in ecology: A review of bayesian, information-theoretic, and tactical approaches for predictive inference;,citation_author=F. Dormann Carsten;,citation_author=M. Calabrese Justin;,citation_author=Guillera-Arroita Gurutzeta;,citation_author=Matechou Eleni;,citation_author=Bahn Volker;,citation_author=BartoÅ Kamil;,citation_author=M. Beale Colin;,citation_author=Ciuti Simone;,citation_author=Elith Jane;,citation_author=Gerstner Katharina;,citation_author=Guelat JÃ©rÃ´me;,citation_author=Keil Petr;,citation_author=J. Lahoz-Monfort JosÃ©;,citation_author=J. Pollock Laura;,citation_author=Reineking BjÃ¶rn;,citation_author=R. Roberts David;,citation_author=SchrÃ¶der Boris;,citation_author=Thuiller Wilfried;,citation_author=I. Warton David;,citation_author=A. Wintle Brendan;,citation_author=N. Wood Simon;,citation_author=O. WÃ¼est Rafael;,citation_author=Hartig Florian;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_fulltext_html_url=https://doi.org/10.1002/ecm.1309;,citation_issue=0;,citation_doi=10.1002/ecm.1309;,citation_volume=0;,citation_journal_title=Ecol Monogr;">
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./2A-BayesianLogic.html">Introduction and Philosophy</a></li><li class="breadcrumb-item"><a href="./2A-BayesianLogic.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Bayesian Logic</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./2A-BayesianLogic.html">Introduction and Philosophy</a></li><li class="breadcrumb-item"><a href="./2A-BayesianLogic.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Bayesian Logic</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -166,30 +160,30 @@ div.csl-indent {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to Bayesian Statistics with R</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/TheoreticalEcology/LearningBayes" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
-      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
           <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
-              <i class="bi bi-bi-twitter pe-1"></i>
+              <i class="bi bi-twitter pe-1"></i>
             Twitter
             </a>
           </li>
           <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
-              <i class="bi bi-bi-facebook pe-1"></i>
+              <i class="bi bi-facebook pe-1"></i>
             Facebook
             </a>
           </li>
           <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
-              <i class="bi bi-bi-linkedin pe-1"></i>
+              <i class="bi bi-linkedin pe-1"></i>
             LinkedIn
             </a>
           </li>
@@ -219,9 +213,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Introduction and Philosophy</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -248,9 +242,9 @@ div.csl-indent {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">GLMMs, MS, Workflow</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -277,9 +271,9 @@ div.csl-indent {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">Hierachical models</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -336,9 +330,9 @@ div.csl-indent {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">Summary and conclusions</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -353,9 +347,9 @@ div.csl-indent {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -383,41 +377,35 @@ div.csl-indent {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#frequentist-and-bayesian-coin-flip" id="toc-frequentist-and-bayesian-coin-flip" class="nav-link active" data-scroll-target="#frequentist-and-bayesian-coin-flip"><span class="header-section-number">2.1</span> Frequentist and Bayesian coin flip</a>
+  <li><a href="#frequentist-and-bayesian-analysis-of-a-coin-flip-experiment" id="toc-frequentist-and-bayesian-analysis-of-a-coin-flip-experiment" class="nav-link active" data-scroll-target="#frequentist-and-bayesian-analysis-of-a-coin-flip-experiment"><span class="header-section-number">2.1</span> Frequentist and Bayesian analysis of a coin flip experiment</a>
   <ul class="collapse">
-  <li><a href="#the-ml-estimator" id="toc-the-ml-estimator" class="nav-link" data-scroll-target="#the-ml-estimator"><span class="header-section-number">2.1.1</span> The ML estimator</a></li>
-  <li><a href="#getting-the-p-value-for-a-fair-coin" id="toc-getting-the-p-value-for-a-fair-coin" class="nav-link" data-scroll-target="#getting-the-p-value-for-a-fair-coin"><span class="header-section-number">2.1.2</span> Getting the p-value for a fair coin</a></li>
-  <li><a href="#the-bayesian-posterior-estimate" id="toc-the-bayesian-posterior-estimate" class="nav-link" data-scroll-target="#the-bayesian-posterior-estimate"><span class="header-section-number">2.1.3</span> The Bayesian posterior estimate</a></li>
+  <li><a href="#the-statistical-model" id="toc-the-statistical-model" class="nav-link" data-scroll-target="#the-statistical-model"><span class="header-section-number">2.1.1</span> The statistical model</a></li>
+  <li><a href="#the-ml-estimator" id="toc-the-ml-estimator" class="nav-link" data-scroll-target="#the-ml-estimator"><span class="header-section-number">2.1.2</span> The ML estimator</a></li>
+  <li><a href="#getting-the-p-value-for-a-fair-coin" id="toc-getting-the-p-value-for-a-fair-coin" class="nav-link" data-scroll-target="#getting-the-p-value-for-a-fair-coin"><span class="header-section-number">2.1.3</span> Getting the p-value for a fair coin</a></li>
+  <li><a href="#the-bayesian-estimate" id="toc-the-bayesian-estimate" class="nav-link" data-scroll-target="#the-bayesian-estimate"><span class="header-section-number">2.1.4</span> The Bayesian estimate</a></li>
+  <li><a href="#exercise" id="toc-exercise" class="nav-link" data-scroll-target="#exercise"><span class="header-section-number">2.1.5</span> Exercise</a></li>
   </ul></li>
   <li><a href="#interpreting-the-posterior" id="toc-interpreting-the-posterior" class="nav-link" data-scroll-target="#interpreting-the-posterior"><span class="header-section-number">2.2</span> Interpreting the Posterior</a>
   <ul class="collapse">
-  <li><a href="#the-map-mode-of-posterior" id="toc-the-map-mode-of-posterior" class="nav-link" data-scroll-target="#the-map-mode-of-posterior"><span class="header-section-number">2.2.1</span> The MAP (mode of posterior)</a></li>
-  <li><a href="#posterior-median-or-mean" id="toc-posterior-median-or-mean" class="nav-link" data-scroll-target="#posterior-median-or-mean"><span class="header-section-number">2.2.2</span> Posterior median or mean</a></li>
-  <li><a href="#bayesian-credibile-intervals" id="toc-bayesian-credibile-intervals" class="nav-link" data-scroll-target="#bayesian-credibile-intervals"><span class="header-section-number">2.2.3</span> Bayesian credibile intervals</a></li>
-  <li><a href="#hpd-and-lpl" id="toc-hpd-and-lpl" class="nav-link" data-scroll-target="#hpd-and-lpl"><span class="header-section-number">2.2.4</span> HPD and LPL</a></li>
-  <li><a href="#multivariate-issues" id="toc-multivariate-issues" class="nav-link" data-scroll-target="#multivariate-issues"><span class="header-section-number">2.2.5</span> Multivariate issues</a></li>
-  </ul></li>
-  <li><a href="#prior-choice" id="toc-prior-choice" class="nav-link" data-scroll-target="#prior-choice"><span class="header-section-number">2.3</span> Prior Choice</a>
-  <ul class="collapse">
-  <li><a href="#scaling-and-scale-invariance-of-prior-choices" id="toc-scaling-and-scale-invariance-of-prior-choices" class="nav-link" data-scroll-target="#scaling-and-scale-invariance-of-prior-choices"><span class="header-section-number">2.3.1</span> Scaling and scale-invariance of prior choices</a></li>
-  <li><a href="#default-choices-for-uniformative-priors" id="toc-default-choices-for-uniformative-priors" class="nav-link" data-scroll-target="#default-choices-for-uniformative-priors"><span class="header-section-number">2.3.2</span> Default choices for uniformative priors</a></li>
-  <li><a href="#conjugacy" id="toc-conjugacy" class="nav-link" data-scroll-target="#conjugacy"><span class="header-section-number">2.3.3</span> Conjugacy</a></li>
-  <li><a href="#readings" id="toc-readings" class="nav-link" data-scroll-target="#readings"><span class="header-section-number">2.3.4</span> Readings</a></li>
+  <li><a href="#bayesian-point-estimates---map-as-well-as-posterior-median-or-mean" id="toc-bayesian-point-estimates---map-as-well-as-posterior-median-or-mean" class="nav-link" data-scroll-target="#bayesian-point-estimates---map-as-well-as-posterior-median-or-mean"><span class="header-section-number">2.2.1</span> Bayesian point estimates - MAP as well as posterior median or mean</a></li>
+  <li><a href="#bayesian-uncertainties" id="toc-bayesian-uncertainties" class="nav-link" data-scroll-target="#bayesian-uncertainties"><span class="header-section-number">2.2.2</span> Bayesian uncertainties</a></li>
+  <li><a href="#issues-when-summarizing-multivariate-posteriors" id="toc-issues-when-summarizing-multivariate-posteriors" class="nav-link" data-scroll-target="#issues-when-summarizing-multivariate-posteriors"><span class="header-section-number">2.2.3</span> Issues when summarizing multivariate posteriors</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">2.2.4</span> Exercises</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/TheoreticalEcology/LearningBayes/edit/master/2A-BayesianLogic.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/TheoreticalEcology/LearningBayes/edit/master/2A-BayesianLogic.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./2A-BayesianLogic.html">Introduction and Philosophy</a></li><li class="breadcrumb-item"><a href="./2A-BayesianLogic.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Bayesian Logic</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Bayesian Logic</span></h1>
 </div>
@@ -432,7 +420,9 @@ div.csl-indent {
   </div>
   
 
+
 </header>
+
 
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -445,46 +435,105 @@ Note
 </div>
 <div class="callout-body-container callout-body">
 <p>In this chapter, we will discuss</p>
+<ol type="1">
+<li><p>How the posterior estimate is calculated, and how it differs from p-values and the MLE</p></li>
+<li><p>How to summarize / interpret a Bayesian posterior</p></li>
+<li><p>How to choose a prior</p></li>
+</ol>
 </div>
 </div>
-<section id="frequentist-and-bayesian-coin-flip" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="frequentist-and-bayesian-coin-flip"><span class="header-section-number">2.1</span> Frequentist and Bayesian coin flip</h2>
-<p>Assume I’m trying to guess if a coin comes up heads or tails. I have had 10 trials, and 8x success in guessing the side.</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-2_5ef4be5cd3990828401c842ad57d137c">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>trials <span class="ot">=</span> <span class="dv">10</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>success <span class="ot">=</span> <span class="dv">8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>So, you are here to learn about Bayesian statistics? So, what’s the deal with that?</p>
+<p>In a nutshell, Bayesian statistics is just another philosophy to evaluate a statistical model against data, similar to the methods of calculating p-values and the MLE, which you are likely familiar with. So, when you have a linear regression model, you can either evaluate it against data using MLE and p-values, or you can choose to calculate the so-called Bayesian posterior (we will explain what this means shortly).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A corollary of what we just discussed is that there are no special Bayesian models - Bayesian statistics is just a different approach to evaluate a given statistical model.</p>
+</div>
+</div>
+<p>So, what is the difference between MLE and p-values (we call those “frequentist methods”) and the Bayesian posterior? What are the advantages and disadvantages, and when to choose what? Very briefly, the two main points are that:</p>
+<ul>
+<li>Bayesian inference is computationally more stable for complex models and in the small data limit, which is why it is preferred for complex, hierarchical models and anything that is non-standard</li>
+<li>The indicators calculated by Bayesian inference carry a different information than what is contained in p-values and the MLE, and many researchers have argued that this information is more intuitive and helpful than what is provided by the frequentist indicators.</li>
+</ul>
+<p>Do not worry if this sounds very abstract at the moment - these points will become clear once you progress through this book. We will start in this chapter by understand what the results are when we apply Bayesian inference to a statistical model, and how this is contrasted to the classical frequentist methods of inference.</p>
+<section id="frequentist-and-bayesian-analysis-of-a-coin-flip-experiment" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="frequentist-and-bayesian-analysis-of-a-coin-flip-experiment"><span class="header-section-number">2.1</span> Frequentist and Bayesian analysis of a coin flip experiment</h2>
+<p>To illustrate the difference between a frequentist and a Bayesian approach to evaluating a statistical model, assume I’m trying to understand if I can predict the future.</p>
+<p>My experiment to examine this question is that I flip a coin, with a previous guess if it comes up heads or tails. I have had 10 trials, and 8x success in guessing the side.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>trials <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>success <span class="ot">=</span> <span class="dv">8</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>What we want to know now is what my properties are regarding correctly guessing the outcome of the coin flip experiment, with the three inferential methods in statistics: MLE, NHST and Bayes.</p>
-<p>For all three statistical methods, we use the same statistical model which is the binomial model. The probability density is available in R throught he function dbinom. For exammple, dbinom(6,10,0.9) gives you the probability of obtaining 6/10 successes when the true probability of heads is 0.9</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-3_8e12f56b9080a349924172dd31b1be2a">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="dv">6</span>,<span class="dv">10</span>, <span class="fl">0.0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="the-statistical-model" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="the-statistical-model"><span class="header-section-number">2.1.1</span> The statistical model</h3>
+<p>All three methods require that we have a statistical model that allows us to express the probability of our possible observations as a function of the model’s parameters. In the case of a coin flip, such a model is the binomial model, which has one parameter, p, the probability of a success.</p>
+<p>In r, getting the probability of an observation from this model is provided by the function dbinom()</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In R, functions related to probability distributions have a unified naming scheme that consists of the name of the distribution (in our case binomial or binom), preceded by the letters r,q,p or d, with the following meaning:</p>
+<ul>
+<li>rbinom (r = random) samples from a binomial distribution</li>
+<li>qbinom (q = quantile) gives the quantile function of the distribution</li>
+<li>pbinom (p = probability) gives the cumulative probability function</li>
+<li>dbinom (d = density) gives the probability (density) of a particular observation</li>
+</ul>
+</div>
+</div>
+<p>For example, dbinom(6,10,0.9) gives you the probability of obtaining 6/10 successes when the true probability of heads is 0.9. Try this out yourself, with different values of the successes and the expected probabilities</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="dv">6</span>,<span class="dv">10</span>, <span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
+<pre><code>[1] 0.2050781</code></pre>
 </div>
 </div>
-<section id="the-ml-estimator" class="level3" data-number="2.1.1">
-<h3 data-number="2.1.1" class="anchored" data-anchor-id="the-ml-estimator"><span class="header-section-number">2.1.1</span> The ML estimator</h3>
-<p>The idea of maximum likelihood estimation (MLE) is to look for the set of parameters that would, under the given model assumption, lead to the highest probability of obtaining the observed data.</p>
-<p>In our case we have only one parameter, the probability of success per flip, so you can basically read off the MLE by plotting the for different values of this parameter.</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-4_3305feefe81c927da3c1e80944387d64">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>parametervalues <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.001</span>) <span class="co"># parameters to check</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(success,trials,parametervalues) <span class="co"># p(D|oarameters)</span></span>
+</section>
+<section id="the-ml-estimator" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="the-ml-estimator"><span class="header-section-number">2.1.2</span> The ML estimator</h3>
+<p>The idea of maximum likelihood estimation (MLE) is to look for the set of parameters that would, under the given model assumption, lead to the highest probability to obtain the observed data. In his seminal work from 1922, Fisher proved that MLE is, in some sense, the optimal method for inferring population parameters from a sample, as it contains all available information about the parameter (Sufficiency) and converges to the truth with smaller error than any other estimator (Efficiency/Consistency).</p>
+<p>In our case we have only one parameter, the probability of success per flip. Let’s plot this for different values and look for the maximum.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>parametervalues <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.001</span>) <span class="co"># parameters to check</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(success,trials,parametervalues) <span class="co"># p(D|parameters)</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot results</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parametervalues, likelihood, <span class="at">type =</span> <span class="st">"l"</span>)</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Likelihood"</span>, <span class="st">"maximum"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>), <span class="at">lwd =</span> <span class="dv">1</span>)</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>MLEEstimate <span class="ot">&lt;-</span> parametervalues[<span class="fu">which.max</span>(likelihood)]</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>MLEEstimate, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>MLEEstimate, <span class="at">col =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<section id="constructing-confidence-intervals" class="level4" data-number="2.1.1.1">
-<h4 data-number="2.1.1.1" class="anchored" data-anchor-id="constructing-confidence-intervals"><span class="header-section-number">2.1.1.1</span> Constructing confidence intervals</h4>
-<p>OK, the MLE is the best value, but what is often more interesting is the uncertainty around this value. Frequentist CIs are constructed according to the following idea: If I would do the experiment many times, how would the estimate scatter, and how wide would I have to take the interval so that the true value is contained in the interval x% (typically 95%) under repeatedly performing the experiment?</p>
-<p>The test statistics that can be used to do this are discussed, e.g., in https://onlinecourses.science.psu.edu/stat504/node/39. The result for a 1-parameter model is that the CI is at a log likelihood difference of 1.92</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-5_8678bbceab31ee417261411258b55f7b">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parametervalues, likelihood, <span class="at">type =</span> <span class="st">"l"</span>)</span>
+</div>
+<section id="constructing-confidence-intervals" class="level4" data-number="2.1.2.1">
+<h4 data-number="2.1.2.1" class="anchored" data-anchor-id="constructing-confidence-intervals"><span class="header-section-number">2.1.2.1</span> Constructing confidence intervals</h4>
+<p>OK, the MLE is the best value, but what is often more interesting is the uncertainty around this value. Frequentist CIs are constructed according to the following idea:</p>
+<ol type="1">
+<li><p>if I were to <strong>repeat the experiment many times</strong>, how would the MLE estimates of each experiment scatter around the true value?</p></li>
+<li><p>And based on this, how wide would an interval around the MLE have to be so that the true value is contained in the interval x% (typically 95%) of all these repeated experiments?</p></li>
+</ol>
+<p>The exact statistical machinery to do this is done in most elementary statistics books. The result for a 1-parameter model is that the boundaries for the CI have to be set approximately at a log likelihood difference of 1.92</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parametervalues, likelihood, <span class="at">type =</span> <span class="st">"l"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Likelihood"</span>, <span class="st">"maximum"</span>, <span class="st">"CI"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"green"</span>), <span class="at">lwd =</span> <span class="dv">1</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>MLEEstimate <span class="ot">&lt;-</span> parametervalues[<span class="fu">which.max</span>(likelihood)]</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>MLEEstimate, <span class="at">col =</span> <span class="st">"red"</span>)</span>
@@ -493,39 +542,48 @@ Note
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>leftCI <span class="ot">&lt;-</span> parametervalues[<span class="fu">which.min</span>(<span class="fu">abs</span>(<span class="fu">log</span>(likelihood[<span class="dv">1</span><span class="sc">:</span><span class="fu">which.max</span>(likelihood)]) <span class="sc">-</span> confidence.level))]</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>leftCI, <span class="at">col =</span> <span class="st">"green"</span>)</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>rightCI <span class="ot">&lt;-</span> parametervalues[<span class="fu">which.min</span>(<span class="fu">abs</span>(<span class="fu">log</span>(likelihood[<span class="fu">which.max</span>(likelihood)<span class="sc">:</span><span class="fu">length</span>(likelihood)]) <span class="sc">-</span> confidence.level)) <span class="sc">+</span> <span class="fu">which.max</span>(likelihood) <span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>rightCI, <span class="at">col =</span> <span class="st">"green"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>rightCI, <span class="at">col =</span> <span class="st">"green"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>Note: there are also other methods to look at uncertainty with likelihoods, e.g.&nbsp;the profile likelihood, see discussion <a href="http://stats.stackexchange.com/questions/77528/what-is-the-relationship-between-profile-likelihood-and-confidence-intervals">here</a></p>
+</div>
+<p>Note: there are also other methods to look at uncertainty with likelihoods, e.g.&nbsp;the profile likelihood, see discussion <a href="http://stats.stackexchange.com/questions/77528/what-is-the-relationship-between-profile-likelihood-and-confidence-intervals">here</a>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Summary MLE
+<span class="screen-reader-only">Note</span>Summary MLE
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>Best estimate (MLE)</li>
+<li>Best estimate is given by maximizing the likelihood (MLE)</li>
 <li>95% CI –&gt; if we would do the experiment over and over again, 95% of the CIs would contain the true value. NOTE: this is != saying: for a given dataset, the true value is in the CI with 95% probability!</li>
 </ul>
 </div>
 </div>
 </section>
 </section>
-<section id="getting-the-p-value-for-a-fair-coin" class="level3" data-number="2.1.2">
-<h3 data-number="2.1.2" class="anchored" data-anchor-id="getting-the-p-value-for-a-fair-coin"><span class="header-section-number">2.1.2</span> Getting the p-value for a fair coin</h3>
-<p>want to get p-value for a smaller or equal result (1-tailed) given a fair coin p(k&lt;=kobs|H0:p=0.5). Basically, we want the sum over the red bars</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-6_e7735462bb88380233e77f25eca2cf0c">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="fl">0.5</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"grey"</span>, success ), <span class="fu">rep</span>(<span class="st">"red"</span>, <span class="dv">11</span><span class="sc">-</span>success)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="getting-the-p-value-for-a-fair-coin" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="getting-the-p-value-for-a-fair-coin"><span class="header-section-number">2.1.3</span> Getting the p-value for a fair coin</h3>
+<p>The next method on our list is the p-value. The p-value is not an estimator for a parameter of a model, but rather a statement if the data is compatible with a certain model (with fixed parameters) that is called the null hypothesis.</p>
+<p>Want to get p-value for a smaller or equal result (1-tailed) given a fair coin p(k&lt;=kobs|H0:p=0.5). Basically, we want the sum over the red bars</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="fl">0.5</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"grey"</span>, success ), <span class="fu">rep</span>(<span class="st">"red"</span>, <span class="dv">11</span><span class="sc">-</span>success)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">line</span>(<span class="fu">pbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>,trials,<span class="at">prob =</span> <span class="fl">0.5</span>, <span class="at">lower.tail =</span> F))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">line</span>(<span class="fu">pbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>,trials,<span class="at">prob =</span> <span class="fl">0.5</span>, <span class="at">lower.tail =</span> F))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -535,13 +593,13 @@ Coefficients:
 [1]   1.2640  -0.1373</code></pre>
 </div>
 </div>
-<p>We can get this with the cummulative distribution function in R</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-7_292581b7a9e12b473a8b131ff2493a95">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pValue <span class="ot">&lt;-</span> <span class="fu">pbinom</span>(success,trials,<span class="at">prob =</span> <span class="fl">0.5</span>, <span class="at">lower.tail =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can get this with the cumulative distribution function in R</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pValue <span class="ot">&lt;-</span> <span class="fu">pbinom</span>(success,trials,<span class="at">prob =</span> <span class="fl">0.5</span>, <span class="at">lower.tail =</span> F)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>but it is a bit tricky, because depeding on which side one wants to test, you have to add a -1 to the successes becaues of the discrete nature of teh data and the definition of the cummulative in R. You can try, but it’s safer in practice to use the binom.test, which calculates the same values</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-8_abe3d125569ba8776ff91fdd06cba785">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="dv">7</span>,trials,<span class="fl">0.5</span>) <span class="co"># two sided </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>but it is a bit tricky, because depending on which side one wants to test, you have to add a -1 to the successes because of the discrete nature of the data and the definition of the cumulative in R. You can try, but it’s safer in practice to use the binom.test, which calculates the same values</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="dv">7</span>,trials,<span class="fl">0.5</span>) <span class="co"># two sided </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Exact binomial test
@@ -557,36 +615,36 @@ probability of success
 </div>
 </div>
 <p>Alternatively:</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-9_a65046c06b60a78ed7c6d544318a78a4">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="dv">7</span>,trials,<span class="fl">0.5</span>, <span class="at">alternative=</span><span class="st">"greater"</span>) <span class="co"># testing for greater</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="dv">7</span>,trials,<span class="fl">0.5</span>, <span class="at">alternative=</span><span class="st">"less"</span>) <span class="co"># testing for less</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="dv">7</span>,trials,<span class="fl">0.5</span>, <span class="at">alternative=</span><span class="st">"greater"</span>) <span class="co"># testing for greater</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="dv">7</span>,trials,<span class="fl">0.5</span>, <span class="at">alternative=</span><span class="st">"less"</span>) <span class="co"># testing for less</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Side-note: multiple testing
+<span class="screen-reader-only">Tip</span>Side-note: multiple testing
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Imagine there is no effect, but we keep on repeating the test 100 times. How often do you think will we find a significant effect?</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-10_5968a4adbc6988821fed39d565f33706">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>data<span class="ot">=</span> <span class="fu">rbinom</span>(<span class="dv">100</span>,<span class="dv">10</span>,<span class="fl">0.5</span>)</span>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>data<span class="ot">=</span> <span class="fu">rbinom</span>(<span class="dv">100</span>,<span class="dv">10</span>,<span class="fl">0.5</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>pValue <span class="ot">&lt;-</span> <span class="fu">pbinom</span>(data,trials,<span class="at">prob =</span> <span class="fl">0.5</span>, <span class="at">lower.tail =</span> F)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(pValue <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(pValue <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 7</code></pre>
 </div>
 </div>
 <p>Yes, 5 is what you expect. To be exact, in the case of discrete random distributions, the value doesn’t have to be exactly 5%, but that is a side topic, and here it works.</p>
 <p>The message here is: if you do repeated tests, and you want to maintain a fixed overall type I error rate, you need to adjust the p-values, e.g.&nbsp;by</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-11_ad2924c56b6cfa3d59b6024d25f1fc3b">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pValueAdjusted <span class="ot">&lt;-</span> <span class="fu">p.adjust</span>(pValue, <span class="at">method =</span> <span class="st">"hochberg"</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(pValueAdjusted <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pValueAdjusted <span class="ot">&lt;-</span> <span class="fu">p.adjust</span>(pValue, <span class="at">method =</span> <span class="st">"hochberg"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(pValueAdjusted <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
@@ -601,56 +659,64 @@ Side-note: multiple testing
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Summary NHST
+<span class="screen-reader-only">Note</span>Summary NHST
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
 <li>p-value –&gt; probability to see the observed or more extreme data given the null hypothesis</li>
-<li>rejection H0 if p &lt; alpha. If p &gt; alpha, the test ist inconclusive</li>
+<li>rejection H0 if p &lt; alpha. If p &gt; alpha, the test is inconclusive</li>
 <li>if you do multiple tests, you may want to adjust the p-values</li>
 </ul>
-<p>Also note: we are free to choose the null-hypothesis as we want. What would you do if you null hypothesis is that a coin should have an 0.8 probability of head?</p>
+<p>Also note: we are free to choose the null-hypothesis as we want. What would you do if your null hypothesis is that a coin should have a 0.8 probability of head?</p>
 </div>
 </div>
 </section>
-<section id="the-bayesian-posterior-estimate" class="level3" data-number="2.1.3">
-<h3 data-number="2.1.3" class="anchored" data-anchor-id="the-bayesian-posterior-estimate"><span class="header-section-number">2.1.3</span> The Bayesian posterior estimate</h3>
+<section id="the-bayesian-estimate" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="the-bayesian-estimate"><span class="header-section-number">2.1.4</span> The Bayesian estimate</h3>
 <p>Remember for Bayes p(M|D) = p(D|M) * p(M) / P(D), and we can show that p(D) is just the integral over p(D|M) * p(M)</p>
 <p>We had already calculated p(D|M), so we just need to define p(M), the prior. For the moment, we will use a flat prior, but see the comments on prior choice later in the book - for a bernoulli trial often other priors, in particular the beta distribution, are used.</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-12_84842001c1a056c91c97eee4cd2a6a74">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">1001</span>)</span>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">1001</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> likelihood <span class="sc">*</span> prior <span class="sc">/</span> <span class="fu">sum</span>(likelihood <span class="sc">*</span> prior) <span class="sc">*</span> <span class="fu">length</span>(parametervalues)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parametervalues, posterior, <span class="at">col =</span> <span class="st">"darkgreen"</span>, <span class="at">type =</span> <span class="st">"l"</span>)</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(parametervalues, likelihood)</span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(parametervalues, prior, <span class="at">col =</span> <span class="st">"red"</span> )</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"likelihood"</span>, <span class="st">"prior"</span>, <span class="st">"posterior"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"green"</span>), <span class="at">lwd =</span> <span class="dv">1</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"likelihood"</span>, <span class="st">"prior"</span>, <span class="st">"posterior"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"green"</span>), <span class="at">lwd =</span> <span class="dv">1</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>you see that likelihood and posterior have the same shape. However, this is only because I chose a flat prior. There is still a difference, however, namely that the posterior is normalized, i.e.&nbsp;will integrate to one. It has to be, because we want to interpret it as a pdf, while the likelihood is not a pdf. Let’s look at the same example for an informative prior</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-13_73e341f6966fef04d96290d982babc0e">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(parametervalues, <span class="at">mean =</span> <span class="fl">0.5</span>, <span class="at">sd =</span> <span class="fl">0.1</span>)</span>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(parametervalues, <span class="at">mean =</span> <span class="fl">0.5</span>, <span class="at">sd =</span> <span class="fl">0.1</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> likelihood <span class="sc">*</span> prior <span class="sc">/</span> <span class="fu">sum</span>(likelihood <span class="sc">*</span> prior) <span class="sc">*</span> <span class="fu">length</span>(parametervalues)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parametervalues, posterior, <span class="at">col =</span> <span class="st">"darkgreen"</span>, <span class="at">type =</span> <span class="st">"l"</span>)</span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(parametervalues, likelihood)</span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(parametervalues, prior, <span class="at">col =</span> <span class="st">"red"</span> )</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"likelihood"</span>, <span class="st">"prior"</span>, <span class="st">"posterior"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"green"</span>), <span class="at">lwd =</span> <span class="dv">1</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"likelihood"</span>, <span class="st">"prior"</span>, <span class="st">"posterior"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"green"</span>), <span class="at">lwd =</span> <span class="dv">1</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>you can see that the likelihood moves the posterior away from the prior, but not by much. try the same think with more data, but the same ratio, i.e.&nbsp;change to 30 trials, 9 success</p>
+</div>
+<p>you can see that the likelihood moves the posterior away from the prior, but not by much. Try the same thing with more data, but the same ratio, i.e.&nbsp;change to 30 trials, 9 success</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Summary Bayes
+<span class="screen-reader-only">Note</span>Summary Bayes
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -658,92 +724,253 @@ Summary Bayes
 </div>
 </div>
 </section>
+<section id="exercise" class="level3" data-number="2.1.5">
+<h3 data-number="2.1.5" class="anchored" data-anchor-id="exercise"><span class="header-section-number">2.1.5</span> Exercise</h3>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Copy the code from the section above or a shorter version from below into your RStudio. Go through it line by line and make sure you understand how the different approaches to statistical inference (MLE, p-values, Posterior) are computed.</p>
+<p>Then:</p>
+<ol type="1">
+<li>Test yourself and discuss with your partner: what are the principles / logic behind the 3 methods?</li>
+<li>For the Bayesian inference, try out <strong>different prior definitions</strong>, by changing the parameters in <code>dnorm(x, mean = 0, sd = 0.1)</code>, and observe how the posterior changes</li>
+<li>Try out to produce <strong>more or fewer observations</strong> while keeping the ratio constant, and observe how the posterior and all other methods change</li>
+<li>Bonus: compute the <strong>outcome of the Bayesian inference with zero observations</strong>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Shorter version of the code
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assume we flipped a coin 10 times, and want to find out if</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># it is biased - what can we learn about the probability to</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain heads with this coin?</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>trials <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>success <span class="ot">=</span> <span class="dv">7</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># For all three statistical methods, we use the same statistical model</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co"># which is the binomial model. The probability density is available in R</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># through he function dbinom - dbinom(6,10,0.9) gives you the probability</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co"># density of obtaining 6/10 heads when the true probability of heads is 0.9</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="dv">6</span>,<span class="dv">10</span>, <span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2050781</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Try out the function, and observe how the likelihood changes if you change</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the number of successes and the success probability!</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># We will now use this model to calculate the three classical inferential</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># outputs of statistics - tests, MLE and Bayes</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="do">########### NHST (p-values) #####################</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co"># assume the coin is random (0.5), p-value is p &gt;= observed</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>,<span class="dv">10</span>, <span class="fl">0.5</span>), <span class="at">names.arg =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"grey"</span>, <span class="dv">7</span>), <span class="fu">rep</span>(<span class="st">"red"</span>, <span class="dv">4</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># have to do 6 because R's idiosyncrasies with lower.tail</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pbinom</span>(<span class="dv">6</span>,<span class="dv">10</span>,<span class="fl">0.5</span>, <span class="at">lower.tail =</span> F)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.171875</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="dv">7</span>,<span class="dv">10</span>,<span class="at">alternative =</span> <span class="st">"greater"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Exact binomial test
+
+data:  7 and 10
+number of successes = 7, number of trials = 10, p-value = 0.1719
+alternative hypothesis: true probability of success is greater than 0.5
+95 percent confidence interval:
+ 0.3933758 1.0000000
+sample estimates:
+probability of success 
+                   0.7 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="do">############ MLE ######################</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">=</span> <span class="cf">function</span>(x) <span class="fu">dbinom</span>(<span class="dv">7</span>,<span class="dv">10</span>, x)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>parameterValues <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">100</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># assume data is fixed, true probability unknown</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameterValues, <span class="fu">likelihood</span>(parameterValues), <span class="at">type =</span> <span class="st">"l"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-14-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="do">############# Bayes ##################</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># posterior</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">=</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="fl">0.1</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameterValues, <span class="fu">prior</span>(parameterValues), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">main =</span> <span class="st">"Prior"</span>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameterValues, <span class="fu">likelihood</span>(parameterValues), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">main =</span> <span class="st">"Likelihood"</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameterValues, <span class="fu">prior</span>(parameterValues) <span class="sc">*</span> <span class="fu">likelihood</span>(parameterValues), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">main =</span> <span class="st">"Posterior"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-14-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 </section>
 <section id="interpreting-the-posterior" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="interpreting-the-posterior"><span class="header-section-number">2.2</span> Interpreting the Posterior</h2>
-<p>In standard statistics, we are used to interpret search for the point that maximizes p(D|phi), and interpret this as the most likely value.</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-15_95d9c2d07637baff5887781ff7d3694f">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>parameter <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>,<span class="at">len=</span><span class="dv">500</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">=</span> <span class="fu">dnorm</span>(parameter) <span class="sc">+</span> <span class="fu">dnorm</span>(parameter, <span class="at">mean =</span> <span class="fl">2.5</span>, <span class="at">sd=</span><span class="fl">0.5</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameter,likelihood, <span class="at">type =</span> <span class="st">"l"</span>)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>MLEEstimate <span class="ot">&lt;-</span> parameter[<span class="fu">which.max</span>(likelihood)]</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>MLEEstimate, <span class="at">col =</span> <span class="st">"red"</span>)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">2.5</span>,<span class="fl">0.8</span>, <span class="st">"MLE"</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In standard statistics, we are used to search for the point that maximizes p(D|phi), and interpret this as the most likely value.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>parameter <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">5</span>,<span class="at">len=</span><span class="dv">500</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">=</span> <span class="fu">dnorm</span>(parameter) <span class="sc">+</span> <span class="fu">dnorm</span>(parameter, <span class="at">mean =</span> <span class="fl">2.5</span>, <span class="at">sd=</span><span class="fl">0.5</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameter,likelihood, <span class="at">type =</span> <span class="st">"l"</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>MLEEstimate <span class="ot">&lt;-</span> parameter[<span class="fu">which.max</span>(likelihood)]</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>MLEEstimate, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">2.5</span>,<span class="fl">0.8</span>, <span class="st">"MLE"</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Assume the prior is flat, then we get the posterior simply by normalization</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-16_68cb7f2baaffc60a3aaeadab63a996b6">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>unnormalizedPosterior <span class="ot">=</span> likelihood <span class="sc">*</span> <span class="dv">1</span> </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">=</span> unnormalizedPosterior <span class="sc">/</span> <span class="fu">sum</span>(unnormalizedPosterior<span class="sc">/</span><span class="dv">50</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>unnormalizedPosterior <span class="ot">=</span> likelihood <span class="sc">*</span> <span class="dv">1</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">=</span> unnormalizedPosterior <span class="sc">/</span> <span class="fu">sum</span>(unnormalizedPosterior<span class="sc">/</span><span class="dv">50</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In Bayesian statistics, the primary outcome of the inference is the whole distribution.</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-17_29d2f08a410c1b8b3c084b7bee120a22">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameter,posterior, <span class="at">type =</span> <span class="st">"l"</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(parameter, posterior, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">col=</span><span class="st">"darksalmon"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameter,posterior, <span class="at">type =</span> <span class="st">"l"</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(parameter, posterior, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">col=</span><span class="st">"darksalmon"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>If we don’t have to, this is what we should interpret and forecast with. However, in many cases, people what to summarize this distribution by particular values. Here is what you typically use for different situations</p>
-<section id="the-map-mode-of-posterior" class="level3" data-number="2.2.1">
-<h3 data-number="2.2.1" class="anchored" data-anchor-id="the-map-mode-of-posterior"><span class="header-section-number">2.2.1</span> The MAP (mode of posterior)</h3>
-<p>If you want to have the most probable parameter value, what you can do is to use the mode of the posterior distribution. It is called the maximum a posteriori probability (MAP) estimate.</p>
-</section>
-<section id="posterior-median-or-mean" class="level3" data-number="2.2.2">
-<h3 data-number="2.2.2" class="anchored" data-anchor-id="posterior-median-or-mean"><span class="header-section-number">2.2.2</span> Posterior median or mean</h3>
-<p>Although the MAP is very intutive, it has several problems, which is the reason why it is rarely used in practice.</p>
-<p>The first reason is computational: with the MCMC methods that are used in practice to estimate posterior distributions (see next section), it is very hard to locate the exact position of the MAP in posterior space.</p>
-<p>The second reason is that Bayesian methods are often used for complicated models and in non-assymptotic cases. In such a situation, the likelihood or posterior often has weird, non-normal shapes. If the posterior distribution is very skewed as in our example, it may well be that the MAP doesn’t really give a good idea of where most probability mass is.</p>
-<p>For both reasons, mean or median posterior values are the most common choices if the goal is to summarize the posterior distribution by one value.</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-18_9debe2cc2f082c72bf787956ebf82aac">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameter,posterior, <span class="at">type =</span> <span class="st">"l"</span>)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(parameter, posterior, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">col=</span><span class="st">"darksalmon"</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>medianPosterior <span class="ot">&lt;-</span> parameter[<span class="fu">min</span>(<span class="fu">which</span>(<span class="fu">cumsum</span>(posterior) <span class="sc">&gt;</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="dv">50</span>))]</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>medianPosterior, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">2.9</span>,<span class="fl">0.3</span>, <span class="st">"Median"</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(posterior <span class="sc">*</span> parameter) <span class="sc">/</span> <span class="fu">mean</span>(posterior)</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>mean, <span class="at">col =</span> <span class="st">"darkgreen"</span>)</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">0.4</span>,<span class="fl">0.25</span>, <span class="st">"Mean"</span>, <span class="at">col =</span> <span class="st">"darkgreen"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Any time you want to calculate some outcome of the inference (predictions, uncertainties), this distribution should be used.</p>
+<section id="bayesian-point-estimates---map-as-well-as-posterior-median-or-mean" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="bayesian-point-estimates---map-as-well-as-posterior-median-or-mean"><span class="header-section-number">2.2.1</span> Bayesian point estimates - MAP as well as posterior median or mean</h3>
+<p>Most Bayesians will insist that the posterior distribution is the best possibly summary of the Bayesian inference, and that you should consider it as a whole when you want to draw conclusions from your data. However, in many cases, researchers still want to summarize the distribution by certain values, e.g.&nbsp;for a table in a paper.</p>
+<p>For such a table, the first typical ingredient would be a <strong>point estimate</strong> of the parameter of interest, i.e.&nbsp;a value that summarizes the best estimate for the parameter. Frequentists would supply the MLE in this case. Bayesians have several options.</p>
+<p>If you want to have <strong>the most probable parameter value</strong> for the parameter, what you can do is to use the mode of the posterior distribution. It is called the maximum a posteriori probability (MAP) estimate.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameter,posterior, <span class="at">type =</span> <span class="st">"l"</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(parameter, posterior, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">col=</span><span class="st">"darksalmon"</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>MAP <span class="ot">&lt;-</span> parameter[<span class="fu">which.max</span>(posterior)]</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>MAP, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">2.5</span>,<span class="fl">0.4</span>, <span class="st">"MAP"</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-</section>
-<section id="bayesian-credibile-intervals" class="level3" data-number="2.2.3">
-<h3 data-number="2.2.3" class="anchored" data-anchor-id="bayesian-credibile-intervals"><span class="header-section-number">2.2.3</span> Bayesian credibile intervals</h3>
-<p>Typically, one also wants uncertainties. There basic option to do this is the Bayesian credible interval, which is the analogue to the frequentist confidence interval. The 95 % Bayesian Credibility interval is the centra 95% of the posterior distribution</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-19_5bd67a420671b0dcc094fcf50774123e">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameter,posterior, <span class="at">type =</span> <span class="st">"l"</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>lowerCI <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">which</span>(<span class="fu">cumsum</span>(posterior) <span class="sc">&gt;</span> <span class="fl">0.025</span> <span class="sc">*</span> <span class="dv">50</span>))</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>upperCI <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">which</span>(<span class="fu">cumsum</span>(posterior) <span class="sc">&gt;</span> <span class="fl">0.975</span> <span class="sc">*</span> <span class="dv">50</span>))</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>par <span class="ot">=</span> parameter[<span class="fu">c</span>(lowerCI, lowerCI<span class="sc">:</span>upperCI, upperCI)]</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>post <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>, posterior[lowerCI<span class="sc">:</span>upperCI], <span class="dv">0</span>)</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(par, post, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">col=</span><span class="st">"darksalmon"</span>)</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">0.75</span>,<span class="fl">0.07</span>, <span class="st">"95 % Credibile</span><span class="sc">\n</span><span class="st"> Interval"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Although the MAP is very intuitive as the “best value” for your estimate, it has several problems, which is the reason why it is rarely used in practice to provide a Bayesian point estimate.</p>
+<ol type="1">
+<li><p>The first reason is computational: with the MCMC methods that are used in practice to estimate posterior distributions (see next section), it is very hard to locate the exact position of the MAP in posterior space.</p></li>
+<li><p>The second reason is that Bayesian methods are often used for complicated models and in non-asymptotic cases. In such a situation, the likelihood or posterior often has weird, non-normal shapes. If the posterior distribution is very skewed as in our example, it may well be that the MAP doesn’t really give a good idea of where most probability mass is.</p></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameter,posterior, <span class="at">type =</span> <span class="st">"l"</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(parameter, posterior, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">col=</span><span class="st">"darksalmon"</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>medianPosterior <span class="ot">&lt;-</span> parameter[<span class="fu">min</span>(<span class="fu">which</span>(<span class="fu">cumsum</span>(posterior) <span class="sc">&gt;</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="dv">50</span>))]</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>medianPosterior, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">2.9</span>,<span class="fl">0.3</span>, <span class="st">"Median"</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(posterior <span class="sc">*</span> parameter) <span class="sc">/</span> <span class="fu">mean</span>(posterior)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span>mean, <span class="at">col =</span> <span class="st">"darkgreen"</span>)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">0.4</span>,<span class="fl">0.25</span>, <span class="st">"Mean"</span>, <span class="at">col =</span> <span class="st">"darkgreen"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="hpd-and-lpl" class="level3" data-number="2.2.4">
-<h3 data-number="2.2.4" class="anchored" data-anchor-id="hpd-and-lpl"><span class="header-section-number">2.2.4</span> HPD and LPL</h3>
-<p>There are two alternatives to the credibility interval that is particularly useful if the posterior has weird correlation structres.</p>
+<section id="bayesian-uncertainties" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="bayesian-uncertainties"><span class="header-section-number">2.2.2</span> Bayesian uncertainties</h3>
+<p>The second typical ingredient to summarize a distribution is the width or spread, signifying the uncertainty of the parameter estimate. Also here, there are several options.</p>
+<section id="bayesian-credible-intervals-cis" class="level4" data-number="2.2.2.1">
+<h4 data-number="2.2.2.1" class="anchored" data-anchor-id="bayesian-credible-intervals-cis"><span class="header-section-number">2.2.2.1</span> Bayesian Credible intervals (CIs)</h4>
+<p>The basic option to do this is the Bayesian credible interval, which is the analogue to the frequentist confidence interval. The 95 % Bayesian Credibility interval is the central 95% of the posterior distribution</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(parameter,posterior, <span class="at">type =</span> <span class="st">"l"</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>lowerCI <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">which</span>(<span class="fu">cumsum</span>(posterior) <span class="sc">&gt;</span> <span class="fl">0.025</span> <span class="sc">*</span> <span class="dv">50</span>))</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>upperCI <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">which</span>(<span class="fu">cumsum</span>(posterior) <span class="sc">&gt;</span> <span class="fl">0.975</span> <span class="sc">*</span> <span class="dv">50</span>))</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>par <span class="ot">=</span> parameter[<span class="fu">c</span>(lowerCI, lowerCI<span class="sc">:</span>upperCI, upperCI)]</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>post <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>, posterior[lowerCI<span class="sc">:</span>upperCI], <span class="dv">0</span>)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(par, post, <span class="at">border=</span><span class="cn">NA</span>, <span class="at">col=</span><span class="st">"darksalmon"</span>)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">0.75</span>,<span class="fl">0.07</span>, <span class="st">"95 % Credible</span><span class="sc">\n</span><span class="st"> Interval"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In practice, to circumvent issues with estimating tail probabilities from MCMC samples, Bayesians often provide 80% or 90% instead of 95% credible intervals.</p>
+</section>
+<section id="hpd-and-lpl" class="level4" data-number="2.2.2.2">
+<h4 data-number="2.2.2.2" class="anchored" data-anchor-id="hpd-and-lpl"><span class="header-section-number">2.2.2.2</span> HPD and LPL</h4>
+<p>There are two alternatives to the credibility interval that is particularly useful if the posterior has weird correlation structures.</p>
 <ol type="1">
 <li>The <strong>Highest Posterior Density</strong> (HPD). The HPD is the x% highest posterior density interval is the shortest interval in parameter space that contains x% of the posterior probability. It would be a bit cumbersome to calculate this in this example, but if you have an MCMC sample, you get the HPD with the package coda via</li>
 </ol>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-20_fe77940b0d31ed9d8356cd58a93b07fa">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">HPDinterval</span>(obj, <span class="at">prob =</span> <span class="fl">0.95</span>, ...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">HPDinterval</span>(obj, <span class="at">prob =</span> <span class="fl">0.95</span>, ...)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="2" type="1">
 <li>The Lowest Posterior Loss (LPL) interval, which considers also the prior.</li>
@@ -751,181 +978,150 @@ Summary Bayes
 <p>More on both alternatives <a href="http://www.bayesian-inference.com/credible">here</a>.</p>
 <p>More options to plot HPD in 2-d here http://www.sumsar.net/blog/2014/11/how-to-summarize-a-2d-posterior-using-a-highest-density-ellipse/</p>
 </section>
-<section id="multivariate-issues" class="level3" data-number="2.2.5">
-<h3 data-number="2.2.5" class="anchored" data-anchor-id="multivariate-issues"><span class="header-section-number">2.2.5</span> Multivariate issues</h3>
+</section>
+<section id="issues-when-summarizing-multivariate-posteriors" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="issues-when-summarizing-multivariate-posteriors"><span class="header-section-number">2.2.3</span> Issues when summarizing multivariate posteriors</h3>
 <p>Things are always getting more difficult if you move to more dimensions, and Bayesian analysis is no exception.</p>
-<section id="marginal-values-hide-correlations" class="level4" data-number="2.2.5.1">
-<h4 data-number="2.2.5.1" class="anchored" data-anchor-id="marginal-values-hide-correlations"><span class="header-section-number">2.2.5.1</span> Marginal values hide correlations</h4>
+<section id="marginal-values-hide-correlations" class="level4" data-number="2.2.3.1">
+<h4 data-number="2.2.3.1" class="anchored" data-anchor-id="marginal-values-hide-correlations"><span class="header-section-number">2.2.3.1</span> Marginal values hide correlations</h4>
 <p>A problem that often occurs when we have more than one parameter are correlations between parameters. In this case, the marginal posterior distributions that are reported in the summary() or plot functions of coda can be VERY misleading.</p>
 <p>Look at the situation below, where we have two parameters that are highly correlated. The marginal posteriors look basically flat, and looking only at them you may think there is no information in the likelihood.</p>
 <p>However, if you look at the correlation, you see that the likelihood has excluded vast areas of the prior space (assuming we have had flat uncorrelated likelihoods in this case).</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-21_648c7df4e11a63a4190b24bb1f18e74a">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>par1<span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">1000</span>,<span class="dv">0</span>,<span class="dv">1</span>)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>par2 <span class="ot">=</span>par1 <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>,<span class="at">sd =</span> <span class="fl">0.05</span>)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter.hist</span>(par1,par2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>par1<span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">1000</span>,<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>par2 <span class="ot">=</span>par1 <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>,<span class="at">sd =</span> <span class="fl">0.05</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">scatterHist</span>(par1,par2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>It is therefore vital to plot the correlation plots as well to be able to judge the extent to which parameters are uncertaint.</p>
-<p>If you have more parameters, however, you may still miss things here, because there could be higher-order correlations between the parameters that look random in the two-dimensional plot. A good proxy to get an overall reduction of uncertainy across all parameters, including all these higher-order correlations, is to compare the prior predictive distribution with the posterior predictive distribution.</p>
+</div>
+<p>It is therefore vital to plot the correlation plots as well to be able to judge the extent to which parameters are uncertain.</p>
+<p>If you have more parameters, however, you may still miss things here, because there could be higher-order correlations between the parameters that look random in the two-dimensional plot. A good proxy to get an overall reduction of uncertainty across all parameters, including all these higher-order correlations, is to compare the prior predictive distribution with the posterior predictive distribution.</p>
 </section>
-<section id="nonlinear-correlations" class="level4" data-number="2.2.5.2">
-<h4 data-number="2.2.5.2" class="anchored" data-anchor-id="nonlinear-correlations"><span class="header-section-number">2.2.5.2</span> Nonlinear correlations</h4>
-<p>A further issue that many people are not aware of is that the marginal mode (maximum) does not need to coincide with the global mode if correlations in parameter space are nonlinear. Assume we have a posterior with 2 parameters, which are in a complcated, banana-shaped correlation. Assume we are able to sample from this poterior. Here is an example from Meng and Barnard, code from the bayesm package (see Rmd source file for code of this function).</p>
-<p>If we plot the correlation, as well as the marginal distributions (i.e.&nbsp;the histograms for each parameter), you see that the mode of the marginal distributions will not conincide with the multivariate mode (red, solid lines).</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-23_0fed0bb63423b861b64b7f696e42b82d">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">124</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>sample<span class="ot">=</span><span class="fu">banana</span>(<span class="at">A=</span><span class="fl">0.5</span>,<span class="at">B=</span><span class="dv">0</span>,<span class="at">C1=</span><span class="dv">3</span>,<span class="at">C2=</span><span class="dv">3</span>,<span class="dv">50000</span>)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">scatterhist</span>(sample[,<span class="dv">1</span>], sample[,<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="nonlinear-correlations" class="level4" data-number="2.2.3.2">
+<h4 data-number="2.2.3.2" class="anchored" data-anchor-id="nonlinear-correlations"><span class="header-section-number">2.2.3.2</span> Nonlinear correlations</h4>
+<p>A further issue that many people are not aware of is that the marginal mode (maximum) does not need to coincide with the global mode if correlations in parameter space are nonlinear. Assume we have a posterior with 2 parameters, which are in a complicated, banana-shaped correlation. Assume we are able to sample from this posterior. Here is an example from Meng and Barnard, code from the bayesm package (see Rmd source file for code of this function).</p>
+<p>If we plot the correlation, as well as the marginal distributions (i.e.&nbsp;the histograms for each parameter), you see that the mode of the marginal distributions will not coincide with the multivariate mode (red, solid lines).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">124</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>sample<span class="ot">=</span><span class="fu">banana</span>(<span class="at">A=</span><span class="fl">0.5</span>,<span class="at">B=</span><span class="dv">0</span>,<span class="at">C1=</span><span class="dv">3</span>,<span class="at">C2=</span><span class="dv">3</span>,<span class="dv">50000</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">scatterhist</span>(sample[,<span class="dv">1</span>], sample[,<span class="dv">2</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="768"></p>
+<div>
+<figure class="figure">
+<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#abline(h = 0.22, col = "green", lwd = 3, lty =2)</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#abline(v = 0.295, col = "green", lwd = 3, lty =2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co">#abline(h = 2.5, col = "green", lwd = 3, lty =2)</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co">#abline(v = 0.295, col = "green", lwd = 3, lty =2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="exercises" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="exercises"><span class="header-section-number">2.2.4</span> Exercises</h3>
 <p>Hence, it’s important to note that the marginal distributions are not suited to calculate the MAP, CIs, HPDs or any other summary statistics if the posterior distribution is not symmetric in multivariate space. This is a real point of confusion for many people, so keep it in mind!</p>
-</section>
-</section>
-</section>
-<section id="prior-choice" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="prior-choice"><span class="header-section-number">2.3</span> Prior Choice</h2>
-<p>The choice of prior (prior elicitation) is key to Bayesian analysis, and it is arguably the most contentious step in the whole procedure, as it supposedly contains “subjective” judgement. I disagree with this notion. The choice of a prior is not necessarily subjective. It simply means that, unlike in a frequentist analysis, we should generally collect everything that is known about a parameter in advance, which may be done in an objective way. Also, we can try to avoid the inclusion of prior knowledge by choosing so-called uninformative (aka vague, reference) priors. So, a first thing to note about priors is that we have</p>
-<ul>
-<li>Informative priors that express prior knowledge about an inferential question</li>
-<li>Uninformative priors that express no prior knowledge about an inferential question</li>
-</ul>
-<p>More about the choice of uninformative priors below. But first some other statements:</p>
-<ul>
-<li>In the limit if infinitely many data, the likelihood gets infinitely sharp, and therefore the prior choice irrelevant (as long as the prior is not 0 anywhere there is likelihood)</li>
-<li>Priors are therefore most important if you have a small dataset</li>
-<li>Priors are changed by rescaling parameters (see below)</li>
-<li>Uninformative priors are not always flat (see below). For common problems, people have developed recommendations for which priors should be used in an uninformative setting</li>
-</ul>
-<section id="scaling-and-scale-invariance-of-prior-choices" class="level3" data-number="2.3.1">
-<h3 data-number="2.3.1" class="anchored" data-anchor-id="scaling-and-scale-invariance-of-prior-choices"><span class="header-section-number">2.3.1</span> Scaling and scale-invariance of prior choices</h3>
-<p>Scaling is key to understand why uninformative priors can’t always be flat. Imagine the following situation: we have a dataset on average tree diameters, and we want to infer the average with a Bayesian method. We shouldn’t really look at the data before we specify our prior, so let’s just specify the prior, and assume we choose a flat prior between 1 and 10 because we don’t want to bias our data in any way</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-24_9d5f1b5e8ce8ea3bd7190ef2048c1665">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>values <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>priorWeight <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>, <span class="dv">5</span>)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(priorWeight, <span class="at">names.arg =</span> values, <span class="at">xlab =</span> <span class="st">"size [cm]"</span>, </span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"priorProbability"</span>, <span class="at">col =</span> <span class="st">"darkseagreen"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Task
 </div>
 </div>
-<p>Now, let’s assume that we decide do change the analysis slightly, and measure average size in the basal area, which scales to diameter as x^2. We have already specified our prior knowledge about diameter, so for each cm of diameter we have specified the same weight.</p>
-<p>If we rescale the x-axis to basal area, the length of each bar on the x-axis changes - large values are getting broader, short values are getting more narrow. If the probability weight is to stay the same, we get the following picture:</p>
-<div class="cell" data-hash="2A-BayesianLogic_cache/html/unnamed-chunk-25_d9a8eb3e8c540433defe9ec5110ef149">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(priorWeight<span class="sc">/</span>values<span class="sc">^</span><span class="dv">2</span>, <span class="at">width =</span> values<span class="sc">^</span><span class="dv">2</span>, <span class="at">names.arg =</span> values<span class="sc">^</span><span class="dv">2</span>, </span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"size [cm^2]"</span>, <span class="at">ylab =</span> <span class="st">"priorProbability"</span>, <span class="at">col =</span> <span class="st">"darkseagreen"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="2A-BayesianLogic_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+<div class="callout-body-container callout-body">
+<p>Consider samples from a Bayesian posterior consisting of:<br>
+</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mvtnorm)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>), <span class="at">ncol=</span><span class="dv">2</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>posteriorSamples <span class="ot">&lt;-</span> <span class="fu">rmvnorm</span>(<span class="at">n=</span><span class="dv">500</span>, <span class="at">mean=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">sigma=</span>sigma)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>The message here is that if we are free to rescale predictors as we want (which is generally true), the prior cannot be flat for all possible parameter transformations. A key for any rule about finding uninformative priors is therefore that the rule must be invariant under parameter transformation. For more on this, see <span class="citation" data-cites="george1993">(<a href="6A-References.html#ref-george1993" role="doc-biblioref">George and McCulloch 1993</a>)</span>.</p>
-<p>A second message is that in Bayesian statistics, you have to be a bit careful about parameter transformations, because we don’t just look at one value, but at a whole distribution, and the shape of this distribution will change of we reparameterize.</p>
-</section>
-<section id="default-choices-for-uniformative-priors" class="level3" data-number="2.3.2">
-<h3 data-number="2.3.2" class="anchored" data-anchor-id="default-choices-for-uniformative-priors"><span class="header-section-number">2.3.2</span> Default choices for uniformative priors</h3>
-<p>So, what is the right choice for uninformative priors? The somewhat disturbing answer is that there is no generally accepted solution for this problem. One famous proposal that contains many of the desirable properties is <a href="http://en.wikipedia.org/wiki/Jeffreys_prior">Jeffrey’s prior</a> which is defined as</p>
-<p>p(phi) ~ sqrt ( det ( F(phi)))</p>
-<p>where F(phi) is the <a href="http://en.wikipedia.org/wiki/Fisher_information">Fisher information matrix</a>, which basically tells you how strongly the likelihood changes if parameters change. It is easy to see that the prior choice will then be</p>
-<ul>
-<li>invariant under rescaling parameters</li>
-<li>proportional to how strongly parameters affect the likelihood</li>
-</ul>
-<p>To me, this seems to cover the main agreements about prior choice. Unfortunately, Jeffrey’s prior seems to have some problems for multivariate and hierarchical models, so it’s not a general panacea. However, partly based on the intuition gained from Jeffrey’s prior, a few general default prior choices have emerged:</p>
+</div>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <ol type="1">
-<li><p>For <strong>scale parameters</strong> (something that affects the output linearly, like slope or intercept in a regression), use flat or quasi flat priors such as a bounded uniform distribution or (most common choice) a <strong>wide normal distribution</strong>. Note that, people often modify this priors by having a bit more probability mass around a neutral value (usually 0) to get the Bayesian analogue of Lasso or Ridge regression, see Park, T. &amp; Casella, G. (2008), Kyung, M.; Gill, J.; Ghosh, M.; Casella, G. et al.&nbsp;(2010) Penalized regression, standard errors, and Bayesian lassos. Bayesian Analysis, 5, 369-411. If this effect is small, we speak about <strong>mildly regularizing priors</strong>. If the effect is strong, we speak about <strong>shrinkage priors</strong>. Shrinkage priors can be designed with a fixed or adaptive shrinkage, were fixed means that that the strength of the shrinkage (e.g.&nbsp;controlled by the sd in a normal prior) is fixed, whereas adaptive shrinkage priors fit the shrinkage via a hyperprior.</p></li>
-<li><p>For <strong>variance parameters</strong> (something like the standard deviation in a linear regression), use decaying parameters such as 1/x (standard choice according to Jeffrey’s prior) or inverse-gamma (very common choice because of conjugacy, see next subjsection)</p></li>
-<li><p>For <strong>variance hyperparameters in hierarchical models</strong>, use again decaying priors such as inverse-gamma or half-t family (suggested by Gelman, 2006)</p></li>
-<li><p>For binomial distribution, Jeffrey’s prior is a beta(1/2,1/2) - this is a good default choice.</p></li>
+<li>TODO</li>
 </ol>
-<p>In doubt, prior effects can be examined by varying the prior in a sensitivity analysis.</p>
-<p>See also</p>
-<ul>
-<li><p>http://stats.stackexchange.com/questions/6493/weakly-informative-prior-distributions-for-scale-parameters</p></li>
-<li><p>http://stats.stackexchange.com/questions/61928/choosing-non-informative-priors?rq=1</p></li>
-</ul>
-</section>
-<section id="conjugacy" class="level3" data-number="2.3.3">
-<h3 data-number="2.3.3" class="anchored" data-anchor-id="conjugacy"><span class="header-section-number">2.3.3</span> Conjugacy</h3>
-<p>Another issue that is often important is <a href="http://en.wikipedia.org/wiki/Conjugate_prior">conjugacy</a>. In Bayesian statistics, if the posterior distributions p(θ|x) are in the same family as the prior probability distribution p(θ), the prior and posterior are then called conjugate distributions, and the prior is called a conjugate prior for the likelihood function.</p>
-<p>Conjugacy has two main advantages:</p>
-<ul>
-<li>The shape of the posterior is known, which allows approximating it parameterically</li>
-<li>Many sampling methods work more efficiently</li>
-</ul>
-<p>One therefore traditionally preferred to specify conjugate priors if possible, although the advantages of this depend on the samplers that are used. Most modern samplers do not really require conjugacy to work well.</p>
-</section>
-<section id="readings" class="level3" data-number="2.3.4">
-<h3 data-number="2.3.4" class="anchored" data-anchor-id="readings"><span class="header-section-number">2.3.4</span> Readings</h3>
-<p><strong>Uninformative priors</strong></p>
-<p>Kass, R. E. &amp; Wasserman, L. (1996) The selection of prior distributions by formal rules. J. Am. Stat. Assoc., American Statistical Association, 91, 1343-1370.</p>
-<p>Jeffreys, H. (1946) An Invariant Form for the Prior Probability in Estimation Problems. Proceedings of the Royal Society of London. Series A, Mathematical and Physical Sciences, The Royal Society, 186, 453-461.</p>
-<p>Jaynes, E. (1968) Prior probabilities. Systems Science and Cybernetics, IEEE Transactions on, IEEE, 4, 227-241.</p>
-<p>Tibshirani, R. (1989) Noninformative priors for one parameter of many. Biometrika, 76, 604-608.</p>
-<p>Park, T. &amp; Casella, G. (2008) The Bayesian Lasso. Journal of the American Statistical Association, 103, 681-686.</p>
-<p>Irony, T. Z. &amp; Singpurwalla, N. D. (1997) Non-informative priors do not exist – a dialogue with José M. Bernardo. J. Stat. Plan. Infer., 65, 159-177.</p>
-<p>Gelman, A.; Jakulin, A.; Pittau, M. G. &amp; Su, Y.-S. (2008) A weakly informative default prior distribution for logistic and other regression models. The Annals of Applied Statistics, JSTOR, , 1360-1383.</p>
-<p>Gelman, A. (2006) Prior distributions for variance parameters in hierarchical models. Bayesian Analysis, Citeseer, 1, 515-533.</p>
-<p>Fong, Y.; Rue, H. &amp; Wakefield, J. (2010) Bayesian inference for generalized linear mixed models. Biostatistics, 11, 397-412.</p>
-<p>Ferguson, T. (1974) Prior distributions on spaces of probability measures. The Annals of Statistics, JSTOR, 2, 615-629.</p>
-<p><strong>Jeffrey’s prior</strong></p>
-<p>Jeffreys priors for mixture estimation http://arxiv.org/abs/1511.03145</p>
-<p><strong>Informative priors</strong></p>
-<p>Choy, S. L.; O’Leary, R. &amp; Mengersen, K. (2009) Elicitation by design in ecology: using expert opinion to inform priors for Bayesian statistical models. Ecology, 90, 265-277</p>
-
-
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
-<div id="ref-george1993" class="csl-entry" role="listitem">
-George, Edward I., and Robert McCulloch. 1993. <span>“On Obtaining Invariant Prior Distributions.”</span> <em>Journal of Statistical Planning and Inference</em> 37 (2): 169–79. <a href="https://doi.org/10.1016/0378-3758(93)90086-L">https://doi.org/10.1016/0378-3758(93)90086-L</a>.
 </div>
 </div>
+</div>
+
+
 </section>
 </section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
       }
+      return false;
     }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
       for (const childEl of codeEl.children) {
         if (isCodeAnnotation(childEl)) {
           childEl.remove();
@@ -933,202 +1129,354 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
       return codeEl.innerText;
     }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-  function tippyHover(el, contentFn) {
-    const config = {
-      allowHTML: true,
-      content: contentFn,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start'
-    };
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      return note.innerHTML;
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
     });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
     }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/TheoreticalEcology\.github\.io\/LearningBayes\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
           }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
       });
     }
-  }
-});
-</script>
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./1A-GettingStarted.html" class="pagination-link">
+      <a href="./1A-GettingStarted.html" class="pagination-link" aria-label="Getting Started">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./2B-PosteriorEstimation.html" class="pagination-link">
+      <a href="./2B-PosteriorEstimation.html" class="pagination-link" aria-label="Posterior estimation">
         <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Posterior estimation</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
@@ -1137,4 +1485,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/TheoreticalEcology/LearningBayes/edit/master/2A-BayesianLogic.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>

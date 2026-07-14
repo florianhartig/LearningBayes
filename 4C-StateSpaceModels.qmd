@@ -11,8 +11,11 @@ set.seed(42)
 # State-space models
 
 ::: callout-note
-In this chapter, we will discuss 
+In this chapter, we will discuss state-space models, using a house martin population time series as an example. You will learn
 
+- The idea behind state-space models: separating a latent "true" process (e.g. population size) from observation error
+- How to fit a simple population state-space model in JAGS
+- How to visualize estimated population trajectories together with their uncertainty, including forecasts for future time steps
 :::
 
 ### House martin example from Kéry & Schaub

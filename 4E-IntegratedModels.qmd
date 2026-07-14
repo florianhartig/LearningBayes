@@ -11,8 +11,11 @@ set.seed(42)
 # Integrated Models
 
 ::: callout-note
-In this chapter, we will discuss 
+In this chapter, we will discuss integrated population models (IPMs), which combine several complementary data sources in one joint model. You will learn
 
+- The general idea of integrated models: jointly analyzing multiple data types (e.g. counts, capture-recapture, productivity) in a single hierarchical model
+- How to implement an integrated population model in JAGS, following the Kéry & Schaub example
+- How to interpret derived quantities, such as the population growth rate, from the fitted joint model
 :::
 
 ## General idea

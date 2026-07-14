@@ -11,8 +11,12 @@ set.seed(42)
 # Generalized linear mixed models
 
 ::: callout-note
-In this chapter, we will discuss 
+In this chapter, we will discuss how to fit generalized linear mixed models (GLMMs) in a Bayesian framework, using a Poisson regression on lizard counts as a running example. You will learn
 
+- How to fit a Bayesian Poisson GLM in JAGS and compare it to the frequentist `glm()` fit
+- How to add posterior predictive simulations and check residuals with DHARMa
+- How to extend the model with an overdispersion term
+- How to add zero-inflation to a count model
 :::
 
 ## Poisson regression
@@ -175,7 +179,7 @@ lines(Dat$Veg[ord], Pred.Q['95%',ord],col='blue')
 res = createDHARMa(simulatedResponse = t(Pred.Mat),
                    observedResponse = Dat$Count, 
                    fittedPredictedResponse = apply(Pred.Mat, 2, median),
-                   integer = T)
+                   integerResponse = T)
 plot(res)
 ###########################################################
 ```
@@ -274,7 +278,7 @@ lines(Dat$Veg[ord], Pred.Q['95%',ord],col='blue')
 res = createDHARMa(simulatedResponse = t(Pred.Mat),
                    observedResponse = Dat$Count, 
                    fittedPredictedResponse = apply(Pred.Mat, 2, median),
-                   integer = T)
+                   integerResponse = T)
 plot(res)
 ###########################################################
 
@@ -384,6 +388,6 @@ lines(Dat$Veg[ord], Pred.Q['95%',ord],col='blue')
 res = createDHARMa(simulatedResponse = t(Pred.Mat),
                    observedResponse = Dat$Count, 
                    fittedPredictedResponse = apply(Pred.Mat, 2, median),
-                   integer = T)
+                   integerResponse = T)
 plot(res)
 ```

@@ -11,8 +11,12 @@ set.seed(42)
 # Occupancy models
 
 ::: callout-note
-In this chapter, we will discuss 
+In this chapter, we will discuss occupancy models, which separate the true ecological state (species presence) from imperfect detection. You will learn
 
+- Why imperfect detection can bias inference about species-environment relationships if ignored
+- How to build a Bayesian occupancy model with a latent "true presence" variable in JAGS
+- How to separate the detection process from the occupancy (ecological) process
+- How to inspect occupancy probabilities and check model fit with posterior predictions and DHARMa residuals
 :::
 
 ```{r}

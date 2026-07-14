@@ -11,8 +11,11 @@ set.seed(42)
 # Error in variable models
 
 ::: callout-note
-In this chapter, we will discuss 
+In this chapter, we will discuss error-in-variables (measurement error) models. You will learn
 
+- Why measurement error in the response or predictors causes regression dilution (attenuation bias) in a naive analysis
+- How to correct for this bias with a hierarchical model that explicitly separates the true value from the observation error
+- Examples of correcting bias both in a distribution estimate (tree size) and in a regression slope (altitude effect on wind)
 :::
 
 ## Regression dilution in distribution estimates

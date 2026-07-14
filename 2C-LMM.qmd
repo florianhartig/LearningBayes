@@ -11,8 +11,11 @@ set.seed(42)
 # Linear and linear mixed models
 
 ::: callout-note
-In this chapter, we will discuss 
+In this chapter, we will discuss how to fit linear and linear mixed models in a Bayesian framework, using a dataset on body mass in the snake Vipera aspis as a running example. You will learn
 
+- How to fit a Bayesian linear regression with a continuous predictor in JAGS, and compare it to the frequentist `lm()` fit
+- How to add categorical predictors and interactions to the model
+- How to extend the model to a linear mixed model (LMM) with a random intercept, and compare it to `lmer()`
 :::
 
 ## LM

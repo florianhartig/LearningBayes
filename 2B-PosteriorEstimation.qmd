@@ -10,20 +10,15 @@ set.seed(42)
 
 # Posterior estimation
 
-In the previous chapter, we have calculated our posterior distribution by multiplying prior and likelihood across a set of possible values, and then dividing by the sum of all those to standardize (this is the p(D) in the Bayesian formula). In all but the most simple models, this technique will not work. 
+In the previous chapter, we have calculated our posterior distribution by multiplying prior and likelihood across a set of possible values, and then dividing by the sum of all those to standardize (this is the p(D) in the Bayesian formula). In all but the most simple models, this technique will not work.
 
-The reason is the so-called "curse of dimensionality" - imagine we have a statistical model with 20 parameters. Imagine we would say for each of this 20 parameters, we consider 20 possible values to evaluate the shape of the posterior - the number of values we would have to calculate would be 
+The reason is the so-called "curse of dimensionality" - imagine we have a statistical model with 20 parameters. Imagine we would say for each of this 20 parameters, we consider 20 possible values to evaluate the shape of the posterior - the number of values we would have to calculate would be
 
-$$
-n = 20^{20} \approx 10^{26}
-$$
-which is probably larger than the memory of your computer. Thus, we need another way to calculate the shape of the posterior. The main method to do this in Bayesian inference is MCMC sampling. 
-
+$$n = 20^{20} \approx 10^{26}$$ which is probably larger than the memory of your computer. Thus, we need another way to calculate the shape of the posterior. The main method to do this in Bayesian inference is MCMC sampling.
 
 ## What is an MCMC?
 
-A Markov-Chain Monte-Carlo algorithm (MCMC) is an algorithm that jumps around in a density function (the so-called target function), in such a way that the probability to be at each point of the function is proportional to the target. To give you a simple example, let's say we wouldn't know how the normal distribution looks like. What you would then probably usually do is to calculate a value of the normal for a number of data points 
-
+A Markov-Chain Monte-Carlo algorithm (MCMC) is an algorithm that jumps around in a density function (the so-called target function), in such a way that the probability to be at each point of the function is proportional to the target. To give you a simple example, let's say we wouldn't know how the normal distribution looks like. What you would then probably usually do is to calculate a value of the normal for a number of data points
 
 ```{r}
 values = seq(-10,10,length.out = 100)
@@ -31,7 +26,7 @@ density = dnorm(values)
 plot(density)
 ```
 
-To produce the same picture with an MCMC sampler, we will use the BayesianTools package. Here the code to sample from a normal distribution: 
+To produce the same picture with an MCMC sampler, we will use the BayesianTools package. Here the code to sample from a normal distribution:
 
 ```{r}
 library(BayesianTools)
@@ -44,10 +39,10 @@ plot(out)
 
 What we get as a result is the so-called trace plot to the left, which shows us how the sampler jumped around in parameter space over time, and the density plot to the right, which shows us results of sampling from the normal distribution.
 
-For this simple case, this is not particularly impressive, and looks exactly like the plot that we coded above, using the seq approach. However, as discussed above, the first approach will break down if we have high-dimensional multivariate distributions, wheras MCMC sampling also works for high-dimensional problems. 
+For this simple case, this is not particularly impressive, and looks exactly like the plot that we coded above, using the seq approach. However, as discussed above, the first approach will break down if we have high-dimensional multivariate distributions, wheras MCMC sampling also works for high-dimensional problems.
 
 ::: callout-note
-If you are interested in how an MCMC sampler works internally, you can look at Appendix @appendix-BayesianNumerics.
+If you are interested in how an MCMC sampler works internally, you can look at Appendix @sec-appendix-BayesianNumerics.
 :::
 
 ## Fitting a linear regression with different MCMCs
@@ -65,13 +60,13 @@ airqualityCleaned = airquality[complete.cases(airquality),]
 airqualityCleaned = data.frame(scale(airqualityCleaned))
 ```
 
-Just as a reminder: as a frequentist, you would fit the linear regression via 
+Just as a reminder: as a frequentist, you would fit the linear regression via
 
 ```{r, message = F}
 fit <- lm(Ozone ~ Temp, data = airqualityCleaned)
 ```
 
-which would calculate the MLE and p-values for this model, and you could evaluate and summarize the results of this via 
+which would calculate the MLE and p-values for this model, and you could evaluate and summarize the results of this via
 
 ```{r, message = F, eval = F}
 summary(fit)
@@ -94,19 +89,20 @@ fit <- brm(Ozone ~ Temp, data = airqualityCleaned)
 
 In the background, brms will translate your command into a STAN model (see below), fit this model, and return the results!
 
-Here, we see the MCMC chains and the estimated posterior distributions for the intercept, Temperature slope and the residual error sigma. 
+Here, we see the MCMC chains and the estimated posterior distributions for the intercept, Temperature slope and the residual error sigma.
 
 ```{r}
 plot(fit, ask = FALSE)
 ```
 
-If we want, we could summary the results via 
+If we want, we could summary the results via
 
 ```{r, eval = FALSE}
 summary(fit)
-plot(conditional_effects(fit), ask = FALSE)
+#summary(fit, robust = T) # uses posterior median instead of mean
+#summary(fit, priors = T) # shows also the priors
+#plot(conditional_effects(fit), ask = FALSE)
 ```
-
 
 ### Bayesian analysis with STAN
 
@@ -118,9 +114,9 @@ fit$model # model that is actually fit via
 
 This looks a bit overwhelming, but let's try to unpack this: in STAN, you don't have a particular function for the linear regression, you just tell the sampler how all your data points are connected. You do this in at least three steps, which I show in a more minimal code for a linear regression below:
 
-1. The "data" section tells the sampler the dimensions of your data
-2. The "parameter" section tells the sampler which parameters are to be estimated 
-3. The "model" section tells the sampler how the parameters and the data are connected. In this case, we want a linear regression, so we write just the mathematical formula for a linear regression  y ~ normal(alpha + beta * x, sigma)
+1.  The "data" section tells the sampler the dimensions of your data
+2.  The "parameter" section tells the sampler which parameters are to be estimated
+3.  The "model" section tells the sampler how the parameters and the data are connected. In this case, we want a linear regression, so we write just the mathematical formula for a linear regression y \~ normal(alpha + beta \* x, sigma)
 
 The model code is specified as a string, and then given to the sampler together with a list of the data.
 
@@ -143,7 +139,9 @@ stanmodelcode <- "
   }
 "
 
-dat = list(Ozone = airqualityCleaned$Ozone, Temp = airqualityCleaned$Temp, N = nrow(airqualityCleaned))
+dat = list(Ozone = airqualityCleaned$Ozone, 
+           Temp = airqualityCleaned$Temp, 
+           N = nrow(airqualityCleaned))
 
 fit <- stan(model_code = stanmodelcode, model_name = "example", 
             data = dat, iter = 2012, chains = 3, verbose = TRUE,
@@ -156,13 +154,12 @@ The results are the same as before - here is how the MCMC jumps around in parame
 rstan::traceplot(fit)
 ```
 
-and if you want summaries of the posterior, you can run: 
+and if you want summaries of the posterior, you can run:
 
 ```{r, eval = F}
 print(fit)
 plot(fit)
 ```
-
 
 ### Bayesian analysis with JAGS
 
@@ -176,7 +173,6 @@ The general approach in JAGS is to
 
 ```{r}
 library(rjags)
-Data = list(y = airqualityCleaned$Ozone, x = airqualityCleaned$Temp, nobs = nrow(airqualityCleaned))
 
 modelCode = "
 model{
@@ -199,22 +195,43 @@ model{
 
 }
 "
+```
 
-# Specify a function to generate inital values for the parameters 
-# (optional, if not provided, will start with the mean of the prior )
-inits.fn <- function() list(a = rnorm(1), b = rnorm(1), tau = 1/runif(1,1,100))
+Setup model by
 
-# sets up the model
-jagsModel <- jags.model(file= textConnection(modelCode), data=Data, init = inits.fn, n.chains = 3)
+- Providing the data as a list
+- Optionally, specify a function to generate initial values for the parameters - if not provided, will start with the mean of the prior
+- Setup the model - need to specify here how many MCMC chains to setup
 
-# MCMC sample from model
-Samples <- coda.samples(jagsModel, variable.names = c("a","b","sigma"), n.iter = 5000)
+```{r}
+Data = list(y = airqualityCleaned$Ozone, 
+            x = airqualityCleaned$Temp, 
+            nobs = nrow(airqualityCleaned))
 
-# Plot the mcmc chain and the posterior sample 
+inits.fn <- function() list(a = rnorm(1), 
+                            b = rnorm(1), 
+                            tau = 1/runif(1,1,100))
+
+jagsModel <- jags.model(file= textConnection(modelCode), 
+                        data=Data, 
+                        init = inits.fn, 
+                        n.chains = 3)
+```
+
+MCMC sample from the model, have to provide the variables that should be observed (i.e. saved in the output)
+
+```{r}
+Samples <- coda.samples(jagsModel, 
+                        variable.names = c("a","b","sigma"), 
+                        n.iter = 5000)
+```
+
+Plot the mcmc chain and the posterior sample
+
+```{r}
 plot(Samples)
 summary(Samples)
 ```
-
 
 ### Bayesian analysis via BayesianTools
 
@@ -241,12 +258,22 @@ plot(out)
 summary(out, start = 1000)
 ```
 
-## Checking and interpreting the results
+## Checking and interpreting MCMC results
 
-Running the sampler again
+We will continue here with the JAGS model, but in principle the idea of MCMC checking remains the same for all samplers
+
+Running the sampler again to get some samples.
 
 ```{r}
-Samples <- coda.samples(jagsModel, variable.names = c("a","b","sigma"), n.iter = 5000)
+
+jagsModel <- jags.model(file= textConnection(modelCode), 
+                        data=Data, 
+                        init = inits.fn, 
+                        n.chains = 3)
+
+Samples <- coda.samples(jagsModel, 
+                        variable.names = c("a","b","sigma"), 
+                        n.iter = 5000)
 ```
 
 ### Convergence checks
@@ -370,6 +397,118 @@ polygon(x = c(dat[,2], rev(dat[,2])),
         col = "#EE000020")
 ```
 
+## Prior Choice
+
+So far, we have bypassed a bit the biggest problem in a Bayesian analysis - the choice of the prior
+
+The choice of prior (prior elicitation) is key to Bayesian analysis, and it is arguably the most contentious step in the whole procedure, as it supposedly contains "subjective" judgement. I disagree with this notion. The choice of a prior is not necessarily subjective. It simply means that, unlike in a frequentist analysis, we should generally collect everything that is known about a parameter in advance, which may be done in an objective way. Also, we can try to avoid the inclusion of prior knowledge by choosing so-called uninformative (aka vague, reference) priors. So, a first thing to note about priors is that we have
+
+- Informative priors that express prior knowledge about an inferential question
+- Uninformative priors that express no prior knowledge about an inferential question
+
+More about the choice of uninformative priors below. But first some other statements:
+
+- In the limit of infinitely many data, the likelihood gets infinitely sharp, and therefore the prior choice irrelevant (as long as the prior is not 0 anywhere there is likelihood)
+- Priors are therefore most important if you have a small dataset
+- Priors are changed by rescaling parameters (see below)
+- Uninformative priors are not always flat (see below). For common problems, people have developed recommendations for which priors should be used in an uninformative setting
+
+### Scaling and scale-invariance of prior choices
+
+Scaling is key to understand why uninformative priors can't always be flat. Imagine the following situation: we have a dataset on average tree diameters, and we want to infer the average with a Bayesian method. We shouldn't really look at the data before we specify our prior, so let's just specify the prior, and assume we choose a flat prior between 1 and 10 because we don't want to bias our data in any way
+
+```{r}
+values = 1:5
+priorWeight = rep(1/5, 5)
+barplot(priorWeight, names.arg = values, xlab = "size [cm]", 
+        ylab = "priorProbability", col = "darkseagreen")
+```
+
+Now, let's assume that we decide to change the analysis slightly, and measure average size in the basal area, which scales to diameter as x\^2. We have already specified our prior knowledge about diameter, so for each cm of diameter we have specified the same weight.
+
+If we rescale the x-axis to basal area, the length of each bar on the x-axis changes - large values are getting broader, short values are getting more narrow. If the probability weight is to stay the same, we get the following picture:
+
+```{r}
+barplot(priorWeight/values^2, width = values^2, names.arg = values^2, 
+        xlab = "size [cm^2]", ylab = "priorProbability", col = "darkseagreen")
+```
+
+The message here is that if we are free to rescale predictors as we want (which is generally true), the prior cannot be flat for all possible parameter transformations. A key for any rule about finding uninformative priors is therefore that the rule must be invariant under parameter transformation. For more on this, see [@george1993].
+
+A second message is that in Bayesian statistics, you have to be a bit careful about parameter transformations, because we don't just look at one value, but at a whole distribution, and the shape of this distribution will change if we reparameterize.
+
+### Default choices for uniformative priors
+
+So, what is the right choice for uninformative priors? The somewhat disturbing answer is that there is no generally accepted solution for this problem. One famous proposal that contains many of the desirable properties is [Jeffrey's prior](http://en.wikipedia.org/wiki/Jeffreys_prior) which is defined as
+
+p(phi) \~ sqrt ( det ( F(phi)))
+
+where F(phi) is the [Fisher information matrix](http://en.wikipedia.org/wiki/Fisher_information), which basically tells you how strongly the likelihood changes if parameters change. It is easy to see that the prior choice will then be
+
+- invariant under rescaling parameters
+- proportional to how strongly parameters affect the likelihood
+
+To me, this seems to cover the main agreements about prior choice. Unfortunately, Jeffrey's prior seems to have some problems for multivariate and hierarchical models, so it's not a general panacea. However, partly based on the intuition gained from Jeffrey's prior, a few general default prior choices have emerged:
+
+1.  For **scale parameters** (something that affects the output linearly, like slope or intercept in a regression), use flat or quasi flat priors such as a bounded uniform distribution or (most common choice) a **wide normal distribution**. Note that, people often modify these priors by having a bit more probability mass around a neutral value (usually 0) to get the Bayesian analogue of Lasso or Ridge regression, see Park, T. & Casella, G. (2008), Kyung, M.; Gill, J.; Ghosh, M.; Casella, G. et al. (2010) Penalized regression, standard errors, and Bayesian lassos. Bayesian Analysis, 5, 369-411. If this effect is small, we speak about **mildly regularizing priors**. If the effect is strong, we speak about **shrinkage priors**. Shrinkage priors can be designed with a fixed or adaptive shrinkage, where fixed means that the strength of the shrinkage (e.g. controlled by the sd in a normal prior) is fixed, whereas adaptive shrinkage priors fit the shrinkage via a hyperprior.
+
+2.  For **variance parameters** (something like the standard deviation in a linear regression), use decaying parameters such as 1/x (standard choice according to Jeffrey's prior) or inverse-gamma (very common choice because of conjugacy, see next subsection)
+
+3.  For **variance hyperparameters in hierarchical models**, use again decaying priors such as inverse-gamma or half-t family (suggested by Gelman, 2006)
+
+4.  For binomial distribution, Jeffrey's prior is a beta(1/2,1/2) - this is a good default choice.
+
+In doubt, prior effects can be examined by varying the prior in a sensitivity analysis.
+
+See also
+
+- <http://stats.stackexchange.com/questions/6493/weakly-informative-prior-distributions-for-scale-parameters>
+
+- <http://stats.stackexchange.com/questions/61928/choosing-non-informative-priors?rq=1>
+
+### Conjugacy
+
+Another issue that is often important is [conjugacy](http://en.wikipedia.org/wiki/Conjugate_prior). In Bayesian statistics, if the posterior distributions p(θ\|x) are in the same family as the prior probability distribution p(θ), the prior and posterior are then called conjugate distributions, and the prior is called a conjugate prior for the likelihood function.
+
+Conjugacy has two main advantages:
+
+- The shape of the posterior is known, which allows approximating it parametrically
+- Many sampling methods work more efficiently
+
+One therefore traditionally preferred to specify conjugate priors if possible, although the advantages of this depend on the samplers that are used. Most modern samplers do not really require conjugacy to work well.
+
+### Readings
+
+**Uninformative priors**
+
+Kass, R. E. & Wasserman, L. (1996) The selection of prior distributions by formal rules. J. Am. Stat. Assoc., American Statistical Association, 91, 1343-1370.
+
+Jeffreys, H. (1946) An Invariant Form for the Prior Probability in Estimation Problems. Proceedings of the Royal Society of London. Series A, Mathematical and Physical Sciences, The Royal Society, 186, 453-461.
+
+Jaynes, E. (1968) Prior probabilities. Systems Science and Cybernetics, IEEE Transactions on, IEEE, 4, 227-241.
+
+Tibshirani, R. (1989) Noninformative priors for one parameter of many. Biometrika, 76, 604-608.
+
+Park, T. & Casella, G. (2008) The Bayesian Lasso. Journal of the American Statistical Association, 103, 681-686.
+
+Irony, T. Z. & Singpurwalla, N. D. (1997) Non-informative priors do not exist -- a dialogue with José M. Bernardo. J. Stat. Plan. Infer., 65, 159-177.
+
+Gelman, A.; Jakulin, A.; Pittau, M. G. & Su, Y.-S. (2008) A weakly informative default prior distribution for logistic and other regression models. The Annals of Applied Statistics, JSTOR, , 1360-1383.
+
+Gelman, A. (2006) Prior distributions for variance parameters in hierarchical models. Bayesian Analysis, Citeseer, 1, 515-533.
+
+Fong, Y.; Rue, H. & Wakefield, J. (2010) Bayesian inference for generalized linear mixed models. Biostatistics, 11, 397-412.
+
+Ferguson, T. (1974) Prior distributions on spaces of probability measures. The Annals of Statistics, JSTOR, 2, 615-629.
+
+**Jeffrey's prior**
+
+Jeffreys priors for mixture estimation <http://arxiv.org/abs/1511.03145>
+
+**Informative priors**
+
+Choy, S. L.; O'Leary, R. & Mengersen, K. (2009) Elicitation by design in ecology: using expert opinion to inform priors for Bayesian statistical models. Ecology, 90, 265-277
+
 ## Playing around with the pipeline
 
 ### Prior choice
@@ -378,14 +517,14 @@ Priors are not scale-free. What that means: dnorm(0,0.0001) might not be an unin
 
 **Task:** play with the following minimal script for a linear regression to understand how scaling parameter affects priors and thus posterior shapes. In particular, change
 
--   Multiply Ozone by 1000000 -\> will push sd estimates high
--   Multiply Temp by 0.0000001 -\> will push parameter estimates high
+- Multiply Ozone by 1000000 -\> will push sd estimates high
+- Multiply Temp by 0.0000001 -\> will push parameter estimates high
 
 Then compare Bayesian parameter estimates and their uncertainty to Bayesian estimates. How would you have to change the priors to fix this problem and keep them uninformative?
 
 **Task 2:** implement mildly informative priors as well as strong shrinkage priors in the regression. Question to discuss: should you put the shrinkage also in the intercept? Why should you center variables if you include a shrinkage prior on the intercept?
 
-```{r}
+```{r, eval = F}
 library(rjags)
 
 dat = airquality[complete.cases(airquality),] 
@@ -446,4 +585,60 @@ summary(fit)
 
 ### Missing data
 
-In the analysis above, we removed missing data. What happens if you are leaving the missing data in in a Jags model? Try it out and discuss what happens
+In the analysis above, we removed missing data. What happens if you are leaving the missing data in in a Jags model in either x or y?
+
+Try it out by adding
+
+```{r, eval = F}
+dat$Temp[c(1,5,12)] = NA
+dat$Ozone[c(1,5,12)] = NA
+```
+
+to the code below and discuss what happens. To check in more detail, consider observing x and y!
+
+```{r, eval = F}
+library(rjags)
+
+dat = airquality[complete.cases(airquality),] 
+dat$Ozone = as.vector(scale(dat$Ozone))
+dat$Temp = as.vector(scale(dat$Temp)) 
+
+Data = list(y = dat$Ozone, 
+            x = dat$Temp, 
+            i.max = nrow(dat))
+
+modelCode = "
+  model{
+  
+    # Likelihood
+    for(i in 1:i.max){
+      mu[i] <- Temp*x[i]+ intercept
+      y[i] ~ dnorm(mu[i],tau)
+    }
+  
+    # Prior distributions
+    
+    # For location parameters, typical choice is wide normal
+    intercept ~ dnorm(0,0.0001)
+    Temp ~ dnorm(0,0.0001)
+  
+    # For scale parameters, typical choice is decaying
+    tau ~ dgamma(0.001, 0.001)
+    sigma <- 1/sqrt(tau) # this line is optional, just in case you want to observe sigma or set sigma (e.g. for inits)
+  
+  }
+"
+
+jagsModel <- jags.model(file= textConnection(modelCode), 
+                        data=Data, 
+                        n.chains = 3)
+
+update(jagsModel, n.iter = 1000)
+
+Samples <- coda.samples(jagsModel, 
+                        variable.names = c("intercept","Temp","sigma"), 
+                        n.iter = 5000)
+
+summary(Samples)
+
+```

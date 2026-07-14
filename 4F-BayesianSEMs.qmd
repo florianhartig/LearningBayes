@@ -11,8 +11,11 @@ set.seed(42)
 # Bayesian causal models
 
 ::: callout-note
-In this chapter, we will discuss 
+In this chapter, we will discuss how to fit causal models / structural equation models (SEMs) with Bayesian methods. You will learn
 
+- How to fit Bayesian SEMs with blavaan (a Bayesian interface to lavaan)
+- How to fit piecewise SEMs (a set of connected GLM(M)s) using piecewiseSEM and brms
+- How to write a fully custom JAGS model for causal graphs that need latent variables or non-Gaussian responses
 :::
 
 
@@ -161,12 +164,12 @@ model{
 }
 "
 
-windPartiallyObs <- islandData$windObs
+windPartiallyObs <- volcanoisland$windObs
 sel = sample.int(1000, 500)
 windPartiallyObs[sel] = NA
 
 # 2) Set up a list that contains all the necessary data (here, including parameters of the prior distribution)
-Data = list(Beetles = islandData$beetles, Alt = islandData$sAltitude, i.max = length(islandData$sAltitude), Wind = windPartiallyObs, Ducks = islandData$ducks, Habitat = islandData$habitatQuality, SoilTexture = islandData$earth)
+Data = list(Beetles = volcanoisland$beetles, Alt = volcanoisland$sAltitude, i.max = length(volcanoisland$sAltitude), Wind = windPartiallyObs, Ducks = volcanoisland$ducks, Habitat = volcanoisland$habitatQuality, SoilTexture = volcanoisland$earth)
 
 # 3) Specify a function to generate inital values for the parameters
 
@@ -187,11 +190,11 @@ library(DHARMa)
 simulations = R2JagsResults$BUGSoutput$sims.list$yPred
 pred = apply(simulations, 2, median)
 dim(simulations)
-sim = createDHARMa(simulatedResponse = t(simulations), observedResponse = islandData$beetles, fittedPredictedResponse = pred, integerResponse = T)
+sim = createDHARMa(simulatedResponse = t(simulations), observedResponse = volcanoisland$beetles, fittedPredictedResponse = pred, integerResponse = T)
 plot(sim)
 
 
-plotResiduals(islandData$year, sim$scaledResiduals, asFactor = T)
+plotResiduals(volcanoisland$year, sim$scaledResiduals, asFactor = T)
 
 testSpatialAutocorrelation(sim)
 

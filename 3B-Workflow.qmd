@@ -11,8 +11,12 @@ set.seed(42)
 # Bayesian Workflow
 
 ::: callout-note
-In this chapter, we will discuss 
+In this chapter, we will discuss the typical steps of a Bayesian analysis workflow, from setting up a model to reporting final results. You will learn
 
+- How to choose an initial model structure and priors, and check them with prior predictive checks
+- How to validate the computation itself, e.g. via convergence diagnostics and fake-data simulation
+- How to perform posterior predictive checks and residual diagnostics to validate the fitted model
+- How prior sensitivity analysis and cross-validation fit into the overall workflow
 :::
 
 ![Bayesian Workflow, from Gelman, A., Vehtari, A., Simpson, D., Margossian, C. C., Carpenter, B., Yao, Y., \... & Modrák, M. (2020). Bayesian workflow. <https://arxiv.org/pdf/2011.01808.pdf>](images/BayesianWorkflow.png){width="800"}

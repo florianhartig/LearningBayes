@@ -11,8 +11,11 @@ set.seed(42)
 # Process-based models
 
 ::: callout-note
-In this chapter, we will discuss 
+In this chapter, we will discuss how to calibrate process-based (simulation) models with Bayesian methods, using the VSEM ecosystem model as an example. You will learn
 
+- How to set up a likelihood function that connects a process-based simulation model to data
+- How to calibrate such a model with MCMC using the BayesianTools package
+- How to check convergence and create posterior (and prior) predictive time series plots
 :::
 
 

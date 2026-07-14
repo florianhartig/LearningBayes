@@ -1,4 +1,5 @@
 Version: 1.0
+ProjectId: 994826a6-d4c1-4437-b497-9ccf4658b7a0
 
 RestoreWorkspace: Default
 SaveWorkspace: Default
@@ -11,9 +12,3 @@ Encoding: UTF-8
 
 RnwWeave: Sweave
 LaTeX: pdfLaTeX
-
-BuildType: Package
-PackageUseDevtools: Yes
-PackagePath: LearningBayes
-PackageInstallArgs: --no-multiarch --with-keep.source
-PackageRoxygenize: rd,collate,namespace
