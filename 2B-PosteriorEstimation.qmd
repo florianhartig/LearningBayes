@@ -82,7 +82,7 @@ Now, we want to estimate the posterior distribution for this model, using MCMC s
 
 The simplest option is to use brms. brms is a package that allows you to specify regression models in the formula syntax that is familiar to you from standard frequentist R function and packages such as lm, lme4, etc. The application is straightforward
 
-```{r, message = F, echo=FALSE, results = 'hide'}
+```{r, message = F, warning = F, echo=FALSE, results = 'hide'}
 library(brms)
 fit <- brm(Ozone ~ Temp, data = airqualityCleaned)
 ```

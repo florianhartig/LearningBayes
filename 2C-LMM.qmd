@@ -13,7 +13,7 @@ set.seed(42)
 ::: callout-note
 In this chapter, we will discuss how to fit linear and linear mixed models in a Bayesian framework, using a dataset on body mass in the snake Vipera aspis as a running example. You will learn
 
-- How to fit a Bayesian linear regression with a continuous predictor in JAGS, and compare it to the frequentist `lm()` fit
+- How to fit a Bayesian linear regression with a continuous predictor in brms and JAGS, and compare it to the frequentist `lm()` fit
 - How to add categorical predictors and interactions to the model
 - How to extend the model to a linear mixed model (LMM) with a random intercept, and compare it to `lmer()`
 :::
@@ -21,6 +21,8 @@ In this chapter, we will discuss how to fit linear and linear mixed models in a 
 ## LM
 
 To introduce the typical options in a linear model, we use an example that was originally prepared by Jörn Pagel. In the example, we want to analyze predictors of Body mass in the snake Vipera aspis.
+
+[![French Vipera aspis aspis seen in the wild. Photo by Felix Reimann via WikiMedia Commons.](images/Vipera_aspis_aspis.jpg)]((https://de.wikipedia.org/wiki/Aspisviper#/media/Datei:Vipera_aspis_aspis.jpg))
 
 ```{r}
 Dat = read.table("https://raw.githubusercontent.com/florianhartig/LearningBayes/master/data/Aspis_data.txt", stringsAsFactors = T)
@@ -44,32 +46,36 @@ LM <- lm(log_BM ~ log_TL.sc, data = Dat)
 summary(LM)
 ```
 
+Analysis in brms
+
+```{r, message = F, warning = F, results = 'hide'}
+library(brms)
+LMbrms <- brm(log_BM ~ log_TL.sc, data = Dat)
+```
+
+```{r}
+summary(LMbrms)
+```
+
 Analysis in JAGS
 
 ```{r}
 library(rjags)
-
-# 1) Save a description of the model in JAGS syntax 
-# to the working directory
 model ="
 model{
   # Likelihood
   for(i in 1:n.dat){
     y[i] ~ dnorm(mu[i],tau)
     mu[i] <- alpha + beta.TL * TL[i]
-    }
+  }
   
   # Prior distributions
   alpha ~ dnorm(0,0.001)
   beta.TL ~ dnorm(0,0.001)
   tau <- 1/(sigma*sigma)
   sigma ~ dunif(0,100)
-  }
+}
 "
-
-# s = function(x) dgamma(x, shape = 0.0001, rate = 0.001)
-# curve(s, 0, 5)
-
 
 # 2) Set up a list that contains all the necessary data
 Data = list(y = Dat$log_BM, 
@@ -82,15 +88,18 @@ inits.fn <- function() list(alpha = rnorm(1),
                             sigma = runif(1,1,100))
 
 # Compile the model and run the MCMC for an adaptation (burn-in) phase
-jagsModel <- jags.model(file = textConnection(model), data=Data, 
-                        init = inits.fn, n.chains = 3, 
+jagsModel <- jags.model(file = textConnection(model), 
+                        data=Data, 
+                        init = inits.fn, 
+                        n.chains = 3, 
                         n.adapt= 5000)
 
 # Specify parameters for which posterior samples are saved
 para.names <- c("alpha","beta.TL","sigma")
 
 # Continue the MCMC runs with sampling
-Samples <- coda.samples(jagsModel, variable.names = para.names, 
+Samples <- coda.samples(jagsModel, 
+                        variable.names = para.names, 
                         n.iter = 5000)
 
 # Statistical summaries of the (marginal) posterior 
@@ -105,14 +114,14 @@ PostMeans <- summary(Samples)$statistics[,'Mean']
 plot(Samples)
 ```
 
-Compare this to the lm() results
+Compare JAGS to the lm() results
 
 ```{r}
 plot(Dat$log_TL.sc, Dat$log_BM)
 coef(LM)
 # and the two regression lines
-abline(LM, col = 'red')
-abline(PostMeans[1:2], col = 'blue')
+abline(LM, col = 'red', lty = 3)
+abline(PostMeans[1:2], col = 'blue', lty = 2)
 
 ```
 
@@ -138,6 +147,17 @@ Linear regression with lm()
 ```{r}
 LM <- lm(log_BM ~ log_TL.sc + Sex, data = Dat)
 summary(LM)
+```
+
+Analysis in brms
+
+```{r, message = F, warning = F, results = 'hide'}
+library(brms)
+LMbrms <- brm(log_BM ~ log_TL.sc + Sex, data = Dat)
+```
+
+```{r}
+summary(LMbrms)
 ```
 
 Analysis in JAGS
@@ -278,18 +298,32 @@ BayesianTools::correlationPlot(Samples)
 
 ## LMM (mixed effects)
 
+For motivation and principles of frequentist mixed effect models, see our [GLMM course](https://theoreticalecology.github.io/AdvancedRegressionModels/).
+
+Standard model with lme4
+
 ```{r}
-####################################################################
-# Linear regression with lm()
 library(lme4)
 LME <- lmer(log_BM ~ log_TL.sc + Sex + Sex:log_TL.sc
-         + (1|Pop), data = Dat)
+            + (1|Pop), data = Dat)
 summary(LME)
+```
 
-#############################################################
-# Analysis in JAGS                                          #
-#############################################################
+Analysis in brms
 
+```{r, message = F, warning = F, results = 'hide'}
+library(brms)
+LMEbrms <- brm(log_BM ~ log_TL.sc + Sex + Sex:log_TL.sc
+            + (1|Pop), data = Dat)
+```
+
+```{r}
+summary(LMEbrms)
+```
+
+Analysis in JAGS
+
+```{r}
 model = 
   "model{
   # Likelihood
@@ -304,7 +338,7 @@ model =
     }
   for(s in 1:2){
     beta.TL[s] ~ dnorm(0,0.001)
-    }
+  }
   mu.alpha ~ dnorm(0,0.001)
   beta.m ~ dnorm(0,0.001)
   tau <- 1/(sigma*sigma)

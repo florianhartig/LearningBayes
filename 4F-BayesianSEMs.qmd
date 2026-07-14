@@ -80,18 +80,20 @@ summary(k_fit_psem)
 
 Piecewise SEMs can pretty much in the same way be coded in brms:
 
-```{r}
+```{r, message = F, warning = F, results = 'hide'}
 library(brms)
 
 rich_mod <- bf(rich ~ firesev + cover)
 cover_mod <- bf(cover ~ firesev)
 
 k_fit_brms <- brm(rich_mod +
-                  cover_mod + 
-                  set_rescor(FALSE), 
+                  cover_mod +
+                  set_rescor(FALSE),
                 data=keeley,
                 cores=4, chains = 2)
+```
 
+```{r}
 plot(k_fit_brms)
 
 ```

@@ -381,7 +381,7 @@ For more R. B. O'Hara. M. J. Sillanpää. "A review of Bayesian variable selecti
 
 It was suggested that WAIC has a bunch of favorable advantages over DIC, but it is also harder to calculate. In Jags, WAIC is a bit complicated. It is better supported in STAN and brms.
 
-```{r, message = F, results='hide'}
+```{r, message = F, warning = F, results='hide'}
 
 library(loo)
 

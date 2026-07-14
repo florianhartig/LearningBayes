@@ -657,28 +657,24 @@ Individual R-squared:
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>cover_mod <span class="ot">&lt;-</span> <span class="fu">bf</span>(cover <span class="sc">~</span> firesev)</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>k_fit_brms <span class="ot">&lt;-</span> <span class="fu">brm</span>(rich_mod <span class="sc">+</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>                  cover_mod <span class="sc">+</span> </span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">set_rescor</span>(<span class="cn">FALSE</span>), </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>                  cover_mod <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">set_rescor</span>(<span class="cn">FALSE</span>),</span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">data=</span>keeley,</span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">cores=</span><span class="dv">4</span>, <span class="at">chains =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Compiling Stan program...</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Start sampling</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(k_fit_brms)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(k_fit_brms)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="4F-BayesianSEMs_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="4F-BayesianSEMs_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="4F-BayesianSEMs_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="4F-BayesianSEMs_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -689,100 +685,100 @@ Individual R-squared:
 <p>If you want latent variables and non-Gaussian responses, you will have to code by hand. Here an example, which is effectively a piecewise SEM but could be extended to include latent variables.</p>
 <p>TODO</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EcoData)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effects)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>islandPsem <span class="ot">&lt;-</span> <span class="fu">psem</span>(</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(windObs <span class="sc">~</span> sAltitude, <span class="at">data =</span> volcanoisland),</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glm</span>(lizardsObs <span class="sc">~</span> sAltitude , <span class="at">family =</span> binomial, <span class="at">data =</span> volcanoisland),</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glm</span>(beetles <span class="sc">~</span> windObs <span class="sc">+</span> lizardsObs,  <span class="at">family =</span> poisson, <span class="at">data =</span> volcanoisland)</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(islandPsem)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rjags)</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R2jags)</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) Model definition exactly how we created our data </span></span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>modelCode <span class="ot">=</span> <span class="st">"</span></span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="st">model{</span></span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="st">    Wind[i] ~ dnorm(windPred[i], windPrec)</span></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="st">    windPred[i] &lt;- intW + altW*Alt[i]</span></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="st">    Ducks[i] ~ dbern(lambdaD[i])</span></span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="st">    logit(lambdaD[i]) &lt;- intD + altD*Alt[i] + habitatD * Habitat[i] + soilD * SoilTexture[i]</span></span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="st">    Beetles[i] ~ dpois(lambda[i])</span></span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="st">    lambda[i] &lt;- exp(mu[i] )  </span></span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="st">    mu[i] &lt;- intB + altB*Alt[i] + alt2B*Alt[i]*Alt[i] + windB * Wind[i] + OLREB[i]</span></span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior distributions</span></span>
-<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a><span class="st">  intB ~ dnorm(0,0.001)</span></span>
-<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a><span class="st">  altB ~ dnorm(0,0.001)</span></span>
-<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a><span class="st">  alt2B ~ dnorm(0,0.001)</span></span>
-<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a><span class="st">  windB ~ dnorm(0,0.001)</span></span>
-<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
-<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a><span class="st">    OLREB[i] ~ dnorm(0,precOLREB)</span></span>
-<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a><span class="st">  precOLREB ~ dgamma(0.001,0.001)</span></span>
-<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a><span class="st">  intW ~ dnorm(0,0.001)</span></span>
-<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a><span class="st">  altW ~ dnorm(0,0.001)</span></span>
-<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a><span class="st">  windPrec &lt;- 1/(windSD * windSD)</span></span>
-<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a><span class="st">  windSD ~ dunif(0,100)</span></span>
-<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a><span class="st">  intD ~ dnorm(0,0.001)</span></span>
-<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a><span class="st">  altD ~ dnorm(0,0.001)</span></span>
-<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a><span class="st">  habitatD ~ dnorm(0,0.001)</span></span>
-<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a><span class="st">  soilD ~ dnorm(0,0.001)</span></span>
-<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a><span class="st">  # posterior predictive simulations</span></span>
-<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
-<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a><span class="st">    yPred[i] ~ dpois(lambda[i])</span></span>
-<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
-<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
-<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
-<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a>windPartiallyObs <span class="ot">&lt;-</span> volcanoisland<span class="sc">$</span>windObs</span>
-<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a>sel <span class="ot">=</span> <span class="fu">sample.int</span>(<span class="dv">1000</span>, <span class="dv">500</span>)</span>
-<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a>windPartiallyObs[sel] <span class="ot">=</span> <span class="cn">NA</span></span>
-<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) Set up a list that contains all the necessary data (here, including parameters of the prior distribution)</span></span>
-<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> <span class="fu">list</span>(<span class="at">Beetles =</span> volcanoisland<span class="sc">$</span>beetles, <span class="at">Alt =</span> volcanoisland<span class="sc">$</span>sAltitude, <span class="at">i.max =</span> <span class="fu">length</span>(volcanoisland<span class="sc">$</span>sAltitude), <span class="at">Wind =</span> windPartiallyObs, <span class="at">Ducks =</span> volcanoisland<span class="sc">$</span>ducks, <span class="at">Habitat =</span> volcanoisland<span class="sc">$</span>habitatQuality, <span class="at">SoilTexture =</span> volcanoisland<span class="sc">$</span>earth)</span>
-<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a><span class="co"># 3) Specify a function to generate inital values for the parameters</span></span>
-<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a><span class="co"># Out of laziness, we don't provide inits for the other parameters. For a real study, provide overdispersed sampling functions for all parameters</span></span>
-<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a>inits.fn <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">list</span>(<span class="at">intB =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>), <span class="at">altB =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>), <span class="at">alt2B =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>))</span>
-<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-75"><a href="#cb20-75" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R2jags)</span>
-<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a>R2JagsResults <span class="ot">&lt;-</span> <span class="fu">jags</span>(<span class="at">data=</span>Data, <span class="at">inits=</span>inits.fn, <span class="at">parameters.to.save=</span><span class="fu">c</span>(<span class="st">"intB"</span>,<span class="st">"altB"</span>,<span class="st">"alt2B"</span>, <span class="st">"intW"</span>, <span class="st">"altW"</span>, <span class="st">"windB"</span>, <span class="st">"intD"</span>, <span class="st">"altD"</span>, <span class="st">"habitatD"</span>, <span class="st">"soilD"</span>), <span class="at">n.chains=</span><span class="dv">3</span>, <span class="at">n.iter=</span><span class="dv">10000</span>, <span class="at">model.file=</span><span class="fu">textConnection</span>(modelCode), <span class="at">DIC =</span> F)</span>
-<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(R2JagsResults)</span>
-<span id="cb20-80"><a href="#cb20-80" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(R2JagsResults)</span>
-<span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-82"><a href="#cb20-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-83"><a href="#cb20-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-84"><a href="#cb20-84" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DHARMa)</span>
-<span id="cb20-85"><a href="#cb20-85" aria-hidden="true" tabindex="-1"></a>simulations <span class="ot">=</span> R2JagsResults<span class="sc">$</span>BUGSoutput<span class="sc">$</span>sims.list<span class="sc">$</span>yPred</span>
-<span id="cb20-86"><a href="#cb20-86" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">=</span> <span class="fu">apply</span>(simulations, <span class="dv">2</span>, median)</span>
-<span id="cb20-87"><a href="#cb20-87" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(simulations)</span>
-<span id="cb20-88"><a href="#cb20-88" aria-hidden="true" tabindex="-1"></a>sim <span class="ot">=</span> <span class="fu">createDHARMa</span>(<span class="at">simulatedResponse =</span> <span class="fu">t</span>(simulations), <span class="at">observedResponse =</span> volcanoisland<span class="sc">$</span>beetles, <span class="at">fittedPredictedResponse =</span> pred, <span class="at">integerResponse =</span> T)</span>
-<span id="cb20-89"><a href="#cb20-89" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sim)</span>
-<span id="cb20-90"><a href="#cb20-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-91"><a href="#cb20-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-92"><a href="#cb20-92" aria-hidden="true" tabindex="-1"></a><span class="fu">plotResiduals</span>(volcanoisland<span class="sc">$</span>year, sim<span class="sc">$</span>scaledResiduals, <span class="at">asFactor =</span> T)</span>
-<span id="cb20-93"><a href="#cb20-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-94"><a href="#cb20-94" aria-hidden="true" tabindex="-1"></a><span class="fu">testSpatialAutocorrelation</span>(sim)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EcoData)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effects)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>islandPsem <span class="ot">&lt;-</span> <span class="fu">psem</span>(</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(windObs <span class="sc">~</span> sAltitude, <span class="at">data =</span> volcanoisland),</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glm</span>(lizardsObs <span class="sc">~</span> sAltitude , <span class="at">family =</span> binomial, <span class="at">data =</span> volcanoisland),</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glm</span>(beetles <span class="sc">~</span> windObs <span class="sc">+</span> lizardsObs,  <span class="at">family =</span> poisson, <span class="at">data =</span> volcanoisland)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(islandPsem)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rjags)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R2jags)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) Model definition exactly how we created our data </span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>modelCode <span class="ot">=</span> <span class="st">"</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="st">model{</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="st">  # Likelihood</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="st">    Wind[i] ~ dnorm(windPred[i], windPrec)</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="st">    windPred[i] &lt;- intW + altW*Alt[i]</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="st">    Ducks[i] ~ dbern(lambdaD[i])</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="st">    logit(lambdaD[i]) &lt;- intD + altD*Alt[i] + habitatD * Habitat[i] + soilD * SoilTexture[i]</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="st">    Beetles[i] ~ dpois(lambda[i])</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="st">    lambda[i] &lt;- exp(mu[i] )  </span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="st">    mu[i] &lt;- intB + altB*Alt[i] + alt2B*Alt[i]*Alt[i] + windB * Wind[i] + OLREB[i]</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a><span class="st">  # Prior distributions</span></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="st">  intB ~ dnorm(0,0.001)</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="st">  altB ~ dnorm(0,0.001)</span></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="st">  alt2B ~ dnorm(0,0.001)</span></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="st">  windB ~ dnorm(0,0.001)</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="st">    OLREB[i] ~ dnorm(0,precOLREB)</span></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a><span class="st">  precOLREB ~ dgamma(0.001,0.001)</span></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a><span class="st">  intW ~ dnorm(0,0.001)</span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a><span class="st">  altW ~ dnorm(0,0.001)</span></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a><span class="st">  windPrec &lt;- 1/(windSD * windSD)</span></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a><span class="st">  windSD ~ dunif(0,100)</span></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a><span class="st">  intD ~ dnorm(0,0.001)</span></span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a><span class="st">  altD ~ dnorm(0,0.001)</span></span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a><span class="st">  habitatD ~ dnorm(0,0.001)</span></span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a><span class="st">  soilD ~ dnorm(0,0.001)</span></span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a><span class="st">  # posterior predictive simulations</span></span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a><span class="st">  for(i in 1:i.max){</span></span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a><span class="st">    yPred[i] ~ dpois(lambda[i])</span></span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>windPartiallyObs <span class="ot">&lt;-</span> volcanoisland<span class="sc">$</span>windObs</span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>sel <span class="ot">=</span> <span class="fu">sample.int</span>(<span class="dv">1000</span>, <span class="dv">500</span>)</span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>windPartiallyObs[sel] <span class="ot">=</span> <span class="cn">NA</span></span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) Set up a list that contains all the necessary data (here, including parameters of the prior distribution)</span></span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">=</span> <span class="fu">list</span>(<span class="at">Beetles =</span> volcanoisland<span class="sc">$</span>beetles, <span class="at">Alt =</span> volcanoisland<span class="sc">$</span>sAltitude, <span class="at">i.max =</span> <span class="fu">length</span>(volcanoisland<span class="sc">$</span>sAltitude), <span class="at">Wind =</span> windPartiallyObs, <span class="at">Ducks =</span> volcanoisland<span class="sc">$</span>ducks, <span class="at">Habitat =</span> volcanoisland<span class="sc">$</span>habitatQuality, <span class="at">SoilTexture =</span> volcanoisland<span class="sc">$</span>earth)</span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a><span class="co"># 3) Specify a function to generate inital values for the parameters</span></span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a><span class="co"># Out of laziness, we don't provide inits for the other parameters. For a real study, provide overdispersed sampling functions for all parameters</span></span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a>inits.fn <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">list</span>(<span class="at">intB =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>), <span class="at">altB =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>), <span class="at">alt2B =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>))</span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R2jags)</span>
+<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a>R2JagsResults <span class="ot">&lt;-</span> <span class="fu">jags</span>(<span class="at">data=</span>Data, <span class="at">inits=</span>inits.fn, <span class="at">parameters.to.save=</span><span class="fu">c</span>(<span class="st">"intB"</span>,<span class="st">"altB"</span>,<span class="st">"alt2B"</span>, <span class="st">"intW"</span>, <span class="st">"altW"</span>, <span class="st">"windB"</span>, <span class="st">"intD"</span>, <span class="st">"altD"</span>, <span class="st">"habitatD"</span>, <span class="st">"soilD"</span>), <span class="at">n.chains=</span><span class="dv">3</span>, <span class="at">n.iter=</span><span class="dv">10000</span>, <span class="at">model.file=</span><span class="fu">textConnection</span>(modelCode), <span class="at">DIC =</span> F)</span>
+<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(R2JagsResults)</span>
+<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(R2JagsResults)</span>
+<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DHARMa)</span>
+<span id="cb18-85"><a href="#cb18-85" aria-hidden="true" tabindex="-1"></a>simulations <span class="ot">=</span> R2JagsResults<span class="sc">$</span>BUGSoutput<span class="sc">$</span>sims.list<span class="sc">$</span>yPred</span>
+<span id="cb18-86"><a href="#cb18-86" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">=</span> <span class="fu">apply</span>(simulations, <span class="dv">2</span>, median)</span>
+<span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(simulations)</span>
+<span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a>sim <span class="ot">=</span> <span class="fu">createDHARMa</span>(<span class="at">simulatedResponse =</span> <span class="fu">t</span>(simulations), <span class="at">observedResponse =</span> volcanoisland<span class="sc">$</span>beetles, <span class="at">fittedPredictedResponse =</span> pred, <span class="at">integerResponse =</span> T)</span>
+<span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sim)</span>
+<span id="cb18-90"><a href="#cb18-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-92"><a href="#cb18-92" aria-hidden="true" tabindex="-1"></a><span class="fu">plotResiduals</span>(volcanoisland<span class="sc">$</span>year, sim<span class="sc">$</span>scaledResiduals, <span class="at">asFactor =</span> T)</span>
+<span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-94"><a href="#cb18-94" aria-hidden="true" tabindex="-1"></a><span class="fu">testSpatialAutocorrelation</span>(sim)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 

@@ -577,7 +577,6 @@ sigma <- matrix(c(4,2,2,3), ncol=2)
 posteriorSamples <- rmvnorm(n=500, mean=c(1,2), sigma=sigma)
 
 ```
-
 :::
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
@@ -585,4 +584,3 @@ posteriorSamples <- rmvnorm(n=500, mean=c(1,2), sigma=sigma)
 
 1.  TODO
 :::
-

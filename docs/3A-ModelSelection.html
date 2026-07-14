@@ -931,23 +931,16 @@ Penalized deviance: 543.4 </code></pre>
 <span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co"># model with population-level effects only</span></span>
 <span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">brm</span>(rating <span class="sc">~</span> treat <span class="sc">+</span> period <span class="sc">+</span> carry,</span>
 <span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> inhaler)</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>waic1 <span class="ot">&lt;-</span> <span class="fu">waic</span>(fit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: 
-2 (0.3%) p_waic estimates greater than 0.4. We recommend trying loo instead.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># model with an additional varying intercept for subjects</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">brm</span>(rating <span class="sc">~</span> treat <span class="sc">+</span> period <span class="sc">+</span> carry <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>subject),</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> inhaler)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>waic2 <span class="ot">&lt;-</span> <span class="fu">waic</span>(fit2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: 
-26 (4.5%) p_waic estimates greater than 0.4. We recommend trying loo instead.</code></pre>
-</div>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>waic1 <span class="ot">&lt;-</span> <span class="fu">waic</span>(fit1)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="co"># model with an additional varying intercept for subjects</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">brm</span>(rating <span class="sc">~</span> treat <span class="sc">+</span> period <span class="sc">+</span> carry <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>subject),</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> inhaler)</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>waic2 <span class="ot">&lt;-</span> <span class="fu">waic</span>(fit2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>compare both models</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(waic1, waic2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo_compare</span>(waic1, waic2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> model elpd_diff se_diff p_worse diag_diff diag_elpd
   fit2       0.0     0.0      NA                    
@@ -965,43 +958,43 @@ Penalized deviance: 543.4 </code></pre>
 <p>The issue is known under the term “post-selection inference” and applies to Bayesian and frequentist models alike, see e.g.&nbsp;Kuchibhotla, A. K., Kolassa, J. E., &amp; Kuffner, T. A. (2022). Post-selection inference.&nbsp;<em>Annual Review of Statistics and Its Application</em>,&nbsp;<em>9</em>, 505-527.</p>
 <p>This example shows how AIC selection, followed by a conventional regression analysis of the selected model, massively inflates false positives.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">20000</span>), <span class="at">ncol =</span> <span class="dv">100</span>))</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>fullModel <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> . , <span class="at">data =</span> dat)</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fullModel)</span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)</span></span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>selection <span class="ot">=</span> <span class="fu">stepAIC</span>(fullModel, <span class="at">trace =</span> F)</span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> X1 <span class="sc">+</span> X2 <span class="sc">+</span> X3 <span class="sc">+</span> X5 <span class="sc">+</span> X7 <span class="sc">+</span> X13 <span class="sc">+</span> X20 <span class="sc">+</span> X23 <span class="sc">+</span> X30 <span class="sc">+</span> </span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>             X37 <span class="sc">+</span> X42 <span class="sc">+</span> X45 <span class="sc">+</span> X46 <span class="sc">+</span> X47 <span class="sc">+</span> X48 <span class="sc">+</span> X64 <span class="sc">+</span> X65 <span class="sc">+</span> X66 <span class="sc">+</span> X71 <span class="sc">+</span> </span>
-<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>             X75 <span class="sc">+</span> X80 <span class="sc">+</span> X81 <span class="sc">+</span> X87 <span class="sc">+</span> X88 <span class="sc">+</span> X89 <span class="sc">+</span> X90 <span class="sc">+</span> X94 <span class="sc">+</span> X100, <span class="at">data =</span> dat))</span>
-<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="co"># voila, 15 out of 28 (before 100) predictors significant - looks like we could have good fun to discuss / publish these results!</span></span>
-<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a><span class="do">#######################################################</span></span>
-<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Same thing, but now we put in 10 significant predictors (the first 10 x)</span></span>
-<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">20000</span>), <span class="at">ncol =</span> <span class="dv">100</span>))</span>
-<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)</span>
-<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> dat<span class="sc">$</span>y <span class="sc">+</span> <span class="fu">rowSums</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]) </span>
-<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a>fullModel <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> . , <span class="at">data =</span> dat)</span>
-<span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fullModel)</span>
-<span id="cb40-29"><a href="#cb40-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)</span></span>
-<span id="cb40-30"><a href="#cb40-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-31"><a href="#cb40-31" aria-hidden="true" tabindex="-1"></a>selection <span class="ot">=</span> <span class="fu">stepAIC</span>(fullModel, <span class="at">trace =</span> F)</span>
-<span id="cb40-32"><a href="#cb40-32" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> X1 <span class="sc">+</span> X2 <span class="sc">+</span> X3 <span class="sc">+</span> X4 <span class="sc">+</span> X5 <span class="sc">+</span> X6 <span class="sc">+</span> X7 <span class="sc">+</span> X8 <span class="sc">+</span> X9 <span class="sc">+</span> X10 <span class="sc">+</span> X13 <span class="sc">+</span> </span>
-<span id="cb40-33"><a href="#cb40-33" aria-hidden="true" tabindex="-1"></a>             X14 <span class="sc">+</span> X20 <span class="sc">+</span> X23 <span class="sc">+</span> X24 <span class="sc">+</span> X26 <span class="sc">+</span> X30 <span class="sc">+</span> X37 <span class="sc">+</span> X42 <span class="sc">+</span> X46 <span class="sc">+</span> X47 <span class="sc">+</span> </span>
-<span id="cb40-34"><a href="#cb40-34" aria-hidden="true" tabindex="-1"></a>             X48 <span class="sc">+</span> X49 <span class="sc">+</span> X64 <span class="sc">+</span> X65 <span class="sc">+</span> X66 <span class="sc">+</span> X68 <span class="sc">+</span> X71 <span class="sc">+</span> X73 <span class="sc">+</span> X75 <span class="sc">+</span> X80 <span class="sc">+</span> </span>
-<span id="cb40-35"><a href="#cb40-35" aria-hidden="true" tabindex="-1"></a>             X81 <span class="sc">+</span> X87 <span class="sc">+</span> X88 <span class="sc">+</span> X89 <span class="sc">+</span> X90 <span class="sc">+</span> X94, <span class="at">data =</span> dat))</span>
-<span id="cb40-36"><a href="#cb40-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-37"><a href="#cb40-37" aria-hidden="true" tabindex="-1"></a><span class="co"># true positives are good, but false positives remain</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">20000</span>), <span class="at">ncol =</span> <span class="dv">100</span>))</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>fullModel <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> . , <span class="at">data =</span> dat)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fullModel)</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>selection <span class="ot">=</span> <span class="fu">stepAIC</span>(fullModel, <span class="at">trace =</span> F)</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> X1 <span class="sc">+</span> X2 <span class="sc">+</span> X3 <span class="sc">+</span> X5 <span class="sc">+</span> X7 <span class="sc">+</span> X13 <span class="sc">+</span> X20 <span class="sc">+</span> X23 <span class="sc">+</span> X30 <span class="sc">+</span> </span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>             X37 <span class="sc">+</span> X42 <span class="sc">+</span> X45 <span class="sc">+</span> X46 <span class="sc">+</span> X47 <span class="sc">+</span> X48 <span class="sc">+</span> X64 <span class="sc">+</span> X65 <span class="sc">+</span> X66 <span class="sc">+</span> X71 <span class="sc">+</span> </span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>             X75 <span class="sc">+</span> X80 <span class="sc">+</span> X81 <span class="sc">+</span> X87 <span class="sc">+</span> X88 <span class="sc">+</span> X89 <span class="sc">+</span> X90 <span class="sc">+</span> X94 <span class="sc">+</span> X100, <span class="at">data =</span> dat))</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a><span class="co"># voila, 15 out of 28 (before 100) predictors significant - looks like we could have good fun to discuss / publish these results!</span></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a><span class="do">#######################################################</span></span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Same thing, but now we put in 10 significant predictors (the first 10 x)</span></span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">20000</span>), <span class="at">ncol =</span> <span class="dv">100</span>))</span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)</span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>y <span class="ot">=</span> dat<span class="sc">$</span>y <span class="sc">+</span> <span class="fu">rowSums</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]) </span>
+<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>fullModel <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> . , <span class="at">data =</span> dat)</span>
+<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fullModel)</span>
+<span id="cb37-29"><a href="#cb37-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 predictors out of 100 significant (on average, we expect 5 of 100 to be significant)</span></span>
+<span id="cb37-30"><a href="#cb37-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-31"><a href="#cb37-31" aria-hidden="true" tabindex="-1"></a>selection <span class="ot">=</span> <span class="fu">stepAIC</span>(fullModel, <span class="at">trace =</span> F)</span>
+<span id="cb37-32"><a href="#cb37-32" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> X1 <span class="sc">+</span> X2 <span class="sc">+</span> X3 <span class="sc">+</span> X4 <span class="sc">+</span> X5 <span class="sc">+</span> X6 <span class="sc">+</span> X7 <span class="sc">+</span> X8 <span class="sc">+</span> X9 <span class="sc">+</span> X10 <span class="sc">+</span> X13 <span class="sc">+</span> </span>
+<span id="cb37-33"><a href="#cb37-33" aria-hidden="true" tabindex="-1"></a>             X14 <span class="sc">+</span> X20 <span class="sc">+</span> X23 <span class="sc">+</span> X24 <span class="sc">+</span> X26 <span class="sc">+</span> X30 <span class="sc">+</span> X37 <span class="sc">+</span> X42 <span class="sc">+</span> X46 <span class="sc">+</span> X47 <span class="sc">+</span> </span>
+<span id="cb37-34"><a href="#cb37-34" aria-hidden="true" tabindex="-1"></a>             X48 <span class="sc">+</span> X49 <span class="sc">+</span> X64 <span class="sc">+</span> X65 <span class="sc">+</span> X66 <span class="sc">+</span> X68 <span class="sc">+</span> X71 <span class="sc">+</span> X73 <span class="sc">+</span> X75 <span class="sc">+</span> X80 <span class="sc">+</span> </span>
+<span id="cb37-35"><a href="#cb37-35" aria-hidden="true" tabindex="-1"></a>             X81 <span class="sc">+</span> X87 <span class="sc">+</span> X88 <span class="sc">+</span> X89 <span class="sc">+</span> X90 <span class="sc">+</span> X94, <span class="at">data =</span> dat))</span>
+<span id="cb37-36"><a href="#cb37-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-37"><a href="#cb37-37" aria-hidden="true" tabindex="-1"></a><span class="co"># true positives are good, but false positives remain</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -1044,15 +1037,15 @@ Penalized deviance: 543.4 </code></pre>
 <div class="callout-body-container callout-body">
 <p>For simple models, BF can be calculated using the BayesFactor package</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BayesFactor)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sleep)</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute difference scores</span></span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>diffScores <span class="ot">=</span> sleep<span class="sc">$</span>extra[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>] <span class="sc">-</span> sleep<span class="sc">$</span>extra[<span class="dv">11</span><span class="sc">:</span><span class="dv">20</span>]</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Traditional two-tailed t test</span></span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(diffScores)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BayesFactor)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sleep)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute difference scores</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>diffScores <span class="ot">=</span> sleep<span class="sc">$</span>extra[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>] <span class="sc">-</span> sleep<span class="sc">$</span>extra[<span class="dv">11</span><span class="sc">:</span><span class="dv">20</span>]</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Traditional two-tailed t test</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(diffScores)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     One Sample t-test
@@ -1066,8 +1059,8 @@ sample estimates:
 mean of x 
     -1.58 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>bf <span class="ot">=</span> <span class="fu">ttestBF</span>(<span class="at">x =</span> diffScores, <span class="at">rscale =</span> <span class="dv">10</span>)</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>bf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>bf <span class="ot">=</span> <span class="fu">ttestBF</span>(<span class="at">x =</span> diffScores, <span class="at">rscale =</span> <span class="dv">10</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>bf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Bayes factor analysis
 --------------
@@ -1104,57 +1097,57 @@ Bayes factor type: BFoneSample, JZS</code></pre>
 <p>For Jags model, the ML can be estimated using the BayesTools package, which, unfortunately, has a very similar name as the BayesianTools package.</p>
 <p>The following example shows a comparison of two regression models using the BayesianTools package</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BayesianTools)</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>?BayesianTools<span class="sc">::</span>marginalLikelihood</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating test data with quadratic relationship</span></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>sampleSize <span class="ot">=</span> <span class="dv">30</span></span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> (<span class="sc">-</span>(sampleSize<span class="dv">-1</span>)<span class="sc">/</span><span class="dv">2</span>)<span class="sc">:</span>((sampleSize<span class="dv">-1</span>)<span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span>  <span class="dv">1</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="dv">1</span><span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="at">n=</span>sampleSize,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="dv">10</span>)</span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(x,y, main="Test Data")</span></span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihoods for linear and quadratic model </span></span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>likelihood1 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
-<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x <span class="sc">+</span> param[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">4</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods))  </span>
-<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>likelihood2 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
-<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x </span>
-<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods))  </span>
-<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, </span>
-<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">5</span>,<span class="fl">0.01</span>), </span>
-<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">30</span>))</span>
-<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, </span>
-<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">5</span>,<span class="fl">0.01</span>), </span>
-<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">30</span>))</span>
-<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
-<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out1, <span class="at">start =</span> <span class="dv">1000</span>)</span>
-<span id="cb45-31"><a href="#cb45-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-32"><a href="#cb45-32" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
-<span id="cb45-33"><a href="#cb45-33" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out2, <span class="at">start =</span> <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BayesianTools)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>?BayesianTools<span class="sc">::</span>marginalLikelihood</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating test data with quadratic relationship</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>sampleSize <span class="ot">=</span> <span class="dv">30</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> (<span class="sc">-</span>(sampleSize<span class="dv">-1</span>)<span class="sc">/</span><span class="dv">2</span>)<span class="sc">:</span>((sampleSize<span class="dv">-1</span>)<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span>  <span class="dv">1</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="dv">1</span><span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="at">n=</span>sampleSize,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="dv">10</span>)</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(x,y, main="Test Data")</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihoods for linear and quadratic model </span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>likelihood1 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x <span class="sc">+</span> param[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">4</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods))  </span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>likelihood2 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x </span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods))  </span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, </span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">5</span>,<span class="fl">0.01</span>), </span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">30</span>))</span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, </span>
+<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="sc">-</span><span class="dv">5</span>,<span class="fl">0.01</span>), </span>
+<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">30</span>))</span>
+<span id="cb42-28"><a href="#cb42-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-29"><a href="#cb42-29" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
+<span id="cb42-30"><a href="#cb42-30" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out1, <span class="at">start =</span> <span class="dv">1000</span>)</span>
+<span id="cb42-31"><a href="#cb42-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-32"><a href="#cb42-32" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
+<span id="cb42-33"><a href="#cb42-33" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out2, <span class="at">start =</span> <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Calculating Bayes factor</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML <span class="sc">-</span> M2<span class="sc">$</span>ln.ML)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Calculating Bayes factor</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML <span class="sc">-</span> M2<span class="sc">$</span>ln.ML)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 9.307049e+25</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># BF &gt; 1 means the evidence is in favor of M1. See Kass, R. E. &amp; Raftery, A. E. </span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (1995) Bayes Factors. J. Am. Stat. Assoc., Amer Statist Assn, 90, 773-795.</span></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="do">### Calculating Posterior weights</span></span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML) <span class="sc">/</span> ( <span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML) <span class="sc">+</span> <span class="fu">exp</span>(M2<span class="sc">$</span>ln.ML))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># BF &gt; 1 means the evidence is in favor of M1. See Kass, R. E. &amp; Raftery, A. E. </span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co"># (1995) Bayes Factors. J. Am. Stat. Assoc., Amer Statist Assn, 90, 773-795.</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="do">### Calculating Posterior weights</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML) <span class="sc">/</span> ( <span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML) <span class="sc">+</span> <span class="fu">exp</span>(M2<span class="sc">$</span>ln.ML))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If models have different model priors, multiply with the prior probabilities of each model. </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If models have different model priors, multiply with the prior probabilities of each model. </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="prior-influence-on-the-marginal-likelihood" class="level3" data-number="5.3.2">
@@ -1162,27 +1155,27 @@ Bayes factor type: BFoneSample, JZS</code></pre>
 <p>A problem that is often not sufficiently appreciated when performing Bayesian inference across multiple models is the influence of the choice of uninformative parameter priors on the model weight.</p>
 <p>The issue arises because the prior density enters the marginal likelihood multiplicative. Although this follows directly from the joint posterior definition and is logically completely consistent, it has the somewhat counter-intuitive consequence that increasing the width of an uninformative prior will linearly decrease the marginal likelihood (Sinharay-SensitivityBayesFactors-2002). In particular, for an infinitely wide (inproper) uninformative prior, the model weight goes to zero, regardless of the fit. This behavior is surprising to many practitioners of Bayesian analysis, because they are used to the fact that the influence of increasing prior width on uninformative priors is minimal for fitting parameters.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Motivation: ML is very dependent on the prior, which is a problem if you </span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># have uninformative priors. you can see this via rerunning the upper  </span></span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="co"># example with changed priors - suddenly, support for M1 is gone</span></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, </span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
-<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
-<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, </span>
-<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
-<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
-<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
-<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out1, <span class="at">start =</span> <span class="dv">1000</span>)</span>
-<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
-<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out2, <span class="at">start =</span> <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Motivation: ML is very dependent on the prior, which is a problem if you </span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="co"># have uninformative priors. you can see this via rerunning the upper  </span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="co"># example with changed priors - suddenly, support for M1 is gone</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, </span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, </span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out1, <span class="at">start =</span> <span class="dv">1000</span>)</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out2, <span class="at">start =</span> <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Calculating Bayes factor</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML <span class="sc">-</span> M2<span class="sc">$</span>ln.ML)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML <span class="sc">-</span> M2<span class="sc">$</span>ln.ML)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.32843e+18</code></pre>
 </div>
@@ -1192,66 +1185,66 @@ Bayes factor type: BFoneSample, JZS</code></pre>
 <h4 data-number="5.3.2.1" class="anchored" data-anchor-id="fractional-bf"><span class="header-section-number">5.3.2.1</span> Fractional BF</h4>
 <p>The fact that Bayesian model weights are strongly dependent on the width of the prior choice has sparked discussion of the appropriateness of this approach in situations with uninformative priors. For example, in situations where multiple nested models are compared, the width of the uniformative prior may completely determine the complexity of models that are being selected. One suggestion that has been made is not to perform multi-model inference with uninformative priors at all, or that at least additional analysis is necessary to find parameter priors that are sensible for the multi-model setup at hand. Another solution is to calibrate the model on a part of the data first, use the result as new priors and then perform the analysis described above (intrinsic Bayes factor (Berger-IntrinsicBayesFactor-1996), fractional Bayes factor (OHagan-FractionalBayesFactors-1995)). If sufficient data is available so that the likelihood falls off sufficiently strong during the calibration step, this approach should nearly eliminate any ambiguity resulting from the prior choice.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihoods with half the data </span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="co"># note: half of the data is ensured here by summing only seq(1, 30, 2) of the</span></span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="co"># observations in the likelihood</span></span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>likelihood1 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x <span class="sc">+</span> param[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">4</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
-<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>likelihood2 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
-<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x </span>
-<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
-<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, </span>
-<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
-<span id="cb54-18"><a href="#cb54-18" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
-<span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, </span>
-<span id="cb54-20"><a href="#cb54-20" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
-<span id="cb54-21"><a href="#cb54-21" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
-<span id="cb54-22"><a href="#cb54-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-23"><a href="#cb54-23" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
-<span id="cb54-24"><a href="#cb54-24" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
-<span id="cb54-25"><a href="#cb54-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-26"><a href="#cb54-26" aria-hidden="true" tabindex="-1"></a>newPrior1 <span class="ot">=</span> <span class="fu">createPriorDensity</span>(out1, <span class="at">start =</span> <span class="dv">200</span>, </span>
-<span id="cb54-27"><a href="#cb54-27" aria-hidden="true" tabindex="-1"></a>                               <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
-<span id="cb54-28"><a href="#cb54-28" aria-hidden="true" tabindex="-1"></a>                               <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
-<span id="cb54-29"><a href="#cb54-29" aria-hidden="true" tabindex="-1"></a>newPrior2 <span class="ot">=</span> <span class="fu">createPriorDensity</span>(out2, <span class="at">start =</span> <span class="dv">200</span>, </span>
-<span id="cb54-30"><a href="#cb54-30" aria-hidden="true" tabindex="-1"></a>                               <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
-<span id="cb54-31"><a href="#cb54-31" aria-hidden="true" tabindex="-1"></a>                               <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
-<span id="cb54-32"><a href="#cb54-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-33"><a href="#cb54-33" aria-hidden="true" tabindex="-1"></a><span class="co"># now rerun this with likelihoods for the other half of the data and new prior</span></span>
-<span id="cb54-34"><a href="#cb54-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-35"><a href="#cb54-35" aria-hidden="true" tabindex="-1"></a>xTest<span class="ot">=</span> x[<span class="dv">16</span><span class="sc">:</span><span class="dv">30</span>]</span>
-<span id="cb54-36"><a href="#cb54-36" aria-hidden="true" tabindex="-1"></a>yTest <span class="ot">=</span> y[<span class="dv">16</span><span class="sc">:</span><span class="dv">30</span>]</span>
-<span id="cb54-37"><a href="#cb54-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-38"><a href="#cb54-38" aria-hidden="true" tabindex="-1"></a>likelihood1 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
-<span id="cb54-39"><a href="#cb54-39" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x <span class="sc">+</span> param[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb54-40"><a href="#cb54-40" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">4</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb54-41"><a href="#cb54-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
-<span id="cb54-42"><a href="#cb54-42" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb54-43"><a href="#cb54-43" aria-hidden="true" tabindex="-1"></a>likelihood2 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
-<span id="cb54-44"><a href="#cb54-44" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x </span>
-<span id="cb54-45"><a href="#cb54-45" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb54-46"><a href="#cb54-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
-<span id="cb54-47"><a href="#cb54-47" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb54-48"><a href="#cb54-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-49"><a href="#cb54-49" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, <span class="at">prior =</span> newPrior1)</span>
-<span id="cb54-50"><a href="#cb54-50" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, <span class="at">prior =</span> newPrior2)</span>
-<span id="cb54-51"><a href="#cb54-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-52"><a href="#cb54-52" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
-<span id="cb54-53"><a href="#cb54-53" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out1, <span class="at">start =</span> <span class="dv">1000</span>)</span>
-<span id="cb54-54"><a href="#cb54-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-55"><a href="#cb54-55" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
-<span id="cb54-56"><a href="#cb54-56" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out2, <span class="at">start =</span> <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># likelihoods with half the data </span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># note: half of the data is ensured here by summing only seq(1, 30, 2) of the</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="co"># observations in the likelihood</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>likelihood1 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x <span class="sc">+</span> param[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">4</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>likelihood2 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x </span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, </span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, </span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>                              <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>                              <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
+<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
+<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a>newPrior1 <span class="ot">=</span> <span class="fu">createPriorDensity</span>(out1, <span class="at">start =</span> <span class="dv">200</span>, </span>
+<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a>                               <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
+<span id="cb51-28"><a href="#cb51-28" aria-hidden="true" tabindex="-1"></a>                               <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
+<span id="cb51-29"><a href="#cb51-29" aria-hidden="true" tabindex="-1"></a>newPrior2 <span class="ot">=</span> <span class="fu">createPriorDensity</span>(out2, <span class="at">start =</span> <span class="dv">200</span>, </span>
+<span id="cb51-30"><a href="#cb51-30" aria-hidden="true" tabindex="-1"></a>                               <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">500</span>,<span class="sc">-</span><span class="dv">500</span>,<span class="fl">0.01</span>), </span>
+<span id="cb51-31"><a href="#cb51-31" aria-hidden="true" tabindex="-1"></a>                               <span class="at">upper =</span> <span class="fu">c</span>(<span class="dv">500</span>,<span class="dv">500</span>,<span class="dv">3000</span>))</span>
+<span id="cb51-32"><a href="#cb51-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-33"><a href="#cb51-33" aria-hidden="true" tabindex="-1"></a><span class="co"># now rerun this with likelihoods for the other half of the data and new prior</span></span>
+<span id="cb51-34"><a href="#cb51-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-35"><a href="#cb51-35" aria-hidden="true" tabindex="-1"></a>xTest<span class="ot">=</span> x[<span class="dv">16</span><span class="sc">:</span><span class="dv">30</span>]</span>
+<span id="cb51-36"><a href="#cb51-36" aria-hidden="true" tabindex="-1"></a>yTest <span class="ot">=</span> y[<span class="dv">16</span><span class="sc">:</span><span class="dv">30</span>]</span>
+<span id="cb51-37"><a href="#cb51-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-38"><a href="#cb51-38" aria-hidden="true" tabindex="-1"></a>likelihood1 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
+<span id="cb51-39"><a href="#cb51-39" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x <span class="sc">+</span> param[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb51-40"><a href="#cb51-40" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">4</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb51-41"><a href="#cb51-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
+<span id="cb51-42"><a href="#cb51-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb51-43"><a href="#cb51-43" aria-hidden="true" tabindex="-1"></a>likelihood2 <span class="ot">&lt;-</span> <span class="cf">function</span>(param){</span>
+<span id="cb51-44"><a href="#cb51-44" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">=</span> param[<span class="dv">1</span>] <span class="sc">+</span> param[<span class="dv">2</span>]<span class="sc">*</span>x </span>
+<span id="cb51-45"><a href="#cb51-45" aria-hidden="true" tabindex="-1"></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> <span class="dv">1</span><span class="sc">/</span>(param[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>), <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb51-46"><a href="#cb51-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(singlelikelihoods[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">30</span>, <span class="dv">2</span>)]))  </span>
+<span id="cb51-47"><a href="#cb51-47" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb51-48"><a href="#cb51-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-49"><a href="#cb51-49" aria-hidden="true" tabindex="-1"></a>setUp1 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood1, <span class="at">prior =</span> newPrior1)</span>
+<span id="cb51-50"><a href="#cb51-50" aria-hidden="true" tabindex="-1"></a>setUp2 <span class="ot">&lt;-</span> <span class="fu">createBayesianSetup</span>(likelihood2, <span class="at">prior =</span> newPrior2)</span>
+<span id="cb51-51"><a href="#cb51-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-52"><a href="#cb51-52" aria-hidden="true" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp1)</span>
+<span id="cb51-53"><a href="#cb51-53" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out1, <span class="at">start =</span> <span class="dv">1000</span>)</span>
+<span id="cb51-54"><a href="#cb51-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-55"><a href="#cb51-55" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">runMCMC</span>(<span class="at">bayesianSetup =</span> setUp2)</span>
+<span id="cb51-56"><a href="#cb51-56" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">=</span> <span class="fu">marginalLikelihood</span>(out2, <span class="at">start =</span> <span class="dv">1000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Calculating the fractional Bayes factor</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML <span class="sc">-</span> M2<span class="sc">$</span>ln.ML)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M1<span class="sc">$</span>ln.ML <span class="sc">-</span> M2<span class="sc">$</span>ln.ML)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 7147363637</code></pre>
 </div>

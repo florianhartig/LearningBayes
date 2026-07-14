@@ -178,12 +178,15 @@ plot(sim)
 
 Here a base model with random effect
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, results='hide'}
 library(brms)
 m2 = brms::brm(SiblingNegotiation ~ FoodTreatment * SexParent
-  + (1|Nest) + offset(log(BroodSize)), 
-  data = Owls , 
+  + (1|Nest) + offset(log(BroodSize)),
+  data = Owls ,
   family = negbinomial)
+```
+
+```{r}
 summary(m2)
 
 plot(m2, ask = FALSE)
